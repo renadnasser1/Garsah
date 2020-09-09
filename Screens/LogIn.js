@@ -1,4 +1,5 @@
 import React from "react";
+
 import { 
     View, 
     Text, 
@@ -17,9 +18,10 @@ import Feather from 'react-native-vector-icons/Feather';*/
 
 const LogInScreen = () => {
     return(
-        <View style = {Styles.container}>
+        <View style = {styles.container}>
 
-            <View style = {Styles.header}> 
+<Text>Login Hi</Text>
+            {/* <View style = {Styles.header}> 
             <text style = {styles.text_header}>Welcome!</text>  
             </View>
 
@@ -42,11 +44,13 @@ const LogInScreen = () => {
             secureTextEntry = {true}
             autoCapitalize="none"
             style={styles.textInput}/> 
-            </View>
+            </View> */}
 
         </View>
     )
 } 
+
+export default LogInScreen;
 
 const styles = StyleSheet.create({
     container: {
