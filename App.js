@@ -32,6 +32,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
     backgroundColor: '#fff',
     marginTop: Constants.statusBarHeight
   },
