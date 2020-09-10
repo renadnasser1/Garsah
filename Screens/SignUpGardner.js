@@ -14,8 +14,7 @@ import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient'
 
 const SignInScreen = ({navigation}) => {
-
-    /* */const [data, setData] = React.useState({
+const [data, setData] = React.useState({
         username: '',
         password: '',
         confirm_password: '',

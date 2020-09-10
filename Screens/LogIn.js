@@ -11,42 +11,35 @@ import {
     Alert
 } from 'react-native';
 
-/*import * as Animatable from 'react-native-animatable';
+import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';*/
 
 const LogInScreen = () => {
     return(
-        <View style = {styles.container}>
-
-<Text>Login Hi</Text>
-            {/* <View style = {Styles.header}> 
-            <text style = {styles.text_header}>Welcome!</text>  
-            </View>
-
-            <View style = {Styles.footer}>
-            <text style = {styles.text_footer}>Email</text>
-            </View>
-
-            <View style={styles.action}>
-            <TextInput placeholder="Username"
-            autoCapitalize="none"
-            style={styles.textInput}/> 
-            </View>
-
-            <View style = {Styles.footer}>
-            <text style = {styles.text_footer}>Password</text>
-            </View>
-
-            <View style={styles.action}>
-            <TextInput placeholder="Username" 
-            secureTextEntry = {true}
-            autoCapitalize="none"
-            style={styles.textInput}/> 
-            </View> */}
+        <View style = {styles.container}><Text style={styles.welcome}>Welcome!</Text>
+        <TextInput style = {styles.input}
+               underlineColorAndroid = "transparent"
+               placeholder = "Email"
+               placeholderTextColor = "grey"
+               autoCapitalize = "none"
+               />
+               <TextInput style = {styles.input}
+               underlineColorAndroid = "transparent"
+               placeholder = "Password"
+               placeholderTextColor = "grey"
+               autoCapitalize = "none"
+               />
+                   <TouchableOpacity
+               style = {styles.LogInButton}>
+               <Text style = {styles.LogInButtonText}> LogIn </Text>
+            </TouchableOpacity>
+            <Text style={styles.text}>Dont have an account? <Text style={styles.text2}>SignUp</Text></Text>
 
         </View>
+       
+
+
     )
 } 
 
@@ -55,68 +48,67 @@ export default LogInScreen;
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#009387'
+      backgroundColor: 'white'
     },
-    header: {
+    welcome: {
         flex: 1,
         justifyContent: 'flex-end',
         paddingHorizontal: 20,
-        paddingBottom: 50
+        fontSize: 50,
+        marginTop:210,
+        color:"green" , 
+        left:70 
     },
-    footer: {
-        flex: 3,
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        paddingHorizontal: 20,
-        paddingVertical: 30
-    },
-    text_header: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 30
-    },
-    text_footer: {
-        color: '#05375a',
-        fontSize: 18
-    },
-    action: {
-        flexDirection: 'row',
-        marginTop: 10,
+    
+    input: {
+        margin:10,
+        height: 40,
+        width: 320,
+        left:30,
+        borderColor: 'white',
+        borderWidth: 1,
+        bottom:250,
+        marginBottom:25,
+        paddingHorizontal:10,
+        borderWidth: 1,
+        borderRadius: 25,
+        borderColor: '#ddd',
         borderBottomWidth: 1,
-        borderBottomColor: '#f2f2f2',
-        paddingBottom: 5
+        shadowColor: 'grey',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.7,
+        shadowRadius: 3,
+        elevation: 6, 
     },
-    actionError: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#FF0000',
-        paddingBottom: 5
-    },
-    textInput: {
-        flex: 1,
-        marginTop: Platform.OS === 'ios' ? 0 : -12,
-        paddingLeft: 10,
-        color: '#05375a',
-    },
-    errorMsg: {
-        color: '#FF0000',
-        fontSize: 14,
-    },
-    button: {
-        alignItems: 'center',
-        marginTop: 50
-    },
-    signIn: {
-        width: '100%',
-        height: 50,
+    LogInButton:{
+     color:'green',
+     margin: 20,
+        height: 40,
+        width: 150,
+        borderColor: 'grey',
+        borderWidth: 1,
+        borderRadius:30,
+        bottom:220,
+        paddingHorizontal:10,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10
+        left:110,
+        backgroundColor:'green'
     },
-    textSign: {
-        fontSize: 18,
-        fontWeight: 'bold'
+    LogInButtonText:{
+        color:'white',
+        fontSize: 15,
+
+    },
+    text:{
+        color:'black',
+        left:100,
+        bottom:220
+    },
+    text2:{
+        color:'green',
+    
+        
     }
+
   });
