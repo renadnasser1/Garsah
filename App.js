@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 //screens
 import Login from './Screens/LogIn'
-
+import SignUpGardner from './Screens/SignUpGardner'
 // Firebase
 import * as firebase from 'firebase';
 
@@ -40,6 +40,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUpGardner" component={SignUpGardner} />
       </Stack.Navigator>
     </NavigationContainer>
   );
