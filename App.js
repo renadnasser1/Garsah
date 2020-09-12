@@ -5,8 +5,10 @@ import Constants from 'expo-constants'
 //navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
 //screens
-import Login from './Screens/LogIn'
+//import Login from './Screens/LogIn';
+import SplashScreen from './Screens/SplashScreen' ;
 
 // Firebase
 import * as firebase from 'firebase';
@@ -39,7 +41,9 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SplashScreen" component={SplashScreen} options={{
+    headerShown: false
+}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

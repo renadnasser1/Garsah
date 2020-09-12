@@ -20,7 +20,7 @@ const LogInScreen = () => {
     return(
         <View style = {styles.container}>
 
-<Text>Login Hi</Text>
+<Text>Login Hi still</Text>
             {/* <View style = {Styles.header}> 
             <text style = {styles.text_header}>Welcome!</text>  
             </View>
