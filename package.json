@@ -23,13 +23,8 @@
     "react-native-reanimated": "~1.9.0",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
-<<<<<<< HEAD
-    "react-native-web": "~0.11.7",
-    "react-navigation": "^4.4.0"
-=======
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.11.7"
->>>>>>> 9360b32ba9d8918245861b7c7a554e47349791a3
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
