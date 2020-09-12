@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 //import Login from './Screens/LogIn';
 import SplashScreen from './Screens/SplashScreen' ;
 
+
 // Firebase
 import * as firebase from 'firebase';
 
@@ -55,6 +56,7 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
     backgroundColor: '#fff',
     marginTop: Constants.statusBarHeight
   },
