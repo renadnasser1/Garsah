@@ -11,11 +11,13 @@ import {
     Alert
 } from 'react-native';
 
-import * as Animatable from 'react-native-animatable';
-import LinearGradient from 'react-native-linear-gradient';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import createAccount from './Signup';
 
-const LogInScreen = () => {
+// import * as Animatable from 'react-native-animatable';
+// import LinearGradient from 'react-native-linear-gradient';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+const LogIn = ({navigation}) => {
     return(
         <View style = {styles.container}><Text style={styles.welcome}>Welcome!</Text>
         <TextInput style = {styles.input}
@@ -34,7 +36,13 @@ const LogInScreen = () => {
                style = {styles.LogInButton}>
                <Text style = {styles.LogInButtonText}> LogIn </Text>
             </TouchableOpacity>
-            <Text style={styles.text}>Dont have an account? <Text style={styles.text2}>SignUp</Text></Text>
+            <Text style={styles.text}>Dont have an account? 
+            <Text style={styles.text2}
+              onPress={() => {
+                navigation.navigate('Signup')
+              }}
+            >SignUp</Text>
+            </Text>
 
         </View>
        
@@ -43,7 +51,7 @@ const LogInScreen = () => {
     )
 } 
 
-export default LogInScreen;
+export default LogIn;
 
 const styles = StyleSheet.create({
     container: {

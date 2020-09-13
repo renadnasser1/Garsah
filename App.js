@@ -7,8 +7,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 //screens
-//import Login from './Screens/LogIn';
-import SplashScreen from './Screens/SplashScreen' ;
+import Login from './Screens/LogIn';
+import Signup from './Screens/Signup' ;
 
 
 // Firebase
@@ -42,7 +42,10 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="SplashScreen" component={SplashScreen} options={{
+        <Stack.Screen name="login" component={Login} options={{
+    headerShown: false
+}}/>
+        <Stack.Screen name="Signup" component={Signup} options={{
     headerShown: false
 }}/>
       </Stack.Navigator>
