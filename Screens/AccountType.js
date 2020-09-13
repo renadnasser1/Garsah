@@ -19,11 +19,11 @@ const AccType = ({ navigation }) => {
       <View style={styles.footer}>
         <Text style={styles.text}>Do you have plants to sell?</Text>
         <View style={styles.row}>
-          <TouchableOpacity style={styles.YesNoButton} underlayColor="#fff">
+          <TouchableOpacity style={styles.YesNoButton} >
             <Text style={styles.loginText}>Yes, I do</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.YesNoButton} underlayColor="#fff">
+          <TouchableOpacity style={styles.YesNoButton}>
             <Text style={styles.loginText}>No</Text>
           </TouchableOpacity>
         </View>
@@ -67,85 +67,14 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
 
-  filedList: {
-    marginTop: 10,
-  },
 
-  inputFiled: {
-    margin: 15,
-    padding: 8,
-    width: 280,
-    height: 40,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomEndRadius: 10,
-    borderTopRightRadius: 10,
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
 
-    elevation: 8,
-  },
-  textInputFiled: {
-    width: 200,
-  },
-
-  loginButton: {
-    width: 280,
-    height: 40,
-    marginLeft: 15,
-    marginTop: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "#EFF6F9",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#fff",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-
-    elevation: 2,
-  },
   loginText: {
-    color: "#060707",
+    color: "green",
     textAlign: "center",
     paddingLeft: 10,
     paddingRight: 10,
     fontSize: 18,
-  },
-  alreadyHave: {
-    flexDirection: "row",
-  },
-
-  alreadyHaveText: {
-    fontSize: 15,
-    marginTop: 10,
-    marginLeft: 40,
-  },
-
-  logo: {
-    width: height_logo,
-    height: height_logo,
-  },
-
-  title: {
-    color: "#060707",
-    fontSize: 30,
-    marginTop: 20,
-    paddingLeft: 20,
-    fontWeight: "bold",
   },
 
   text: {
@@ -153,19 +82,6 @@ const styles = StyleSheet.create({
     color: "black",
     paddingLeft: 10,
     marginTop: 120,
-  },
-
-  signIn: {
-    width: 150,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 50,
-    flexDirection: "row",
-  },
-  textSign: {
-    color: "white",
-    fontWeight: "bold",
   },
   YesNoButton: {
     width: 120,
@@ -177,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EFF6F9",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#CFD590",
+    borderColor: "#EFF6F9",
     justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: {
