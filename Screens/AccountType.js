@@ -113,5 +113,6 @@ const styles = StyleSheet.create({
     borderBottomColor: "#888",
     borderBottomWidth: 1,
     alignItems: "stretch",
+
   },
 });
