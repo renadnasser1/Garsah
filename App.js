@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 //screens
 import Login from './Screens/LogIn';
 
+
 // Firebase
 import * as firebase from 'firebase';
 
@@ -39,7 +40,10 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      
+       
         <Stack.Screen name="Login" component={Login} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
