@@ -19,12 +19,12 @@ const AccType = ({ navigation }) => {
       <View style={styles.footer}>
         <Text style={styles.text}>Do you have plants to sell?</Text>
         <View style={styles.row}>
-          <TouchableOpacity style={styles.YesNoButton} >
-            <Text style={styles.loginText}>Yes, I do</Text>
+          <TouchableOpacity style={styles.YesNoButton}>
+            <Text style={styles.ButtonText}>Yes, I do</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.YesNoButton}>
-            <Text style={styles.loginText}>No</Text>
+            <Text style={styles.ButtonText}>No</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -67,10 +67,8 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
 
-
-
-  loginText: {
-    color: "green",
+  ButtonText: {
+    color: "black",
     textAlign: "center",
     paddingLeft: 10,
     paddingRight: 10,
