@@ -11,112 +11,80 @@ import {
     Alert
 } from 'react-native';
 
-import * as Animatable from 'react-native-animatable';
-import LinearGradient from 'react-native-linear-gradient';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import createAccount from './Signup';
 
-const LogInScreen = ()=> {
+// import * as Animatable from 'react-native-animatable';
+// import LinearGradient from 'react-native-linear-gradient';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Ionicons } from "@expo/vector-icons";
+
+const LogIn = ({navigation}) => {
     return(
+        <View style = {styles.container}><Text style={styles.welcome}>Welcome!</Text>
+        
+        <View style={styles.inputFiled} >
+        <Ionicons name="ios-mail" size={25} color='#646161'></Ionicons>
+   
+        <TextInput 
+            placeholder={' Email'} style={styles.textInputFiled}></TextInput></View>
+        <View style={styles.inputFiled} >
+        <Ionicons name="ios-key" size={25} color='#646161'></Ionicons>
+   
+        <TextInput 
+            placeholder={' Password'} style={styles.textInputFiled}></TextInput></View>
 
-        <View style = {styles.container}>
-<View style = {styles.header}></View>
-<View style = {styles.footer}>
-<Text style={styles.welcome}>Welcome</Text>
-        <TextInput style = {styles.input}
-               underlineColorAndroid = "transparent"
-               placeholder = "Email"
-               placeholderTextColor = "grey"
-               autoCapitalize = "none"
+        {/* Re-Password */}
                
-               />
-               <TextInput style = {styles.input}
-               underlineColorAndroid = "transparent"
-               placeholder = "Password"
-               placeholderTextColor = "grey"
-               autoCapitalize = "none"
-               />
                    <TouchableOpacity
                style = {styles.LogInButton}>
                <Text style = {styles.LogInButtonText}> LogIn </Text>
             </TouchableOpacity>
-            <Text style={styles.text}>Dont have an account? <Text style={styles.text2}>SignUp</Text></Text>
-</View>
-  </View> 
-        
+            <Text style={styles.text}>Dont have an account? 
+            <Text style={styles.text2}
+              onPress={() => {
+                navigation.navigate('Signup')
+              }}>
+                SignUp</Text>
+            </Text>
+
+        </View>
+       
 
 
     )
 } 
 
-export default LogInScreen;
+export default LogIn;
 
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: 'green'
+      backgroundColor: 'white'
     },
     welcome: {
         flex: 1,
         justifyContent: 'flex-end',
         paddingHorizontal: 20,
-        paddingVertical: 50,
         fontSize: 50,
-        bottom:5,
+        marginTop:210,
         color:"green" , 
-        left:50 
-    },
-    header: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        paddingBottom: 2,
-    
-        
-    },
-    footer: {
-        flex: 3,
-        height: 400,
-        width: 420,
-        justifyContent: 'flex-end',
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 100,
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-        paddingBottom: 20
-    },
-    input: {
-        margin:10,
-        height: 40,
-        width: 250,
-        left:30,
-        borderColor: 'white',
-        borderWidth: 1,
-        bottom:30,
-        marginBottom:25,
-        paddingHorizontal:10,
-        borderWidth: 1,
-        borderRadius: 20,
-        borderColor: '#ddd',
-        borderBottomWidth: 1,
-        shadowColor: 'grey',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.7,
-        shadowRadius: 3,
-        elevation: 6, 
-    },
+        left:70 
+    }, 
     LogInButton:{
+     color:'green',
      margin: 20,
         height: 40,
-        width: 150,
-        borderColor: '#f0f8ff',
+        width: 200,
+        borderColor: 'grey',
         borderWidth: 1,
         borderRadius:30,
-        bottom:20,
+        bottom:220,
         paddingHorizontal:10,
         justifyContent: 'center',
         alignItems: 'center',
-        left:80,
-        backgroundColor:'#f0f8ff'
-    
+        left:90,
+        backgroundColor:'#EFF6F9',
+        borderColor:'#EFF6F9'
     },
     LogInButtonText:{
         color:'black',
@@ -125,13 +93,39 @@ const styles = StyleSheet.create({
     },
     text:{
         color:'black',
-        left:70,
-        bottom:30
+        left:100,
+        bottom:220,
+        marginLeft: 20,
     },
     text2:{
         color:'green',
-    
+      
+    },
+    inputFiled:{
+        margin:15,
+        padding:8,
+        width:280,
+        height:40,
+        bottom:300,
+        left:50,
+        borderTopLeftRadius:10,
+        borderBottomLeftRadius:10,
+        borderBottomEndRadius:10,
+        borderTopRightRadius:10,
+        flexDirection:'row',
+        backgroundColor:'#fff',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
         
-    }
+        elevation: 8,
+    },
+    textInputFiled:{
+      width:200
+    },
 
   });
