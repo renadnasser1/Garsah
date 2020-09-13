@@ -19,11 +19,11 @@ const AccType = ({ navigation }) => {
       <View style={styles.footer}>
         <Text style={styles.text}>Do you have plants to sell?</Text>
         <View style={styles.row}>
-          <TouchableOpacity style={styles.YesNoButton} underlayColor="#fff">
+          <TouchableOpacity style={styles.YesNoButton}>
             <Text style={styles.ButtonText}>Yes, I do</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.YesNoButton} underlayColor="#fff">
+          <TouchableOpacity style={styles.YesNoButton}>
             <Text style={styles.ButtonText}>No</Text>
           </TouchableOpacity>
         </View>
@@ -68,19 +68,11 @@ const styles = StyleSheet.create({
   },
 
   ButtonText: {
-    color: "#060707",
+    color: "black",
     textAlign: "center",
     paddingLeft: 10,
     paddingRight: 10,
     fontSize: 18,
-  },
-
-  title: {
-    color: "#060707",
-    fontSize: 30,
-    marginTop: 20,
-    paddingLeft: 20,
-    fontWeight: "bold",
   },
 
   text: {
@@ -89,16 +81,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginTop: 120,
   },
-
-  signIn: {
-    width: 150,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 50,
-    flexDirection: "row",
-  },
-
   YesNoButton: {
     width: 120,
     height: 40,
@@ -109,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EFF6F9",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#CFD590",
+    borderColor: "#EFF6F9",
     justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: {
