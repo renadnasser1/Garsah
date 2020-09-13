@@ -1,18 +1,18 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import Constants from 'expo-constants'
+import Constants from "expo-constants";
 //navigation
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 //screens
-import Login from './Screens/LogIn';
-import Signup from './Screens/Signup' ;
-
+import Login from "./Screens/LogIn";
+import Signup from "./Screens/Signup";
+import AccountType from "./Screens/AccountType";
 
 // Firebase
-import * as firebase from 'firebase';
+import * as firebase from "firebase";
 
 var firebaseConfig = {
   apiKey: "AIzaSyDxdMk1eD8QO6cFCCZuhAkYknnZP8k97A0",
@@ -22,7 +22,7 @@ var firebaseConfig = {
   storageBucket: "garsah-swe444.appspot.com",
   messagingSenderId: "852812204375",
   appId: "1:852812204375:web:ca941020de53b6c8589612",
-  measurementId: "G-5VJJTFKLTT"
+  measurementId: "G-5VJJTFKLTT",
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -30,7 +30,7 @@ firebase.initializeApp(firebaseConfig);
 
 function HomeScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Home Screen Hi</Text>
     </View>
   );
@@ -42,12 +42,27 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="login" component={Login} options={{
-    headerShown: false
-}}/>
-        <Stack.Screen name="Signup" component={Signup} options={{
-    headerShown: false
-}}/>
+        <Stack.Screen
+          name="login"
+          component={Login}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Signup"
+          component={Signup}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="AccountType"
+          component={AccountType}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -59,8 +74,8 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    marginTop: Constants.statusBarHeight
+    alignItems: "center",
+    backgroundColor: "#fff",
+    marginTop: Constants.statusBarHeight,
   },
 });
