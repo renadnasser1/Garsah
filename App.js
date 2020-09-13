@@ -11,7 +11,6 @@ import Login from './Screens/LogIn';
 import Signup from './Screens/Signup' ;
 
 
-
 // Firebase
 import * as firebase from 'firebase';
 
