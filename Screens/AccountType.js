@@ -20,11 +20,11 @@ const AccType = ({ navigation }) => {
         <Text style={styles.text}>Do you have plants to sell?</Text>
         <View style={styles.row}>
           <TouchableOpacity style={styles.YesNoButton} underlayColor="#fff">
-            <Text style={styles.loginText}>Yes, I do</Text>
+            <Text style={styles.ButtonText}>Yes, I do</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.YesNoButton} underlayColor="#fff">
-            <Text style={styles.loginText}>No</Text>
+            <Text style={styles.ButtonText}>No</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -67,77 +67,12 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
 
-  filedList: {
-    marginTop: 10,
-  },
-
-  inputFiled: {
-    margin: 15,
-    padding: 8,
-    width: 280,
-    height: 40,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomEndRadius: 10,
-    borderTopRightRadius: 10,
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-
-    elevation: 8,
-  },
-  textInputFiled: {
-    width: 200,
-  },
-
-  loginButton: {
-    width: 280,
-    height: 40,
-    marginLeft: 15,
-    marginTop: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "#EFF6F9",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#fff",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-
-    elevation: 2,
-  },
-  loginText: {
+  ButtonText: {
     color: "#060707",
     textAlign: "center",
     paddingLeft: 10,
     paddingRight: 10,
     fontSize: 18,
-  },
-  alreadyHave: {
-    flexDirection: "row",
-  },
-
-  alreadyHaveText: {
-    fontSize: 15,
-    marginTop: 10,
-    marginLeft: 40,
-  },
-
-  logo: {
-    width: height_logo,
-    height: height_logo,
   },
 
   title: {
@@ -163,10 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     flexDirection: "row",
   },
-  textSign: {
-    color: "white",
-    fontWeight: "bold",
-  },
+
   YesNoButton: {
     width: 120,
     height: 40,
