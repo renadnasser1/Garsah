@@ -28,6 +28,13 @@ const AccType = ({ navigation }) => {
             <Text style={styles.ButtonText}>No</Text>
           </TouchableOpacity>
         </View>
+            <View style={styles.backButton}>
+        <TouchableOpacity 
+                      onPress={() => {
+                        navigation.pop()
+                      }}>
+        <Ionicons name="ios-arrow-back" size={30} color='#646161'></Ionicons>
+          </TouchableOpacity></View>
       </View>
     </View>
   );
@@ -81,6 +88,7 @@ const styles = StyleSheet.create({
     marginTop: 120,
   },
   YesNoButton: {
+    
     width: 120,
     height: 40,
     marginLeft: 20,
@@ -101,13 +109,31 @@ const styles = StyleSheet.create({
 
     elevation: 2,
   },
+  backButton:{
+    bottom:20,
+    width: 50,
+    height: 50,
+    backgroundColor: "#CFD590",
+    borderRadius: 30,
+    padding:10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.65,
+
+    elevation: 2,
+  },
   row: {
     flex: 1,
     flexDirection: "row",
     padding: 0,
     height: 180,
     borderBottomColor: "#888",
-    borderBottomWidth: 1,
     alignItems: "stretch",
 
   },

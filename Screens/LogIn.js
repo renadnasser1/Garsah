@@ -8,7 +8,8 @@ import {
     Platform,
     StyleSheet ,
     StatusBar,
-    Alert
+    Alert,
+    Image
 } from 'react-native';
 
 import createAccount from './Signup';
@@ -20,8 +21,8 @@ import { Ionicons } from "@expo/vector-icons";
 
 const LogIn = ({navigation}) => {
     return(
-        <View style = {styles.container}><Text style={styles.welcome}>Welcome!</Text>
-        
+        <View style = {styles.container}>
+        <Text style={styles.welcome}>WELCOME</Text>        
         <View style={styles.inputFiled} >
         <Ionicons name="ios-mail" size={25} color='#646161'></Ionicons>
    
@@ -33,12 +34,16 @@ const LogIn = ({navigation}) => {
         <TextInput 
             placeholder={' Password'} style={styles.textInputFiled}></TextInput></View>
 
-        {/* Re-Password */}
+
                
-                   <TouchableOpacity
-               style = {styles.LogInButton}>
-               <Text style = {styles.LogInButtonText}> LogIn </Text>
-            </TouchableOpacity>
+<TouchableOpacity style={styles.loginButton} underlayColor="#fff">
+          <Text
+            style={styles.loginText}>
+            Log in
+          </Text>
+        </TouchableOpacity>
+
+
             <Text style={styles.text}>Dont have an account? 
             <Text style={styles.text2}
               onPress={() => {
@@ -59,7 +64,8 @@ export default LogIn;
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: 'white'
+      backgroundColor: 'white',
+      justifyContent: 'flex-end',
     },
     welcome: {
         flex: 1,
@@ -95,7 +101,7 @@ const styles = StyleSheet.create({
         color:'black',
         left:100,
         bottom:220,
-        marginLeft: 20,
+        marginLeft: 10,
     },
     text2:{
         color:'green',
@@ -127,5 +133,33 @@ const styles = StyleSheet.create({
     textInputFiled:{
       width:200
     },
+    loginButton: {
+        width: 280,
+        height: 40,
+        marginLeft: 65,
+        marginTop: 20,
+        bottom:240,
+
+        backgroundColor: "#EFF6F9",
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: "#fff",
+        justifyContent: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 4.65,
+    
+        elevation: 2,
+      },
+      
+      loginText: {
+        color: "#060707",
+        textAlign: "center",
+        fontSize: 20,
+      },
 
   });
