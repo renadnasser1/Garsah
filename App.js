@@ -10,6 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./Screens/LogIn";
 import Signup from "./Screens/Signup";
 import AccountType from "./Screens/AccountType";
+import LocationMap from "./Screens/LocationMap";
 
 // Firebase
 import * as firebase from "firebase";
@@ -62,6 +63,10 @@ function App() {
           options={{
             headerShown: false,
           }}
+        />
+        <Stack.Screen
+          name="LocationMap"
+          component={LocationMap}
         />
       </Stack.Navigator>
     </NavigationContainer>

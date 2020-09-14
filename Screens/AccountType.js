@@ -19,7 +19,8 @@ const AccType = ({ navigation }) => {
       <View style={styles.footer}>
         <Text style={styles.text}>Do you have plants to sell?</Text>
         <View style={styles.row}>
-          <TouchableOpacity style={styles.YesNoButton}>
+          <TouchableOpacity style={styles.YesNoButton}  onPress={() => {
+                navigation.navigate('LocationMap')}}> 
             <Text style={styles.ButtonText}>Yes, I do</Text>
           </TouchableOpacity>
 
