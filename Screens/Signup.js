@@ -25,7 +25,7 @@ const SignupScrean = ({navigation}) => {
 
         
         <View style={styles.header}> 
-        <Text>header</Text>
+
         </View>
 
         <View style={styles.footer}> 
@@ -42,7 +42,7 @@ const SignupScrean = ({navigation}) => {
             placeholder={' Name'} style={styles.textInputFiled}></TextInput></View>
 
 
-        {/* Name */}
+        {/* Email */}
         <View style={styles.inputFiled} >
         <Ionicons name="ios-mail" size={25} color='#646161'></Ionicons>
    

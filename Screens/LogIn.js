@@ -40,8 +40,8 @@ const LogIn = ({navigation}) => {
             <Text style={styles.text2}
               onPress={() => {
                 navigation.navigate('Signup')
-              }}
-            >SignUp</Text>
+              }}>
+            SignUp</Text>
             </Text>
 
         </View>
