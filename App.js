@@ -15,24 +15,38 @@ import LocationMap from "./Screens/LocationMap";
 // Firebase
 import * as firebase from "firebase";
 
-var firebaseConfig = {
-  apiKey: "AIzaSyDxdMk1eD8QO6cFCCZuhAkYknnZP8k97A0",
-  authDomain: "garsah-swe444.firebaseapp.com",
-  databaseURL: "https://garsah-swe444.firebaseio.com",
-  projectId: "garsah-swe444",
-  storageBucket: "garsah-swe444.appspot.com",
-  messagingSenderId: "852812204375",
-  appId: "1:852812204375:web:ca941020de53b6c8589612",
-  measurementId: "G-5VJJTFKLTT",
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-//firebase.analytics();
+ var firebaseConfig = {
+  apiKey: "AIzaSyBS6vgCY1jAxupRVjFj5KJe4w0tanzF7kw",
+  authDomain: "garsah-a9d41.firebaseapp.com",
+  databaseURL: "https://garsah-a9d41.firebaseio.com",
+  projectId: "garsah-a9d41",
+  storageBucket: "garsah-a9d41.appspot.com",
+  messagingSenderId: "264805379027",
+  appId: "1:264805379027:web:13e9ca5fec31a09b545d26",
+  measurementId: "G-VT3T0YDQ24"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  //firebase.analytics();
+  
+  //database
+
+  // firebase.database().ref('users/001').set(
+  //   {
+  //   name:'Renad',
+  //   age:12
+  // }).then(() => {
+  //   alert('inserted')
+  // }).catch((error) => {
+  //   alert(error)
+  // });
+
 
 function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Home Screen Hi</Text>
+      
     </View>
   );
 }
