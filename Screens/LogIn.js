@@ -22,15 +22,19 @@ import { Ionicons } from "@expo/vector-icons";
 
 
 
-const LogIn = ({ navigation }) => {
-
+//const LogIn = ({ navigation }) => {
+  export default function LogIn({navigation}) {
+    
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const onSignupPress = () => {
-    navigation.navigate('Signup')  }
+    
+  navigation.navigate('Signup')  
+  }
 
   const onLoginPress = () => {
+
     // check if empty
     if(email == '' || password == ''){
     alert('Please fill all requierd information')}
@@ -99,9 +103,9 @@ const LogIn = ({ navigation }) => {
 
 
   )
+  
 }
-
-export default LogIn;
+//export default LogIn;
 
 const styles = StyleSheet.create({
   container: {

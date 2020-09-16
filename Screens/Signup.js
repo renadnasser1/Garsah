@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{ useState }from "react";
 import {
   View,
   Text,
@@ -18,8 +18,21 @@ import { Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { render } from "react-dom";
 // import { useTheme } from '@react-navigation/native';
-const SignupScrean = ({ navigation }) => {
-
+//const SignupScrean = ({ navigation }) => {
+  export default function SignUp({route,navigation}) {
+  
+  const [data,setData]= useState({
+email:'',name:'',username:'',password:''
+  })
+  const onSignupress = () => {
+    // check if empty
+    if (data.email == '' || data.password == '') {
+      alert("Please fill your information")
+    } else {
+      navigation.navigate('AccountType',{name:data.name,email:data.email}) 
+    }
+ 
+  }
  
          return (
     <View style={styles.container}>
@@ -36,6 +49,7 @@ const SignupScrean = ({ navigation }) => {
 
             <TextInput
               placeholder={" Name"}
+              onChangeText={(text) => setData({name:text})}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
@@ -46,6 +60,7 @@ const SignupScrean = ({ navigation }) => {
 
             <TextInput
               placeholder={" Email"}
+              onChangeText={(text) => setData({email:text})}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
@@ -56,6 +71,7 @@ const SignupScrean = ({ navigation }) => {
 
             <TextInput
               placeholder={" Username"}
+              onChangeText={(text) => setData({username:text})}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
@@ -66,6 +82,7 @@ const SignupScrean = ({ navigation }) => {
 
             <TextInput
               placeholder={" Password"}
+              onChangeText={(text) => setData({password:text})}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
@@ -84,9 +101,7 @@ const SignupScrean = ({ navigation }) => {
         <TouchableOpacity style={styles.loginButton} underlayColor="#fff">
           <Text
             style={styles.loginText}
-            onPress={() => {
-              navigation.navigate("AccountType");
-            }}
+            onPress={() => onSignupress()}
           >
             Create Account
           </Text>
@@ -105,11 +120,10 @@ const SignupScrean = ({ navigation }) => {
         </View>
       </View>
     </View>
-  );
-          
+  );        
 };
 
-export default SignupScrean;
+//export default SignupScrean;
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.28;

@@ -11,7 +11,10 @@ import {
   Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-const AccType = ({ navigation }) => {
+const AccType = ({ route,navigation }) => {
+  //const {email} = route.params;
+  //const {name} = route.params;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}></View>
