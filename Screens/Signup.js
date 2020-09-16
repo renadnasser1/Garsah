@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState } from "react";
 import {
   View,
   Text,
@@ -18,7 +18,53 @@ import { Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 // import { useTheme } from '@react-navigation/native';
 
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+
 const SignupScrean = ({ navigation }) => {
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [username, SetUserame] = useState('')
+  const [password, setPassword] = useState('')
+  const [repassword, setRepassword] = useState('')
+
+  const onCreatePress = () => {
+
+    if (password !== repassword) {
+      alert("Passwords don't match.")
+      return
+  }
+
+  firebase
+  .auth()
+  .createUserWithEmailAndPassword(email, password)
+  .then((response) => {
+    const uid = response.user.uid
+    const data = {
+        id: uid,
+        email,
+        name,
+        username,
+    };
+    const usersRef = firebase.firestore().collection('users')
+    usersRef
+    .doc(uid)
+    .set(data)
+    .then(() => {
+       // navigation.navigate('Home', {user: data})
+       navigation.navigate('AccountType')
+    })
+    .catch((error) => {
+        alert(error)
+    });
+})
+.catch((error) => {
+alert(error)
+});
+}
+  
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}></View>
@@ -26,7 +72,9 @@ const SignupScrean = ({ navigation }) => {
       <View style={styles.footer}>
         <Text style={styles.title}>Create An Account</Text>
         <Text style={styles.text}>Please fill your information</Text>
+
         {/* Input Fileds */}
+
         <View style={styles.filedList}>
           {/* Name */}
           <View style={styles.inputFiled}>
@@ -34,16 +82,18 @@ const SignupScrean = ({ navigation }) => {
 
             <TextInput
               placeholder={" Name"}
+              onChangeText={(text) => setName(text)}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
 
-          {/* Name */}
+          {/* Email */}
           <View style={styles.inputFiled}>
             <Ionicons name="ios-mail" size={25} color="#646161"></Ionicons>
 
             <TextInput
               placeholder={" Email"}
+              onChangeText={(text) => setEmail(text)}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
@@ -54,6 +104,7 @@ const SignupScrean = ({ navigation }) => {
 
             <TextInput
               placeholder={" Username"}
+              onChangeText={(text) => SetUserame(text)}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
@@ -64,6 +115,7 @@ const SignupScrean = ({ navigation }) => {
 
             <TextInput
               placeholder={" Password"}
+              onChangeText={(text) => setPassword(text)}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
@@ -74,6 +126,7 @@ const SignupScrean = ({ navigation }) => {
 
             <TextInput
               placeholder={" Re-Password"}
+              onChangeText={(text) => setRepassword(text)}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
@@ -82,9 +135,7 @@ const SignupScrean = ({ navigation }) => {
         <TouchableOpacity style={styles.loginButton} underlayColor="#fff">
           <Text
             style={styles.loginText}
-            onPress={() => {
-              navigation.navigate("AccountType");
-            }}
+            onPress={() => onCreatePress()}
           >
             Create Account
           </Text>
