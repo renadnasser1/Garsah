@@ -16,10 +16,12 @@ import { Ionicons } from "@expo/vector-icons";
 // import * as Animatable from 'react-native-animatable';
 // import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { render } from "react-dom";
 // import { useTheme } from '@react-navigation/native';
 
-const SignupScrean = ({ navigation }) => {
-  return (
+export default function RegistrationScreen({navigation}){
+ render();{
+         return (
     <View style={styles.container}>
       <View style={styles.header}></View>
 
@@ -104,9 +106,10 @@ const SignupScrean = ({ navigation }) => {
       </View>
     </View>
   );
+          }
 };
 
-export default SignupScrean;
+//export default SignupScrean;
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.28;
