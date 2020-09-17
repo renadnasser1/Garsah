@@ -1,94 +1,103 @@
 import React from 'react';
 import MapView from 'react-native-maps';
+import * as Permissions from 'expo-permissions';
+
 import { 
   StyleSheet,
   Text,
   View,
   Dimensions,
-  TouchableOpacity, } from 'react-native';
+  TouchableOpacity,
+  Animated } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
+
 
 export default class App extends React.Component {
 
+
   state ={
-    location: null,
-    errorMessage:null
+    latitude:null,
+    longitude:null,
     
   }
 
-
-
-    findCurrentLocation = ({navigator}) => {
-      navigator.geolocation.getCurrentPosition(
-        position =>{
-          const latitude = JSON.stringify(position.coords.latitude)
-          const longitude = JSON.stringify(position.coords.longitude)
-
-          this.setState({
-            latitude,
-            longitude
-          })
-        },
-        {enableHighAccuracy:true,timeout:20000,maximumAge:1000}
-
-      );
-    };
-
-    findCurrentLocationAsync = async () =>{
+     async componentDidMount(){
     const {status} = await Permissions.getAsync(Permissions.LOCATION)
 
     if (status !== 'granted'){
-      this.setState({
-        errorMessage:'Prem denied'
-      });
-let location = await Location.getCurrentPosition({})
-this.setState({location})   }
-  
+      const response= await Permissions.getAsync(Permissions.LOCATION)
     }
+    
+    navigator.geolocation.getCurrentPosition(
+      ({coords:{latitude,longitude}}) => this.setState({latitude,longitude},() => console.log('State: ', this.state)),
+      (error) => console.log('Error:',error)
+
+    )
+    // navigator.geolocation.getCurrentPosition(successCallback,errorCallback,{timeout:10000});
+
+  
+  }
+
 
   render() {
+    const {latitude,longitude} = this.state
+    if(latitude){
     return (
+
       <View style={styles.container}>
+        <MapView style={styles.mapStyle}
+        initialRegion={{
+          latitude,
+          longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421
+        }}
+        showsUserLocation={true}
+             /> 
 
-        <MapView style={styles.mapStyle} />
+             <View style={styles.footer}> 
 
-        <View style={styles.footer}> 
-
-        <Text style={styles.text}>Please set the location of your store</Text>
-
-        <View style={styles.backButton}>
-        <TouchableOpacity 
-                      onPress={() => {
-                        navigation.pop()
-                      }}>
-        <Ionicons name="ios-arrow-back" size={30} color='#646161'></Ionicons>
-          </TouchableOpacity></View>
-
-        </View>
-
-      </View> //end of container
+             <Text style={styles.text}>Please set the location of your store</Text>
+         
+             <View style={styles.backButton}>
+             <TouchableOpacity 
+                           onPress={() => {
+                             navigation.pop()
+                           }}>
+             <Ionicons name="ios-arrow-back" size={30} color='#646161'></Ionicons>
+               </TouchableOpacity></View>
+         
+             </View>
+</View>
+             
+    );
+  }else{
+    return(
+      <Text>Hi</Text>
     );
   }
+
+}
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   mapStyle: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
   footer: {
-    flex: 1,
+    position: 'absolute',
+    flex:2,
+    bottom: 0,
     backgroundColor: "#fff",
     borderTopLeftRadius: 150,
     paddingLeft: 53,
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingVertical: 10,
     textAlign: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -105,7 +114,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight:'bold',
     paddingLeft: 10,
-    marginTop: 120,
+    marginTop: 60,
   },
   backButton:{
     bottom:20,

@@ -58,6 +58,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+
         <Stack.Screen
           name="login"
           component={Login}
@@ -86,10 +87,15 @@ function App() {
             headerShown: false,
           }}
         />
-        <Stack.Screen
+
+          <Stack.Screen
           name="LocationMap"
           component={LocationMap}
+          options={{
+            headerShown: false,
+          }}
         />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -9,6 +9,7 @@ import {
   StyleSheet,
   StatusBar,
   Alert,
+  KeyboardAvoidingView,
   Image,
 } from "react-native";
 
@@ -74,7 +75,7 @@ const LogIn = ({ navigation }) => {
           placeholder={" Password"}
           onChangeText={(text) => setPassword(text)}
           value={password}
-          dsecureTextEntry
+          secureTextEntry
           style={styles.textInputFiled}
         ></TextInput>
       </View>

@@ -118,6 +118,7 @@ alert(error)
             <TextInput
               placeholder={" Password"}
               onChangeText={(text) => setPassword(text)}
+              secureTextEntry
               style={styles.textInputFiled}
             ></TextInput>
           </View>
@@ -129,6 +130,7 @@ alert(error)
             <TextInput
               placeholder={" Re-Password"}
               onChangeText={(text) => setRepassword(text)}
+              secureTextEntry
               style={styles.textInputFiled}
             ></TextInput>
           </View>
