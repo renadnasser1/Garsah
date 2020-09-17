@@ -7,9 +7,7 @@ import {
   TextInput,
   Platform,
   StyleSheet,
-  StatusBar,
   Alert,
-  KeyboardAvoidingView,
   Image,
 } from "react-native";
 
@@ -22,8 +20,11 @@ import * as firebase from "firebase";
 import { Ionicons } from "@expo/vector-icons";
 
 const LogIn = ({ navigation }) => {
+  // states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [enableshift, setEnableshift] = useState(false)
+
 
   const onSignupPress = () => {
     navigation.navigate("Signup");
@@ -51,11 +52,13 @@ const LogIn = ({ navigation }) => {
   const onLoading = () => {};
 
   return (
+
     <View style={styles.container}>
 
       <Image source={require("../assets/logo4.png")} style={styles.img} />
       <Text style={styles.welcome}>WELCOME</Text>
 
+    <View style={styles.filedList}>
       {/* E-mail */}
       <View style={styles.inputFiled}>
         <Ionicons name="ios-mail" size={25} color="#646161"></Ionicons>
@@ -73,11 +76,10 @@ const LogIn = ({ navigation }) => {
         <Ionicons name="ios-key" size={25} color="#646161"></Ionicons>
         <TextInput
           placeholder={" Password"}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
           secureTextEntry
           style={styles.textInputFiled}
         ></TextInput>
+      </View>
       </View>
 
       {/* Login button */}
@@ -97,6 +99,8 @@ const LogIn = ({ navigation }) => {
         </Text>
       </Text>
     </View>
+
+
   );
 };
 
@@ -111,6 +115,7 @@ const styles = StyleSheet.create({
   welcome: {
     flex: 1,
     justifyContent: "flex-end",
+    marginTop:330,
     paddingHorizontal: 20,
     fontSize: 50,
     top:0,
@@ -120,9 +125,10 @@ const styles = StyleSheet.create({
   img: {
     height: 300,
     width: 300,
-    marginRight:50,
-    marginLeft:50,
-    marginTop:100
+    position:'absolute',
+    top:70,
+    margin:50
+
   },
   LogInButton: {
     color: "#060707",
@@ -153,14 +159,16 @@ const styles = StyleSheet.create({
   },
   text2: {
     color: "green",
-    
+  },
+  filedList:{
+    marginTop:2,
+    bottom: 230,
   },
   inputFiled: {
     margin: 15,
     padding: 8,
     width: 280,
     height: 40,
-    bottom: 200,
     left: 50,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
@@ -185,7 +193,7 @@ const styles = StyleSheet.create({
     width: 280,
     height: 40,
     marginLeft: 65,
-    marginTop: 50,
+    marginTop: 60,
     bottom: 220,
     backgroundColor: "#EFF6F9",
     borderRadius: 10,
