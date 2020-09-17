@@ -9,6 +9,43 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 export default class App extends React.Component {
+
+  state ={
+    location: null,
+    errorMessage:null
+    
+  }
+
+
+
+    findCurrentLocation = ({navigator}) => {
+      navigator.geolocation.getCurrentPosition(
+        position =>{
+          const latitude = JSON.stringify(position.coords.latitude)
+          const longitude = JSON.stringify(position.coords.longitude)
+
+          this.setState({
+            latitude,
+            longitude
+          })
+        },
+        {enableHighAccuracy:true,timeout:20000,maximumAge:1000}
+
+      );
+    };
+
+    findCurrentLocationAsync = async () =>{
+    const {status} = await Permissions.getAsync(Permissions.LOCATION)
+
+    if (status !== 'granted'){
+      this.setState({
+        errorMessage:'Prem denied'
+      });
+let location = await Location.getCurrentPosition({})
+this.setState({location})   }
+  
+    }
+
   render() {
     return (
       <View style={styles.container}>
