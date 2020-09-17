@@ -18,6 +18,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 // import * as Animatable from 'react-native-animatable';
 // import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { render } from "react-dom";
 // import { useTheme } from '@react-navigation/native';
 
 import * as firebase from 'firebase';
@@ -169,7 +170,9 @@ alert(error)
       </View>
     </View>
   );
-};
+          }
+          
+;
 
 export default SignupScrean;
 
