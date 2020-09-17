@@ -51,6 +51,7 @@ const LogIn = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+
       <Image source={require("../assets/logo4.png")} style={styles.img} />
       <Text style={styles.welcome}>WELCOME</Text>
 
@@ -91,7 +92,7 @@ const LogIn = ({ navigation }) => {
       <Text style={styles.text}>
         Dont have an account?
         <Text style={styles.text2} onPress={() => onSignupPress()}>
-          SignUp
+            SignUp
         </Text>
       </Text>
     </View>
@@ -104,23 +105,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    justifyContent: "flex-end",
+    justifyContent: "center",
   },
   welcome: {
     flex: 1,
     justifyContent: "flex-end",
     paddingHorizontal: 20,
     fontSize: 50,
-    //marginTop: 10,
+    top:0,
     color: "green",
     left: 70,
   },
   img: {
-    height: 200,
-    width: 200,
+    height: 300,
+    width: 300,
+    marginRight:50,
+    marginLeft:50,
+    marginTop:100
   },
   LogInButton: {
-    color: "green",
+    color: "#060707",
     margin: 20,
     height: 40,
     width: 200,
@@ -141,12 +145,14 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "black",
+    fontSize:15,
     left: 100,
     bottom: 200,
     marginLeft: 10,
   },
   text2: {
     color: "green",
+    
   },
   inputFiled: {
     margin: 15,
@@ -178,8 +184,8 @@ const styles = StyleSheet.create({
     width: 280,
     height: 40,
     marginLeft: 65,
-    marginTop: 20,
-    bottom: 240,
+    marginTop: 50,
+    bottom: 220,
     backgroundColor: "#EFF6F9",
     borderRadius: 10,
     borderWidth: 1,
@@ -201,4 +207,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
   },
+
+
+  
 });
