@@ -133,15 +133,15 @@ alert(error)
             ></TextInput>
           </View>
         </View>
+        <View style={styles.checkBoxContiner}>
         <CheckBox 
-        style={styles.inputFiled}
-  title='I have plants for sell '
-  checked={Gardner ? true : false}   
-   onPress={() => {
-   setGardner(!Gardner);      }}
-
-
-/>
+        style={styles.checkBox}
+        title='I have plants for sell '
+        checked={Gardner ? true : false}   
+        onPress={() => {
+        setGardner(!Gardner);      }}
+        />
+        </View>
 
         <TouchableOpacity style={styles.loginButton} underlayColor="#fff">
           <Text
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   },
  
   footer: {
-    flex: 2,
+    flex: 3,
     backgroundColor: "#fff",
     borderTopLeftRadius: 150,
     paddingLeft: 53,
@@ -233,6 +233,27 @@ const styles = StyleSheet.create({
   },
   textInputFiled: {
     width: 200,
+  },
+  checkBoxContiner:{
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopRightRadius: 10,
+    marginRight:35,
+    marginLeft:5,
+    
+  },
+  checkBox:{
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+ 
+    elevation: 8,
   },
  
   loginButton: {
