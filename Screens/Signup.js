@@ -13,7 +13,6 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { CheckBox } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
 //import Login from './Screens/LogIn';
 // import * as Animatable from 'react-native-animatable';
 // import LinearGradient from 'react-native-linear-gradient';
@@ -39,7 +38,6 @@ const SignupScrean = ({ navigation }) => {
       alert("Passwords don't match.")
       return
   }
-
   firebase
   .auth()
   .createUserWithEmailAndPassword(email, password)
@@ -73,7 +71,7 @@ alert(error)
   return (
     <View style={styles.container}>
       <View style={styles.header}></View>
-
+ 
       <View style={styles.footer}>
         <Text style={styles.title}>Create An Account</Text>
         <Text style={styles.text}>Please fill your information</Text>
@@ -84,51 +82,50 @@ alert(error)
           {/* Name */}
           <View style={styles.inputFiled}>
             <Ionicons name="ios-person" size={25} color="#646161"></Ionicons>
-
+ 
             <TextInput
               placeholder={" Name"}
               onChangeText={(text) => setName(text)}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
-
           {/* Email */}
           <View style={styles.inputFiled}>
             <Ionicons name="ios-mail" size={25} color="#646161"></Ionicons>
-
+ 
             <TextInput
               placeholder={" Email"}
               onChangeText={(text) => setEmail(text)}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
-
+ 
           {/* Username */}
           <View style={styles.inputFiled}>
             <Ionicons name="ios-at" size={25} color="#646161"></Ionicons>
-
+ 
             <TextInput
               placeholder={" Username"}
               onChangeText={(text) => SetUserame(text)}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
-
+ 
           {/* Password */}
           <View style={styles.inputFiled}>
             <Ionicons name="ios-key" size={25} color="#646161"></Ionicons>
-
+ 
             <TextInput
               placeholder={" Password"}
               onChangeText={(text) => setPassword(text)}
               style={styles.textInputFiled}
             ></TextInput>
           </View>
-
+ 
           {/* Re-Password */}
           <View style={styles.inputFiled}>
             <Ionicons name="ios-key" size={25} color="#646161"></Ionicons>
-
+ 
             <TextInput
               placeholder={" Re-Password"}
               onChangeText={(text) => setRepassword(text)}
@@ -136,16 +133,15 @@ alert(error)
             ></TextInput>
           </View>
         </View>
-
+        <View style={styles.checkBoxContiner}>
         <CheckBox 
-        style={styles.inputFiled}
-  title='I have plants for sell '
-  checked={Gardner ? true : false}   
-   onPress={() => {
-   setGardner(!Gardner);      }}
-
-
-/>
+        style={styles.checkBox}
+        title='I have plants for sell '
+        checked={Gardner ? true : false}   
+        onPress={() => {
+        setGardner(!Gardner);      }}
+        />
+        </View>
 
         <TouchableOpacity style={styles.loginButton} underlayColor="#fff">
           <Text
@@ -155,7 +151,7 @@ alert(error)
             Create Account
           </Text>
         </TouchableOpacity>
-
+ 
         {/* Already have an account? Login */}
         <View style={styles.alreadyHave}>
           <Text style={styles.alreadyHaveText}>Already have an account?</Text>
@@ -178,21 +174,21 @@ export default SignupScrean;
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.28;
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#3D6A4B",
   },
-
+ 
   header: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-
+ 
   footer: {
-    flex: 2,
+    flex: 3,
     backgroundColor: "#fff",
     borderTopLeftRadius: 150,
     paddingLeft: 53,
@@ -206,14 +202,14 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-
+ 
     elevation: 8,
   },
-
+ 
   filedList: {
     marginTop: 10,
   },
-
+ 
   inputFiled: {
     margin: 15,
     padding: 8,
@@ -232,13 +228,34 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-
+ 
     elevation: 8,
   },
   textInputFiled: {
     width: 200,
   },
-
+  checkBoxContiner:{
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopRightRadius: 10,
+    marginRight:35,
+    marginLeft:5,
+    
+  },
+  checkBox:{
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+ 
+    elevation: 8,
+  },
+ 
   loginButton: {
     width: 280,
     height: 40,
@@ -258,7 +275,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-
+ 
     elevation: 2,
   },
   loginText: {
@@ -271,18 +288,18 @@ const styles = StyleSheet.create({
   alreadyHave: {
     flexDirection: "row",
   },
-
+ 
   alreadyHaveText: {
     fontSize: 15,
     marginTop: 10,
     marginLeft: 40,
   },
-
+ 
   logo: {
     width: height_logo,
     height: height_logo,
   },
-
+ 
   title: {
     color: "#060707",
     fontSize: 30,
@@ -290,13 +307,13 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     fontWeight: "bold",
   },
-
+ 
   text: {
     color: "grey",
     paddingLeft: 20,
     marginTop: 5,
   },
-
+ 
   signIn: {
     width: 150,
     height: 40,
@@ -310,47 +327,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-/// inside splash screan
-// const { colors } = useTheme();
-
-// return (
-//   <View style={styles.container}>
-//       <StatusBar backgroundColor='#009387' barStyle="light-content"/>
-//     <View style={styles.header}>
-//         <Animatable.Image
-//             animation="bounceIn"
-//             duraton="1500"
-//         source={require('../assets/logo.png')}
-//         style={styles.logo}
-//         resizeMode="stretch"
-//         />
-//     </View>
-//     <Animatable.View
-//         style={[styles.footer, {
-//             backgroundColor: colors.background
-//         }]}
-//         animation="fadeInUpBig"
-//     >
-//         <Text style={[styles.title, {
-//             color: colors.text
-//         }]}>Stay connected with everyone!</Text>
-//         <Text style={styles.text}>Sign in with account</Text>
-//         <View style={styles.button}>
-//         <TouchableOpacity onPress={()=>navigation.navigate('SignInScreen')}>
-//             <LinearGradient
-//                 colors={['#08d4c4', '#01ab9d']}
-//                 style={styles.signIn}
-//             >
-//                 <Text style={styles.textSign}>Get Started</Text>
-//                 <MaterialIcons
-//                     name="navigate-next"
-//                     color="#fff"
-//                     size={20}
-//                 />
-//             </LinearGradient>
-//         </TouchableOpacity>
-//         </View>
-//     </Animatable.View>
-//   </View>
-// );
