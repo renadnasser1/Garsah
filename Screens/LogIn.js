@@ -39,7 +39,7 @@ const LogIn = ({ navigation }) => {
     .then(() => {
       setEmail('')
       setPassword('')
-      navigation.navigate('AccountType')
+      navigation.navigate('Home')
     }).catch((error) =>{
       alert(error)
     })

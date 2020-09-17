@@ -11,6 +11,7 @@ import Login from "./Screens/LogIn";
 import Signup from "./Screens/Signup";
 import AccountType from "./Screens/AccountType";
 import LocationMap from "./Screens/LocationMap";
+import Home from "./Screens/Home";
 
 // Firebase
 import * as firebase from "firebase";
@@ -67,6 +68,13 @@ function App() {
         <Stack.Screen
           name="Signup"
           component={Signup}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
           options={{
             headerShown: false,
           }}

@@ -11,6 +11,8 @@ import {
   Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { CheckBox } from 'react-native-elements';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 //import Login from './Screens/LogIn';
 // import * as Animatable from 'react-native-animatable';
@@ -28,6 +30,7 @@ const SignupScrean = ({ navigation }) => {
   const [username, SetUserame] = useState('')
   const [password, setPassword] = useState('')
   const [repassword, setRepassword] = useState('')
+  const [Gardner, setGardner] = useState('')
 
   const onCreatePress = () => {
 
@@ -46,6 +49,7 @@ const SignupScrean = ({ navigation }) => {
         email,
         name,
         username,
+        Gardner,
     };
     const usersRef = firebase.firestore().collection('users')
     usersRef
@@ -53,7 +57,7 @@ const SignupScrean = ({ navigation }) => {
     .set(data)
     .then(() => {
        // navigation.navigate('Home', {user: data})
-       navigation.navigate('AccountType')
+       navigation.navigate('Home')
     })
     .catch((error) => {
         alert(error)
@@ -131,6 +135,16 @@ alert(error)
             ></TextInput>
           </View>
         </View>
+
+        <CheckBox 
+        style={styles.inputFiled}
+  title='I have plants for sell '
+  checked={Gardner ? true : false}   
+   onPress={() => {
+   setGardner(!Gardner);      }}
+
+
+/>
 
         <TouchableOpacity style={styles.loginButton} underlayColor="#fff">
           <Text
