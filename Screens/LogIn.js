@@ -1,5 +1,5 @@
 import React,{ useState } from "react";
-
+ 
 import {
   View,
   Text,
@@ -11,30 +11,30 @@ import {
   Alert,
   Image
 } from 'react-native';
-
+ 
 import * as firebase from 'firebase';
-
+ 
 // import * as Animatable from 'react-native-animatable';
 // import LinearGradient from 'react-native-linear-gradient';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+ 
 import { Ionicons } from "@expo/vector-icons";
 
 
 
 const LogIn = ({ navigation }) => {
-
+ 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
+ 
   const onSignupPress = () => {
     navigation.navigate('Signup')  }
-
+ 
   const onLoginPress = () => {
     // check if empty
     if(email == '' || password == ''){
     alert('Please fill all requierd information')}
-
+ 
     firebase.auth().signInWithEmailAndPassword(email,password)
     .then(() => {
       setEmail('')
@@ -44,26 +44,26 @@ const LogIn = ({ navigation }) => {
       alert(error)
     })
   }
-
+ 
   const onLoading = () =>{
     
   }
-
+ 
   return (
     <View style={styles.container}>
-
+ 
       <Text style={styles.welcome}>WELCOME</Text>
-
+ 
       {/* E-mail */}
       <View style={styles.inputFiled} >
         <Ionicons name="ios-mail" size={25} color='#646161'></Ionicons>
-
+ 
         <TextInput
           placeholder={' Email'} 
           onChangeText={(text) => setEmail(text)}
           value={email}
           style={styles.textInputFiled}></TextInput></View>
-
+ 
       {/* Passwoard */}
       <View style={styles.inputFiled} >
         <Ionicons name="ios-key" size={25} color='#646161'></Ionicons>
@@ -73,9 +73,9 @@ const LogIn = ({ navigation }) => {
           value={password}
           dsecureTextEntry
           style={styles.textInputFiled}></TextInput>
-
+ 
         </View>
-
+ 
 
     {/* Login button */}
       <TouchableOpacity style={styles.loginButton} 
@@ -86,23 +86,23 @@ const LogIn = ({ navigation }) => {
           Log in
           </Text>
       </TouchableOpacity>
-
+ 
     {/* Sign up button */}
       <Text style={styles.text}>Dont have an account?
             <Text style={styles.text2}
           onPress={() => onSignupPress()}>
           SignUp</Text>
       </Text>
-
+ 
     </View>
 
 
 
   )
 }
-
+ 
 export default LogIn;
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   LogInButtonText: {
     color: 'black',
     fontSize: 15,
-
+ 
   },
   text: {
     color: 'black',
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   text2: {
     color: 'green',
-
+ 
   },
   inputFiled: {
     margin: 15,
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.30,
     shadowRadius: 4.65,
-
+ 
     elevation: 8,
   },
   textInputFiled: {
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     marginLeft: 65,
     marginTop: 20,
     bottom: 240,
-
+ 
     backgroundColor: "#EFF6F9",
     borderRadius: 10,
     borderWidth: 1,
@@ -194,14 +194,14 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-
+ 
     elevation: 2,
   },
-
+ 
   loginText: {
     color: "#060707",
     textAlign: "center",
     fontSize: 20,
   },
-
+ 
 });
