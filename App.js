@@ -89,13 +89,15 @@ function App() {
           name="Home"
           component={Home}
         />
-          <Stack.Screen
+
+        <Stack.Screen
           name="LocationMap"
           component={LocationMap}
           options={{
             headerShown: false,
           }}
         />
+
         <Stack.Screen
           name="AccountType"
           component={AccountType}

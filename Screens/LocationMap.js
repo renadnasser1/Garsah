@@ -1,5 +1,5 @@
-import React from 'react';
-import MapView from 'react-native-maps';
+import React, { useState } from 'react';
+import MapView,{Marker} from 'react-native-maps';
 import * as Permissions from 'expo-permissions';
 
 import { 
@@ -16,8 +16,9 @@ export default class App extends React.Component {
 
 
   state ={
-    latitude:null,
-    longitude:null,
+    marker:{
+    latitude:'',
+    longitude:'',}
     
   }
 
@@ -40,6 +41,7 @@ export default class App extends React.Component {
 
 
   render() {
+  
     const {latitude,longitude} = this.state
     if(latitude){
     return (
@@ -52,20 +54,24 @@ export default class App extends React.Component {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         }}
-        showsUserLocation={true}
-             /> 
+             > 
 
+      <MapView.Marker
+       draggable
+       coordinate={this.state}
+       onDragEnd={(coords) => console.log(coords)}
+        pinColor={'red'}
+      />
+
+</MapView>
              <View style={styles.footer}> 
 
-             <Text style={styles.text}>Please set the location of your store</Text>
+             <Text style={styles.text}>Long Press and Drag the pointer to select exact store location</Text>
+             {/* Long Press & Drag the pointer to select exact location */}
          
-             <View style={styles.backButton}>
-             <TouchableOpacity 
-                           onPress={() => {
-                             navigation.pop()
-                           }}>
-             <Ionicons name="ios-arrow-back" size={30} color='#646161'></Ionicons>
-               </TouchableOpacity></View>
+             <View >
+
+             </View>
          
              </View>
 </View>
@@ -93,14 +99,14 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    flex:2,
+    right:0,
+    left:0,
     bottom: 0,
+    padding:50,
     backgroundColor: "#fff",
     borderTopLeftRadius: 150,
-    paddingLeft: 53,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    textAlign: "center",
+    alignItems:'center',
+    alignContent:'center',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -112,11 +118,11 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   text: {
-    fontSize: 23,
+    fontSize: 19,
     color: "black",
     fontWeight:'bold',
     paddingLeft: 10,
-    marginTop: 60,
+    marginTop: 10,
   },
   backButton:{
     bottom:20,
