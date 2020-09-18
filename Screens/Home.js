@@ -16,22 +16,26 @@ import { Ionicons } from "@expo/vector-icons";
 
 const homepage = ({ navigation }) => {
 
-
-  const onLogoutPress = () => {
-    firebase.auth()
-  .signOut()
-  .then(() => navigation.navigation('logIn'));}
-
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <Button 
-        // onPress={() => setCount(c => c + 1)}
+         onPress={() => onLogoutPress()}
          title="Logout" />
       ),
     });
   }, [navigation]);
+
+
+  const onLogoutPress = async () => {
+        firebase.auth()
+        .signOut()
+        .then(() => navigation.navigate('SplashScreen')).catch((error) => {
+          alert(error)
+        });
+
+}
+
 
     return(
 

@@ -43,7 +43,7 @@ const LogIn = ({ navigation }) => {
       .then(() => {
         setEmail("");
         setPassword("");
-        navigation.navigate("Home");
+        navigation.navigate('Home');
       })
       .catch((error) => {
          alert('invalid email or password');
@@ -77,6 +77,7 @@ const LogIn = ({ navigation }) => {
         <Ionicons name="ios-key" size={25} color="#646161"></Ionicons>
         <TextInput
           placeholder={" Password"}
+          onChangeText={(text) => setPassword(text)}
           secureTextEntry
           style={styles.textInputFiled}
         ></TextInput>

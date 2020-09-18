@@ -12,6 +12,8 @@ import Signup from "./Screens/Signup";
 import AccountType from "./Screens/AccountType";
 import LocationMap from "./Screens/LocationMap";
 import Home from "./Screens/Home";
+import SplashScreen from "./Screens/SplashScreen";
+
 
 // Firebase
 import * as firebase from "firebase";
@@ -60,23 +62,32 @@ function App() {
       <Stack.Navigator>
 
       <Stack.Screen
-          name="Home page"
-          component={Home}
+          name="SplashScreen"
+          component={SplashScreen}
+          options={{
+            headerShown: false,
+          }}
         />
 
-        <Stack.Screen
-          name="login"
+      <Stack.Screen
+          name="Login"
           component={Login}
           options={{
             headerShown: false,
           }}
         />
+
         <Stack.Screen
           name="Signup"
           component={Signup}
           options={{
             headerShown: false,
           }}
+        />
+
+        <Stack.Screen
+          name="Home"
+          component={Home}
         />
           <Stack.Screen
           name="LocationMap"
