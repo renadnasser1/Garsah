@@ -73,7 +73,9 @@ export default class App extends React.Component {
     );
   }else{
     return(
-      <Text>Hi</Text>
+      <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+      <Text>We need your permission!</Text>
+      </View>
     );
   }
 

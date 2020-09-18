@@ -34,6 +34,7 @@ const LogIn = ({ navigation }) => {
     // check if empty
     if (email == "" || password == "") {
       alert("Please fill all requierd information");
+      return
     }
 
     firebase
@@ -45,7 +46,7 @@ const LogIn = ({ navigation }) => {
         navigation.navigate("Home");
       })
       .catch((error) => {
-        alert(error);
+         alert('invalid email or password');
       });
   };
 

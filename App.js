@@ -59,6 +59,11 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
 
+      <Stack.Screen
+          name="Home page"
+          component={Home}
+        />
+
         <Stack.Screen
           name="login"
           component={Login}
@@ -73,9 +78,9 @@ function App() {
             headerShown: false,
           }}
         />
-        <Stack.Screen
-          name="Home"
-          component={Home}
+          <Stack.Screen
+          name="LocationMap"
+          component={LocationMap}
           options={{
             headerShown: false,
           }}
@@ -83,14 +88,6 @@ function App() {
         <Stack.Screen
           name="AccountType"
           component={AccountType}
-          options={{
-            headerShown: false,
-          }}
-        />
-
-          <Stack.Screen
-          name="LocationMap"
-          component={LocationMap}
           options={{
             headerShown: false,
           }}

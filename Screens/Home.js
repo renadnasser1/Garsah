@@ -10,13 +10,32 @@ import {
     Image,
     Button,
 } from "react-native";
+import * as firebase from "firebase";
+
 import { Ionicons } from "@expo/vector-icons";
 
 const homepage = ({ navigation }) => {
 
+
+  const onLogoutPress = () => {
+    firebase.auth()
+  .signOut()
+  .then(() => navigation.navigation('logIn'));}
+
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Button 
+        // onPress={() => setCount(c => c + 1)}
+         title="Logout" />
+      ),
+    });
+  }, [navigation]);
+
     return(
 
-    <View style={styles.footer}>
+    <View style={styles.container}>
          <Text style={styles.text}>Homepage is coming real soon!! </Text>
     </View>
     );
@@ -29,42 +48,15 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: "#CFD590",
+        backgroundColor: '#fff',
+        justifyContent:'center',
+        alignItems:'center'
       },
       
-      footer: {
-        flex: 1,
-        backgroundColor: "#fff",
-        borderTopLeftRadius: 150,
-        paddingLeft: 53,
-        paddingHorizontal: 20,
-        paddingVertical: 30,
-        textAlign: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4.65,
-    
-        elevation: 8,
-      },
-
-      welcome: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        paddingHorizontal: 20,
-        fontSize: 50,
-        marginTop: 210,
-        color: "#3D6A4B",
-        left: 70
-      },
       text: {
         fontSize: 23,
         color: "black",
         fontWeight:'bold',
         paddingLeft: 10,
-        marginTop: 120,
       },
 });
