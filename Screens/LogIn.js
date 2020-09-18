@@ -116,13 +116,14 @@ const styles = StyleSheet.create({
   },
   welcome: {
     flex: 1,
+    fontWeight: "bold",
     justifyContent: "flex-end",
     marginTop:330,
     paddingHorizontal: 20,
     fontSize: 50,
     top:0,
     color: "green",
-    left: 70,
+    left: 55,
   },
   img: {
     height: 300,

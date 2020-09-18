@@ -19,10 +19,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 // import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { render } from "react-dom";
+//import { ActivityIndicator, Colors } from 'react-native-paper';
 // import { useTheme } from '@react-navigation/native';
 
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+
 
 const SignupScrean = ({ navigation }) => {
 
@@ -31,14 +33,31 @@ const SignupScrean = ({ navigation }) => {
   const [username, SetUserame] = useState('')
   const [password, setPassword] = useState('')
   const [repassword, setRepassword] = useState('')
-  const [Gardner, setGardner] = useState('')
+  const [Gardner, setGardner] = useState(false)
   const [enableshift, setEnableshift] = useState(false)
+  const [isloading,setisloading]= useState(false)
 
+  
   const onCreatePress = () => {
-
+      setisloading(true)
+     if(name == "" || email=="" || username=="" || password=="" || repassword==""){
+       alert("please enter all required inforamtion")
+       return;
+     }
+     // validate username and name 
+    /* if (!(name.length < 4 || username.length<4)) {
+      alert('Your name and username need to be at least 4 digits.') 
+      return;
+    }*/
+    // validate the passwords 
+    if (!/[a-zA-Z]/.test(password)) {
+      // Return a different error message if the text doesn't match certain criteria. 
+      alert( 'Password need to contain letters.')
+      return;
+    }
     if (password !== repassword) {
       alert("Passwords don't match.")
-      return
+      return;
     }
     firebase
       .auth()
@@ -67,6 +86,7 @@ const SignupScrean = ({ navigation }) => {
       .catch((error) => {
         alert(error)
       });
+      setisloading(false)
   }
 
 
@@ -76,7 +96,9 @@ const SignupScrean = ({ navigation }) => {
       style={{ flex: 1 }} enabled={enableshift}
        >
 
-      <View style={styles.container}>
+      <View pointerEvents={isloading}
+      style={styles.container}>
+ 
         <View style={styles.header}></View>
 
         <View style={styles.footer}>
@@ -150,7 +172,7 @@ const SignupScrean = ({ navigation }) => {
             <CheckBox
               style={styles.checkBox}
               title='I have plants for sell '
-              checked={Gardner ? true : false}
+              checked={Gardner ? true: false}
               onPress={() => {
                 setGardner(!Gardner);
               }}
@@ -172,6 +194,7 @@ const SignupScrean = ({ navigation }) => {
             <Button
               title="Login"
               onPress={() => {
+        
                 navigation.pop();
               }}
               color="#3D6A4B"
