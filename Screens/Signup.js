@@ -12,7 +12,6 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { CheckBox } from 'react-native-elements';
 import { Header } from "@react-navigation/stack";
-
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 //import Login from './Screens/LogIn';
 // import * as Animatable from 'react-native-animatable';
@@ -39,16 +38,17 @@ const SignupScrean = ({ navigation }) => {
 
   
   const onCreatePress = () => {
-      setisloading(true)
+    
      if(name == "" || email=="" || username=="" || password=="" || repassword==""){
        alert("please enter all required inforamtion")
+       setisloading(false)
        return;
      }
      // validate username and name 
-    /* if (!(name.length < 4 || username.length<4)) {
-      alert('Your name and username need to be at least 4 digits.') 
+    if (name.length < 4) {
+      alert('Your name need to be at least 4 digits.') 
       return;
-    }*/
+    }
     // validate the passwords 
     if (!/[a-zA-Z]/.test(password)) {
       // Return a different error message if the text doesn't match certain criteria. 
