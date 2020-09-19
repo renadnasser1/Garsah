@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import {
   View,
   Text,
@@ -7,18 +7,16 @@ import {
   Dimensions,
   StyleSheet,
   Button,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CheckBox } from 'react-native-elements';
-import { Header } from "@react-navigation/stack";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-//import Login from './Screens/LogIn';
+
 // import * as Animatable from 'react-native-animatable';
 // import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { render } from "react-dom";
-//import { ActivityIndicator, Colors } from 'react-native-paper';
 // import { useTheme } from '@react-navigation/native';
 
 import * as firebase from 'firebase';
@@ -29,36 +27,56 @@ const SignupScrean = ({ navigation }) => {
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [username, SetUserame] = useState('')
   const [password, setPassword] = useState('')
   const [repassword, setRepassword] = useState('')
   const [Gardner, setGardner] = useState(false)
   const [enableshift, setEnableshift] = useState(false)
-  const [isloading,setisloading]= useState(false)
+  const [isLoding,setIsLoding]= useState(false)
 
-  
-  const onCreatePress = () => {
+
+  const onLoginPress = () =>{
+
+    if(isLoding){
+      alert('Please wait while we are processing your request')
+      return  }
+
+      navigation.pop();
     
-     if(name == "" || email=="" || username=="" || password=="" || repassword==""){
+  }
+
+
+
+  const onCreatePress = () => {
+
+    if(isLoding){
+      alert('Please wait while we are processing your request')
+      return  }
+    
+
+    setIsLoding(true)
+
+
+     if(name == "" || email=="" || password=="" || repassword==""){
+       setIsLoding(false)
        alert("please enter all required inforamtion")
-       setisloading(false)
-       return;
-     }
-     // validate username and name 
-    if (name.length < 4) {
-      alert('Your name need to be at least 4 digits.') 
-      return;
-    }
+     }else
+
+    // validate name 
+     if (name.length < 2) {
+           alert('Your name need to be at least 2 digits.') 
+           setIsLoding(false)
+      }else
+
     // validate the passwords 
     if (!/[a-zA-Z]/.test(password)) {
       // Return a different error message if the text doesn't match certain criteria. 
       alert( 'Password need to contain letters.')
-      return;
-    }
+      setIsLoding(false)
+    }else
     if (password !== repassword) {
       alert("Passwords don't match.")
-      return;
-    }
+      setIsLoding(false)
+    }else
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -68,7 +86,6 @@ const SignupScrean = ({ navigation }) => {
           id: uid,
           email,
           name,
-          username,
           Gardner,
         };
         const usersRef = firebase.firestore().collection('users')
@@ -81,12 +98,13 @@ const SignupScrean = ({ navigation }) => {
           })
           .catch((error) => {
             alert(error)
+            setIsLoding(false)
           });
       })
       .catch((error) => {
         alert(error)
+        setIsLoding(false)
       });
-      setisloading(false)
   }
 
 
@@ -95,15 +113,22 @@ const SignupScrean = ({ navigation }) => {
       behavior='padding'
       style={{ flex: 1 }} enabled={enableshift}
        >
-
-      <View pointerEvents={isloading}
+         
+      <View 
       style={styles.container}>
- 
-        <View style={styles.header}></View>
+         <View style={styles.header}></View>
+
+
 
         <View style={styles.footer}>
           <Text style={styles.title}>Create An Account</Text>
           <Text style={styles.text}>Please fill your information</Text>
+
+
+          <ActivityIndicator 
+         style={styles.loading}
+         size={'large'}
+         animating={isLoding}/>
 
           {/* Input Fileds */}
 
@@ -125,17 +150,6 @@ const SignupScrean = ({ navigation }) => {
               <TextInput
                 placeholder={" Email"}
                 onChangeText={(text) => setEmail(text)}
-                style={styles.textInputFiled}
-              ></TextInput>
-            </View>
-
-            {/* Username */}
-            <View style={styles.inputFiled}>
-              <Ionicons name="ios-at" size={25} color="#646161"></Ionicons>
-
-              <TextInput
-                placeholder={" Username"}
-                onChangeText={(text) => SetUserame(text)}
                 style={styles.textInputFiled}
               ></TextInput>
             </View>
@@ -179,7 +193,10 @@ const SignupScrean = ({ navigation }) => {
             />
           </View>
 
-          <TouchableOpacity style={styles.loginButton} underlayColor="#fff">
+          <TouchableOpacity 
+          style={styles.loginButton}
+          underlayColor="#fff"
+          >
             <Text
               style={styles.loginText}
               onPress={() => onCreatePress()}
@@ -193,17 +210,19 @@ const SignupScrean = ({ navigation }) => {
             <Text style={styles.alreadyHaveText}>Already have an account?</Text>
             <Button
               title="Login"
-              onPress={() => {
-        
-                navigation.pop();
+              onPress={() => {   
+                onLoginPress()
               }}
               color="#3D6A4B"
             />
+
           </View>
         </View>
       </View>
     </KeyboardAvoidingView>
+
   );
+
 }
 
   ;
@@ -217,6 +236,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#3D6A4B",
+    justifyContent: "center",
+
+  },
+  loading:{
+    position:'absolute',
+    margin:190,
+    marginTop:260,
+    zIndex: 2,
   },
 
   header: {
@@ -224,6 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
 
   footer: {
     flex: 3,
@@ -246,6 +274,7 @@ const styles = StyleSheet.create({
 
   filedList: {
     margin: 2,
+    marginTop: 35,
   },
 
   inputFiled: {
@@ -298,7 +327,7 @@ const styles = StyleSheet.create({
     width: 280,
     height: 40,
     marginLeft: 15,
-    marginTop: 20,
+    marginTop: 40,
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: "#EFF6F9",
@@ -341,7 +370,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#060707",
     fontSize: 30,
-    marginTop: 10,
+    marginTop: 40,
     paddingLeft: 20,
     fontWeight: "bold",
   },
