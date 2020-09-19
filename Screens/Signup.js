@@ -185,7 +185,7 @@ const SignupScrean = ({ navigation }) => {
           <View style={styles.checkBoxContiner}>
             <CheckBox
               style={styles.checkBox}
-              title='I have plants for sell '
+              title='I have plants to sell '
               checked={Gardner ? true: false}
               onPress={() => {
                 setGardner(!Gardner);
