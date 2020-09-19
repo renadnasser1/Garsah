@@ -5,10 +5,10 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Platform,
   StyleSheet,
   Alert,
   Image,
+  ActivityIndicator
 } from "react-native";
 
 import * as firebase from "firebase";
@@ -23,34 +23,50 @@ const LogIn = ({ navigation }) => {
   // states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [enableshift, setEnableshift] = useState(false)
+  const [isLoding,setIsLoding] = useState(false)
 
 
   const onSignupPress = () => {
+
+    if(isLoding){
+      alert('Please wait while we are processing your request')
+      return  }
+
+    setPassword('')
+    setEmail('')
     navigation.navigate("Signup");
   };
 
   const onLoginPress = () => {
+    if(!isLoding){
+    setIsLoding(true)
     // check if empty
     if (email == "" || password == "") {
       alert("Please fill all requierd information");
-      return
-    }
+      setIsLoding(false)
+      
+    }else{
 
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        setEmail("");
-        setPassword("");
+        setEmail(" ");
+        setPassword(" ");
+        setIsLoding(false)
         navigation.navigate('Home');
       })
       .catch((error) => {
+        setIsLoding(false)
          alert('invalid email or password');
       });
+      
+    }
+    }else{
+      alert('Please wait while we are processing your request')
+    }
   };
 
-  const onLoading = () => {};
 
   return (
 
@@ -58,6 +74,10 @@ const LogIn = ({ navigation }) => {
 
       <Image source={require("../assets/logo4.png")} style={styles.img} />
       <Text style={styles.welcome}>WELCOME</Text>
+
+      <ActivityIndicator 
+      style={styles.loading}
+         animating={isLoding}/>
 
     <View style={styles.filedList}>
       {/* E-mail */}
@@ -132,6 +152,9 @@ const styles = StyleSheet.create({
     top:70,
     margin:50
 
+  },
+  loading:{
+    padding:50
   },
   LogInButton: {
     color: "#060707",
