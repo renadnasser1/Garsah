@@ -27,7 +27,6 @@ const SignupScrean = ({ navigation }) => {
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [username, SetUserame] = useState('')
   const [password, setPassword] = useState('')
   const [repassword, setRepassword] = useState('')
   const [Gardner, setGardner] = useState(false)
@@ -57,14 +56,14 @@ const SignupScrean = ({ navigation }) => {
     setIsLoding(true)
 
 
-     if(name == "" || email=="" || username=="" || password=="" || repassword==""){
+     if(name == "" || email=="" || password=="" || repassword==""){
        setIsLoding(false)
        alert("please enter all required inforamtion")
      }else
 
     // validate name 
-     if (name.length < 4) {
-           alert('Your name need to be at least 4 digits.') 
+     if (name.length < 2) {
+           alert('Your name need to be at least 2 digits.') 
            setIsLoding(false)
       }else
 
@@ -87,7 +86,6 @@ const SignupScrean = ({ navigation }) => {
           id: uid,
           email,
           name,
-          username,
           Gardner,
         };
         const usersRef = firebase.firestore().collection('users')
@@ -152,17 +150,6 @@ const SignupScrean = ({ navigation }) => {
               <TextInput
                 placeholder={" Email"}
                 onChangeText={(text) => setEmail(text)}
-                style={styles.textInputFiled}
-              ></TextInput>
-            </View>
-
-            {/* Username */}
-            <View style={styles.inputFiled}>
-              <Ionicons name="ios-at" size={25} color="#646161"></Ionicons>
-
-              <TextInput
-                placeholder={" Username"}
-                onChangeText={(text) => SetUserame(text)}
                 style={styles.textInputFiled}
               ></TextInput>
             </View>
@@ -287,6 +274,7 @@ const styles = StyleSheet.create({
 
   filedList: {
     margin: 2,
+    marginTop: 35,
   },
 
   inputFiled: {
@@ -339,7 +327,7 @@ const styles = StyleSheet.create({
     width: 280,
     height: 40,
     marginLeft: 15,
-    marginTop: 20,
+    marginTop: 40,
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: "#EFF6F9",
@@ -382,7 +370,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#060707",
     fontSize: 30,
-    marginTop: 10,
+    marginTop: 40,
     paddingLeft: 20,
     fontWeight: "bold",
   },
