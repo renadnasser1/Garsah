@@ -51,23 +51,29 @@ const SignupScrean = ({ navigation }) => {
     if(isLoding){
       alert('Please wait while we are processing your request')
       return  }
-    
-
     setIsLoding(true)
-
 
      if(name == "" || email=="" || password=="" || repassword==""){
        setIsLoding(false)
        alert("please enter all required inforamtion")
      }else
 
+     if (name.length  >16 ) {
+      alert('Your name shall be maxiumum of 16 characters ') 
+      setIsLoding(false)}
+      else 
+    
+      if (password.length  >16 ) {
+        alert('Your password  shall be maxiumum of 16 digits') 
+        setIsLoding(false)}
+        else 
     // validate name 
      if (name.length < 2) {
            alert('Your name need to be at least 2 digits.') 
            setIsLoding(false)
       }else
 
-    // validate the passwords 
+    // validate the passwords //add 8 +  reset password +special characters + cleaar msg 
     if (!/[a-zA-Z]/.test(password)) {
       // Return a different error message if the text doesn't match certain criteria. 
       alert( 'Password need to contain letters.')
@@ -93,8 +99,11 @@ const SignupScrean = ({ navigation }) => {
           .doc(uid)
           .set(data)
           .then(() => {
+            
             // navigation.navigate('Home', {user: data})
+            setIsLoding(false)
             navigation.navigate('Home')
+
           })
           .catch((error) => {
             alert(error)
