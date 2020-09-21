@@ -41,12 +41,16 @@ const LogIn = ({ navigation }) => {
     if(!isLoding){
     setIsLoding(true)
     // check if empty
-    if (email == "" || password == "") {
+    if (email == "") {
       alert("Please fill all requierd information");
-      setIsLoding(false)
+      setIsLoding(false);
       
-    }else{
-
+    }else
+if (password == "") {
+          alert("Please fill all requierd information");
+          setIsLoding(false);  
+    } else {
+   
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
