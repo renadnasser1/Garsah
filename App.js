@@ -1,10 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Constants from "expo-constants";
 //navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+// import { AppLoading } from 'expo';
 
 //screens
 import Login from "./Screens/LogIn";
@@ -28,21 +29,17 @@ import * as firebase from "firebase";
   appId: "1:264805379027:web:13e9ca5fec31a09b545d26",
   measurementId: "G-VT3T0YDQ24"
   };
+
+  //Fonts
+  // const fetchFonts = () => {
+  //   return Font.loadAsync({
+  //   'Khmer-MN': require('./assets/fonts/Khmer MN.ttf'),
+  //   });
+  //   };
+
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   //firebase.analytics();
-  
-  //database
-
-  // firebase.database().ref('users/001').set(
-  //   {
-  //   name:'Renad',
-  //   age:12
-  // }).then(() => {
-  //   alert('inserted')
-  // }).catch((error) => {
-  //   alert(error)
-  // });
 
 
 function HomeScreen() {
@@ -56,7 +53,17 @@ function HomeScreen() {
 
 const Stack = createStackNavigator();
 
-function App() {
+export default class App extends React.Component {
+
+
+  // componentDidMount(){
+  //   Font.loadAsync({
+  //     'Khmer-MN': require('./assets/fonts/Khmer_MN.ttc'),
+  //   });
+  // }
+
+
+render() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -109,9 +116,12 @@ function App() {
       </Stack.Navigator>
     </NavigationContainer>
   );
+        
 }
 
-export default App;
+}
+
+
 
 //Style
 const styles = StyleSheet.create({

@@ -12,6 +12,12 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CheckBox } from 'react-native-elements';
+import Svg, { Path } from "react-native-svg"
+
+
+//Fonts
+import  { useFonts }  from 'expo-font';
+import {AppLoading} from 'expo';
 
 // import * as Animatable from 'react-native-animatable';
 // import LinearGradient from 'react-native-linear-gradient';
@@ -58,7 +64,7 @@ const SignupScrean = ({ navigation }) => {
 
      if(name == "" || email=="" || password=="" || repassword==""){
        setIsLoding(false)
-       alert("please enter all required inforamtion")
+       alert("Please enter all required inforamtion")
      }else
 
     // validate name 
@@ -94,6 +100,7 @@ const SignupScrean = ({ navigation }) => {
           .set(data)
           .then(() => {
             // navigation.navigate('Home', {user: data})
+            setIsLoding(false)
             navigation.navigate('Home')
           })
           .catch((error) => {
@@ -107,16 +114,57 @@ const SignupScrean = ({ navigation }) => {
       });
   }
 
+  let [fontsLoaded] = useFonts({
+    'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
+    'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
+ });
+
+ if (!fontsLoaded) {
+   return <AppLoading />;
+ }
+
+
+
 
   return (
+    
+    
+
     <KeyboardAvoidingView
       behavior='padding'
       style={{ flex: 1 }} enabled={enableshift}
        >
          
+         
       <View 
       style={styles.container}>
-         <View style={styles.header}></View>
+         <View style={styles.header}>
+
+         <Svg
+      data-name="Component 9 \u2013 1"
+      width={510.417}
+      height={735.056}
+      viewBox="0 0 510.417 735.056"
+    >
+      <Path
+        data-name="Path 32"
+        d="M0 441.483C180.592 562.774 49.095 636.77 159.957 703.749s283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S0 297.121 0 297.121z"
+        fill="#cfd590"
+      />
+      <Path
+        data-name="Path 30"
+        d="M10.369 150.005c198.29 126.033 53.906 202.922 175.632 272.519s311.272 5.871 311.272 5.871l13.144-99.854s-75.739-79.74-164.348-89.044-99.536-15.506-155.286-63.429-13.189-72.135-54.845-121.994S10.369 0 10.369 0z"
+        fill="#f8f0d7"
+      />
+      <Path
+        data-name="Path 26"
+        d="M25 298.483C205.592 419.774 74.095 493.77 184.957 560.749s283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S25 154.121 25 154.121z"
+        fill="#eff6f9"
+      />
+    </Svg>
+
+
+         </View>
 
 
 
@@ -185,12 +233,12 @@ const SignupScrean = ({ navigation }) => {
           <View style={styles.checkBoxContiner}>
             <CheckBox
               style={styles.checkBox}
+              fontFamily='Khmer-MN-Bold'
               title='I have plants for sell '
               checked={Gardner ? true: false}
               onPress={() => {
                 setGardner(!Gardner);
-              }}
-            />
+              }}            />
           </View>
 
           <TouchableOpacity 
@@ -235,9 +283,7 @@ const height_logo = height * 0.28;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#3D6A4B",
     justifyContent: "center",
-
   },
   loading:{
     position:'absolute',
@@ -266,7 +312,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 4.65,
 
     elevation: 8,
@@ -274,12 +320,13 @@ const styles = StyleSheet.create({
 
   filedList: {
     margin: 2,
-    marginTop: 35,
+    marginTop: 10,
   },
 
   inputFiled: {
     margin: 15,
     padding: 8,
+    paddingBottom:2,
     width: 280,
     height: 40,
     borderTopLeftRadius: 10,
@@ -293,13 +340,16 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 4.65,
 
     elevation: 8,
   },
   textInputFiled: {
     width: 200,
+    fontSize:18,
+    fontFamily:'Khmer-MN'
+
   },
   checkBoxContiner: {
     borderTopLeftRadius: 10,
@@ -311,6 +361,7 @@ const styles = StyleSheet.create({
 
   },
   checkBox: {
+    fontSize:25,
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: {
@@ -327,8 +378,8 @@ const styles = StyleSheet.create({
     width: 280,
     height: 40,
     marginLeft: 15,
-    marginTop: 40,
-    paddingTop: 10,
+    marginTop: 50,
+    paddingTop: 5,
     paddingBottom: 10,
     backgroundColor: "#EFF6F9",
     borderRadius: 10,
@@ -340,26 +391,28 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 4.65,
 
     elevation: 2,
   },
   loginText: {
+    fontFamily:'Khmer-MN-Bold',
     color: "#060707",
     textAlign: "center",
-    paddingLeft: 10,
-    paddingRight: 10,
-    fontSize: 18,
+    fontSize: 20,
   },
   alreadyHave: {
     flexDirection: "row",
+    marginTop:5
+
   },
 
   alreadyHaveText: {
-    fontSize: 15,
-    marginTop: 10,
-    marginLeft: 40,
+    fontFamily:'Khmer-MN',
+    fontSize: 20,
+    marginTop: 6,
+    marginLeft: 25,
   },
 
   logo: {
@@ -373,12 +426,14 @@ const styles = StyleSheet.create({
     marginTop: 40,
     paddingLeft: 20,
     fontWeight: "bold",
+    fontFamily:'Khmer-MN-Bold'
   },
 
   text: {
     color: "grey",
     paddingLeft: 20,
-    marginTop: 2,
+    fontFamily:'Khmer-MN'
+
   },
 
   signIn: {
@@ -388,9 +443,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
     flexDirection: "row",
+
   },
   textSign: {
     color: "white",
     fontWeight: "bold",
+    fontFamily:'Khmer-MN'
+
   },
 });
