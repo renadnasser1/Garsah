@@ -11,13 +11,20 @@ import {
     Button,
 } from "react-native";
 import * as firebase from "firebase";
-
 import { Ionicons } from "@expo/vector-icons";
+
+
+//Navigation
+
+
 
 const homepage = ({ navigation }) => {
 
+
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      title:'Home',
       headerLeft: () => (
         <Button 
          onPress={() => onLogoutPress()}

@@ -5,6 +5,8 @@ import Constants from "expo-constants";
 //navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 // import { AppLoading } from 'expo';
 
 //screens
@@ -32,37 +34,42 @@ import * as firebase from "firebase";
   measurementId: "G-VT3T0YDQ24"
   };
 
-  //Fonts
-  // const fetchFonts = () => {
-  //   return Font.loadAsync({
-  //   'Khmer-MN': require('./assets/fonts/Khmer MN.ttf'),
-  //   });
-  //   };
-
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   //firebase.analytics();
 
+const Tab = createBottomTabNavigator();
 
 function HomeScreen() {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen Hi</Text>
-      
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Home!</Text>
     </View>
+  );
+}
+
+function SettingsScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
+
+
+function Root() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen headerLeft = {null}
+      name="Home" component={Home} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
+    </Tab.Navigator>
   );
 }
 
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
-
-
-  // componentDidMount(){
-  //   Font.loadAsync({
-  //     'Khmer-MN': require('./assets/fonts/Khmer_MN.ttc'),
-  //   });
-  // }
 
 
 render() {
@@ -95,17 +102,18 @@ render() {
         />
 
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="Root"
+          component={Root}
+
         />
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name="LocationMap"
           component={LocationMap}
           options={{
             headerShown: false,
           }}
-        />
+        /> */}
 
         <Stack.Screen
           name="AccountType"
@@ -123,7 +131,10 @@ render() {
         />
 
       </Stack.Navigator>
+
     </NavigationContainer>
+
+
   );
         
 }
