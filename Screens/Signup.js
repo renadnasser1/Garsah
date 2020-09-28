@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,10 +8,10 @@ import {
   StyleSheet,
   Button,
   KeyboardAvoidingView,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { CheckBox } from 'react-native-elements';
+import { CheckBox } from "react-native-elements";
 
 // import * as Animatable from 'react-native-animatable';
 // import LinearGradient from 'react-native-linear-gradient';
@@ -19,125 +19,115 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { render } from "react-dom";
 // import { useTheme } from '@react-navigation/native';
 
-import * as firebase from 'firebase';
-import 'firebase/firestore';
-
+import * as firebase from "firebase";
+import "firebase/firestore";
 
 const SignupScrean = ({ navigation }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repassword, setRepassword] = useState("");
+  const [Gardner, setGardner] = useState(false);
+  const [enableshift, setEnableshift] = useState(false);
+  const [isLoding, setIsLoding] = useState(false);
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [repassword, setRepassword] = useState('')
-  const [Gardner, setGardner] = useState(false)
-  const [enableshift, setEnableshift] = useState(false)
-  const [isLoding,setIsLoding]= useState(false)
+  const onLoginPress = () => {
+    if (isLoding) {
+      alert("Please wait while we are processing your request");
+      return;
+    }
 
-
-  const onLoginPress = () =>{
-
-    if(isLoding){
-      alert('Please wait while we are processing your request')
-      return  }
-
-      navigation.pop();
-    
-  }
-
-
+    navigation.pop();
+  };
 
   const onCreatePress = () => {
+    if (isLoding) {
+      alert("Please wait while we are processing your request");
+      return;
+    }
+    setIsLoding(true);
 
-    if(isLoding){
-      alert('Please wait while we are processing your request')
-      return  }
-    setIsLoding(true)
+    if (name == "" || email == "" || password == "" || repassword == "") {
+      setIsLoding(false);
+      alert("please enter all required inforamtion");
+    } else if (name.length > 16) {
+      alert("Your name shall be maxiumum of 16 characters ");
+      setIsLoding(false);
+    } else if (password.length > 16) {
+      alert("Your password shall be maxiumum of 16 characters");
+      setIsLoding(false);
+    } else if (password.length < 8) {
+      alert("Your password shall be minimum of 8 characters");
+      setIsLoding(false);
+    }
+    // validate name
+    else if (name.length < 2) {
+      alert("Your name need to be at least 2 characters.");
+      setIsLoding(false);
+    }
 
-     if(name == "" || email=="" || password=="" || repassword==""){
-       setIsLoding(false)
-       alert("please enter all required inforamtion")
-     }else
-
-     if (name.length  >16 ) {
-      alert('Your name shall be maxiumum of 16 characters ') 
-      setIsLoding(false)}
-      else 
-    
-      if (password.length  >16 ) {
-        alert('Your password  shall be maxiumum of 16 digits') 
-        setIsLoding(false)}
-        else 
-    // validate name 
-     if (name.length < 2) {
-           alert('Your name need to be at least 2 digits.') 
-           setIsLoding(false)
-      }else
-
-    // validate the passwords //add 8 +  reset password +special characters + cleaar msg 
-    if (!/[a-zA-Z]/.test(password)) {
-      // Return a different error message if the text doesn't match certain criteria. 
-      alert( 'Password need to contain letters.')
-      setIsLoding(false)
-    }else
-    if (password !== repassword) {
-      alert("Passwords don't match.")
-      setIsLoding(false)
-    }else
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((response) => {
-        const uid = response.user.uid
-        const data = {
-          id: uid,
-          email,
-          name,
-          Gardner,
-        };
-        const usersRef = firebase.firestore().collection('users')
-        usersRef
-          .doc(uid)
-          .set(data)
-          .then(() => {
-            
-            // navigation.navigate('Home', {user: data})
-            setIsLoding(false)
-            navigation.navigate('Home')
-
-          })
-          .catch((error) => {
-            alert(error)
-            setIsLoding(false)
-          });
-      })
-      .catch((error) => {
-        alert(error)
-        setIsLoding(false)
-      });
-  }
-
+    // validate the passwords //special characters
+    else if (!/[a-zA-Z]/.test(password)) {
+      // Return a different error message if the text doesn't match certain criteria.
+      alert("Password need to contain letters.");
+      setIsLoding(false);
+      // else if (!/[@$!%*#?&]/.test(password)) {
+      //   // Return a different error message if the text doesn't match certain criteria.
+      //   alert("Password need to contain special character.");
+      //   setIsLoding(false);
+    } else if (password !== repassword) {
+      alert("Passwords don't match.");
+      setIsLoding(false);
+    } else
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((response) => {
+          const uid = response.user.uid;
+          const data = {
+            id: uid,
+            email,
+            name,
+            Gardner,
+          };
+          const usersRef = firebase.firestore().collection("users");
+          usersRef
+            .doc(uid)
+            .set(data)
+            .then(() => {
+              // navigation.navigate('Home', {user: data})
+              setIsLoding(false);
+              navigation.navigate("Home");
+            })
+            .catch((error) => {
+              alert(error);
+              setIsLoding(false);
+            });
+        })
+        .catch((error) => {
+          alert(error);
+          setIsLoding(false);
+        });
+  };
 
   return (
     <KeyboardAvoidingView
-      behavior='padding'
-      style={{ flex: 1 }} enabled={enableshift}
-       >
-         
-      <View 
-      style={styles.container}>
-         <View style={styles.header}></View>
-
-
+      behavior="padding"
+      style={{ flex: 1 }}
+      enabled={enableshift}
+    >
+      <View style={styles.container}>
+        <View style={styles.header}></View>
 
         <View style={styles.footer}>
           <Text style={styles.title}>Create An Account</Text>
           <Text style={styles.text}>Please fill your information</Text>
 
-
-          <ActivityIndicator 
-         style={styles.loading}
-         size={'large'}
-         animating={isLoding}/>
+          <ActivityIndicator
+            style={styles.loading}
+            size={"large"}
+            animating={isLoding}
+          />
 
           {/* Input Fileds */}
 
@@ -184,7 +174,7 @@ const SignupScrean = ({ navigation }) => {
               <TextInput
                 placeholder={" Re-Password"}
                 onChangeText={(text) => setRepassword(text)}
-                onFocus={() => setEnableshift(true)} 
+                onFocus={() => setEnableshift(true)}
                 onBlur={() => setEnableshift(false)}
                 secureTextEntry
                 style={styles.textInputFiled}
@@ -194,24 +184,18 @@ const SignupScrean = ({ navigation }) => {
           <View style={styles.checkBoxContiner}>
             <CheckBox
               style={styles.checkBox}
-              title='I have plants to sell '
-              checked={Gardner ? true: false}
+              title="I have plants to sell "
+              checked={Gardner ? true : false}
               onPress={() => {
                 setGardner(!Gardner);
               }}
             />
           </View>
 
-          <TouchableOpacity 
-          style={styles.loginButton}
-          underlayColor="#fff"
-          >
-            <Text
-              style={styles.loginText}
-              onPress={() => onCreatePress()}
-            >
+          <TouchableOpacity style={styles.loginButton} underlayColor="#fff">
+            <Text style={styles.loginText} onPress={() => onCreatePress()}>
               Create Account
-          </Text>
+            </Text>
           </TouchableOpacity>
 
           {/* Already have an account? Login */}
@@ -219,22 +203,17 @@ const SignupScrean = ({ navigation }) => {
             <Text style={styles.alreadyHaveText}>Already have an account?</Text>
             <Button
               title="Login"
-              onPress={() => {   
-                onLoginPress()
+              onPress={() => {
+                onLoginPress();
               }}
               color="#3D6A4B"
             />
-
           </View>
         </View>
       </View>
     </KeyboardAvoidingView>
-
   );
-
-}
-
-  ;
+};
 
 export default SignupScrean;
 
@@ -246,12 +225,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#3D6A4B",
     justifyContent: "center",
-
   },
-  loading:{
-    position:'absolute',
-    margin:190,
-    marginTop:260,
+  loading: {
+    position: "absolute",
+    margin: 190,
+    marginTop: 260,
     zIndex: 2,
   },
 
@@ -260,7 +238,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
 
   footer: {
     flex: 3,
@@ -317,7 +294,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     marginRight: 35,
     marginLeft: 5,
-
   },
   checkBox: {
     backgroundColor: "#fff",
