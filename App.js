@@ -74,6 +74,7 @@ function Root() {
       <Tab.Screen
       name="Home" 
       options={{
+        tabBarLabel: "Home",
         tabBarIcon: ({ color, size }) => (
           <Foundation name="home" color={color} size={size} />
         ),
@@ -82,6 +83,7 @@ function Root() {
 
       <Tab.Screen name="Profile" 
             options={{
+              tabBarLabel: "Profile",
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="md-person" color={color} size={size} />
               ),
@@ -128,6 +130,9 @@ render() {
         <Stack.Screen
           name="Root"
           component={Root}
+          options={{
+            headerShown: false,
+          }}
 
         />
 
@@ -139,13 +144,13 @@ render() {
           }}
         /> */}
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name="AccountType"
           component={AccountType}
           options={{
             headerShown: false,
           }}
-        />
+        /> */}
          <Stack.Screen
           name="ForgetPassword"
           component={ForgetPassword}
@@ -164,8 +169,6 @@ render() {
 }
 
 }
-
-
 
 //Style
 const styles = StyleSheet.create({
