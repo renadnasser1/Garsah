@@ -25,7 +25,6 @@ const LogIn = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [isLoding,setIsLoding] = useState(false)
 
-
   const onSignupPress = () => {
 
     if(isLoding){
@@ -36,8 +35,15 @@ const LogIn = ({ navigation }) => {
     setEmail('')
     navigation.navigate("Signup");
   };
-
+  const onForgetPassword = () => {
+    firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+            Alert.alert("Password reset email has been sent.");
+        }, (error) => {
+            Alert.alert(error.message);
+        });}
   const onLoginPress = () => {
+   
     if(!isLoding){
     setIsLoding(true)
     // check if empty
@@ -123,7 +129,11 @@ if (password == "") {
         <Text style={styles.text2} onPress={() => onSignupPress()}>
             SignUp
         </Text>
+      
       </Text>
+      <Text style={styles.forget} onPress={() => onForgetPassword()}>
+            Forget Passwoard?
+        </Text>
     </View>
 
 
@@ -245,6 +255,12 @@ const styles = StyleSheet.create({
     color: "#060707",
     textAlign: "center",
     fontSize: 20,
+  },
+  forget: {
+    color: "red",
+    textAlign: "center",
+    fontSize: 20,
+bottom:180
   },
 
 

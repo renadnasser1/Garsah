@@ -12,11 +12,13 @@ import Signup from "./Screens/Signup";
 import AccountType from "./Screens/AccountType";
 import LocationMap from "./Screens/LocationMap";
 import Home from "./Screens/Home";
+import ForgetPassword from "./Screens/ForgetPassword";
 import SplashScreen from "./Screens/SplashScreen";
 
 
 // Firebase
 import * as firebase from "firebase";
+
 
  var firebaseConfig = {
   apiKey: "AIzaSyBS6vgCY1jAxupRVjFj5KJe4w0tanzF7kw",
@@ -101,6 +103,13 @@ function App() {
         <Stack.Screen
           name="AccountType"
           component={AccountType}
+          options={{
+            headerShown: false,
+          }}
+        />
+         <Stack.Screen
+          name="ForgetPassword"
+          component={ForgetPassword}
           options={{
             headerShown: false,
           }}
