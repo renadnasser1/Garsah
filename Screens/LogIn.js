@@ -48,12 +48,12 @@ const LogIn = ({ navigation }) => {
     setIsLoding(true)
     // check if empty
     if (email == "") {
-      alert("Please fill all requierd information");
+      alert("Please fill your email");
       setIsLoding(false);
       
     }else
 if (password == "") {
-          alert("Please fill all requierd information");
+          alert("Please fill your password");
           setIsLoding(false);  
     } else {
    

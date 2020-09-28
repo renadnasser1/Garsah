@@ -70,21 +70,28 @@ const SignupScrean = ({ navigation }) => {
     else if (name.length < 2) {
       alert("Your name need to be at least 2 characters.");
       setIsLoding(false);
-    }
 
-    // validate the passwords //special characters
-    else if (!/[a-zA-Z]/.test(password)) {
-      // Return a different error message if the text doesn't match certain criteria.
-      alert("Password need to contain letters.");
-      setIsLoding(false);
-      // else if (!/[@$!%*#?&]/.test(password)) {
-      //   // Return a different error message if the text doesn't match certain criteria.
-      //   alert("Password need to contain special character.");
-      //   setIsLoding(false);
-    } else if (password !== repassword) {
+      // Password match
+    } else  if (password !== repassword) {
       alert("Passwords don't match.");
+      setIsLoding(false);}
+
+    // validate the passwords
+      // Letters
+    else if (!/[A-Z]/.test(password)) {
+      alert("Password need to contain one capital letter at least.");
       setIsLoding(false);
-    } else
+
+      //Spcial character
+    } else if (!/[@$!%*#?&]/.test(password)) {
+      alert("Password need to contain special character.");
+      setIsLoding(false);
+
+      // Numbers
+    }else  if (!/[0-9]/.test(password)) {
+      alert("Password need to contain numbers.");
+      setIsLoding(false);
+    }else
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
@@ -117,8 +124,6 @@ const SignupScrean = ({ navigation }) => {
   };
 
   return (
-    
-    
 
     <KeyboardAvoidingView
       behavior='padding'
@@ -131,25 +136,26 @@ const SignupScrean = ({ navigation }) => {
          <View style={styles.header}>
 
          <Svg
-      data-name="Component 9 \u2013 1"
-      width={510.417}
-      height={735.056}
-      viewBox="0 0 510.417 735.056"
+      data-name="Component 10 \u2013 1"
+      width={637.417}
+      height={744.056}
+      viewBox="0 0 637.417 744.056"
+
     >
       <Path
         data-name="Path 32"
-        d="M0 441.483C180.592 562.774 49.095 636.77 159.957 703.749s283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S0 297.121 0 297.121z"
+        d="M0 450.483c35.757 24.016 53.835 120.32 53.835 120.32s17.211 88.229 106.122 141.947c110.862 66.979 283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S0 306.121 0 306.121z"
         fill="#cfd590"
       />
       <Path
-        data-name="Path 30"
-        d="M10.369 150.005c198.29 126.033 53.906 202.922 175.632 272.519s311.272 5.871 311.272 5.871l13.144-99.854s-75.739-79.74-164.348-89.044-99.536-15.506-155.286-63.429-13.189-72.135-54.845-121.994S10.369 0 10.369 0z"
-        fill="#f8f0d7"
+        data-name="Path 26"
+        d="M91 248.483c180.592 121.291 49.095 195.287 159.957 262.266s283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S91 104.121 91 104.121z"
+        fill="#eff6f9"
       />
       <Path
-        data-name="Path 26"
-        d="M25 298.483C205.592 419.774 74.095 493.77 184.957 560.749s283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S25 154.121 25 154.121z"
-        fill="#eff6f9"
+        data-name="Path 30"
+        d="M137.369 150.005c198.29 126.033 53.906 202.922 175.632 272.519s311.272 5.871 311.272 5.871l13.144-99.854s-75.739-79.74-164.348-89.044-99.536-15.506-155.286-63.429-13.189-72.135-54.845-121.994S137.369 0 137.369 0z"
+        fill="#f8f0d7"
       />
     </Svg>
 
