@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,10 +8,16 @@ import {
   StyleSheet,
   Button,
   KeyboardAvoidingView,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CheckBox } from 'react-native-elements';
+import Svg, { Path } from "react-native-svg"
+
+
+//Fonts
+import  { useFonts }  from 'expo-font';
+import {AppLoading} from 'expo';
 
 // import * as Animatable from 'react-native-animatable';
 // import LinearGradient from 'react-native-linear-gradient';
@@ -19,113 +25,142 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { render } from "react-dom";
 // import { useTheme } from '@react-navigation/native';
 
-import * as firebase from 'firebase';
-import 'firebase/firestore';
-
+import * as firebase from "firebase";
+import "firebase/firestore";
 
 const SignupScrean = ({ navigation }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repassword, setRepassword] = useState("");
+  const [Gardner, setGardner] = useState(false);
+  const [enableshift, setEnableshift] = useState(false);
+  const [isLoding, setIsLoding] = useState(false);
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [repassword, setRepassword] = useState('')
-  const [Gardner, setGardner] = useState(false)
-  const [enableshift, setEnableshift] = useState(false)
-  const [isLoding,setIsLoding]= useState(false)
+  const onLoginPress = () => {
+    if (isLoding) {
+      alert("Please wait while we are processing your request");
+      return;
+    }
 
-
-  const onLoginPress = () =>{
-
-    if(isLoding){
-      alert('Please wait while we are processing your request')
-      return  }
-
-      navigation.pop();
-    
-  }
-
-
+    navigation.pop();
+  };
 
   const onCreatePress = () => {
+    if (isLoding) {
+      alert("Please wait while we are processing your request");
+      return;
+    }
+    setIsLoding(true);
 
-    if(isLoding){
-      alert('Please wait while we are processing your request')
-      return  }
-    setIsLoding(true)
+    if (name == "" || email == "" || password == "" || repassword == "") {
+      setIsLoding(false);
+      alert("please enter all required inforamtion");
+    } else if (name.length > 16) {
+      alert("Your name shall be maxiumum of 16 characters ");
+      setIsLoding(false);
+    } else if (password.length > 16) {
+      alert("Your password shall be maxiumum of 16 characters");
+      setIsLoding(false);
+    } else if (password.length < 8) {
+      alert("Your password shall be minimum of 8 characters");
+      setIsLoding(false);
+    }
+    // validate name
+    else if (name.length < 2) {
+      alert("Your name need to be at least 2 characters.");
+      setIsLoding(false);
 
-     if(name == "" || email=="" || password=="" || repassword==""){
-       setIsLoding(false)
-       alert("please enter all required inforamtion")
-     }else
+      // Password match
+    } else  if (password !== repassword) {
+      alert("Passwords don't match.");
+      setIsLoding(false);}
 
-     if (name.length  >16 ) {
-      alert('Your name shall be maxiumum of 16 characters ') 
-      setIsLoding(false)}
-      else 
-    
-      if (password.length  >16 ) {
-        alert('Your password  shall be maxiumum of 16 digits') 
-        setIsLoding(false)}
-        else 
-    // validate name 
-     if (name.length < 2) {
-           alert('Your name need to be at least 2 digits.') 
-           setIsLoding(false)
-      }else
+    // validate the passwords
+      // Letters
+    else if (!/[A-Z]/.test(password)) {
+      alert("Password need to contain one capital letter at least.");
+      setIsLoding(false);
 
-    // validate the passwords //add 8 +  reset password +special characters + cleaar msg 
-    if (!/[a-zA-Z]/.test(password)) {
-      // Return a different error message if the text doesn't match certain criteria. 
-      alert( 'Password need to contain letters.')
-      setIsLoding(false)
+      //Spcial character
+    } else if (!/[@$!%*#?&]/.test(password)) {
+      alert("Password need to contain special character.");
+      setIsLoding(false);
+
+      // Numbers
+    }else  if (!/[0-9]/.test(password)) {
+      alert("Password need to contain numbers.");
+      setIsLoding(false);
     }else
-    if (password !== repassword) {
-      alert("Passwords don't match.")
-      setIsLoding(false)
-    }else
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((response) => {
-        const uid = response.user.uid
-        const data = {
-          id: uid,
-          email,
-          name,
-          Gardner,
-        };
-        const usersRef = firebase.firestore().collection('users')
-        usersRef
-          .doc(uid)
-          .set(data)
-          .then(() => {
-            
-            // navigation.navigate('Home', {user: data})
-            setIsLoding(false)
-            navigation.navigate('Home')
-
-          })
-          .catch((error) => {
-            alert(error)
-            setIsLoding(false)
-          });
-      })
-      .catch((error) => {
-        alert(error)
-        setIsLoding(false)
-      });
-  }
-
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((response) => {
+          const uid = response.user.uid;
+          const data = {
+            id: uid,
+            email,
+            name,
+            Gardner,
+          };
+          const usersRef = firebase.firestore().collection("users");
+          usersRef
+            .doc(uid)
+            .set(data)
+            .then(() => {
+              // navigation.navigate('Home', {user: data})
+              setIsLoding(false);
+              navigation.navigate("Home");
+            })
+            .catch((error) => {
+              alert(error);
+              setIsLoding(false);
+            });
+        })
+        .catch((error) => {
+          alert(error);
+          setIsLoding(false);
+        });
+  };
 
   return (
+
     <KeyboardAvoidingView
       behavior='padding'
       style={{ flex: 1 }} enabled={enableshift}
        >
          
+         
       <View 
       style={styles.container}>
-         <View style={styles.header}></View>
+         <View style={styles.header}>
+
+         <Svg
+      data-name="Component 10 \u2013 1"
+      width={637.417}
+      height={744.056}
+      viewBox="0 0 637.417 744.056"
+
+    >
+      <Path
+        data-name="Path 32"
+        d="M0 450.483c35.757 24.016 53.835 120.32 53.835 120.32s17.211 88.229 106.122 141.947c110.862 66.979 283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S0 306.121 0 306.121z"
+        fill="#cfd590"
+      />
+      <Path
+        data-name="Path 26"
+        d="M91 248.483c180.592 121.291 49.095 195.287 159.957 262.266s283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S91 104.121 91 104.121z"
+        fill="#eff6f9"
+      />
+      <Path
+        data-name="Path 30"
+        d="M137.369 150.005c198.29 126.033 53.906 202.922 175.632 272.519s311.272 5.871 311.272 5.871l13.144-99.854s-75.739-79.74-164.348-89.044-99.536-15.506-155.286-63.429-13.189-72.135-54.845-121.994S137.369 0 137.369 0z"
+        fill="#f8f0d7"
+      />
+    </Svg>
+
+
+         </View>
 
 
 
@@ -133,11 +168,11 @@ const SignupScrean = ({ navigation }) => {
           <Text style={styles.title}>Create An Account</Text>
           <Text style={styles.text}>Please fill your information</Text>
 
-
-          <ActivityIndicator 
-         style={styles.loading}
-         size={'large'}
-         animating={isLoding}/>
+          <ActivityIndicator
+            style={styles.loading}
+            size={"large"}
+            animating={isLoding}
+          />
 
           {/* Input Fileds */}
 
@@ -184,7 +219,7 @@ const SignupScrean = ({ navigation }) => {
               <TextInput
                 placeholder={" Re-Password"}
                 onChangeText={(text) => setRepassword(text)}
-                onFocus={() => setEnableshift(true)} 
+                onFocus={() => setEnableshift(true)}
                 onBlur={() => setEnableshift(false)}
                 secureTextEntry
                 style={styles.textInputFiled}
@@ -194,24 +229,18 @@ const SignupScrean = ({ navigation }) => {
           <View style={styles.checkBoxContiner}>
             <CheckBox
               style={styles.checkBox}
-              title='I have plants to sell '
+              fontFamily='Khmer-MN-Bold'
+              title='I have plants for sell '
               checked={Gardner ? true: false}
               onPress={() => {
                 setGardner(!Gardner);
-              }}
-            />
+              }}            />
           </View>
 
-          <TouchableOpacity 
-          style={styles.loginButton}
-          underlayColor="#fff"
-          >
-            <Text
-              style={styles.loginText}
-              onPress={() => onCreatePress()}
-            >
+          <TouchableOpacity style={styles.loginButton} underlayColor="#fff">
+            <Text style={styles.loginText} onPress={() => onCreatePress()}>
               Create Account
-          </Text>
+            </Text>
           </TouchableOpacity>
 
           {/* Already have an account? Login */}
@@ -219,22 +248,17 @@ const SignupScrean = ({ navigation }) => {
             <Text style={styles.alreadyHaveText}>Already have an account?</Text>
             <Button
               title="Login"
-              onPress={() => {   
-                onLoginPress()
+              onPress={() => {
+                onLoginPress();
               }}
               color="#3D6A4B"
             />
-
           </View>
         </View>
       </View>
     </KeyboardAvoidingView>
-
   );
-
-}
-
-  ;
+};
 
 export default SignupScrean;
 
@@ -244,14 +268,12 @@ const height_logo = height * 0.28;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#3D6A4B",
     justifyContent: "center",
-
   },
-  loading:{
-    position:'absolute',
-    margin:190,
-    marginTop:260,
+  loading: {
+    position: "absolute",
+    margin: 190,
+    marginTop: 260,
     zIndex: 2,
   },
 
@@ -260,7 +282,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
 
   footer: {
     flex: 3,
@@ -275,7 +296,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 4.65,
 
     elevation: 8,
@@ -283,12 +304,13 @@ const styles = StyleSheet.create({
 
   filedList: {
     margin: 2,
-    marginTop: 35,
+    marginTop: 10,
   },
 
   inputFiled: {
     margin: 15,
     padding: 8,
+    paddingBottom:2,
     width: 280,
     height: 40,
     borderTopLeftRadius: 10,
@@ -302,13 +324,16 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 4.65,
 
     elevation: 8,
   },
   textInputFiled: {
     width: 200,
+    fontSize:18,
+    fontFamily:'Khmer-MN'
+
   },
   checkBoxContiner: {
     borderTopLeftRadius: 10,
@@ -317,9 +342,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     marginRight: 35,
     marginLeft: 5,
-
   },
   checkBox: {
+    fontSize:25,
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: {
@@ -336,8 +361,8 @@ const styles = StyleSheet.create({
     width: 280,
     height: 40,
     marginLeft: 15,
-    marginTop: 40,
-    paddingTop: 10,
+    marginTop: 50,
+    paddingTop: 5,
     paddingBottom: 10,
     backgroundColor: "#EFF6F9",
     borderRadius: 10,
@@ -349,26 +374,28 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 4.65,
 
     elevation: 2,
   },
   loginText: {
+    fontFamily:'Khmer-MN-Bold',
     color: "#060707",
     textAlign: "center",
-    paddingLeft: 10,
-    paddingRight: 10,
-    fontSize: 18,
+    fontSize: 20,
   },
   alreadyHave: {
     flexDirection: "row",
+    marginTop:5
+
   },
 
   alreadyHaveText: {
-    fontSize: 15,
-    marginTop: 10,
-    marginLeft: 40,
+    fontFamily:'Khmer-MN',
+    fontSize: 20,
+    marginTop: 6,
+    marginLeft: 25,
   },
 
   logo: {
@@ -382,12 +409,14 @@ const styles = StyleSheet.create({
     marginTop: 40,
     paddingLeft: 20,
     fontWeight: "bold",
+    fontFamily:'Khmer-MN-Bold'
   },
 
   text: {
     color: "grey",
     paddingLeft: 20,
-    marginTop: 2,
+    fontFamily:'Khmer-MN'
+
   },
 
   signIn: {
@@ -397,9 +426,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
     flexDirection: "row",
+
   },
   textSign: {
     color: "white",
     fontWeight: "bold",
+    fontFamily:'Khmer-MN'
+
   },
 });
