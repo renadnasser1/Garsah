@@ -41,13 +41,13 @@ const LogIn = ({ navigation }) => {
     setEmail('')
     navigation.navigate("Signup");
   };
-  const onForgetPassword = () => {
+ /*const onForgetPassword = () => {
     firebase.auth().sendPasswordResetEmail(email)
         .then(() => {
             Alert.alert("Password reset email has been sent.");
         }, (error) => {
             Alert.alert(error.message);
-        });}
+        });}*/
   const onLoginPress = () => {
    
     if(!isLoding){
@@ -168,7 +168,8 @@ top:10
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
       {/* Forget Passwoard */}
-         <Text style={styles.forgetPasswoard}>Forget your passwoard ?</Text>
+         <Text style={styles.forgetPasswoard} onPress={() =>  navigation.navigate("ForgetPassword")}
+         >Forget your passwoard ?</Text>
  
 
       {/* Sign up button */}
