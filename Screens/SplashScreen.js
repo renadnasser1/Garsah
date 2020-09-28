@@ -1,5 +1,4 @@
 import React,{useEffect} from 'react';
-import { CommonActions } from '@react-navigation/native';
 
 
 import {

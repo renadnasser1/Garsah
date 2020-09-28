@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Constants from "expo-constants";
 //navigation
@@ -8,6 +7,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // import { AppLoading } from 'expo';
+//Icons
+import { Ionicons } from "@expo/vector-icons";
+import { Foundation } from '@expo/vector-icons'; 
 
 //screens
 import Login from "./Screens/LogIn";
@@ -16,6 +18,8 @@ import AccountType from "./Screens/AccountType";
 import LocationMap from "./Screens/LocationMap";
 import Home from "./Screens/Home";
 import SplashScreen from "./Screens/SplashScreen";
+import AmateurProfile from "./Screens/AmateurProfile";
+
 
 
 // Firebase
@@ -46,7 +50,7 @@ function HomeScreen() {
   );
 }
 
-function SettingsScreen() {
+function Profile() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Settings!</Text>
@@ -57,10 +61,30 @@ function SettingsScreen() {
 
 function Root() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen headerLeft = {null}
-      name="Home" component={Home} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+    <Tab.Navigator
+
+    tabBarOptions={{
+      activeTintColor: '#3D6A4B',
+      inactiveTintColor: 'gray',
+    }}
+  >
+    
+      <Tab.Screen
+      name="Home" 
+      options={{
+        tabBarIcon: ({ color, size }) => (
+          <Foundation name="home" color={color} size={size} />
+        ),
+      }}
+      component={Home} />
+
+      <Tab.Screen name="Profile" 
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="md-person" color={color} size={size} />
+              ),
+            }}
+      component={AmateurProfile} />
     </Tab.Navigator>
   );
 }
