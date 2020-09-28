@@ -1,15 +1,14 @@
 import React,{useEffect} from 'react';
+import { CommonActions } from '@react-navigation/native';
+
+
 import {
+
     View,
     Text,
-    TextInput,
-    TouchableOpacity,
-    Dimensions,
     StyleSheet,
-    StatusBar,
     Image,
 } from "react-native";
-
 
 import * as firebase from "firebase";
 //Fonts
@@ -32,9 +31,16 @@ function SplashScreen({navigation}){
             firebase.auth().onAuthStateChanged((currentUser) => {
 
             if (currentUser != null){
-                navigation.navigate('Home')
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Root' }],
+                  });
+
             }else{
-                navigation.navigate('Login')
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Login' }],
+                  });
                 }
                 
             })
