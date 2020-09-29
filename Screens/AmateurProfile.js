@@ -51,13 +51,14 @@ function AmateurProfile() {
           <Text style={styles.bioText}>About me About me</Text>        
 
           </View>
+          </View>
 
           <View style={styles.body}> 
           <Text style={styles.myPlantText}>My Plants</Text>
           </View>
 
 
-          </View>
+        
         
       </View>
     );
@@ -73,6 +74,16 @@ function AmateurProfile() {
     },
     header:{
         paddingTop:60,
+        backgroundColor:'white',
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 4.65,
+    
+        elevation: 4,
 
 
     },
@@ -117,25 +128,27 @@ function AmateurProfile() {
         borderWidth:2,
         width:90,
         borderRadius:20,
+        backgroundColor: "white",
         borderColor:'#CFD590',
         marginTop:88,
-        right:30
-
-    },
-    editText:{
-        paddingLeft:10,
-        paddingTop:3,
-        fontFamily:'Khmer-MN',
-        color:'#CFD590',
+        right:30,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 4,
         },
-        shadowOpacity: 0.2,
+        shadowOpacity: 0.1,
         shadowRadius: 4.65,
     
-        elevation: 8,
+        elevation: 4,
+
+    },
+    editText:{
+        paddingLeft:10,
+        paddingTop:3,
+        fontFamily:'Khmer-MN-Bold',
+        color:'#CFD590',
+
     }
 
 
