@@ -17,14 +17,20 @@ import { render } from "react-dom";
 import { Ionicons } from "@expo/vector-icons";
 
 const ForgetPassword = ({ navigation }) => {
+
     const [email, setEmail] = useState("");
     const onForgetPassword = () => {
+      if (email == "") {
+        alert("Please fill your email so we can reset your password");
+        
+        
+      }else{
     firebase.auth().sendPasswordResetEmail(email)
         .then(() => {
             Alert.alert("Password reset email has been sent.");
         }, (error) => {
             Alert.alert(error.message);
-        });}
+        });}}
         return( 
             <View style={styles.container}>
             <Svg

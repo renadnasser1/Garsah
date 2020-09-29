@@ -13,13 +13,10 @@ import { Ionicons } from "@expo/vector-icons";
 
 
 export default class App extends React.Component {
-
-
   state ={
     marker:{
     latitude:'',
-    longitude:'',}
-    
+    longitude:'',}   
   }
 
      async componentDidMount(){
