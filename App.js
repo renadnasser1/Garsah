@@ -20,6 +20,8 @@ import Home from "./Screens/Home";
 import ForgetPassword from "./Screens/ForgetPassword";
 import SplashScreen from "./Screens/SplashScreen";
 import AmateurProfile from "./Screens/AmateurProfile";
+import GardnerProfile from "./Screens/GardnerProfile";
+
 
 
 
@@ -44,21 +46,6 @@ import * as firebase from "firebase";
 
 const Tab = createBottomTabNavigator();
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function Profile() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
 
 
 function Root() {
@@ -88,7 +75,7 @@ function Root() {
                 <Ionicons name="md-person" color={color} size={size} />
               ),
             }}
-      component={AmateurProfile} />
+      component={GardnerProfile} />
     </Tab.Navigator>
   );
 }

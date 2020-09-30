@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Svg, { Path } from "react-native-svg"
+import MapView, { Marker } from 'react-native-maps';
+
 
 import {
     View,
@@ -8,8 +10,13 @@ import {
     StyleSheet,
     Image,
     ActivityIndicator,
-    AsyncStorage
+    AsyncStorage,
+    Dimensions,
 } from "react-native";
+
+// Icons
+import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 //Firebase
 import * as firebase from "firebase";
@@ -21,7 +28,7 @@ import { AppLoading } from 'expo';
 
 
 
-function AmateurProfile() {
+function GardnerProfile() {
 
 
     const [name, setName] = useState()
@@ -34,6 +41,7 @@ function AmateurProfile() {
 
         } catch (err) {
             alert(err)
+
         }
     }
 
@@ -71,8 +79,39 @@ function AmateurProfile() {
 
                     {/* Bio */}
                     <Text style={styles.bioText}>About me About me</Text>
+                    {/* Phone number */}
+                    <View style={styles.userInfoContiner}>
+                        <FontAwesome name="phone" size={24} color="gray" />
+                        <Text style={styles.userInfoText}> 966 5555555</Text>
+                    </View>
+
+                    {/* Map */}
+                    <View style={styles.userInfoContiner}>
+                        <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
+                        <Text style={styles.userInfoText}> Riyadh, SA</Text></View>
+
+                        <MapView style={styles.mapStyle}
+                            initialRegion={{
+                                latitude: 1.1234,
+                                longitude: 1.12345,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421
+                            }}
+                        />
+
+                            {/* <MapView.Marker
+                             coordinate={this.state}
+                              pinColor={'red'}
+                              /> */}
+
+
+
+                    
+
+
 
                 </View>
+
             </View>
 
             <View style={styles.body}>
@@ -86,7 +125,7 @@ function AmateurProfile() {
     );
 }
 
-export default AmateurProfile;
+export default GardnerProfile;
 
 const styles = StyleSheet.create({
     container: {
@@ -125,7 +164,9 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
     },
     profileInfoView: {
-        padding: 25,
+        paddingTop: 25,
+        paddingLeft: 25,
+        paddingRight: 25,
         borderBottomColor: 'gray'
 
     },
@@ -136,7 +177,8 @@ const styles = StyleSheet.create({
     bioText: {
         fontSize: 20,
         fontFamily: 'Khmer-MN',
-        color: 'gray'
+        color: 'gray',
+        paddingLeft: 25
 
     },
 
@@ -174,7 +216,23 @@ const styles = StyleSheet.create({
         fontFamily: 'Khmer-MN-Bold',
         color: '#CFD590',
 
-    }
+    },
+    userInfoContiner: {
+        flexDirection: 'row',
+
+    },
+
+    userInfoText: {
+        paddingLeft: 4,
+        fontSize: 20,
+        fontFamily: 'Khmer-MN-Bold',
+        color: 'gray',
+    },
+    mapStyle: {
+        width: Dimensions.get('window').width,
+        height: 250,
+        left:-25
+      },
 
 
 })
