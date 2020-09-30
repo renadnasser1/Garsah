@@ -44,13 +44,12 @@ import * as firebase from "firebase";
   firebase.initializeApp(firebaseConfig);
   //firebase.analytics();
 
-const Tab = createBottomTabNavigator();
+const AmateurTab = createBottomTabNavigator();
+const GardnerTab = createBottomTabNavigator();
 
-
-
-function Root() {
+function AmateurRoot() {
   return (
-    <Tab.Navigator
+    <AmateurTab.Navigator
 
     tabBarOptions={{
       activeTintColor: '#3D6A4B',
@@ -58,7 +57,7 @@ function Root() {
     }}
   >
     
-      <Tab.Screen
+      <AmateurTab.Screen
       name="Home" 
       options={{
         tabBarLabel: "Home",
@@ -68,15 +67,48 @@ function Root() {
       }}
       component={Home} />
 
-      <Tab.Screen name="Profile" 
+      <AmateurTab.Screen name="Profile" 
             options={{
               tabBarLabel: "Profile",
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="md-person" color={color} size={size} />
               ),
             }}
+            
+      component={AmateurProfile} />
+    </AmateurTab.Navigator>
+  );
+}
+function GardnerRoot() {
+  return (
+    <GardnerTab.Navigator
+
+    tabBarOptions={{
+      activeTintColor: '#3D6A4B',
+      inactiveTintColor: 'gray',
+    }}
+  >
+    
+      <GardnerTab.Screen
+      name="Home" 
+      options={{
+        tabBarLabel: "Home",
+        tabBarIcon: ({ color, size }) => (
+          <Foundation name="home" color={color} size={size} />
+        ),
+      }}
+      component={Home} />
+
+      <GardnerTab.Screen name="Profile" 
+            options={{
+              tabBarLabel: "Profile",
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="md-person" color={color} size={size} />
+              ),
+            }}
+            
       component={GardnerProfile} />
-    </Tab.Navigator>
+    </GardnerTab.Navigator>
   );
 }
 
@@ -97,6 +129,13 @@ render() {
             headerShown: false,
           }}
         />
+       {/*}   <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerShown: false,
+          }}
+        />*/}
 
       <Stack.Screen
           name="Login"
@@ -115,8 +154,17 @@ render() {
         />
 
         <Stack.Screen
-          name="Root"
-          component={Root}
+          name="AmateurRoot"
+          component={AmateurRoot}
+          options={{
+            headerShown: false,
+          }}
+
+        />
+
+<Stack.Screen
+          name="GardnerRoot"
+          component={GardnerRoot}
           options={{
             headerShown: false,
           }}

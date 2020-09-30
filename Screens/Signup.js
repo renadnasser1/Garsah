@@ -37,6 +37,23 @@ const SignupScrean = ({ navigation }) => {
   const [enableshift, setEnableshift] = useState(false);
   const [isLoding, setIsLoding] = useState(false);
 
+  
+const RoutePath = () =>{
+
+  if (Gardner==false){
+    navigation.reset({
+        index: 0,
+        routes: [{ name: 'AmateurRoot' }],
+    });}
+
+        // redirect user
+        if (Gardner==true){
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'GardnerRoot' }],
+        });}
+}
+
   const onLoginPress = () => {
     if (isLoding) {
       alert("Please wait while we are processing your request");
@@ -112,7 +129,9 @@ const SignupScrean = ({ navigation }) => {
             .then(() => {
               // navigation.navigate('Home', {user: data})
               setIsLoding(false);
-              navigation.navigate("Home");
+             // RoutePath();
+           // navigation.navigate('Home');
+           RoutePath();
             })
             .catch((error) => {
               alert(error);
