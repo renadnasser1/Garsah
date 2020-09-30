@@ -83,8 +83,6 @@ function SplashScreen({ navigation }) {
 
                                 // setEmail(userInfo.email);
                                 // setGardner(userInfo.Gardner);
-
-                                
                                save(userInfo.name+'');
                             } else {
                                 console.log("No such document!")
