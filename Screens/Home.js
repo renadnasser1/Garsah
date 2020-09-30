@@ -21,7 +21,6 @@ import { Ionicons } from "@expo/vector-icons";
 const homepage = ({ navigation }) => {
 
 
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title:'Home',

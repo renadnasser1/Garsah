@@ -32,10 +32,10 @@ function GardnerProfile() {
 
 
     const [name, setName] = useState()
-
-    
-    
-    
+  //const [phoneNumber,setPhoneNumber] = useState()  
+  //const [bio,setBio] = useState() 
+ //const [long,setlong = useState() 
+  //const [lat,setlat = useState() 
       const onLogoutPress = async () => {
             firebase.auth()
             .signOut()
@@ -48,6 +48,7 @@ function GardnerProfile() {
 
             let name = await AsyncStorage.getItem("name")
             setName(name)
+          
 
         } catch (err) {
             alert(err)
