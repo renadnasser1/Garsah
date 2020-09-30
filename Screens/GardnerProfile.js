@@ -36,12 +36,7 @@ function GardnerProfile() {
   //const [bio,setBio] = useState() 
  //const [long,setlong = useState() 
   //const [lat,setlat = useState() 
-      const onLogoutPress = async () => {
-            firebase.auth()
-            .signOut()
-            .then(() => navigation.navigate('SplashScreen')).catch((error) => {
-              alert(error)
-            });}
+
 
     const load = async () => {
         try {
@@ -102,12 +97,7 @@ function GardnerProfile() {
                         <Text style={styles.userInfoText}> Riyadh, SA</Text></View>
                         
                         <View>
-                        <TouchableOpacity
-        underlayColor="#fff"
-        onPress={() => onLogoutPress()}
-      >
-        <Text style={styles.ResetText}>LogOut</Text>
-      </TouchableOpacity> 
+                       
                         </View>
 
                         <MapView style={styles.mapStyle}

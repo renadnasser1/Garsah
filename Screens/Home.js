@@ -47,6 +47,12 @@ const homepage = ({ navigation }) => {
 
     <View style={styles.container}>
          <Text style={styles.text}>Homepage is coming real soon!! </Text>
+         <TouchableOpacity
+        underlayColor="#fff"
+        onPress={() => onLogoutPress()}
+      >
+        <Text style={styles.ResetText}>LogOut</Text>
+      </TouchableOpacity> 
     </View>
     );
 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 
 import {
-
     View,
     Text,
     StyleSheet,
@@ -18,15 +17,14 @@ import { AppLoading } from 'expo';
 
 
 function SplashScreen({ navigation }) {
- 
 
-    const save = async (name,email,Gardner,) => {
+
+    const save = async (name, email, Gardner, ) => {
         try {
 
-            // const jsonValue = JSON.stringify(value)
-            await AsyncStorage.setItem("name", value)
+            await AsyncStorage.setItem("name", name)
             await AsyncStorage.setItem("email", email)
-            await AsyncStorage.setItem("gardner", gardner)
+            await AsyncStorage.setItem("gardner", Gardner)
 
         } catch (err) {
             alert(err)
@@ -74,22 +72,24 @@ function SplashScreen({ navigation }) {
                                 var userInfo = doc.data();
                                 // Use a UserInfo instance method
                                 console.log(userInfo.name);
-                                
-                               save(userInfo.name+'',userInfo.email+'',userInfo.Gardner+'');
-                       
-                                    // redirect user
-                  if(userInfo.Gardner==false){
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'AmateurRoot' }],
-                    });}
-               
-                        // redirect user
-                        if(userInfo.Gardner==true){
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'GardnerRoot' }],
-                        });}
+
+                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '');
+
+                                // redirect user
+                                if (userInfo.Gardner == false) {
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'AmateurRoot' }],
+                                    });
+                                }
+
+                                // redirect user
+                                if (userInfo.Gardner == true) {
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'GardnerRoot' }],
+                                    });
+                                }
                             } else {
                                 console.log("No such document!")
                             }
@@ -97,8 +97,8 @@ function SplashScreen({ navigation }) {
                             console.log("Error getting document:", error)
                         });
 
-                   
-               
+
+
 
 
                 } else {

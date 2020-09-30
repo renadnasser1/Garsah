@@ -23,12 +23,7 @@ import { AppLoading } from 'expo';
 
 function AmateurProfile() {
 
-    const onLogoutPress = async () => {
-        firebase.auth()
-        .signOut()
-        .then(() => navigation.navigate('SplashScreen')).catch((error) => {
-          alert(error)
-        });}
+
     const [name, setName] = useState()
 
     const load = async () => {
@@ -85,12 +80,7 @@ function AmateurProfile() {
             </View>
 
             <View>
-                        <TouchableOpacity
-        underlayColor="#fff"
-        onPress={() => onLogoutPress()}
-      >
-        <Text style={styles.ResetText}>LogOut</Text>
-      </TouchableOpacity> 
+
                         </View>
 
 

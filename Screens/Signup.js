@@ -16,8 +16,8 @@ import Svg, { Path } from "react-native-svg"
 
 
 //Fonts
-import  { useFonts }  from 'expo-font';
-import {AppLoading} from 'expo';
+import { useFonts } from 'expo-font';
+import { AppLoading } from 'expo';
 
 // import * as Animatable from 'react-native-animatable';
 // import LinearGradient from 'react-native-linear-gradient';
@@ -37,22 +37,24 @@ const SignupScrean = ({ navigation }) => {
   const [enableshift, setEnableshift] = useState(false);
   const [isLoding, setIsLoding] = useState(false);
 
-  
-const RoutePath = () =>{
 
-  if (Gardner==false){
-    navigation.reset({
+  const RoutePath = () => {
+
+    if (Gardner == false) {
+      navigation.reset({
         index: 0,
         routes: [{ name: 'AmateurRoot' }],
-    });}
+      });
+    }
 
-        // redirect user
-        if (Gardner==true){
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'GardnerRoot' }],
-        });}
-}
+    // redirect user
+    if (Gardner == true) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'GardnerRoot' }],
+      });
+    }
+  }
 
   const onLoginPress = () => {
     if (isLoding) {
@@ -89,12 +91,13 @@ const RoutePath = () =>{
       setIsLoding(false);
 
       // Password match
-    } else  if (password !== repassword) {
+    } else if (password !== repassword) {
       alert("Passwords don't match.");
-      setIsLoding(false);}
+      setIsLoding(false);
+    }
 
     // validate the passwords
-      // Letters
+    // Letters
     else if (!/[A-Z]/.test(password)) {
       alert("Password need to contain one capital letter at least.");
       setIsLoding(false);
@@ -105,10 +108,10 @@ const RoutePath = () =>{
       setIsLoding(false);
 
       // Numbers
-    }else  if (!/[0-9]/.test(password)) {
+    } else if (!/[0-9]/.test(password)) {
       alert("Password need to contain numbers.");
       setIsLoding(false);
-    }else
+    } else
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
@@ -118,8 +121,8 @@ const RoutePath = () =>{
           const data = {
             id: uid,
             email: email,
-            name:name,
-            Gardner:Gardner,
+            name: name,
+            Gardner: Gardner,
           };
 
           const usersRef = firebase.firestore().collection("users");
@@ -127,11 +130,8 @@ const RoutePath = () =>{
             .doc(uid)
             .set(data)
             .then(() => {
-              // navigation.navigate('Home', {user: data})
               setIsLoding(false);
-             // RoutePath();
-           // navigation.navigate('Home');
-           RoutePath();
+              RoutePath();
             })
             .catch((error) => {
               alert(error);
@@ -148,40 +148,37 @@ const RoutePath = () =>{
 
     <KeyboardAvoidingView
       behavior='padding'
-      style={{ flex: 1 }} enabled={enableshift}
-       >
-         
-         
-      <View 
-      style={styles.container}>
-         <View style={styles.header}>
+      style={{ flex: 1 }} enabled={enableshift} >
+      <View
+        style={styles.container}>
+        <View style={styles.header}>
 
-         <Svg
-      data-name="Component 10 \u2013 1"
-      width={637.417}
-      height={744.056}
-      viewBox="0 0 637.417 744.056"
+          <Svg
+            data-name="Component 10 \u2013 1"
+            width={637.417}
+            height={744.056}
+            viewBox="0 0 637.417 744.056"
 
-    >
-      <Path
-        data-name="Path 32"
-        d="M0 450.483c35.757 24.016 53.835 120.32 53.835 120.32s17.211 88.229 106.122 141.947c110.862 66.979 283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S0 306.121 0 306.121z"
-        fill="#cfd590"
-      />
-      <Path
-        data-name="Path 26"
-        d="M91 248.483c180.592 121.291 49.095 195.287 159.957 262.266s283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S91 104.121 91 104.121z"
-        fill="#eff6f9"
-      />
-      <Path
-        data-name="Path 30"
-        d="M137.369 150.005c198.29 126.033 53.906 202.922 175.632 272.519s311.272 5.871 311.272 5.871l13.144-99.854s-75.739-79.74-164.348-89.044-99.536-15.506-155.286-63.429-13.189-72.135-54.845-121.994S137.369 0 137.369 0z"
-        fill="#f8f0d7"
-      />
-    </Svg>
+          >
+            <Path
+              data-name="Path 32"
+              d="M0 450.483c35.757 24.016 53.835 120.32 53.835 120.32s17.211 88.229 106.122 141.947c110.862 66.979 283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S0 306.121 0 306.121z"
+              fill="#cfd590"
+            />
+            <Path
+              data-name="Path 26"
+              d="M91 248.483c180.592 121.291 49.095 195.287 159.957 262.266s283.49 5.65 283.49 5.65l11.971-96.1s-68.979-76.74-149.68-85.694-90.652-14.922-141.426-61.042-12.012-69.421-49.95-117.4S91 104.121 91 104.121z"
+              fill="#eff6f9"
+            />
+            <Path
+              data-name="Path 30"
+              d="M137.369 150.005c198.29 126.033 53.906 202.922 175.632 272.519s311.272 5.871 311.272 5.871l13.144-99.854s-75.739-79.74-164.348-89.044-99.536-15.506-155.286-63.429-13.189-72.135-54.845-121.994S137.369 0 137.369 0z"
+              fill="#f8f0d7"
+            />
+          </Svg>
 
 
-         </View>
+        </View>
 
 
 
@@ -252,10 +249,10 @@ const RoutePath = () =>{
               style={styles.checkBox}
               fontFamily='Khmer-MN-Bold'
               title='I have plants for sell '
-              checked={Gardner ? true: false}
+              checked={Gardner ? true : false}
               onPress={() => {
                 setGardner(!Gardner);
-              }}            />
+              }} />
           </View>
 
           <TouchableOpacity style={styles.loginButton} underlayColor="#fff">
@@ -302,8 +299,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor:'#fff'
-    
+    backgroundColor: '#fff'
+
   },
 
   footer: {
@@ -333,7 +330,7 @@ const styles = StyleSheet.create({
   inputFiled: {
     margin: 15,
     padding: 8,
-    paddingBottom:2,
+    paddingBottom: 2,
     width: 280,
     height: 40,
     borderTopLeftRadius: 10,
@@ -354,8 +351,8 @@ const styles = StyleSheet.create({
   },
   textInputFiled: {
     width: 200,
-    fontSize:18,
-    fontFamily:'Khmer-MN'
+    fontSize: 18,
+    fontFamily: 'Khmer-MN'
 
   },
   checkBoxContiner: {
@@ -367,7 +364,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   checkBox: {
-    fontSize:25,
+    fontSize: 25,
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: {
@@ -403,19 +400,19 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   loginText: {
-    fontFamily:'Khmer-MN-Bold',
+    fontFamily: 'Khmer-MN-Bold',
     color: "#060707",
     textAlign: "center",
     fontSize: 20,
   },
   alreadyHave: {
     flexDirection: "row",
-    marginTop:5
+    marginTop: 5
 
   },
 
   alreadyHaveText: {
-    fontFamily:'Khmer-MN',
+    fontFamily: 'Khmer-MN',
     fontSize: 20,
     marginTop: 6,
     marginLeft: 25,
@@ -432,13 +429,13 @@ const styles = StyleSheet.create({
     marginTop: 40,
     paddingLeft: 20,
     fontWeight: "bold",
-    fontFamily:'Khmer-MN-Bold'
+    fontFamily: 'Khmer-MN-Bold'
   },
 
   text: {
     color: "grey",
     paddingLeft: 20,
-    fontFamily:'Khmer-MN'
+    fontFamily: 'Khmer-MN'
 
   },
 
@@ -454,7 +451,7 @@ const styles = StyleSheet.create({
   textSign: {
     color: "white",
     fontWeight: "bold",
-    fontFamily:'Khmer-MN'
+    fontFamily: 'Khmer-MN'
 
   },
 });

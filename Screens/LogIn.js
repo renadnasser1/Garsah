@@ -53,8 +53,7 @@ const LogIn = ({ navigation }) => {
       alert("Please fill your email");
       setIsLoding(false);
       
-    }else
-if (password == "") {
+    }else if (password == "") {
           alert("Please fill your password");
           setIsLoding(false);  
     } else {
@@ -67,18 +66,18 @@ if (password == "") {
         setPassword(" ");
         setIsLoding(false)
        // navigation.navigate('Home');
-       if (currentUser.Gardner==false){
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'AmateurRoot' }],
-        });}
+      //  if (currentUser.Gardner==false){
+      //   navigation.reset({
+      //       index: 0,
+      //       routes: [{ name: 'AmateurRoot' }],
+      //   });}
    
-            // redirect user
-            if (currentUser.Gardner==true){
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'GardnerRoot' }],
-            });}
+      //       // redirect user
+      //       if (currentUser.Gardner==true){
+      //       navigation.reset({
+      //           index: 0,
+      //           routes: [{ name: 'GardnerRoot' }],
+      //       });}
       })
       .catch((error) => {
         setIsLoding(false)
