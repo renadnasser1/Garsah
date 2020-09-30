@@ -20,13 +20,13 @@ import { AppLoading } from 'expo';
 function SplashScreen({ navigation }) {
  
 
-    const save = async (name,email,Gardner,) => {
+    const save = async (name) => {
         try {
 
             // const jsonValue = JSON.stringify(value)
-            await AsyncStorage.setItem("name", value)
-            await AsyncStorage.setItem("email", email)
-            await AsyncStorage.setItem("gardner", gardner)
+            await AsyncStorage.setItem("name", name)
+            //await AsyncStorage.setItem("email", email)
+            //await AsyncStorage.setItem("gardner", gardner)
 
         } catch (err) {
             alert(err)
