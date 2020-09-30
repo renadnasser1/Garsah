@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Svg, { Path } from "react-native-svg"
 
 import {
@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
-  Button,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from "react-native";
 
 //Firebase
@@ -18,7 +18,31 @@ import * as firebase from "firebase";
 import  { useFonts }  from 'expo-font';
 import {AppLoading} from 'expo';
 
+
+
+
+
 function AmateurProfile() {
+
+
+    const[name,setName]=useState()
+
+    const load = async () => {
+        try {
+    
+           let name  = await AsyncStorage.getItem("name")
+           setName(name)   
+    
+        } catch (err) {
+            alert(err)
+    
+        }
+    }
+
+    useEffect(() =>{
+
+        load()
+    },[])
 
     let [fontsLoaded] = useFonts({
         'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
@@ -33,7 +57,7 @@ function AmateurProfile() {
       <View style={styles.container }>
           <View style={styles.header}> 
           {/* Image */}
-          <Image source={require("../assets/person-icon.png")} style={styles.prifileImg} />
+          <Image source={require("../assets/blank.png")} style={styles.prifileImg} />
 
           {/* Edit Profile button */}
           <TouchableOpacity
@@ -45,7 +69,7 @@ function AmateurProfile() {
           {/* Profile Information */}
           <View style={styles.profileInfoView}>
             {/* Name */}
-          <Text style={styles.profileInfoText}>Renad Nasser</Text>
+    <Text style={styles.profileInfoText}>{name}</Text>
 
             {/* Bio */}
           <Text style={styles.bioText}>About me About me</Text>        
@@ -90,17 +114,20 @@ function AmateurProfile() {
     prifileImg:{
         width:60,
         height:60,
-        backgroundColor:'green',
-        borderWidth:1,
         borderRadius:50,
         padding:45,
         marginTop:20,
-        marginLeft:20
-
+        marginLeft:20,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 2,
+          height: 4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 4.65,
     },
     profileInfoView:{
         padding:25,
-        borderBottomWidth:1,
         borderBottomColor:'gray'
 
     },
@@ -135,7 +162,7 @@ function AmateurProfile() {
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
-          height: 4,
+          height: 2,
         },
         shadowOpacity: 0.1,
         shadowRadius: 4.65,

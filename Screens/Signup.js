@@ -97,12 +97,14 @@ const SignupScrean = ({ navigation }) => {
         .createUserWithEmailAndPassword(email, password)
         .then((response) => {
           const uid = response.user.uid;
+
           const data = {
             id: uid,
-            email,
-            name,
-            Gardner,
+            email: email,
+            name:name,
+            Gardner:Gardner,
           };
+
           const usersRef = firebase.firestore().collection("users");
           usersRef
             .doc(uid)
