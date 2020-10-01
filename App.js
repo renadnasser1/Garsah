@@ -23,7 +23,7 @@ import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
-
+import Addplant from "./Screens/Addplant";
 
 
 
@@ -151,11 +151,16 @@ function AmatureStackNav() {
         }}
 
         component={AmateurProfile} />
-
-      <AmatureStack.Screen
+  
+     <AmatureStack.Screen
         name="EditAmateurProfile"
         component={EditAmateurProfile}
       />
+         <AmatureStack.Screen
+        name="Addplant"
+        component={Addplant}
+      />
+     
       </AmatureStack.Navigator>
 
   );
@@ -215,11 +220,11 @@ export default class App extends React.Component {
             }}
 
           />
-          <Stack.Screen
+         {/* <Stack.Screen
             name="EditGardenerProfile"
             component={EditGardenerProfile}
-          />
-
+          />*/}
+         
           {/* <Stack.Screen
           name="LocationMap"
           component={LocationMap}

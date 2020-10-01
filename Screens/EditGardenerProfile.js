@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Svg, { Path } from "react-native-svg"
 import MapView, { Marker } from 'react-native-maps';
-
-
+//import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
+import UserAvatar from 'react-native-user-avatar';
 import {
     View,
     Text,
@@ -29,6 +30,10 @@ import { AppLoading } from 'expo';
 
 const EditGardenerProfile = ({ navigation }) => {
 
+const ChangePhoto=() => {
+
+}
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
           title:'back',
@@ -49,6 +54,7 @@ const EditGardenerProfile = ({ navigation }) => {
     const [name, setName] = useState()
     const [Bio, setBio] = useState("Enter your Bio")
     const [Phone, setPhone] = useState("Enter your Phone number")
+
 
     const load = async () => {
         try {
@@ -109,7 +115,9 @@ return (
         {/* Image */}
         
         <Image source={require("../assets/blank.png")} style={styles.prifileImg} />
-        <Text style = {styles.editText}> Change Profile Photo</Text>
+        <Text style = {styles.editText}  
+         onPress={() => { ChangePhoto(); }}>
+          Change Profile Photo</Text>
         
 
 
