@@ -102,17 +102,21 @@ function GardnerProfile() {
 
                         <MapView style={styles.mapStyle}
                             initialRegion={{
-                                latitude: 1.1234,
-                                longitude: 1.12345,
+                                latitude: 37.785834,
+                                longitude: -122.406417,
                                 latitudeDelta: 0.0922,
                                 longitudeDelta: 0.0421
                             }}
-                        />
+                            > 
 
-                            {/* <MapView.Marker
-                             coordinate={this.state}
+                            <MapView.Marker
+                             coordinate={{
+                                latitude:'37.785834',
+                                longitude:'-122.406417'}}
                               pinColor={'red'}
-                              /> */}
+                            />
+                      
+                      </MapView>
 
 
 
