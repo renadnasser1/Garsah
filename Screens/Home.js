@@ -21,7 +21,6 @@ import { Ionicons } from "@expo/vector-icons";
 const homepage = ({ navigation }) => {
 
 
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       
@@ -49,6 +48,12 @@ const homepage = ({ navigation }) => {
 
     <View style={styles.container}>
          <Text style={styles.text}>Homepage is coming real soon!! </Text>
+         <TouchableOpacity
+        underlayColor="#fff"
+        onPress={() => onLogoutPress()}
+      >
+        <Text style={styles.ResetText}>LogOut</Text>
+      </TouchableOpacity> 
     </View>
     );
 

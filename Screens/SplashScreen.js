@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 
 import {
-
     View,
     Text,
     StyleSheet,
@@ -20,18 +19,12 @@ import { AppLoading } from 'expo';
 function SplashScreen({ navigation }) {
 
 
-    //User Information
-    const [name, setName] = useState()
-    const [email, setEmail] = useState()
-    const [gardner, setGardner] = useState()
-
-    const save = async (value) => {
+    const save = async (name, email, Gardner, ) => {
         try {
 
-            // const jsonValue = JSON.stringify(value)
-            await AsyncStorage.setItem("name", value)
-            // await AsyncStorage.setItem("email", email)
-            // await AsyncStorage.setItem("gardner", gardner)
+            await AsyncStorage.setItem("name", name)
+            await AsyncStorage.setItem("email", email)
+            await AsyncStorage.setItem("gardner", Gardner)
 
         } catch (err) {
             alert(err)
@@ -78,14 +71,25 @@ function SplashScreen({ navigation }) {
                                 // Convert to UserInfo object
                                 var userInfo = doc.data();
                                 // Use a UserInfo instance method
-                               
                                 console.log(userInfo.name);
 
-                                // setEmail(userInfo.email);
-                                // setGardner(userInfo.Gardner);
+                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '');
 
-                                
-                               save(userInfo.name+'');
+                                // redirect user
+                                if (userInfo.Gardner == false) {
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'AmateurRoot' }],
+                                    });
+                                }
+
+                                // redirect user
+                                if (userInfo.Gardner == true) {
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'GardnerRoot' }],
+                                    });
+                                }
                             } else {
                                 console.log("No such document!")
                             }
@@ -94,11 +98,8 @@ function SplashScreen({ navigation }) {
                         });
 
 
-                    // redirect user
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Root' }],
-                    });
+
+
 
                 } else {
                     navigation.reset({

@@ -39,12 +39,18 @@ const GardnerProfile = ({ navigation }) => {
         };
      
     const [name, setName] = useState()
+  //const [phoneNumber,setPhoneNumber] = useState()  
+  //const [bio,setBio] = useState() 
+ //const [long,setlong = useState() 
+  //const [lat,setlat = useState() 
+
 
     const load = async () => {
         try {
 
             let name = await AsyncStorage.getItem("name")
             setName(name)
+          
 
         } catch (err) {
             alert(err)
@@ -98,20 +104,28 @@ const GardnerProfile = ({ navigation }) => {
                     <View style={styles.userInfoContiner}>
                         <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
                         <Text style={styles.userInfoText}> Riyadh, SA</Text></View>
+                        
+                        <View>
+                       
+                        </View>
 
                         <MapView style={styles.mapStyle}
                             initialRegion={{
-                                latitude: 1.1234,
-                                longitude: 1.12345,
+                                latitude: 37.785834,
+                                longitude: -122.406417,
                                 latitudeDelta: 0.0922,
                                 longitudeDelta: 0.0421
                             }}
-                        />
+                            > 
 
-                            {/* <MapView.Marker
-                             coordinate={this.state}
+                            <MapView.Marker
+                             coordinate={{
+                                latitude:'37.785834',
+                                longitude:'-122.406417'}}
                               pinColor={'red'}
-                              /> */}
+                            />
+                      
+                      </MapView>
 
 
 

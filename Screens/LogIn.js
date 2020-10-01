@@ -31,6 +31,8 @@ const LogIn = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [isLoding,setIsLoding] = useState(false)
 
+
+
   const onSignupPress = () => {
 
     if(isLoding){
@@ -41,13 +43,7 @@ const LogIn = ({ navigation }) => {
     setEmail('')
     navigation.navigate("Signup");
   };
- /*const onForgetPassword = () => {
-    firebase.auth().sendPasswordResetEmail(email)
-        .then(() => {
-            Alert.alert("Password reset email has been sent.");
-        }, (error) => {
-            Alert.alert(error.message);
-        });}*/
+
   const onLoginPress = () => {
    
     if(!isLoding){
@@ -57,8 +53,7 @@ const LogIn = ({ navigation }) => {
       alert("Please fill your email");
       setIsLoding(false);
       
-    }else
-if (password == "") {
+    }else if (password == "") {
           alert("Please fill your password");
           setIsLoding(false);  
     } else {
@@ -70,7 +65,19 @@ if (password == "") {
         setEmail(" ");
         setPassword(" ");
         setIsLoding(false)
-        navigation.navigate('Home');
+       // navigation.navigate('Home');
+      //  if (currentUser.Gardner==false){
+      //   navigation.reset({
+      //       index: 0,
+      //       routes: [{ name: 'AmateurRoot' }],
+      //   });}
+   
+      //       // redirect user
+      //       if (currentUser.Gardner==true){
+      //       navigation.reset({
+      //           index: 0,
+      //           routes: [{ name: 'GardnerRoot' }],
+      //       });}
       })
       .catch((error) => {
         setIsLoding(false)

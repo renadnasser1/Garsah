@@ -79,6 +79,9 @@ function AmateurProfile() {
                 <Text style={styles.myPlantText}>My Plants</Text>
             </View>
 
+            <View>
+
+                        </View>
 
 
 
