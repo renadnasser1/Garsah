@@ -10,9 +10,12 @@ import {
     StyleSheet,
     Image,
     ActivityIndicator,
+    TextInput,
     AsyncStorage,
     Dimensions,
+    Button,
 } from "react-native";
+import { Header } from 'react-native-elements'
 
 // Icons
 import { FontAwesome } from '@expo/vector-icons';
@@ -24,39 +27,50 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 
+const EditAmateurProfile = ({ navigation }) => {
 
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+          title:'back',
+          headerLeft: () => (
+            <Button 
+             onPress={() => navigation.pop()}
+             title="Back" />
+          ),
+          headerRight: () => (
+            <Button 
+             onPress={() => navigation.pop()}
+             title="Save" />
+          ),
+        });
+      }, [navigation]);
 
-
-
-const GardnerProfile = ({ navigation }) => {
-
-    const onEditPress = () => {
-        // if (isLoding) {
-          // alert("Please wait while we are processing your request");
-          // return;
-        // }
-        navigation.navigate("EditGardenerProfile");
-        };
-     
     const [name, setName] = useState()
-  //const [phoneNumber,setPhoneNumber] = useState()  
-  //const [bio,setBio] = useState() 
- //const [long,setlong = useState() 
-  //const [lat,setlat = useState() 
-
+    const [Bio, setBio] = useState("Enter your Bio")
 
     const load = async () => {
         try {
 
             let name = await AsyncStorage.getItem("name")
             setName(name)
-          
 
         } catch (err) {
             alert(err)
 
         }
     }
+
+    var user = firebase.auth().currentUser;
+    var uid,email;
+
+    if (user != null) {
+
+        uid = user.uid;
+        email = user.email;
+
+    }
+
+    const usersRef = firebase.firestore().collection("users");
 
     useEffect(() => {
 
@@ -72,84 +86,23 @@ const GardnerProfile = ({ navigation }) => {
         return <AppLoading />;
     }
 
-    return (
+    return(
         <View style={styles.container}>
-            <View style={styles.header}>
-                {/* Image */}
-                <Image source={require("../assets/blank.png")} style={styles.prifileImg} />
 
-                {/* Edit Profile button */}
-                <TouchableOpacity
-                    style={styles.editButton}
-                >
-                    <Text style={styles.editText}   onPress={() => {
-                        onEditPress();
-                      }}> Edit Profile</Text>
-                </TouchableOpacity>
-
-                {/* Profile Information */}
-                <View style={styles.profileInfoView}>
-                    {/* Name */}
-                    <Text style={styles.profileInfoText}>{name}</Text>
-
-                    {/* Bio */}
-                    <Text style={styles.bioText}>About me About me</Text>
-                    {/* Phone number */}
-                    <View style={styles.userInfoContiner}>
-                        <FontAwesome name="phone" size={24} color="gray" />
-                        <Text style={styles.userInfoText}> 966 5555555</Text>
-                    </View>
-
-                    {/* Map */}
-                    <View style={styles.userInfoContiner}>
-                        <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
-                        <Text style={styles.userInfoText}> Riyadh, SA</Text></View>
-                        
-                        <View>
-                       
-                        </View>
-
-                        <MapView style={styles.mapStyle}
-                            initialRegion={{
-                                latitude: 37.785834,
-                                longitude: -122.406417,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421
-                            }}
-                            > 
-
-                            <MapView.Marker
-                             coordinate={{
-                                latitude:'37.785834',
-                                longitude:'-122.406417'}}
-                              pinColor={'red'}
-                            />
-                      
-                      </MapView>
-
-
-
-                    
-
-
-
-                </View>
-
-            </View>
-
-            <View style={styles.body}>
-                <Text style={styles.myPlantText}>My Plants</Text>
-            </View>
-
-
-
-
+             <Button 
+             onPress={() => navigation.pop()}
+             title="Back" />
+              <Button 
+             onPress={() => navigation.pop()}
+             title="Save" />
         </View>
     );
-}
 
-export default GardnerProfile;
+}//end const editamateurprofile
 
+export default EditAmateurProfile;
+
+//StyleSheet
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -171,6 +124,11 @@ const styles = StyleSheet.create({
 
 
     },
+    textInputFiled: {
+        width: 200,
+        fontFamily:'Khmer-MN',
+        fontSize:18,
+      },
     prifileImg: {
         width: 60,
         height: 60,
@@ -256,6 +214,7 @@ const styles = StyleSheet.create({
         height: 250,
         left:-25
       },
+
 
 
 })

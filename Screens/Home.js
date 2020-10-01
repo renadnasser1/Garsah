@@ -23,6 +23,7 @@ const homepage = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      
       title:'Home',
       headerLeft: () => (
         <Button 
