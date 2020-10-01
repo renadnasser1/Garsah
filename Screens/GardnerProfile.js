@@ -26,8 +26,6 @@ import { AppLoading } from 'expo';
 
 
 
-
-
 function GardnerProfile() {
 
 
