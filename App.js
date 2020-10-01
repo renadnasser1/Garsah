@@ -22,6 +22,7 @@ import SplashScreen from "./Screens/SplashScreen";
 import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
+import EditAmateurProfile from "./Screens/EditAmateurProfile";
 
 
 
@@ -48,6 +49,8 @@ firebase.initializeApp(firebaseConfig);
 const AmateurTab = createBottomTabNavigator();
 const GardnerTab = createBottomTabNavigator();
 
+
+//Amateur Tabs
 function AmateurRoot() {
   return (
     <AmateurTab.Navigator
@@ -68,18 +71,19 @@ function AmateurRoot() {
         }}
         component={Home} />
 
-      <AmateurTab.Screen name="Profile"
-        options={{
-          tabBarLabel: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="md-person" color={color} size={size} />
-          ),
-        }}
-
-        component={AmateurProfile} />
+      <AmateurTab.Screen name="profile"
+      options={{
+        tabBarLabel: "Home",
+        tabBarIcon: ({ color, size }) => (
+          <Ionicons name="md-person" color={color} size={size} />
+        ),
+      }}
+        component={AmatureStackNav} />
     </AmateurTab.Navigator>
   );
 }
+
+//Gardner Tabs
 function GardnerRoot() {
   return (
     <GardnerTab.Navigator
@@ -99,18 +103,65 @@ function GardnerRoot() {
         }}
         component={Home} />
 
-      <GardnerTab.Screen name="Profile"
-        options={{
-          tabBarLabel: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="md-person" color={color} size={size} />
-          ),
-        }}
+      <GardnerTab.Screen
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                 <Ionicons name="md-person" color={color} size={size} />
+               ),
+     
+             }} name="profile"
 
-        component={GardnerProfile} />
+        component={GardnerStackNav} />
     </GardnerTab.Navigator>
   );
 }
+
+const GardnerStack = createStackNavigator();
+const AmatureStack = createStackNavigator();
+
+function GardnerStackNav() {
+  return (
+
+    <GardnerStack.Navigator>
+
+
+      <GardnerTab.Screen name="Profile"
+        options={{
+          headerShown: false,
+        }}
+
+        component={GardnerProfile} />
+
+      <Stack.Screen
+        name="EditGardenerProfile"
+        component={EditGardenerProfile}
+      />
+    </GardnerStack.Navigator>
+
+  );
+}
+
+function AmatureStackNav() {
+  return (
+
+    <AmatureStack.Navigator>
+      <AmatureStack.Screen name="Profile"
+        options={{
+          headerShown:false
+        }}
+
+        component={AmateurProfile} />
+
+      <AmatureStack.Screen
+        name="EditAmateurProfile"
+        component={EditAmateurProfile}
+      />
+      </AmatureStack.Navigator>
+
+  );
+}
+
+
 
 const Stack = createStackNavigator();
 

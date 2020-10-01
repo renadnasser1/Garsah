@@ -21,10 +21,19 @@ import { AppLoading } from 'expo';
 
 
 
-function AmateurProfile() {
+const AmateurProfile = ({ navigation }) => {
+    
 
 
     const [name, setName] = useState()
+
+    const onEditPress = () => {
+        // if (isLoding) {
+          // alert("Please wait while we are processing your request");
+          // return;
+        // }
+        navigation.navigate("EditAmateurProfile");
+        };
 
     const load = async () => {
         try {
@@ -61,7 +70,9 @@ function AmateurProfile() {
                 <TouchableOpacity
                     style={styles.editButton}
                 >
-                    <Text style={styles.editText}>Edit Profile</Text>
+                    <Text style={styles.editText} onPress={() => {
+                        onEditPress();
+                      }}>Edit Profile</Text>
                 </TouchableOpacity>
 
                 {/* Profile Information */}
