@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     prifileImg: {
         width: 60,
         height: 60,
-        marginTop:-150,
+        marginTop:-100,
         borderRadius: 50,
         padding: 45,
         marginLeft: 20,
