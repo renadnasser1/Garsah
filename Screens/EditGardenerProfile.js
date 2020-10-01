@@ -103,17 +103,8 @@ const EditGardenerProfile = ({ navigation }) => {
 return (
 
     <View style={styles.container}>
-        <View style={{flexDirection :'row'}}>
-         <Button 
-             onPress={() => navigation.pop()}
-             title="Back" />
-              <Button 
-             onPress={() => navigation.pop()}
-             title="Save" />
-             </View>
 
-
-    <View style={styles.header}>
+    {/* <View style={styles.header}> */}
 
         {/* Image */}
         
@@ -194,7 +185,7 @@ return (
 
         </View>
 
-    </View>
+    {/* </View> */}
 
 
 
@@ -208,11 +199,11 @@ export default EditGardenerProfile;
 const styles = StyleSheet.create({
   container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
         justifyContent: "center",
+        
       },
     header: {
-        paddingTop: 40,
         backgroundColor: 'white',
         shadowColor: "#000",
         shadowOffset: {
@@ -223,8 +214,6 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
 
         elevation: 4,
-
-
     },
     textInputFiled: {
         width: 200,
@@ -234,9 +223,9 @@ const styles = StyleSheet.create({
     prifileImg: {
         width: 60,
         height: 60,
+        marginTop:-150,
         borderRadius: 50,
         padding: 45,
-        marginTop: 20,
         marginLeft: 20,
         shadowColor: "#000",
         shadowOffset: {
