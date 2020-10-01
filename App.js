@@ -21,6 +21,7 @@ import ForgetPassword from "./Screens/ForgetPassword";
 import SplashScreen from "./Screens/SplashScreen";
 import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
+import EditGardenerProfile from "./Screens/EditGardenerProfile";
 
 
 
@@ -122,6 +123,13 @@ render() {
           }}
 
         />
+        <Stack.Screen
+          name="EditGardenerProfile"
+          component={EditGardenerProfile}
+          options={{
+            headerShown: false,
+          }}
+        />
 
         {/* <Stack.Screen
           name="LocationMap"
@@ -145,6 +153,7 @@ render() {
             headerShown: false,
           }}
         />
+         
 
       </Stack.Navigator>
 
