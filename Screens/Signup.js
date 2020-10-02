@@ -123,6 +123,8 @@ const SignupScrean = ({ navigation }) => {
             email: email,
             name: name,
             Gardner: Gardner,
+            Bio: "",
+            Phone: "",
           };
 
           const usersRef = firebase.firestore().collection("users");

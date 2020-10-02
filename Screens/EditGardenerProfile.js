@@ -13,6 +13,7 @@ import {
   AsyncStorage,
   Dimensions,
   Button,
+  Alert,
 } from "react-native";
 import { Header } from "react-native-elements";
 
@@ -27,6 +28,10 @@ import { useFonts } from "expo-font";
 import { AppLoading } from "expo";
 
 const EditGardenerProfile = ({ navigation }) => {
+
+  var name1 = '',Phone1 = '',Bio1 =''
+
+    //Header
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title: "back",
@@ -34,46 +39,170 @@ const EditGardenerProfile = ({ navigation }) => {
         <Button onPress={() => navigation.pop()} title="Back" />
       ),
       headerRight: () => (
-        <Button onPress={() => navigation.pop()} title="Save" />
+        <Button onPress={() => saveChanges()} title="Save" /> //change this to save changes
       ),
     });
   }, [navigation]);
+  //end of header
 
-  const [name, setName] = useState();
-  const [Bio, setBio] = useState("Enter your Bio");
-  const [Phone, setPhone] = useState("Enter your Phone number");
+  //Saving changes
+  const saveChanges = () => {
 
+  
+
+   /* if (fname.length > 16 || fname.length < 2) {
+        alert("Your name shall be minimum of 2 characters & maxiumum of 16 characters");
+        //setIsLoding(false);
+      } else if(!/^[0]?[5]\d{8}$/.test(fPhone)){
+        alert("Please enter the correct number format 05xxxxxxx"); ///^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/
+        //setIsLoding(false);
+      } else if(!/^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/.test(fEmail)){
+        alert("Please enter the correct email format "); 
+        //setIsLoding(false);
+      }*/
+
+
+      var user  = firebase.auth().currentUser;
+      
+         console.log(name1,Bio1,Phone1);
+
+            firebase.firestore().collection('users').doc(user.uid).update({
+              name : name1,
+              Bio: Bio1,
+              Phone : Phone1
+            }).then((response) => {
+              //Storage Async
+              save();
+              // name1= ''
+              // Phone1= ''
+              // Bio1= ''
+              navigation.pop()
+            }).catch((error) => {
+              Alert.alert(error);
+            });
+      
+            
+      
+
+      
+
+  }
+
+  const saveName = (text) => {
+    //console.log(text)
+    name1 = text;
+    //console.log(name1)
+
+  }
+  const saveBio = (text) => {
+  //  console.log(text)
+    Bio1=text;
+  }
+  const savePhone = (text)=>{
+   // console.log(text)
+    Phone1=text;
+  }
+  //constants defineition  use it for displaying??
+  // const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  // const [Bio, setBio] = useState();
+  // const [Phone, setPhone] = useState();
+  //const [uid, setUid] = useState();
+
+
+
+  //get name from asyncstorage
   const load = async () => {
     try {
       let name = await AsyncStorage.getItem("name");
-      setName(name);
+      //let uid = await AsyncStorage.getItem("uid");
+      let email = await AsyncStorage.getItem("email");
+      let Bio = await AsyncStorage.getItem("Bio");
       let Phone = await AsyncStorage.getItem("Phone");
-      setPhone(Phone);
+
+      //setName(name+'');
+      name1 = name;
+      Bio1 = Bio;
+      Phone1 = Phone;
+      //setUid(uid);
+      setEmail(email);
+      //setBio(Bio+'');
+     // setPhone(Phone+'');
+
     } catch (err) {
       alert(err);
     }
   };
 
-  var user = firebase.auth().currentUser;
-  var uid, email;
+  const save = async () => {
+    try {
 
+        await AsyncStorage.setItem("name", name1+'')
+        console.log(name1);
+        await AsyncStorage.setItem("Bio", Bio1+'')
+        console.log(Bio1);
+        await AsyncStorage.setItem("Phone", Phone1+'')
+        console.log(Phone1);
+
+    } catch (err) {
+        alert(err)
+
+    }
+}
+
+
+  //get data from fire store--------------------------------------------------------------------------
+
+  /*var user = firebase.auth().currentUser;
+  var uid, email;
+ const DB = async () => {
   if (user != null) {
     uid = user.uid;
     email = user.email;
+
+    const usersRef = firebase.firestore().collection("users").doc(uid);
+
+    var userProfileConverter = {
+      toFirestore: function (user) {
+          return {
+              Bio: user.Bio,
+              Phone: user.Phone
+          }
+      },
+      fromFirestore: function (snapshot, options) {
+          const data = snapshot.data(options);
+          return new UserInfo( data.Bio, data.Phone)
+      }
   }
+  
+       usersRef.withConverter(userProfileConverter)
+      .get().then(function (doc) {
+      if (doc.exists) {
+          // Convert to UserInfo object
+          var userInfo = doc.data();
 
-  const usersRef = firebase.firestore().collection("users");
-  // var fphone;
-  //  var query = usersRef.where("uid", "==", uid);
-  // fphone = query.
-  /* usersRef
-            .doc(uid)
-            .get()
-            .then(function(doc){ 
-                fphone = doc.Phone;
-            }   
-            );*/
+          //console.log(userInfo.Bio);
+          //console.log(userInfo.Phone);
+  
+          //save(userInfo.Bio + '', userInfo.Phone + '');
 
+        setBio(userInfo.Bio);
+        setPhone(userInfo.Phone);
+
+         //fBio = userInfo.Bio;
+         //console.log(fBio);
+
+         //fPhone = userInfo.Phone;
+
+      } else {
+          console.log("No such document!")
+      }
+      }).catch(function (error) {
+      console.log("Error getting document:", error)
+      });
+  }
+}*/
+//-----------------------------------------------------------------------------------------------------
   useEffect(() => {
     load();
   }, []);
@@ -105,41 +234,53 @@ const EditGardenerProfile = ({ navigation }) => {
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.profileInfoText}>Name: </Text>
           <TextInput
-            placeholder={name}
-            onChangeText={(text) => setName(text)} //backend here?
+          defaultValue ={name1}
+           placeholder={"Enter your name here"}
+            onChangeText={(text) => saveName(text)} //backend here?
             style={styles.profileInfoText}
           ></TextInput>
         </View>
 
         {/* Bio */}
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", paddingRight: 40 }}>
           <Text style={styles.profileInfoText}>Bio: </Text>
           <TextInput
-            //text={Bio}
-            defaultValue={Bio}
-            placeholder={Bio}
-            onChangeText={(text) => setBio(text)} //backend here? //how to get uid from firebase??
-            style={styles.profileInfoText}
+          maxLength={150}
+          multiline={true}
+          textAlignVertical = {'top'}
+           defaultValue={Bio1}
+           placeholder={'Enter your bio here'}
+            onChangeText={(text) => saveBio(text)} //backend here? //how to get uid from firebase??
+          // onChangeText={(text) => this.setState({ fBio:text })}
+           style={styles.profileInfoText}
           ></TextInput>
         </View>
+         {/* onChangeText={(text) => this.setState({ password:text })}  */}
 
         {/* Phone number */}
         <View style={styles.userInfoContiner}>
           <FontAwesome name="phone" size={24} color="black" />
           <Text style={styles.profileInfoText}> : </Text>
           <TextInput
-            placeholder={Phone}
-            onChangeText={(text) => setPhone(text)} //backend here? //how to get uid from firebase??
+           keyboardType = {'number-pad'}
+           defaultValue={Phone1}
+           placeholder={"Enter your Phone number here"}
+            onChangeText={(text) => savePhone(text)} //backend here? //how to get uid from firebase??
             style={styles.profileInfoText}
           ></TextInput>
         </View>
+       
+
 
         {/*email*/}
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.profileInfoText}>Email: </Text>
           <TextInput
-            placeholder={email}
-            // onChangeText={(text) => setEmail(text)}
+          keyboardType = {'email-address'}
+          defaultValue = {email}
+          editable = {false}
+          placeholder={"Enter your email here"}
+          //onChangeText={(text) => setFEmail(text)}
             style={styles.profileInfoText}
           ></TextInput>
         </View>
@@ -173,6 +314,16 @@ const EditGardenerProfile = ({ navigation }) => {
 
 export default EditGardenerProfile;
 
+class UserInfo {
+    constructor(Bio, Phone) {
+        this.Bio = Bio;
+        this.Phone = Phone;
+    }
+    toString() {
+        return this.Bio + ', ' + this.Phone + ', ';
+    }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -199,7 +350,7 @@ const styles = StyleSheet.create({
   prifileImg: {
     width: 60,
     height: 60,
-    marginTop: -150,
+    marginTop: -100,
     borderRadius: 50,
     padding: 45,
     marginLeft: 20,
