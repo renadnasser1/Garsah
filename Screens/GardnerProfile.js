@@ -21,6 +21,7 @@ import {
 // Icons
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons'; 
 
 //Firebase
 import * as firebase from "firebase";
@@ -80,7 +81,7 @@ const GardnerProfile = ({ navigation }) => {
             setName(name)
             setlatNum(Number(lat))
             setlongNum(Number(long))
-            console.log(lat,long)
+            setlat(lat)
    
 
         } catch (err) {
@@ -103,8 +104,7 @@ const GardnerProfile = ({ navigation }) => {
         return <AppLoading />;
     }
 
-    if(latNum){
-
+    if(lat){
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -165,18 +165,16 @@ const GardnerProfile = ({ navigation }) => {
                       
                       </MapView>
 
-
-
-                    
-
-
-
                 </View>
 
             </View>
 
+
             <View style={styles.body}>
                 <Text style={styles.myPlantText}>My Plants</Text>
+                <TouchableOpacity style={styles.plus}>
+            <Entypo name="plus" size={44} color="white" />
+            </TouchableOpacity>
             </View>
 
 
@@ -282,7 +280,7 @@ const styles = StyleSheet.create({
 
     },
     editText: {
-        paddingLeft: 10,
+        paddingLeft: 6,
         paddingTop: 3,
         fontFamily: 'Khmer-MN-Bold',
         color: '#CFD590',
@@ -304,6 +302,19 @@ const styles = StyleSheet.create({
         height: 250,
         left:-25
       },
+
+      plus:{
+          position:'absolute',
+          alignSelf:'flex-end',
+          right:10,
+          bottom:-130,
+          backgroundColor:'#CFD590',
+          borderRadius:100,
+          padding:5,
+          paddingBottom:-4,
+          alignItems:'center'
+
+      }
 
 
 })
