@@ -13,17 +13,26 @@ import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
+
+
+
 function SplashScreen({ navigation }) {
+
+
     const save = async (name, email, gardner, lat ,long,uid) => {
         try {
+
             await AsyncStorage.setItem("name", name)
             await AsyncStorage.setItem("email", email)
             await AsyncStorage.setItem("gardner", gardner)
             await AsyncStorage.setItem("latitude", lat)
             await AsyncStorage.setItem("longitude", long)
             await AsyncStorage.setItem("uid", uid)
+
+
         } catch (err) {
             alert(err)
+
         }
     }
 

@@ -80,9 +80,8 @@ const GardnerProfile = ({ navigation }) => {
             setName(name)
             setlatNum(Number(lat))
             setlongNum(Number(long))
+            setlat(lat)
             console.log(lat,long)
-   
-
         } catch (err) {
             alert(err)
 
@@ -103,7 +102,7 @@ const GardnerProfile = ({ navigation }) => {
         return <AppLoading />;
     }
 
-    if(latNum){
+    if(lat){
 
     return (
         <View style={styles.container}>
