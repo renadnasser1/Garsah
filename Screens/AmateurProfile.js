@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Svg, { Path } from "react-native-svg";
-//import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 //import ImagePicker from 'react-native-image-picker';
 //import storage from '@react-native-firebase/storage';
 //import * as Progress from 'react-native-progress';
@@ -150,7 +150,7 @@ const AmateurProfile = ({ navigation }) => {
 <View>
     <TouchableOpacity style = {styles.imagebutton}
      onPress={() => {
-        navigation.navigate("AddThread");
+        navigation.navigate("Addplant");
             }}>
         <Text  style={styles.uploadtext} >Upload image</Text>
     </TouchableOpacity>
