@@ -130,7 +130,9 @@ const SignupScrean = ({ navigation }) => {
             name: name,
             Gardner: Gardner,
             Longitude:'',
-            Latitude:''
+            Latitude:'',
+            Bio: '',
+            Phone: "",
           };
 
           const usersRef = firebase.firestore().collection("users");
