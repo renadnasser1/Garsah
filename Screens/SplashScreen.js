@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+
+
 import {
     View,
     Text,
     StyleSheet,
     Image,
     AsyncStorage,
+    TouchableOpacity,
 } from "react-native";
 
 import * as firebase from "firebase";
@@ -12,13 +15,26 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 
+
+
 function SplashScreen({ navigation }) {
-    const save = async (name) => {
+
+    const onLogoutPress = async () => {
+        firebase.auth()
+        .signOut()
+        .then(() => navigation.navigate('SplashScreen')).catch((error) => {
+          alert(error)
+        });}
+
+
+    const save = async (name, email, Gardner,Bio,Phone ) => {
         try {
-            // const jsonValue = JSON.stringify(value)
+
             await AsyncStorage.setItem("name", name)
-            //await AsyncStorage.setItem("email", email)
-            //await AsyncStorage.setItem("gardner", gardner)
+            await AsyncStorage.setItem("email", email)
+            await AsyncStorage.setItem("gardner", Gardner)
+            await AsyncStorage.setItem("Bio", Bio)
+            await AsyncStorage.setItem("Phone", Phone)
 
         } catch (err) {
             alert(err)
@@ -50,12 +66,14 @@ function SplashScreen({ navigation }) {
                             return {
                                 name: user.name,
                                 email: user.email,
-                                Gardner: user.Gardner
+                                Gardner: user.Gardner,
+                                Bio: user.Bio,
+                                Phone: user.Phone,
                             }
                         },
                         fromFirestore: function (snapshot, options) {
                             const data = snapshot.data(options);
-                            return new UserInfo(data.name, data.email, data.Gardner)
+                            return new UserInfo(data.name, data.email, data.Gardner, data.Bio, data.Phone)
                         }
                     }
 
@@ -66,22 +84,24 @@ function SplashScreen({ navigation }) {
                                 var userInfo = doc.data();
                                 // Use a UserInfo instance method
                                 console.log(userInfo.name);
-                                
-                               save(userInfo.name+'',userInfo.email+'',userInfo.Gardner+'');
-                       
-                                    // redirect user
-                  if(userInfo.Gardner==false){
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'AmateurRoot' }],
-                    });}
-               
-                        // redirect user
-                        if(userInfo.Gardner==true){
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'GardnerRoot' }],
-                        });}
+
+                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '', userInfo.Bio + '', userInfo.Phone +'');
+
+                                // redirect user
+                                if (userInfo.Gardner == false) {
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'AmateurRoot' }],
+                                    });
+                                }
+
+                                // redirect user
+                                if (userInfo.Gardner == true) {
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'GardnerRoot' }],
+                                    });
+                                }
                             } else {
                                 console.log("No such document!")
                             }
@@ -89,8 +109,8 @@ function SplashScreen({ navigation }) {
                             console.log("Error getting document:", error)
                         });
 
-                   
-               
+
+
 
 
                 } else {
@@ -122,6 +142,12 @@ function SplashScreen({ navigation }) {
         <View style={styles.container}>
             <Image style={styles.logo} source={require("../assets/logo4.png")} />
             <Text style={styles.text}>Gardening is a profession of hope </Text>
+            <TouchableOpacity
+        underlayColor="#fff"
+        onPress={() => onLogoutPress()}
+      >
+        <Text style={styles.ResetText}>LogOut</Text>
+      </TouchableOpacity> 
 
         </View>
     );
@@ -132,10 +158,12 @@ export default SplashScreen;
 
 
 class UserInfo {
-    constructor(name, email, Gardner) {
+    constructor(name, email, Gardner, Bio, Phone) {
         this.name = name;
         this.email = email;
         this.Gardner = Gardner;
+        this.Bio = Bio;
+        this.Phone = Phone;
     }
     toString() {
         return this.name + ', ' + this.Gardner + ', ' + this.email;
