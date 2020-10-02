@@ -23,12 +23,13 @@ import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
-import Addplant from "./Screens/Addplant";
+import AddThread from "./Screens/AddThread";
 
 
 
 // Firebase
 import * as firebase from "firebase";
+import AddPost from "./Screens/AddThread";
 
 
 var firebaseConfig = {
@@ -157,8 +158,8 @@ function AmatureStackNav() {
         component={EditAmateurProfile}
       />
          <AmatureStack.Screen
-        name="Addplant"
-        component={Addplant}
+        name="AddThread"
+        component={AddThread}
       />
      
       </AmatureStack.Navigator>
