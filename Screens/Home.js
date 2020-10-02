@@ -37,7 +37,7 @@ const homepage = ({ navigation }) => {
   const onLogoutPress = async () => {
         firebase.auth()
         .signOut()
-        .then(() => navigation.navigate('Login')).catch((error) => {
+        .then(() => navigation.navigate('SplashScreen')).catch((error) => {
           alert(error)
         });
 

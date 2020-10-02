@@ -65,7 +65,19 @@ const LogIn = ({ navigation }) => {
         setEmail(" ");
         setPassword(" ");
         setIsLoding(false)
-
+       // navigation.navigate('Home');
+      //  if (currentUser.Gardner==false){
+      //   navigation.reset({
+      //       index: 0,
+      //       routes: [{ name: 'AmateurRoot' }],
+      //   });}
+   
+      //       // redirect user
+      //       if (currentUser.Gardner==true){
+      //       navigation.reset({
+      //           index: 0,
+      //           routes: [{ name: 'GardnerRoot' }],
+      //       });}
       })
       .catch((error) => {
         setIsLoding(false)

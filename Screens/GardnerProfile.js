@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
           backgroundColor:'#CFD590',
           borderRadius:100,
           padding:5,
-          paddingBottom:-4,
+          paddingBottom:-5,
           alignItems:'center'
 
       }
