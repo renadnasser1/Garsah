@@ -27,6 +27,7 @@ import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
+import { render } from "react-dom";
 
 
 
@@ -62,18 +63,25 @@ const GardnerProfile = ({ navigation }) => {
 
     }
     const [name, setName] = useState()
+    const [long,setlong] = useState() 
+    const [lat,setlat] = useState() 
+    const [longNum,setlongNum] = useState() 
+    const [latNum,setlatNum] = useState() 
   //const [phoneNumber,setPhoneNumber] = useState()  
   //const [bio,setBio] = useState() 
- //const [long,setlong = useState() 
-  //const [lat,setlat = useState() 
-
 
     const load = async () => {
         try {
 
             let name = await AsyncStorage.getItem("name")
+            let lat = await AsyncStorage.getItem("latitude")
+            let long = await AsyncStorage.getItem("longitude")
+            
             setName(name)
-          
+            setlatNum(Number(lat))
+            setlongNum(Number(long))
+            console.log(lat,long)
+   
 
         } catch (err) {
             alert(err)
@@ -94,6 +102,8 @@ const GardnerProfile = ({ navigation }) => {
     if (!fontsLoaded) {
         return <AppLoading />;
     }
+
+    if(latNum){
 
     return (
         <View style={styles.container}>
@@ -135,8 +145,8 @@ const GardnerProfile = ({ navigation }) => {
                         <MapView style={styles.mapStyle}
                         scrollEnabled	={false}
                             initialRegion={{
-                                latitude: 37.785834,
-                                longitude: -122.406417,
+                                latitude: latNum,
+                                longitude: longNum,
                                 latitudeDelta: 0.0922,
                                 longitudeDelta: 0.0421
                             }}
@@ -148,8 +158,8 @@ const GardnerProfile = ({ navigation }) => {
 
                             <MapView.Marker
                              coordinate={{
-                                latitude:'37.785834',
-                                longitude:'-122.406417'}}
+                                latitude:latNum,
+                                longitude:longNum}}
                               pinColor={'red'}
                             />
                       
@@ -173,7 +183,17 @@ const GardnerProfile = ({ navigation }) => {
 
 
         </View>
-    );
+    );}else{
+
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <Text>refreashing ur information</Text>
+            </View>
+          );
+    }
+
+
+
 }
 
 export default GardnerProfile;
