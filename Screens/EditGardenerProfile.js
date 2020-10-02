@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Svg, { Path } from "react-native-svg";
-import MapView, { Marker } from "react-native-maps";
-
+import Svg, { Path } from "react-native-svg"
+import MapView, { Marker } from 'react-native-maps';
+//import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
+import UserAvatar from 'react-native-user-avatar';
 import {
   View,
   Text,
@@ -15,17 +17,17 @@ import {
   Button,
   Alert,
 } from "react-native";
-import { Header } from "react-native-elements";
+import { Header } from 'react-native-elements'
 
 // Icons
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 //Firebase
 import * as firebase from "firebase";
 //Fonts
-import { useFonts } from "expo-font";
-import { AppLoading } from "expo";
+import { useFonts } from 'expo-font';
+import { AppLoading } from 'expo';
 
 const EditGardenerProfile = ({ navigation }) => {
 
@@ -132,7 +134,7 @@ const EditGardenerProfile = ({ navigation }) => {
     } catch (err) {
       alert(err);
     }
-  };
+  }
 
   const save = async () => {
     try {
@@ -207,16 +209,17 @@ const EditGardenerProfile = ({ navigation }) => {
     load();
   }, []);
 
-  let [fontsLoaded] = useFonts({
-    "Khmer-MN": require("../assets/fonts/KhmerMN-01.ttf"),
-    "Khmer-MN-Bold": require("../assets/fonts/KhmerMN-Bold-02.ttf"),
-  });
+    let [fontsLoaded] = useFonts({
+        'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
+        'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
+    });
 
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
 
-  return (
+return (
+
     <View style={styles.container}>
       {/* <View style={styles.header}> */}
 
@@ -285,32 +288,99 @@ const EditGardenerProfile = ({ navigation }) => {
           ></TextInput>
         </View>
 
-        {/* Map */}
-        <View style={styles.userInfoContiner}>
-          <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
-          <Text style={styles.userInfoText}> Riyadh, SA</Text>
-        </View>
+    {/* <View style={styles.header}> */}
 
-        <MapView
-          style={styles.mapStyle}
-          initialRegion={{
-            latitude: 1.1234,
-            longitude: 1.12345,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        />
+        {/* Image */}
+        
+        <Image source={require("../assets/blank.png")} style={styles.prifileImg} />
+        <Text style = {styles.editText}  
+         onPress={() => { ChangePhoto(); }}>
+          Change Profile Photo</Text>
+        
 
-        {/* <MapView.Marker
+
+        {/* Profile Information */}
+        <View style={styles.profileInfoView}>
+
+            {/* Name */}
+            <View style={{flexDirection :'row'}}>
+            <Text style={styles.profileInfoText}>Name: </Text>
+        <TextInput
+          placeholder={name}
+          onChangeText={(text) => setName(text)} //backend here?
+          style={styles.profileInfoText}
+        ></TextInput>
+      </View>
+           
+
+            {/* Bio */}
+            <View style={{flexDirection :'row'}}>
+            <Text style={styles.profileInfoText}>Bio: </Text>
+            <TextInput
+          placeholder={Bio}
+          onChangeText={(text) => setBio(text)} //backend here? //how to get uid from firebase??
+          style={styles.profileInfoText}
+        ></TextInput>
+          </View>
+
+            {/* Phone number */}
+            <View style={styles.userInfoContiner}>
+                <FontAwesome name="phone" size={24} color="black" />
+                <Text style={styles.profileInfoText}> :  </Text>
+                <TextInput
+          placeholder={"555 555 5555"}
+          onChangeText={(text) => setPhone(text)} //backend here? //how to get uid from firebase??
+          style={styles.profileInfoText}
+        ></TextInput>
+            </View>
+
+            {/*email*/}
+            <View style={{flexDirection :'row'}}>
+            <Text style={styles.profileInfoText}>Email: </Text>
+            <TextInput
+          placeholder={email}
+         // onChangeText={(text) => setEmail(text)} 
+          style={styles.profileInfoText}
+        ></TextInput>
+            </View>
+
+            {/* Map */}
+            <View style={styles.userInfoContiner}>
+                <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
+                <Text style={styles.userInfoText}> Riyadh, SA</Text></View>
+
+                <MapView style={styles.mapStyle}
+                    initialRegion={{
+                        latitude: 1.1234,
+                        longitude: 1.12345,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421
+                    }}
+                />
+
+                    {/* <MapView.Marker
                      coordinate={this.state}
                       pinColor={'red'}
                       /> */}
-      </View>
 
-      {/* </View> */}
-    </View>
-  );
-};
+
+
+            
+
+
+
+        </View>
+
+    </View> 
+
+
+
+</View>
+);
+
+
+}
+
 
 export default EditGardenerProfile;
 
@@ -326,22 +396,55 @@ class UserInfo {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "white",
-    justifyContent: "center",
-  },
-  header: {
-    backgroundColor: "white",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 4.65,
+        flex: 1,
+        backgroundColor: 'white',
+        justifyContent: "center",
+        
+      },
+    header: {
+        backgroundColor: 'white',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 4.65,
 
-    elevation: 4,
-  },
+        elevation: 4,
+    },
+    textInputFiled: {
+        width: 200,
+        fontFamily:'Khmer-MN',
+        fontSize:18,
+      },
+    prifileImg: {
+        width: 60,
+        height: 60,
+        marginTop:-150,
+        borderRadius: 50,
+        padding: 45,
+        marginLeft: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 2,
+            height: 4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 4.65,
+    },
+    profileInfoView: {
+        paddingTop: 25,
+        paddingLeft: 25,
+        paddingRight: 25,
+        borderBottomColor: 'gray'
+
+    },
+    profileInfoText: {
+        fontSize: 25,
+        fontFamily: 'Khmer-MN'
+    },
+  
   textInputFiled: {
     width: 200,
     fontFamily: "Khmer-MN",
@@ -358,72 +461,67 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 2,
       height: 4,
+    }},
+    bioText: {
+        fontSize: 20,
+        fontFamily: 'Khmer-MN',
+        color: 'gray',
+        paddingLeft: 25
+
     },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-  },
-  profileInfoView: {
-    paddingTop: 25,
-    paddingLeft: 25,
-    paddingRight: 25,
-    borderBottomColor: "gray",
-  },
-  profileInfoText: {
-    fontSize: 25,
-    fontFamily: "Khmer-MN",
-  },
-  bioText: {
-    fontSize: 20,
-    fontFamily: "Khmer-MN",
-    color: "gray",
-    paddingLeft: 25,
-  },
 
-  myPlantText: {
-    margin: 20,
-    fontSize: 18,
-    fontFamily: "Khmer-MN-Bold",
-  },
+    myPlantText: {
+        margin: 20,
+        fontSize: 18,
+        fontFamily: 'Khmer-MN-Bold'
 
-  editButton: {
-    position: "absolute",
-    alignSelf: "flex-end",
-    borderWidth: 2,
-    width: 90,
-    borderRadius: 20,
-    backgroundColor: "white",
-    borderColor: "#CFD590",
-    marginTop: 88,
-    right: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 4.65,
 
-    elevation: 4,
-  },
-  editText: {
-    paddingLeft: 10,
-    paddingTop: 3,
-    fontFamily: "Khmer-MN-Bold",
-    color: "#CFD590",
-  },
-  userInfoContiner: {
-    flexDirection: "row",
-  },
+    editButton: {
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        borderWidth: 2,
+        width: 90,
+        borderRadius: 20,
+        backgroundColor: "white",
+        borderColor: '#CFD590',
+        marginTop: 88,
+        right: 30,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 4.65,
 
-  userInfoText: {
-    paddingLeft: 4,
-    fontSize: 20,
-    fontFamily: "Khmer-MN-Bold",
-    color: "gray",
-  },
-  mapStyle: {
-    width: Dimensions.get("window").width,
-    height: 250,
-    left: -25,
-  },
-});
+        elevation: 4,
+
+    },
+    editText: {
+        paddingLeft: 10,
+        paddingTop: 3,
+        fontFamily: 'Khmer-MN-Bold',
+        color: '#CFD590',
+
+    },
+    userInfoContiner: {
+        flexDirection: 'row',
+
+    },
+
+    userInfoText: {
+        paddingLeft: 4,
+        fontSize: 20,
+        fontFamily: 'Khmer-MN-Bold',
+        color: 'gray',
+    },
+    mapStyle: {
+        width: Dimensions.get('window').width,
+        height: 250,
+        left:-25
+      },
+
+
+
+})

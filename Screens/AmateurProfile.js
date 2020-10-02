@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Svg, { Path } from "react-native-svg";
-
+import ImagePicker from 'react-native-image-crop-picker';
+//import ImagePicker from 'react-native-image-picker';
+//import storage from '@react-native-firebase/storage';
+//import * as Progress from 'react-native-progress';
 import {
   View,
   Text,
@@ -9,6 +12,7 @@ import {
   Image,
   ActivityIndicator,
   AsyncStorage,
+ 
 } from "react-native";
 
 //Firebase
@@ -24,7 +28,60 @@ import { AppLoading } from 'expo';
 const AmateurProfile = ({ navigation }) => {
     
 
-
+  const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
+  
+  const selectImage = () => {
+    const options = {
+      maxWidth: 2000,
+      maxHeight: 2000,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    };
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = { uri: response.uri };
+        console.log(source);
+        setImage(source);
+      }
+    });
+  };
+  const uploadImage = async () => {
+    const { uri } = image;
+    const filename = uri.substring(uri.lastIndexOf('/') + 1);
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+    setUploading(true);
+    setTransferred(0);
+    const task = storage()
+      .ref(filename)
+      .putFile(uploadUri);
+    // set progress state
+    task.on('state_changed', snapshot => {
+      setTransferred(
+        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+      );
+    });
+    try {
+      await task;
+    } catch (e) {
+      console.error(e);
+    }
+    setUploading(false);
+    Alert.alert(
+      'Photo uploaded!',
+      'Your photo has been uploaded to Firebase Cloud Storage!'
+    );
+    setImage(null);
+  };
     const [name, setName] = useState()
 
     const onEditPress = () => {
@@ -90,7 +147,14 @@ const AmateurProfile = ({ navigation }) => {
           <Text style={styles.bioText}>About me About me</Text>
         </View>
       </View>
-
+<View>
+    <TouchableOpacity style = {styles.imagebutton}
+     onPress={() => {
+        navigation.navigate("Addplant");
+            }}>
+        <Text  style={styles.uploadtext} >Upload image</Text>
+    </TouchableOpacity>
+</View>
 
     </View>
   );
@@ -172,6 +236,36 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   editText: {
+    paddingLeft: 10,
+    paddingTop: 3,
+    fontFamily: "Khmer-MN-Bold",
+    color: "#CFD590",
+  },
+  imagebutton: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    borderWidth: 2,
+    width: 120,
+    height:40,
+    borderRadius: 20,
+    backgroundColor: "white",
+    borderColor: "#CFD590",
+    marginTop: 450,
+    right: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4.65,
+
+    elevation: 4,
+  
+    
+
+  },
+  uploadtext: {
     paddingLeft: 10,
     paddingTop: 3,
     fontFamily: "Khmer-MN-Bold",
