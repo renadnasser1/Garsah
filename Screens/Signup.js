@@ -41,6 +41,7 @@ const SignupScrean = ({ navigation }) => {
   const RoutePath = () => {
 
     if (Gardner == false) {
+      
       navigation.reset({
         index: 0,
         routes: [{ name: 'AmateurRoot' }],
@@ -53,6 +54,7 @@ const SignupScrean = ({ navigation }) => {
         index: 0,
         routes: [{ name: 'GardnerRoot' }],
       });
+     // navigation.navigate("LocationMap")
     }
   }
 

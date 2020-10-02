@@ -23,8 +23,6 @@ import { AppLoading } from 'expo';
 
 const AmateurProfile = ({ navigation }) => {
     
-
-
     const [name, setName] = useState()
 
     const onEditPress = () => {

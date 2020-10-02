@@ -132,11 +132,24 @@ function GardnerStackNav() {
 
         component={GardnerProfile} />
 
-      <Stack.Screen
+      <GardnerStack.Screen
         name="EditGardenerProfile"
         component={EditGardenerProfile}
       />
+
+      <GardnerStack.Screen
+          name="LocationMap"
+          component={LocationMap}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+
+
     </GardnerStack.Navigator>
+
+
 
   );
 }
@@ -220,21 +233,7 @@ export default class App extends React.Component {
             component={EditGardenerProfile}
           />
 
-          {/* <Stack.Screen
-          name="LocationMap"
-          component={LocationMap}
-          options={{
-            headerShown: false,
-          }}
-        /> */}
 
-          {/* <Stack.Screen
-          name="AccountType"
-          component={AccountType}
-          options={{
-            headerShown: false,
-          }}
-        /> */}
           <Stack.Screen
             name="ForgetPassword"
             component={ForgetPassword}

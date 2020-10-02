@@ -163,23 +163,24 @@ return (
                 <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
                 <Text style={styles.userInfoText}> Riyadh, SA</Text></View>
 
+
                 <MapView style={styles.mapStyle}
-                    initialRegion={{
-                        latitude: 1.1234,
-                        longitude: 1.12345,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421
-                    }}
-                />
+                            initialRegion={{
+                                latitude: 37.785834,
+                                longitude: -122.406417,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421
+                            }}
+                            > 
 
-                    {/* <MapView.Marker
-                     coordinate={this.state}
-                      pinColor={'red'}
-                      /> */}
-
-
-
-            
+                            <MapView.Marker
+                             coordinate={{
+                                latitude:'37.785834',
+                                longitude:'-122.406417'}}
+                              pinColor={'red'}
+                            />
+                      
+                      </MapView>
 
 
 
@@ -223,7 +224,7 @@ const styles = StyleSheet.create({
     prifileImg: {
         width: 60,
         height: 60,
-        marginTop:-150,
+        marginTop:-70,
         borderRadius: 50,
         padding: 45,
         marginLeft: 20,

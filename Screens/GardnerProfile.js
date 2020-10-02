@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Svg, { Path } from "react-native-svg"
 import MapView, { Marker } from 'react-native-maps';
+import { OpenMapDirections } from 'react-native-navigation-directions';
+
 
 
 import {
@@ -12,6 +14,8 @@ import {
     ActivityIndicator,
     AsyncStorage,
     Dimensions,
+    Linking,
+    Alert
 } from "react-native";
 
 // Icons
@@ -31,13 +35,32 @@ import { AppLoading } from 'expo';
 const GardnerProfile = ({ navigation }) => {
 
     const onEditPress = () => {
-        // if (isLoding) {
-          // alert("Please wait while we are processing your request");
-          // return;
-        // }
         navigation.navigate("EditGardenerProfile");
         };
      
+    const onMapPress = (cords) =>{
+
+        var latitude = cords['latitude']
+        var longitude = cords['longitude']
+
+        Alert.alert(
+            '',
+            'will open location',
+            [
+              {text: 'Cancel', onPress: () => console.log('') },
+              {text: 'Open', onPress: () => 
+              OpenMapDirections(null, cords, 'w').then(res => {
+                console.log(res)
+              })
+        
+            
+            },
+        
+            ],
+            { cancelable: false }
+          )
+
+    }
     const [name, setName] = useState()
   //const [phoneNumber,setPhoneNumber] = useState()  
   //const [bio,setBio] = useState() 
@@ -110,12 +133,17 @@ const GardnerProfile = ({ navigation }) => {
                         </View>
 
                         <MapView style={styles.mapStyle}
+                        scrollEnabled	={false}
                             initialRegion={{
                                 latitude: 37.785834,
                                 longitude: -122.406417,
                                 latitudeDelta: 0.0922,
                                 longitudeDelta: 0.0421
                             }}
+
+                            onPress={ (event) => onMapPress(event.nativeEvent.coordinate) 
+                        }
+                            
                             > 
 
                             <MapView.Marker
