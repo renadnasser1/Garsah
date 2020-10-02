@@ -125,17 +125,17 @@ function GardnerStackNav() {
     <GardnerStack.Navigator>
 
 
-      <GardnerTab.Screen name="Profile"
+      <GardnerStack.Screen name="Profile"
         options={{
           headerShown: false,
         }}
 
         component={GardnerProfile} />
 
-      <Stack.Screen
+      {/* <GardnerStack.Screen
         name="EditGardenerProfile"
         component={EditGardenerProfile}
-      />
+      /> */}
     </GardnerStack.Navigator>
 
   );

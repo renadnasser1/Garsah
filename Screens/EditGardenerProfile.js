@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Svg, { Path } from "react-native-svg"
-import MapView, { Marker } from 'react-native-maps';
+import MapView from 'react-native-maps';
 //import ImagePicker from 'react-native-image-picker';
-import ImagePicker from 'react-native-image-crop-picker';
-import UserAvatar from 'react-native-user-avatar';
+//import ImagePicker from 'react-native-image-crop-picker';
+//import UserAvatar from 'react-native-user-avatar';
 import {
   View,
   Text,
