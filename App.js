@@ -72,12 +72,12 @@ function AmateurRoot() {
         component={Home} />
 
       <AmateurTab.Screen name="profile"
-      options={{
-        tabBarLabel: "Home",
-        tabBarIcon: ({ color, size }) => (
-          <Ionicons name="md-person" color={color} size={size} />
-        ),
-      }}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="md-person" color={color} size={size} />
+          ),
+        }}
         component={AmatureStackNav} />
     </AmateurTab.Navigator>
   );
@@ -104,12 +104,12 @@ function GardnerRoot() {
         component={Home} />
 
       <GardnerTab.Screen
-              options={{
-                tabBarIcon: ({ color, size }) => (
-                 <Ionicons name="md-person" color={color} size={size} />
-               ),
-     
-             }} name="profile"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="md-person" color={color} size={size} />
+          ),
+
+        }} name="profile"
 
         component={GardnerStackNav} />
     </GardnerTab.Navigator>
@@ -132,11 +132,16 @@ function GardnerStackNav() {
 
         component={GardnerProfile} />
 
-      <Stack.Screen
+      <GardnerStack.Screen
         name="EditGardenerProfile"
         component={EditGardenerProfile}
       />
+
+
+
     </GardnerStack.Navigator>
+
+
 
   );
 }
@@ -147,7 +152,7 @@ function AmatureStackNav() {
     <AmatureStack.Navigator>
       <AmatureStack.Screen name="Profile"
         options={{
-          headerShown:false
+          headerShown: false
         }}
 
         component={AmateurProfile} />
@@ -157,8 +162,8 @@ function AmatureStackNav() {
         component={EditAmateurProfile}
       />
          <AmatureStack.Screen
-        name="Addplant"
-        component={Addplant}
+        name="AddThread"
+        component={AddThread}
       />
      
       </AmatureStack.Navigator>
@@ -220,26 +225,16 @@ export default class App extends React.Component {
             }}
 
           />
-         {/* <Stack.Screen
-            name="EditGardenerProfile"
-            component={EditGardenerProfile}
-          />*/}
-         
-          {/* <Stack.Screen
-          name="LocationMap"
-          component={LocationMap}
-          options={{
-            headerShown: false,
-          }}
-        /> */}
 
-          {/* <Stack.Screen
-          name="AccountType"
-          component={AccountType}
-          options={{
-            headerShown: false,
-          }}
-        /> */}
+          <Stack.Screen
+            name="LocationMap"
+            component={LocationMap}
+            options={{
+              headerShown: false,
+            }}
+          />
+
+
           <Stack.Screen
             name="ForgetPassword"
             component={ForgetPassword}
