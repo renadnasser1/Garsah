@@ -162,10 +162,10 @@ function AmatureStackNav() {
         name="EditAmateurProfile"
         component={EditAmateurProfile}
       />
-        <AmatureStack.Screen
+        {/*} <AmatureStack.Screen
         name="AddThread"
         component={AddThread}
-      />
+      />*/}
      
       </AmatureStack.Navigator>
 

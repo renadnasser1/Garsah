@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Svg, { Path } from "react-native-svg"
 import MapView, { Marker } from 'react-native-maps';
-import UserAvatar from 'react-native-user-avatar';
+import { OpenMapDirections } from 'react-native-navigation-directions';
+
+
 
 import {
     View,
@@ -12,6 +14,8 @@ import {
     ActivityIndicator,
     AsyncStorage,
     Dimensions,
+    Linking,
+    Alert
 } from "react-native";
 
 // Icons
@@ -23,6 +27,7 @@ import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
+import { render } from "react-dom";
 
 
 
@@ -31,27 +36,52 @@ import { AppLoading } from 'expo';
 const GardnerProfile = ({ navigation }) => {
 
     const onEditPress = () => {
-        // if (isLoding) {
-          // alert("Please wait while we are processing your request");
-          // return;
-        // }
         navigation.navigate("EditGardenerProfile");
         };
      
+    const onMapPress = (cords) =>{
+
+        var latitude = cords['latitude']
+        var longitude = cords['longitude']
+
+        Alert.alert(
+            '',
+            'will open location',
+            [
+              {text: 'Cancel', onPress: () => console.log('') },
+              {text: 'Open', onPress: () => 
+              OpenMapDirections(null, cords, 'w').then(res => {
+                console.log(res)
+              })
+        
+            
+            },
+        
+            ],
+            { cancelable: false }
+          )
+
+    }
     const [name, setName] = useState()
+    const [long,setlong] = useState() 
+    const [lat,setlat] = useState() 
+    const [longNum,setlongNum] = useState() 
+    const [latNum,setlatNum] = useState() 
   //const [phoneNumber,setPhoneNumber] = useState()  
   //const [bio,setBio] = useState() 
- //const [long,setlong = useState() 
-  //const [lat,setlat = useState() 
-  const [avatar,setAvater]=useState("")
-
 
     const load = async () => {
         try {
 
             let name = await AsyncStorage.getItem("name")
+            let lat = await AsyncStorage.getItem("latitude")
+            let long = await AsyncStorage.getItem("longitude")
+            
             setName(name)
-          
+            setlatNum(Number(lat))
+            setlongNum(Number(long))
+            console.log(lat,long)
+   
 
         } catch (err) {
             alert(err)
@@ -73,12 +103,13 @@ const GardnerProfile = ({ navigation }) => {
         return <AppLoading />;
     }
 
+    if(latNum){
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 {/* Image */}
-             <Image source={require("../assets/blank.png")} style={styles.prifileImg} />
-               
+                <Image source={require("../assets/blank.png")} style={styles.prifileImg} />
 
                 {/* Edit Profile button */}
                 <TouchableOpacity
@@ -88,7 +119,7 @@ const GardnerProfile = ({ navigation }) => {
                         onEditPress();
                       }}> Edit Profile</Text>
                 </TouchableOpacity>
-               {/* <UserAvatar style={styles.prifileImg} name={name} bgColors={['#ccc', '#fafafa', '#ccaabb']} />*/}
+
                 {/* Profile Information */}
                 <View style={styles.profileInfoView}>
                     {/* Name */}
@@ -112,18 +143,23 @@ const GardnerProfile = ({ navigation }) => {
                         </View>
 
                         <MapView style={styles.mapStyle}
+                        scrollEnabled	={false}
                             initialRegion={{
-                                latitude: 37.785834,
-                                longitude: -122.406417,
+                                latitude: latNum,
+                                longitude: longNum,
                                 latitudeDelta: 0.0922,
                                 longitudeDelta: 0.0421
                             }}
+
+                            onPress={ (event) => onMapPress(event.nativeEvent.coordinate) 
+                        }
+                            
                             > 
 
                             <MapView.Marker
                              coordinate={{
-                                latitude:'37.785834',
-                                longitude:'-122.406417'}}
+                                latitude:latNum,
+                                longitude:longNum}}
                               pinColor={'red'}
                             />
                       
@@ -147,7 +183,17 @@ const GardnerProfile = ({ navigation }) => {
 
 
         </View>
-    );
+    );}else{
+
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <Text>refreashing ur information</Text>
+            </View>
+          );
+    }
+
+
+
 }
 
 export default GardnerProfile;

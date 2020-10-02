@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+
+
 import {
     View,
     Text,
@@ -12,13 +14,21 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 
+
+
 function SplashScreen({ navigation }) {
-    const save = async (name) => {
+
+
+    const save = async (name, email, gardner, lat ,long,uid) => {
         try {
-            // const jsonValue = JSON.stringify(value)
+
             await AsyncStorage.setItem("name", name)
-            //await AsyncStorage.setItem("email", email)
-            //await AsyncStorage.setItem("gardner", gardner)
+            await AsyncStorage.setItem("email", email)
+            await AsyncStorage.setItem("gardner", gardner)
+            await AsyncStorage.setItem("latitude", lat)
+            await AsyncStorage.setItem("longitude", long)
+            await AsyncStorage.setItem("uid", uid)
+
 
         } catch (err) {
             alert(err)
@@ -30,27 +40,39 @@ function SplashScreen({ navigation }) {
     useEffect(() => {
         navigateToAuthOrHomePage()
     }, [navigation])
+
     function navigateToAuthOrHomePage() {
+
+
         setTimeout(function () {
+
             // feach current user
             firebase.auth().onAuthStateChanged((currentUser) => {
+
                 //check if signed in 
                 if (currentUser != null) {
-                      // get users info
+
+                  
+
+                    // get users info
                     var docRef = firebase.firestore().collection("users").doc(currentUser.uid);
+
                     var userProfileConverter = {
                         toFirestore: function (user) {
                             return {
                                 name: user.name,
                                 email: user.email,
                                 Gardner: user.Gardner,
+                                Latitude: user.Latitude,
+                                Longitude: user.Longitude
                             }
                         },
                         fromFirestore: function (snapshot, options) {
                             const data = snapshot.data(options);
-                            return new UserInfo(data.name, data.email, data.Gardner)
+                            return new UserInfo(data.name, data.email, data.Gardner,data.Longitude,data.Latitude)
                         }
                     }
+
                     docRef.withConverter(userProfileConverter)
                         .get().then(function (doc) {
                             if (doc.exists) {
@@ -58,62 +80,87 @@ function SplashScreen({ navigation }) {
                                 var userInfo = doc.data();
                                 // Use a UserInfo instance method
                                 console.log(userInfo.name);
-                               save(userInfo.name+'',userInfo.email+'',userInfo.Gardner+'');
-                                    // redirect user
-                  if(userInfo.Gardner==false){
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'AmateurRoot' }],
-                    });}
-               
-                        // redirect user
-                        if(userInfo.Gardner==true){
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'GardnerRoot' }],
-                        });}
+
+                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '',userInfo.Latitude + '',userInfo.Longitude + '',currentUser.uid+'');
+
+                                // redirect user
+                                if (userInfo.Gardner == false) {
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'AmateurRoot' }],
+                                    });
+                                }
+
+                                // redirect user
+                                if (userInfo.Gardner == true) {
+                                     if(userInfo.Latitude==''){
+                                        navigation.navigate("LocationMap");
+
+                                     }else{
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'GardnerRoot' }],
+                                    });}
+                                }
                             } else {
                                 console.log("No such document!")
                             }
                         }).catch(function (error) {
                             console.log("Error getting document:", error)
                         });
+
+
+
+
+
                 } else {
                     navigation.reset({
                         index: 0,
                         routes: [{ name: 'Login' }],
                     });
                 }
+
             })
 
         }, 1000)
+
+
     }
+
     let [fontsLoaded] = useFonts({
         'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
         'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
     });
+
     if (!fontsLoaded) {
         return <AppLoading />;
     }
+
+
+
     return (
         <View style={styles.container}>
             <Image style={styles.logo} source={require("../assets/logo4.png")} />
             <Text style={styles.text}>Gardening is a profession of hope </Text>
+
         </View>
     );
+
 }
 
 export default SplashScreen;
 
 
 class UserInfo {
-    constructor(name, email, Gardner) {
+    constructor(name, email, Gardner,Latitude,Longitude) {
         this.name = name;
         this.email = email;
         this.Gardner = Gardner;
+        this.Latitude=Latitude;
+        this.Longitude=Longitude;
     }
     toString() {
-        return this.name + ', ' + this.Gardner + ', ' + this.email;
+        return this.name + ', ' + this.Gardner + ', ' +this.email+', '+this.Latitude+', '+this.Longitude;
     }
 }
 
