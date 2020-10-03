@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import * as Permissions from 'expo-permissions';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {
   StyleSheet,
@@ -9,7 +10,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
-  AsyncStorage,
+  //AsyncStorage,
   Animated
 } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
@@ -70,14 +71,16 @@ export default class App extends React.Component {
       load()
       Alert.alert(
         '',
-        'will open location',
+        'Are you sure you want to save this location? ',
         [
           {
             text: 'Cancel', onPress: () =>
-              console.log('')
+              console.log(''),
+        
+              
           },
           {
-            text: 'Sure', onPress: () =>
+            text: 'Save', onPress: () =>
               updateCords()
 
           },
@@ -186,7 +189,7 @@ export default class App extends React.Component {
       );
     }
 
-  }
+  }//render ends 
 }
 
 const styles = StyleSheet.create({

@@ -38,6 +38,7 @@ const SignupScrean = ({ navigation }) => {
   const [isLoding, setIsLoding] = useState(false);
 
 
+
   const RoutePath = () => {
 
     if (Gardner == false) {
@@ -130,7 +131,9 @@ const SignupScrean = ({ navigation }) => {
             name: name,
             Gardner: Gardner,
             Longitude:'',
-            Latitude:''
+            Latitude:'',
+            Bio:'',
+            Phone:'',
           };
 
           const usersRef = firebase.firestore().collection("users");

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Svg, { Path } from "react-native-svg"
 import MapView, { Marker } from 'react-native-maps';
 import { OpenMapDirections } from 'react-native-navigation-directions';
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 import {
@@ -12,7 +12,7 @@ import {
     StyleSheet,
     Image,
     ActivityIndicator,
-    AsyncStorage,
+   // AsyncStorage,
     Dimensions,
     Linking,
     Alert
@@ -34,7 +34,13 @@ import { render } from "react-dom";
 
 
 const GardnerProfile = ({ navigation }) => {
-
+    const [name, setName] = useState()
+    const [long,setlong] = useState() 
+    const [lat,setlat] = useState() 
+    const [longNum,setlongNum] = useState() 
+    const [latNum,setlatNum] = useState() 
+    const [Phone,setPhone] = useState()  
+    const [Bio,setBio] = useState() 
     const onEditPress = () => {
         navigation.navigate("EditGardenerProfile");
         };
@@ -46,7 +52,7 @@ const GardnerProfile = ({ navigation }) => {
 
         Alert.alert(
             '',
-            'will open location',
+            'Garsah Will redirect you to Google Maps',
             [
               {text: 'Cancel', onPress: () => console.log('') },
               {text: 'Open', onPress: () => 
@@ -62,22 +68,19 @@ const GardnerProfile = ({ navigation }) => {
           )
 
     }
-    const [name, setName] = useState()
-    const [long,setlong] = useState() 
-    const [lat,setlat] = useState() 
-    const [longNum,setlongNum] = useState() 
-    const [latNum,setlatNum] = useState() 
-  //const [phoneNumber,setPhoneNumber] = useState()  
-  //const [bio,setBio] = useState() 
+
 
     const load = async () => {
         try {
 
             let name = await AsyncStorage.getItem("name")
+            let Bio= await AsyncStorage.getItem("Bio")
+            let Phone = await AsyncStorage.getItem("Phone")
             let lat = await AsyncStorage.getItem("latitude")
             let long = await AsyncStorage.getItem("longitude")
-            
             setName(name)
+            setBio(Bio)
+            setPhone(Phone)
             setlatNum(Number(lat))
             setlongNum(Number(long))
             setlat(lat)
@@ -105,6 +108,7 @@ const GardnerProfile = ({ navigation }) => {
     if(lat){
 
     return (
+      
         <View style={styles.container}>
             <View style={styles.header}>
                 {/* Image */}
@@ -125,17 +129,17 @@ const GardnerProfile = ({ navigation }) => {
                     <Text style={styles.profileInfoText}>{name}</Text>
 
                     {/* Bio */}
-                    <Text style={styles.bioText}>About me About me</Text>
+                    <Text style={styles.bioText}>{Bio}</Text>
                     {/* Phone number */}
                     <View style={styles.userInfoContiner}>
                         <FontAwesome name="phone" size={24} color="gray" />
-                        <Text style={styles.userInfoText}> 966 5555555</Text>
+                        <Text style={styles.userInfoText}>{Phone}</Text>
                     </View>
 
                     {/* Map */}
                     <View style={styles.userInfoContiner}>
                         <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
-                        <Text style={styles.userInfoText}> Riyadh, SA</Text></View>
+                        <Text style={styles.userInfoText}> My Location</Text></View>
                         
                         <View>
                        
@@ -182,6 +186,7 @@ const GardnerProfile = ({ navigation }) => {
 
 
         </View>
+     
     );}else{
 
         return (
@@ -193,7 +198,7 @@ const GardnerProfile = ({ navigation }) => {
 
 
 
-}
+}//end class 
 
 export default GardnerProfile;
 
@@ -289,6 +294,7 @@ const styles = StyleSheet.create({
     },
     userInfoContiner: {
         flexDirection: 'row',
+        marginBottom: 5,
 
     },
 

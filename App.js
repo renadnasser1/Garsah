@@ -21,7 +21,7 @@ import ForgetPassword from "./Screens/ForgetPassword";
 import SplashScreen from "./Screens/SplashScreen";
 import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
-//import EditGardenerProfile from "./Screens/EditGardenerProfile";
+import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
 import Addplant from "./Screens/Addplant";
 
@@ -125,17 +125,17 @@ function GardnerStackNav() {
     <GardnerStack.Navigator>
 
 
-      <GardnerTab.Screen name="Profile"
+      <GardnerStack.Screen name="Profile"
         options={{
           headerShown: false,
         }}
 
         component={GardnerProfile} />
 
-     {/* <GardnerStack.Screen
+     { <GardnerStack.Screen
         name="EditGardenerProfile"
         component={EditGardenerProfile}
-      />*/}
+      />}
 
 
 
@@ -160,6 +160,7 @@ function AmatureStackNav() {
      <AmatureStack.Screen
         name="EditAmateurProfile"
         component={EditAmateurProfile}
+       
       />
        {/*  <AmatureStack.Screen
         name="AddThread"
