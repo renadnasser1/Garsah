@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import {
     View,
     Text,
     StyleSheet,
     Image,
-    AsyncStorage,
+    //AsyncStorage,
 } from "react-native";
 
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-
 function SplashScreen({ navigation }) {
-    const save = async (name) => {
+
+
+    const save = async (name, email, gardner, lat ,long,uid,Bio,Phone) => {
         try {
-            // const jsonValue = JSON.stringify(value)
+
             await AsyncStorage.setItem("name", name)
-            //await AsyncStorage.setItem("email", email)
-            //await AsyncStorage.setItem("gardner", gardner)
+            await AsyncStorage.setItem("email", email)
+            await AsyncStorage.setItem("gardner", gardner)
+            await AsyncStorage.setItem("latitude", lat)
+            await AsyncStorage.setItem("longitude", long)
+            await AsyncStorage.setItem("uid", uid)
+            await AsyncStorage.setItem("Bio", Bio)
+            await AsyncStorage.setItem("Phone", Phone)
 
         } catch (err) {
             alert(err)
@@ -42,6 +50,8 @@ function SplashScreen({ navigation }) {
                 //check if signed in 
                 if (currentUser != null) {
 
+                  
+
                     // get users info
                     var docRef = firebase.firestore().collection("users").doc(currentUser.uid);
 
@@ -50,12 +60,16 @@ function SplashScreen({ navigation }) {
                             return {
                                 name: user.name,
                                 email: user.email,
-                                Gardner: user.Gardner
+                                Gardner: user.Gardner,
+                                Latitude: user.Latitude,
+                                Longitude: user.Longitude,
+                                Bio: user.Bio,
+                                Phone:user.Phone,
                             }
                         },
                         fromFirestore: function (snapshot, options) {
                             const data = snapshot.data(options);
-                            return new UserInfo(data.name, data.email, data.Gardner)
+                            return new UserInfo(data.name, data.email, data.Gardner,data.Longitude,data.Latitude,data.Bio,data.Phone)
                         }
                     }
 
@@ -66,22 +80,28 @@ function SplashScreen({ navigation }) {
                                 var userInfo = doc.data();
                                 // Use a UserInfo instance method
                                 console.log(userInfo.name);
-                                
-                               save(userInfo.name+'',userInfo.email+'',userInfo.Gardner+'');
-                       
-                                    // redirect user
-                  if(userInfo.Gardner==false){
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'AmateurRoot' }],
-                    });}
-               
-                        // redirect user
-                        if(userInfo.Gardner==true){
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'GardnerRoot' }],
-                        });}
+
+                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '',userInfo.Latitude + '',userInfo.Longitude + '',currentUser.uid+'',userInfo.Bio+'',userInfo.Phone+'');
+
+                                // redirect user
+                                if (userInfo.Gardner == false) {
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'AmateurRoot' }],
+                                    });
+                                }
+
+                                // redirect user
+                                if (userInfo.Gardner == true) {
+                                     if(userInfo.Latitude==''){
+                                        navigation.navigate("LocationMap");
+
+                                     }else{
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'GardnerRoot' }],
+                                    });}
+                                }
                             } else {
                                 console.log("No such document!")
                             }
@@ -89,8 +109,8 @@ function SplashScreen({ navigation }) {
                             console.log("Error getting document:", error)
                         });
 
-                   
-               
+
+
 
 
                 } else {
@@ -132,13 +152,17 @@ export default SplashScreen;
 
 
 class UserInfo {
-    constructor(name, email, Gardner) {
+    constructor(name, email, Gardner,Latitude,Longitude,Bio,Phone) {
         this.name = name;
         this.email = email;
         this.Gardner = Gardner;
+        this.Latitude=Latitude;
+        this.Longitude=Longitude;
+        this.Bio=Bio;
+        this.Phone=Phone;
     }
     toString() {
-        return this.name + ', ' + this.Gardner + ', ' + this.email;
+        return this.name + ', ' + this.Gardner + ', ' +this.email+', '+this.Latitude+', '+this.Longitude;
     }
 }
 

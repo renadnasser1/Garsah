@@ -38,9 +38,11 @@ const SignupScrean = ({ navigation }) => {
   const [isLoding, setIsLoding] = useState(false);
 
 
+
   const RoutePath = () => {
 
     if (Gardner == false) {
+      
       navigation.reset({
         index: 0,
         routes: [{ name: 'AmateurRoot' }],
@@ -49,10 +51,15 @@ const SignupScrean = ({ navigation }) => {
 
     // redirect user
     if (Gardner == true) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'GardnerRoot' }],
-      });
+      // navigation.reset({
+      //   index: 0,
+      //   routes: [{ name: 'GardnerRoot' }],
+      // });
+    navigation.navigate("LocationMap" ,{
+      name: name,
+      email: email,
+      password: password
+    })
     }
   }
 
@@ -123,8 +130,10 @@ const SignupScrean = ({ navigation }) => {
             email: email,
             name: name,
             Gardner: Gardner,
-            Bio: "",
-            Phone: "",
+            Longitude:'',
+            Latitude:'',
+            Bio:'',
+            Phone:'',
           };
 
           const usersRef = firebase.firestore().collection("users");
@@ -133,7 +142,7 @@ const SignupScrean = ({ navigation }) => {
             .set(data)
             .then(() => {
               setIsLoding(false);
-              RoutePath();
+              //RoutePath();
             })
             .catch((error) => {
               alert(error);
