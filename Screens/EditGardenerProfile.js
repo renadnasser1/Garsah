@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import MapView, { Marker } from 'react-native-maps';
 import AsyncStorage from '@react-native-community/async-storage';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
+import { useIsFocused } from "@react-navigation/native";
+
 import {
   View,
   Text,
@@ -32,51 +37,92 @@ const font = () => {
   });
 }
 
+
 export default class App extends React.Component {
 
   constructor(props){
     super(props)
   }
-  state = {
-    userId:'',
+  state ={
+    
+   userId:'',
    name: '',
    email: '',
    Bio: '' ,
    Phone: '', 
    flag: '',
+   avatar:'',
   }
-  
+
   async componentDidMount() {
+  
     try {
         let userId = await AsyncStorage.getItem("uid")
         let name = await AsyncStorage.getItem("name")
         let email = await AsyncStorage.getItem("email")
         let Bio = await AsyncStorage.getItem("Bio")
         let Phone = await AsyncStorage.getItem("Phone")
+        let avatar = await AsyncStorage.getItem("avatar")
         let flag= true;
-
-        this.setState({userId,name,email,Bio,Phone,flag},() => console.log('State: ', this.state))
-
+        this.setState({userId,name,email,Bio,Phone,avatar},() => console.log('State: ', this.state))
       } catch (err) {
         alert(err)
-      }
+     
+    }//end if 
   }
 
+  // async componentDidMount() {
+  //   try {
+  //       let userId = await AsyncStorage.getItem("uid")
+  //       let name = await AsyncStorage.getItem("name")
+  //       let email = await AsyncStorage.getItem("email")
+  //       let Bio = await AsyncStorage.getItem("Bio")
+  //       let Phone = await AsyncStorage.getItem("Phone")
+  //       let avatar = await AsyncStorage.getItem("avatar")
+  //       let flag= true;
 
+  //       this.setState({userId,name,email,Bio,Phone,avatar},() => console.log('State: ', this.state))
 
- 
- 
+  //     } catch (err) {
+  //       alert(err)
+  //     }
+  // }
+ uploadPhotoAsync = async (uri,filename) => {
+ const path = `photos/${this.uid}/${Date.now()}.jpg`;
+ return new Promise(async(res,rej)=>{
+   const response = await fetch (uri);
+   const file = await response.blob();
+   let upload = firebase.storage().ref(filename).put(file);
+   upload.on(
+   "state.changed", 
+   snapshot => {},
+err=>{
+  rej(err);
+},
+async() => {
+  const url = await upload.snapshot.ref.getDownloadURL();
+
+}
+ );
+ }
+ );
+ }
+
   render() {
-    const {userId, name,email,Bio,Phone,flag} = this.state
-    const updateCords = () => {
+    const {userId, name,email,Bio,Phone,avatar,flag} = this.state
+    const  updateCords = () => {
       //save cloud firestore
       firebase.firestore().collection('users').doc(userId).update({
         name: this.state.name,
         Bio: this.state.Bio,
         Phone: this.state.Phone,
+        avatar:this.state.avatar,
       }).then((response) => {
+//         if (this.state.avatar){
+// remoteUri = await this.uploadPhotoAsync(avatar,avatar/${this.uid})
+//         }
         //Storage Async
-        save()
+        this.save
         //Navigate 
         this.props.navigation.reset({
           index: 0,
@@ -86,20 +132,48 @@ export default class App extends React.Component {
         Alert.alert(error);
       });
     }
-
+  
+    
   
      const save = async () => {
       try {
-  
         await AsyncStorage.setItem("name", this.state.name+'')
         await AsyncStorage.setItem("Bio", this.state.Bio+'')
         await AsyncStorage.setItem("Phone", this.state.Phone+'')
         await AsyncStorage.setItem("email", this.state.email+'')
+       await AsyncStorage.setItem("avatar", this.state.avatar+'')
       } catch (err) {
         alert(err)
       }
     }
 
+   const handleChangeAvatar = async () => {
+      if (Constants.platform.ios) {
+        const { status } = await Permissions.askAsync (Permissions.CAMERA_ROLL);
+        if (status != "granted") {
+        alert("We need permission to use your camera roll");
+        }
+       else {
+          let result = await ImagePicker.launchImageLibraryAsync(
+            {
+              mediaTypes: ImagePicker.MediaTypeOptions.Images,
+              allowsEditing:true,
+              aspect:[4,3]
+              
+              }
+              )  
+              if (!result.cancelled){
+                console.log({avatar})
+            
+               this.setState({avatar:result.uri});
+               //alert("hello")
+               //this.setState({avatar:result.uri})
+           
+                    }
+        
+       }
+      }// end big if   
+    }//end handler
     const update = () => {
      
       Alert.alert(
@@ -113,13 +187,11 @@ export default class App extends React.Component {
           {
             text: 'Save Changes', onPress: () =>
               updateCords()
-
           },
 
         ],
         { cancelable: false }
       )
-
     }
 
     
@@ -134,11 +206,17 @@ export default class App extends React.Component {
         {/* Profile Information */}
         <View style={styles.profileInfoView}>
         <View style = {styles.img}>
-        <Image
-          source={require("../assets/blank.png")}
+         <Image
+          // source={require("../assets/blank.png")}///// here is the error 
+        //source ={this.state({ uri:{avatar} })}
+        source={{ uri: this.state.avatar}}
           style={styles.prifileImg}
-        />
-        <Text style={styles.editText}> Change Profile Photo</Text></View>
+        /> 
+    
+        <Text style={styles.editText}
+        onPress={() => { handleChangeAvatar()}}
+       
+        > Change Profile Photo</Text></View>
 
           {/* Name */}
           <View style={{ flexDirection: "row" }}>
@@ -255,7 +333,7 @@ export default class App extends React.Component {
           {/* Profile Information */}
 
         
-  
+      
       </View> 
 
   </View>
@@ -291,6 +369,7 @@ const styles = StyleSheet.create({
           borderBottomColor: 'gray'
         },
       prifileImg: {
+       
           width: 60,
           height: 60,
           marginTop:-350,
@@ -309,6 +388,7 @@ const styles = StyleSheet.create({
         marginTop:130,
         marginBottom:30,
         marginRight:30,
+     
       },
       profileInfoView: {
           paddingTop: 20,

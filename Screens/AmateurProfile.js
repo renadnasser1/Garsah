@@ -23,7 +23,6 @@ import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-
 const font = () => {
   let [fontsLoaded] = useFonts({
     'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
@@ -60,11 +59,6 @@ export default class App extends React.Component {
         alert(err)
       }
   }
-
-
-
- 
- 
   render() {
     const {userId, name,email,Bio,Phone,flag} = this.state
     const updateCords = () => {

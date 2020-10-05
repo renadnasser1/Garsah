@@ -134,6 +134,7 @@ const SignupScrean = ({ navigation }) => {
             Latitude:'',
             Bio:'',
             Phone:'',
+            avatar:''//check this again 
           };
 
           const usersRef = firebase.firestore().collection("users");

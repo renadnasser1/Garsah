@@ -16,7 +16,7 @@ import { AppLoading } from 'expo';
 function SplashScreen({ navigation }) {
 
 
-    const save = async (name, email, gardner, lat ,long,uid,Bio,Phone) => {
+    const save = async (name, email, gardner, lat ,long,uid,Bio,Phone,avatar) => {
         try {
 
             await AsyncStorage.setItem("name", name)
@@ -27,6 +27,7 @@ function SplashScreen({ navigation }) {
             await AsyncStorage.setItem("uid", uid)
             await AsyncStorage.setItem("Bio", Bio)
             await AsyncStorage.setItem("Phone", Phone)
+            await AsyncStorage.setItem("avatar", avatar)
 
         } catch (err) {
             alert(err)
@@ -65,11 +66,12 @@ function SplashScreen({ navigation }) {
                                 Longitude: user.Longitude,
                                 Bio: user.Bio,
                                 Phone:user.Phone,
+                                avatar:user.avatar
                             }
                         },
                         fromFirestore: function (snapshot, options) {
                             const data = snapshot.data(options);
-                            return new UserInfo(data.name, data.email, data.Gardner,data.Longitude,data.Latitude,data.Bio,data.Phone)
+                            return new UserInfo(data.name, data.email, data.Gardner,data.Longitude,data.Latitude,data.Bio,data.Phone,data.avatar)
                         }
                     }
 
@@ -81,7 +83,7 @@ function SplashScreen({ navigation }) {
                                 // Use a UserInfo instance method
                                 console.log(userInfo.name);
 
-                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '',userInfo.Latitude + '',userInfo.Longitude + '',currentUser.uid+'',userInfo.Bio+'',userInfo.Phone+'');
+                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '',userInfo.Latitude + '',userInfo.Longitude + '',currentUser.uid+'',userInfo.Bio+'',userInfo.Phone+'',userInfo.avatar+'');
 
                                 // redirect user
                                 if (userInfo.Gardner == false) {
@@ -152,7 +154,7 @@ export default SplashScreen;
 
 
 class UserInfo {
-    constructor(name, email, Gardner,Latitude,Longitude,Bio,Phone) {
+    constructor(name, email, Gardner,Latitude,Longitude,Bio,Phone,avatar) {
         this.name = name;
         this.email = email;
         this.Gardner = Gardner;
@@ -160,6 +162,7 @@ class UserInfo {
         this.Longitude=Longitude;
         this.Bio=Bio;
         this.Phone=Phone;
+        this.avatar=avatar;
     }
     toString() {
         return this.name + ', ' + this.Gardner + ', ' +this.email+', '+this.Latitude+', '+this.Longitude;

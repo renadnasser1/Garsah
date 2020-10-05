@@ -41,6 +41,7 @@ const GardnerProfile = ({ navigation }) => {
     const [latNum,setlatNum] = useState() 
     const [Phone,setPhone] = useState()  
     const [Bio,setBio] = useState() 
+    const [avatar,setAvatar] = useState() 
     const onEditPress = () => {
         navigation.navigate("EditGardenerProfile");
         };
@@ -78,13 +79,15 @@ const GardnerProfile = ({ navigation }) => {
             let Phone = await AsyncStorage.getItem("Phone")
             let lat = await AsyncStorage.getItem("latitude")
             let long = await AsyncStorage.getItem("longitude")
+            let avatar = await AsyncStorage.getItem("avatar")
             setName(name)
             setBio(Bio)
             setPhone(Phone)
             setlatNum(Number(lat))
             setlongNum(Number(long))
             setlat(lat)
-            console.log(lat,long)
+            setAvatar(avatar)
+            console.log(lat,long,avatar)
         } catch (err) {
             alert(err)
 
@@ -113,7 +116,10 @@ const GardnerProfile = ({ navigation }) => {
             <View style={styles.header}>
                 {/* Image */}
                 <Image source={require("../assets/blank.png")} style={styles.prifileImg} />
-
+        {/* <Image
+            source={{ uri:{avatar}}}
+             style={styles.prifileImg}
+                 /> */}
                 {/* Edit Profile button */}
                 <TouchableOpacity
                     style={styles.editButton}
