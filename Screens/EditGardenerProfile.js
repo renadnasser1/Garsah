@@ -145,6 +145,7 @@ const EditGardenerProfile = ({ navigation }) => {
         console.log(Bio1);
         await AsyncStorage.setItem("Phone", Phone1+'')
         console.log(Phone1);
+        console.log(name1);
 
     } catch (err) {
         alert(err)
