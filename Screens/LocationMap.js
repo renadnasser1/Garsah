@@ -38,8 +38,12 @@ export default class App extends React.Component {
     super(props)
   }
   state = {
-    latitude: '',
-    longitude: '',
+    Marker:{
+      latitude: '',
+      longitude: '',
+    },
+    userId:'',
+    isEditting:false,
   }
 
 
@@ -51,24 +55,47 @@ export default class App extends React.Component {
       const response = await Permissions.getAsync(Permissions.LOCATION)
     }
 
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude, longitude } }) => this.setState({ latitude, longitude }, () => console.log('State: ', this.state)),
-      (error) => console.log('Error:', error)
+    try {
 
-    )
+      let userId = await AsyncStorage.getItem("uid")
+      let latitude = await AsyncStorage.getItem("latitude")
+      let longitude = await AsyncStorage.getItem("longitude")
+
+      var isEditting;
+      if (latitude==''){
+
+      isEditting = false;
+      navigator.geolocation.getCurrentPosition(
+        ({ coords: { latitude, longitude } }) => this.setState({ Marker:{
+          latitude,longitude
+        }, isEditting,userId}, () => console.log('State: ', this.state)),
+        (error) => console.log('Error:', error) )
+
+      }else{
+      isEditting = true;
+      latitude =  Number(latitude)
+      longitude = Number(longitude)
+
+      this.setState({ Marker:{
+        latitude,longitude
+      } ,isEditting,userId},() => console.log('State: ', this.state)) }
+
+    } catch (err) {
+      alert(err)
+    }
 
   }
 
 
   render() {
 
-    const { latitude, longitude } = this.state
-    var userId;
+    const { Marker , isEditting,userId } = this.state
+
 
 
 
     const onSetLocationPress = () => {
-      load()
+      
       Alert.alert(
         '',
         'Are you sure you want to save this location? ',
@@ -97,38 +124,34 @@ export default class App extends React.Component {
 
       //save cloud firestore
       firebase.firestore().collection('users').doc(userId).update({
-        Latitude: this.state.latitude,
-        Longitude: this.state.longitude,
+        Latitude: this.state.Marker.latitude,
+        Longitude: this.state.Marker.longitude,
       }).then((response) => {
         //Storage Async
         save()
         //Navigate 
+        if(isEditting){
+          this.props.navigation.reset({
+            index: 0,
+            routes: [{ name: 'GardnerRoot' }],
+        })
+
+        }else{
         this.props.navigation.reset({
           index: 0,
           routes: [{ name: 'GardnerRoot' }],
       })
+    }
       }).catch((error) => {
         Alert.alert(error);
       });
     }
 
-
-
-    const load = async () => {
-      try {
-
-        userId = await AsyncStorage.getItem("uid")
-
-      } catch (err) {
-        alert(err)
-      }
-    }
-
     const save = async () => {
       try {
 
-        await AsyncStorage.setItem("latitude", this.state.latitude+'')
-        await AsyncStorage.setItem("longitude", this.state.longitude+'')
+        await AsyncStorage.setItem("latitude", this.state.Marker.latitude+'')
+        await AsyncStorage.setItem("longitude", this.state.Marker.longitude+'')
 
       } catch (err) {
         alert(err)
@@ -139,14 +162,14 @@ export default class App extends React.Component {
 
     // Screen contant
 
-    if (latitude) {
+    if (Marker['latitude']) {
       return (
 
         <View style={styles.container}>
           <MapView style={styles.mapStyle}
             initialRegion={{
-              latitude,
-              longitude,
+              latitude:this.state.Marker.latitude,
+              longitude:this.state.Marker.longitude,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421
             }}
@@ -154,8 +177,8 @@ export default class App extends React.Component {
 
             <MapView.Marker
               draggable
-              coordinate={this.state}
-              onDragEnd={(e) => { this.setState(e.nativeEvent.coordinate) }}
+              coordinate={this.state.Marker}
+              onDragEnd={(e) => { this.setState({Marker:e.nativeEvent.coordinate}) }}
               pinColor={'red'}
             />
 

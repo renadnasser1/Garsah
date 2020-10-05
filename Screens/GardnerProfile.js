@@ -3,6 +3,8 @@ import Svg, { Path } from "react-native-svg"
 import MapView, { Marker } from 'react-native-maps';
 import { OpenMapDirections } from 'react-native-navigation-directions';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useIsFocused } from "@react-navigation/native";
+
 
 
 import {
@@ -42,14 +44,14 @@ const GardnerProfile = ({ navigation }) => {
     const [latNum,setlatNum] = useState() 
     const [Phone,setPhone] = useState()  
     const [Bio,setBio] = useState() 
+
+    const isVisible = useIsFocused();
+
     const onEditPress = () => {
         navigation.navigate("EditGardenerProfile");
         };
      
     const onMapPress = (cords) =>{
-
-        var latitude = cords['latitude']
-        var longitude = cords['longitude']
 
         Alert.alert(
             '',
@@ -93,8 +95,13 @@ const GardnerProfile = ({ navigation }) => {
 
     useEffect(() => {
 
-        load()
-    }, [])
+ 
+
+        if (isVisible) {
+            load()
+            console.log("called when screen open or when back on screen "); 
+         }
+    }, [isVisible])
 
     let [fontsLoaded] = useFonts({
         'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
