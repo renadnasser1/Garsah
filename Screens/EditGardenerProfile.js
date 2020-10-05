@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import MapView, { Marker } from 'react-native-maps';
 import AsyncStorage from '@react-native-community/async-storage';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -7,23 +6,24 @@ import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from "@react-navigation/native";
 
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  ActivityIndicator,
-  TextInput,
-  KeyboardAvoidingView,
- // AsyncStorage,
-  Dimensions,
-  Button,
-  Alert,
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Image,
+    ActivityIndicator,
+    TextInput,
+    KeyboardAvoidingView,
+    // AsyncStorage,
+    Dimensions,
+    Button,
+    Alert,
 } from "react-native";
 
 // Icons
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'; 
 //Firebase
 import * as firebase from "firebase";
 //Fonts
@@ -31,10 +31,10 @@ import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 
 const font = () => {
-  let [fontsLoaded] = useFonts({
-    'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
-    'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
-  });
+    let [fontsLoaded] = useFonts({
+        'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
+        'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
+    });
 }
 
 
@@ -345,145 +345,140 @@ async() => {
 
 const styles = StyleSheet.create({
     container: {
-          flex: 1,
-          backgroundColor: 'white',
-          justifyContent: "center",
-          
+        flex: 1,
+        backgroundColor: 'white',
+        justifyContent: "center",
+
+    },
+    header: {
+        backgroundColor: 'white',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
         },
-      header: {
-          backgroundColor: 'white',
-          shadowColor: "#000",
-          shadowOffset: {
-              width: 0,
-              height: 4,
-          },
-          shadowOpacity: 0.5,
-          shadowRadius: 4.65,
-  
-          elevation: 4,
-      },
-      textInputFiled: {
-          width: 200,
-          fontFamily:'Khmer-MN',
-          fontSize:18,
-          borderBottomColor: 'gray'
-        },
-      prifileImg: {
-       
-          width: 60,
-          height: 60,
-          marginTop:-350,
-          borderRadius: 50,
-          padding: 45,
-          marginLeft: 20,
-          shadowColor: "#000",
-          shadowOffset: {
-              width: 2,
-              height: 4,
-          },
-          shadowOpacity: 0.3,
-          shadowRadius: 4.65,
-      },
-      img : {
-        marginTop:130,
-        marginBottom:30,
-        marginRight:30,
-     
-      },
-      profileInfoView: {
-          paddingTop: 20,
-          paddingLeft: 25,
-          paddingRight: 25,
-          bottom:150,
-  
-          borderBottomColor: 'gray'
-  
-      },
-    
-      
-      profileInfoText: {
-          fontSize: 25,
-          fontFamily: 'Khmer-MN'
-      },
-    
+        shadowOpacity: 0.5,
+        shadowRadius: 4.65,
+
+        elevation: 4,
+    },
     textInputFiled: {
-      width: 200,
-      fontFamily: "Khmer-MN",
-      fontSize: 18,
-      color: "#696969"
+        width: 200,
+        fontFamily: 'Khmer-MN',
+        fontSize: 18,
+        borderBottomColor: 'gray'
     },
     prifileImg: {
-      width: 60,
-      height: 60,
-      marginTop: 10,
-      borderRadius: 50,
-      padding: 45,
-      marginLeft: 20,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 2,
-        height: 4,
-      }},
-      bioText: {
-          fontSize: 20,
-          fontFamily: 'Khmer-MN',
-          color: 'gray',
-          paddingLeft: 25
-  
-      },
-  
-      myPlantText: {
-          margin: 20,
-          fontSize: 18,
-          fontFamily: 'Khmer-MN-Bold'
-  
-      },
-  
-      editButton: {
-          position: 'absolute',
-          alignSelf: 'flex-end',
-          borderWidth: 2,
-          width: 120,
-          borderRadius: 20,
-          backgroundColor: "white",
-          borderColor: '#CFD590',
-          marginTop: 100,
-          right: 120,
-          shadowColor: "#000",
-          shadowOffset: {
-              width: 0,
-              height: 2,
-          },
-          shadowOpacity: 0.1,
-          shadowRadius: 4.65,
-  
-          elevation: 4,
-  
-      },
-      editText: {
-          paddingLeft: 10,
-          paddingTop: 3,
-          fontFamily: 'Khmer-MN-Bold',
-          color: '#CFD590',
-  
-      },
-      userInfoContiner: {
-          flexDirection: 'row',
-  
-      },
-  
-      userInfoText: {
-          paddingLeft: 4,
-          fontSize: 20,
-          fontFamily: 'Khmer-MN-Bold',
-          color: 'gray',
-      },
-      mapStyle: {
-          width: Dimensions.get('window').width,
-          height: 250,
-          left:-50
+        width: 60,
+        height: 60,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 2,
+            height: 4,
         },
-  
-  
-  
-  })
+        shadowOpacity: 0.3,
+        shadowRadius: 4.65,
+    },
+    img: {
+        alignSelf: 'center'
+
+    },
+    profileInfoView: {
+        marginTop: 20,
+        paddingLeft: 25,
+        paddingRight: 25,
+        bottom: 100,
+
+        borderBottomColor: 'gray'
+
+    },
+
+
+    profileInfoText: {
+
+        fontSize: 25,
+        fontFamily: 'Khmer-MN'
+    },
+
+    textInputFiled: {
+        width: 200,
+        fontFamily: "Khmer-MN",
+        fontSize: 18,
+        color: "#696969"
+    },
+    prifileImg: {
+        width: 60,
+        height: 60,
+        marginTop: 10,
+        borderRadius: 50,
+        padding: 45,
+        marginLeft: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 2,
+            height: 4,
+        }
+    },
+    bioText: {
+        fontSize: 20,
+        fontFamily: 'Khmer-MN',
+        color: 'gray',
+        paddingLeft: 25
+
+    },
+
+    myPlantText: {
+        margin: 20,
+        fontSize: 18,
+        fontFamily: 'Khmer-MN-Bold'
+
+    },
+
+    editButton: {
+        alignSelf: 'center',
+        marginTop:20,
+        marginBottom:20,
+        borderWidth: 2,
+        width: 120,
+        borderRadius: 20,
+        backgroundColor: "white",
+        borderColor: '#CFD590',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 4.65,
+
+        elevation: 4,
+
+    },
+    editText: {
+        alignSelf: 'center',
+        paddingTop: 3,
+        fontFamily: 'Khmer-MN-Bold',
+        color: '#CFD590',
+
+    },
+    userInfoContiner: {
+        flexDirection: 'row',
+        backgroundColor:'white'
+
+    },
+
+    userInfoText: {
+        paddingLeft: 4,
+        fontSize: 20,
+        fontFamily: 'Khmer-MN-Bold',
+        color: 'gray',
+    },
+    mapStyle: {
+        width: Dimensions.get('window').width,
+        height: 250,
+        left: -50
+    },
+
+
+
+})

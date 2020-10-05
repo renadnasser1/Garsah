@@ -3,6 +3,8 @@ import Svg, { Path } from "react-native-svg"
 import MapView, { Marker } from 'react-native-maps';
 import { OpenMapDirections } from 'react-native-navigation-directions';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useIsFocused } from "@react-navigation/native";
+
 
 
 import {
@@ -21,6 +23,7 @@ import {
 // Icons
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons'; 
 
 //Firebase
 import * as firebase from "firebase";
@@ -42,18 +45,18 @@ const GardnerProfile = ({ navigation }) => {
     const [Phone,setPhone] = useState()  
     const [Bio,setBio] = useState() 
     const [avatar,setAvatar] = useState() 
+
+    const isVisible = useIsFocused();
+
     const onEditPress = () => {
         navigation.navigate("EditGardenerProfile");
         };
      
     const onMapPress = (cords) =>{
 
-        var latitude = cords['latitude']
-        var longitude = cords['longitude']
-
         Alert.alert(
             '',
-            'Garsah Will redirect you to Google Maps',
+            'Garsah Will redirect you to Maps',
             [
               {text: 'Cancel', onPress: () => console.log('') },
               {text: 'Open', onPress: () => 
@@ -69,7 +72,6 @@ const GardnerProfile = ({ navigation }) => {
           )
 
     }
-
 
     const load = async () => {
         try {
@@ -96,8 +98,13 @@ const GardnerProfile = ({ navigation }) => {
 
     useEffect(() => {
 
-        load()
-    }, [])
+ 
+
+        if (isVisible) {
+            load()
+            console.log("called when screen open or when back on screen "); 
+         }
+    }, [isVisible])
 
     let [fontsLoaded] = useFonts({
         'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
@@ -109,7 +116,6 @@ const GardnerProfile = ({ navigation }) => {
     }
 
     if(lat){
-
     return (
       
         <View style={styles.container}>
@@ -174,18 +180,16 @@ const GardnerProfile = ({ navigation }) => {
                       
                       </MapView>
 
-
-
-                    
-
-
-
                 </View>
 
             </View>
 
+
             <View style={styles.body}>
                 <Text style={styles.myPlantText}>My Plants</Text>
+                <TouchableOpacity style={styles.plus}>
+            <Entypo name="plus" size={44} color="white" />
+            </TouchableOpacity>
             </View>
 
 
@@ -292,7 +296,7 @@ const styles = StyleSheet.create({
 
     },
     editText: {
-        paddingLeft: 10,
+        paddingLeft: 6,
         paddingTop: 3,
         fontFamily: 'Khmer-MN-Bold',
         color: '#CFD590',
@@ -315,6 +319,19 @@ const styles = StyleSheet.create({
         height: 250,
         left:-25
       },
+
+      plus:{
+          position:'absolute',
+          alignSelf:'flex-end',
+          right:10,
+          bottom:-130,
+          backgroundColor:'#CFD590',
+          borderRadius:100,
+          padding:5,
+          paddingBottom:-5,
+          alignItems:'center'
+
+      }
 
 
 })

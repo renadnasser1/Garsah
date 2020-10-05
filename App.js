@@ -26,7 +26,6 @@ import EditAmateurProfile from "./Screens/EditAmateurProfile";
 import Addplant from "./Screens/Addplant";
 
 
-
 // Firebase
 import * as firebase from "firebase";
 
@@ -92,6 +91,15 @@ function GardnerRoot() {
         inactiveTintColor: 'gray',
       }}
     >
+            <GardnerTab.Screen
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="md-person" color={color} size={size} />
+          ),
+
+        }} name="profile"
+
+        component={GardnerStackNav} />
 
       <GardnerTab.Screen
         name="Home"
@@ -103,15 +111,6 @@ function GardnerRoot() {
         }}
         component={Home} />
 
-      <GardnerTab.Screen
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="md-person" color={color} size={size} />
-          ),
-
-        }} name="profile"
-
-        component={GardnerStackNav} />
     </GardnerTab.Navigator>
   );
 }
@@ -137,7 +136,10 @@ function GardnerStackNav() {
         component={EditGardenerProfile}
       />}
 
-
+    {<GardnerStack.Screen
+        name="LocationMap"
+        component={LocationMap}
+      />}
 
     </GardnerStack.Navigator>
 
