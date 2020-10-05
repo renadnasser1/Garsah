@@ -1,38 +1,30 @@
 import React, { useEffect, useState } from 'react';
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {
     View,
     Text,
     StyleSheet,
     Image,
-    AsyncStorage,
-    TouchableOpacity,
+    //AsyncStorage,
 } from "react-native";
 
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-
-
-
 function SplashScreen({ navigation }) {
 
-    const onLogoutPress = async () => {
-        firebase.auth()
-        .signOut()
-        .then(() => navigation.navigate('SplashScreen')).catch((error) => {
-          alert(error)
-        });}
 
-
-    const save = async (name, email, Gardner,Bio,Phone ) => {
+    const save = async (name, email, gardner, lat ,long,uid,Bio,Phone) => {
         try {
 
             await AsyncStorage.setItem("name", name)
             await AsyncStorage.setItem("email", email)
-            await AsyncStorage.setItem("gardner", Gardner)
+            await AsyncStorage.setItem("gardner", gardner)
+            await AsyncStorage.setItem("latitude", lat)
+            await AsyncStorage.setItem("longitude", long)
+            await AsyncStorage.setItem("uid", uid)
             await AsyncStorage.setItem("Bio", Bio)
             await AsyncStorage.setItem("Phone", Phone)
 
@@ -58,6 +50,8 @@ function SplashScreen({ navigation }) {
                 //check if signed in 
                 if (currentUser != null) {
 
+                  
+
                     // get users info
                     var docRef = firebase.firestore().collection("users").doc(currentUser.uid);
 
@@ -67,13 +61,15 @@ function SplashScreen({ navigation }) {
                                 name: user.name,
                                 email: user.email,
                                 Gardner: user.Gardner,
+                                Latitude: user.Latitude,
+                                Longitude: user.Longitude,
                                 Bio: user.Bio,
-                                Phone: user.Phone,
+                                Phone:user.Phone,
                             }
                         },
                         fromFirestore: function (snapshot, options) {
                             const data = snapshot.data(options);
-                            return new UserInfo(data.name, data.email, data.Gardner, data.Bio, data.Phone)
+                            return new UserInfo(data.name, data.email, data.Gardner,data.Longitude,data.Latitude,data.Bio,data.Phone)
                         }
                     }
 
@@ -85,7 +81,7 @@ function SplashScreen({ navigation }) {
                                 // Use a UserInfo instance method
                                 console.log(userInfo.name);
 
-                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '', userInfo.Bio + '', userInfo.Phone +'');
+                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '',userInfo.Latitude + '',userInfo.Longitude + '',currentUser.uid+'',userInfo.Bio+'',userInfo.Phone+'');
 
                                 // redirect user
                                 if (userInfo.Gardner == false) {
@@ -97,10 +93,14 @@ function SplashScreen({ navigation }) {
 
                                 // redirect user
                                 if (userInfo.Gardner == true) {
+                                     if(userInfo.Latitude==''){
+                                        navigation.navigate("LocationMap");
+
+                                     }else{
                                     navigation.reset({
                                         index: 0,
                                         routes: [{ name: 'GardnerRoot' }],
-                                    });
+                                    });}
                                 }
                             } else {
                                 console.log("No such document!")
@@ -142,12 +142,6 @@ function SplashScreen({ navigation }) {
         <View style={styles.container}>
             <Image style={styles.logo} source={require("../assets/logo4.png")} />
             <Text style={styles.text}>Gardening is a profession of hope </Text>
-            <TouchableOpacity
-        underlayColor="#fff"
-        onPress={() => onLogoutPress()}
-      >
-        <Text style={styles.ResetText}>LogOut</Text>
-      </TouchableOpacity> 
 
         </View>
     );
@@ -158,15 +152,17 @@ export default SplashScreen;
 
 
 class UserInfo {
-    constructor(name, email, Gardner, Bio, Phone) {
+    constructor(name, email, Gardner,Latitude,Longitude,Bio,Phone) {
         this.name = name;
         this.email = email;
         this.Gardner = Gardner;
-        this.Bio = Bio;
-        this.Phone = Phone;
+        this.Latitude=Latitude;
+        this.Longitude=Longitude;
+        this.Bio=Bio;
+        this.Phone=Phone;
     }
     toString() {
-        return this.name + ', ' + this.Gardner + ', ' + this.email;
+        return this.name + ', ' + this.Gardner + ', ' +this.email+', '+this.Latitude+', '+this.Longitude;
     }
 }
 

@@ -21,9 +21,7 @@ const ForgetPassword = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const onForgetPassword = () => {
       if (email == "") {
-        alert("Please fill your email so we can reset your password");
-        
-        
+        alert("Please fill your email so we can reset your password"); 
       }else{
     firebase.auth().sendPasswordResetEmail(email)
         .then(() => {
