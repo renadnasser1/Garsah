@@ -122,7 +122,7 @@ async() => {
 // remoteUri = await this.uploadPhotoAsync(avatar,avatar/${this.uid})
 //         }
         //Storage Async
-        this.save
+        save()
         //Navigate 
         this.props.navigation.reset({
           index: 0,
@@ -207,8 +207,8 @@ async() => {
         <View style={styles.profileInfoView}>
         <View style = {styles.img}>
          <Image
-          // source={require("../assets/blank.png")}///// here is the error 
-        //source ={this.state({ uri:{avatar} })}
+           //source={require("../assets/blank.png")}///// here is the error 
+        // source ={this.state({ uri:{avatar} })}
         source={{ uri: this.state.avatar}}
           style={styles.prifileImg}
         /> 

@@ -71,11 +71,7 @@ function SplashScreen({ navigation }) {
                         },
                         fromFirestore: function (snapshot, options) {
                             const data = snapshot.data(options);
-<<<<<<< HEAD
                             return new UserInfo(data.name, data.email, data.Gardner,data.Longitude,data.Latitude,data.Bio,data.Phone,data.avatar)
-=======
-                            return new UserInfo(data.name, data.email, data.Gardner,data.Latitude,data.Longitude,data.Bio,data.Phone)
->>>>>>> 967419d0427e5d4c91753ce5da9bf25121295712
                         }
                     }
 
