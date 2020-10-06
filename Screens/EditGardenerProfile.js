@@ -43,15 +43,14 @@ export default class App extends React.Component {
   constructor(props){
     super(props)
   }
-  state ={
-    
+  state ={  
    userId:'',
    name: '',
    email: '',
    Bio: '' ,
    Phone: '', 
-   flag: '',
-   avatar:'',
+   isLoading: false,
+   avatar:'../assets/blank.png',
   }
 
   async componentDidMount() {
@@ -63,60 +62,61 @@ export default class App extends React.Component {
         let Bio = await AsyncStorage.getItem("Bio")
         let Phone = await AsyncStorage.getItem("Phone")
         let avatar = await AsyncStorage.getItem("avatar")
-        let flag= true;
+     
         this.setState({userId,name,email,Bio,Phone,avatar},() => console.log('State: ', this.state))
       } catch (err) {
         alert(err)
      
     }//end if 
   }
-
-  // async componentDidMount() {
-  //   try {
-  //       let userId = await AsyncStorage.getItem("uid")
-  //       let name = await AsyncStorage.getItem("name")
-  //       let email = await AsyncStorage.getItem("email")
-  //       let Bio = await AsyncStorage.getItem("Bio")
-  //       let Phone = await AsyncStorage.getItem("Phone")
-  //       let avatar = await AsyncStorage.getItem("avatar")
-  //       let flag= true;
-
-  //       this.setState({userId,name,email,Bio,Phone,avatar},() => console.log('State: ', this.state))
-
-  //     } catch (err) {
-  //       alert(err)
-  //     }
-  // }
- uploadPhotoAsync = async (uri,filename) => {
- const path = `photos/${this.uid}/${Date.now()}.jpg`;
- return new Promise(async(res,rej)=>{
-   const response = await fetch (uri);
-   const file = await response.blob();
-   let upload = firebase.storage().ref(filename).put(file);
-   upload.on(
-   "state.changed", 
-   snapshot => {},
-err=>{
-  rej(err);
-},
-async() => {
-  const url = await upload.snapshot.ref.getDownloadURL();
-
-}
- );
- }
- );
- }
+ 
 
   render() {
-    const {userId, name,email,Bio,Phone,avatar,flag} = this.state
-    const  updateCords = () => {
+    const {userId, name,email,Bio,Phone,flag,avatar} = this.state
+
+   
+    const uploadPhotoAsync = async (uri,filename) => {
+        console.log('hi')
+   
+    return new Promise(async(res,rej)=>{
+      const response = await fetch (uri);
+      const file = await response.blob();
+      let upload = firebase.storage().ref(filename).put(file);
+      upload.on(
+      "state.changed", 
+      snapshot => {},
+   err=>{
+     rej(err);
+   },
+   async() => {
+     const url = await upload.snapshot.ref.getDownloadURL();
+    
+   
+   });
+    }
+    );
+    }
+
+    const  updateCords = async () =>{
+
+     try{
+            console.log('helllo user id',this.state.userId)
+        
+        var remoteUri = await uploadPhotoAsync(this.state.avatar,`avatars/${this.state.userId}`);
+        console.log('remoteurl'+remoteUri)
+        let db = await this.firestore.collection('users').doc(this.state.userId)
+        db.update({avatar:remoteUri})
+       this.setState({avatar:remoteUri});
+
+    }catch(error){
+        Alert.alert(error)
+    }
+
       //save cloud firestore
       firebase.firestore().collection('users').doc(userId).update({
         name: this.state.name,
         Bio: this.state.Bio,
         Phone: this.state.Phone,
-        avatar:this.state.avatar,
       }).then((response) => {
 //         if (this.state.avatar){
 // remoteUri = await this.uploadPhotoAsync(avatar,avatar/${this.uid})
@@ -148,27 +148,21 @@ async() => {
     }
 
    const handleChangeAvatar = async () => {
+
+
       if (Constants.platform.ios) {
         const { status } = await Permissions.askAsync (Permissions.CAMERA_ROLL);
         if (status != "granted") {
         alert("We need permission to use your camera roll");
-        }
-       else {
-          let result = await ImagePicker.launchImageLibraryAsync(
-            {
+        } else {
+          let result = await ImagePicker.launchImageLibraryAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.Images,
               allowsEditing:true,
               aspect:[4,3]
               
-              }
-              )  
+              } )  
               if (!result.cancelled){
-                console.log({avatar})
-            
-               this.setState({avatar:result.uri});
-               //alert("hello")
-               //this.setState({avatar:result.uri})
-           
+                this.setState({avatar:result.uri});
                     }
         
        }
@@ -305,11 +299,7 @@ async() => {
   <View style={styles.profileInfoText} >
       <View style={styles.userInfoContiner}>
                   <FontAwesome5 name="map-marker-alt" size={25} color="gray" />
-                  <Text style={styles.userInfoText}    onPress={() => {    this.props.navigation.reset({
-          index: 0,
-          routes: [{ name: 'LocationMap' }],
-      }) 
-                
+                  <Text style={styles.userInfoText}    onPress={() => {    this.props.navigation.navigate('LocationMap')
               }}
                   > Edit Location</Text></View>
                   <View

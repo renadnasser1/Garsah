@@ -37,6 +37,8 @@ import { render } from "react-dom";
 
 
 const GardnerProfile = ({ navigation }) => {
+
+    const [uid, setUid] = useState()
     const [name, setName] = useState()
     const [long,setlong] = useState() 
     const [lat,setlat] = useState() 
@@ -75,34 +77,67 @@ const GardnerProfile = ({ navigation }) => {
 
     const load = async () => {
         try {
-
+            let userId = await AsyncStorage.getItem("uid")
             let name = await AsyncStorage.getItem("name")
             let Bio= await AsyncStorage.getItem("Bio")
             let Phone = await AsyncStorage.getItem("Phone")
             let lat = await AsyncStorage.getItem("latitude")
             let long = await AsyncStorage.getItem("longitude")
-            let avatar = await AsyncStorage.getItem("avatar")
+
+            setUid(userId)
             setName(name)
             setBio(Bio)
             setPhone(Phone)
             setlatNum(Number(lat))
             setlongNum(Number(long))
             setlat(lat)
-            setAvatar(avatar)
-            console.log(lat,long,avatar)
+            console.log(lat,long)
         } catch (err) {
             alert(err)
 
         }
     }
 
+    const getImage = async () =>{
+
+        let currentUser = firebase.auth().currentUser.uid
+
+ console.log("userid"+currentUser)
+let imageRef = firebase.storage().ref('avatars/'+currentUser);
+imageRef.getDownloadURL().then((url) => {
+    //from url you can fetched the uploaded image easily
+    console.log(url)
+    setAvatar(url);
+  })
+  .catch((e) => console.log('getting downloadURL of image error => ', e));
+
+        // let ref = firebase.storage().ref('avatars/'+uid);
+        // ref.getDownloadURL().then(function(url) {
+        //     console('hhihihi')
+        //     // `url` is the download URL for 'images/stars.jpg'
+          
+        //     // This can be downloaded directly:
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.responseType = 'blob';
+        //     xhr.onload = function(event) {
+        //       var blob = xhr.response;
+        //     };
+        //     xhr.open('GET', url);
+        //     xhr.send();
+          
+        //     // Or inserted into an <img> element:
+        //     console.log('URLLLL',url)
+        //     setAvatar(url)
+        //   }).catch(function(error) {
+        //     // Handle any errors
+        //   });
+        }
+
     useEffect(() => {
-
- 
-
         if (isVisible) {
             load()
-            console.log("called when screen open or when back on screen "); 
+            getImage()
+            console.log({avatar}); 
          }
     }, [isVisible])
 
@@ -115,17 +150,22 @@ const GardnerProfile = ({ navigation }) => {
         return <AppLoading />;
     }
 
-    if(lat){
+    
+
+    if(avatar){
     return (
       
         <View style={styles.container}>
             <View style={styles.header}>
                 {/* Image */}
-                <Image source={require("../assets/blank.png")} style={styles.prifileImg} />
-        {/* <Image
-            source={{ uri:{avatar}}}
-             style={styles.prifileImg}
+                <Image source={{uri:avatar}} style={styles.prifileImg} />
+
+                {/* <Image
+                 source={{ uri:{avatar}}}
+                 style={styles.prifileImg}
                  /> */}
+
+
                 {/* Edit Profile button */}
                 <TouchableOpacity
                     style={styles.editButton}

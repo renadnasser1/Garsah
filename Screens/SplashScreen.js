@@ -71,7 +71,7 @@ function SplashScreen({ navigation }) {
                         },
                         fromFirestore: function (snapshot, options) {
                             const data = snapshot.data(options);
-                            return new UserInfo(data.name, data.email, data.Gardner,data.Longitude,data.Latitude,data.Bio,data.Phone,data.avatar)
+                            return new UserInfo(data.name, data.email, data.Gardner,data.Latitude,data.Longitude,data.Bio,data.Phone,data.avatar)
                         }
                     }
 
