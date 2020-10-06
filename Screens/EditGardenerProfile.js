@@ -81,24 +81,28 @@ export default class App extends React.Component {
     return new Promise(async(res,rej)=>{
       const response = await fetch (uri);
       const file = await response.blob();
+      //const file = document.getElementById("file").files[0];
       let upload = firebase.storage().ref(filename).put(file);
+      console.log('hi before upload')
       upload.on(
-      "state.changed", 
-      snapshot => {},
+      "state_changed", 
+      snapshot => {
+      },
    err=>{
      rej(err);
    },
    async() => {
-     const url = await upload.snapshot.ref.getDownloadURL();
-    
-   
-   });
+    console.log("hello3")
+    const url = await upload.snapshot.ref.getDownloadURL();
+    console.log("hello4")
+  
+  }
+ );
     }
     );
     }
 
     const  updateCords = async () =>{
-
      try{
             console.log('helllo user id',this.state.userId)
         
@@ -106,22 +110,18 @@ export default class App extends React.Component {
         console.log('remoteurl'+remoteUri)
         let db = await this.firestore.collection('users').doc(this.state.userId)
         db.update({avatar:remoteUri})
-       this.setState({avatar:remoteUri});
+        this.setState({avatar:remoteUri});
 
     }catch(error){
         Alert.alert(error)
     }
-
       //save cloud firestore
       firebase.firestore().collection('users').doc(userId).update({
         name: this.state.name,
         Bio: this.state.Bio,
         Phone: this.state.Phone,
       }).then((response) => {
-//         if (this.state.avatar){
-// remoteUri = await this.uploadPhotoAsync(avatar,avatar/${this.uid})
-//         }
-        //Storage Async
+       
         save()
         //Navigate 
         this.props.navigation.reset({
@@ -134,7 +134,6 @@ export default class App extends React.Component {
     }
   
     
-  
      const save = async () => {
       try {
         await AsyncStorage.setItem("name", this.state.name+'')

@@ -152,7 +152,7 @@ imageRef.getDownloadURL().then((url) => {
 
     
 
-    if(avatar){
+    //if(avatar){
     return (
       
         <View style={styles.container}>
@@ -237,14 +237,15 @@ imageRef.getDownloadURL().then((url) => {
 
         </View>
      
-    );}else{
+    );
+//}else{
 
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text>refreashing ur information</Text>
-            </View>
-          );
-    }
+    //     return (
+    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    //           <Text>We are still processing your information </Text>
+    //         </View>
+    //       );
+    // }
 
 
 
