@@ -98,6 +98,18 @@ export default class App extends React.Component {
     }
 
     const  updateCords = async () =>{
+      //validations
+      // if (name == "") {
+      //   alert("please enter all required inforamtion");
+      // } else if (name.length < 2) {
+      //   alert("Your name need to be at least 2 characters.");
+      // } else if (/[^0-9]/.test(Phone)) {
+      //   alert("Phone need to contain only numbers.");
+      // } else if (!Phone.startsWith("05")) {
+      //   alert("please enter the correct phone number format 05xxxxxxxx");
+      // } else if (Phone.length < 10) {
+      //   alert("Your phone need to be at least 10 number.");
+      // } else
 
      try{
             console.log('helllo user id',this.state.userId)
