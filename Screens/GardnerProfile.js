@@ -181,7 +181,7 @@ imageRef.getDownloadURL().then((url) => {
                     {/* Bio */}
                     <Text style={styles.bioText}>{Bio}</Text>
                     {/* Phone number */}
-                    <View style={styles.userInfoContiner}>
+                    <View style={styles.userInfoContiner} >
                         <FontAwesome name="phone" size={24} color="gray" />
                         <Text style={styles.userInfoText}>{Phone}</Text>
                     </View>
@@ -197,6 +197,12 @@ imageRef.getDownloadURL().then((url) => {
 
                         <MapView style={styles.mapStyle}
                         scrollEnabled	={false}
+                        intialRegion={{
+                            latitude: latNum,
+                            longitude: longNum,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421
+                        }}
                         region={{
                                 latitude: latNum,
                                 longitude: longNum,
@@ -225,9 +231,9 @@ imageRef.getDownloadURL().then((url) => {
 
             <View style={styles.body}>
                 <Text style={styles.myPlantText}>My Plants</Text>
-                <TouchableOpacity style={styles.plus}>
+                {/* <TouchableOpacity style={styles.plus}>
             <Entypo name="plus" size={44} color="white" />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             </View>
 
 
@@ -258,7 +264,7 @@ const styles = StyleSheet.create({
 
     },
     header: {
-        paddingTop: 60,
+        paddingTop: 5,
         backgroundColor: 'white',
         shadowColor: "#000",
         shadowOffset: {
@@ -321,7 +327,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: "white",
         borderColor: '#CFD590',
-        marginTop: 88,
+        marginTop: 40,
         right: 30,
         shadowColor: "#000",
         shadowOffset: {
