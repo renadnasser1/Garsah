@@ -7,6 +7,8 @@ import { useIsFocused } from "@react-navigation/native";
 
 
 
+
+
 import {
     View,
     Text,
@@ -31,6 +33,7 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 import { render } from "react-dom";
+import { call } from "react-native-reanimated";
 
 
 
@@ -75,7 +78,9 @@ const GardnerProfile = ({ navigation }) => {
         )
 
     }
-
+// const call=() =>{
+//     Linking.openURL(`tel:${Phone}`)
+// }
     const load = async () => {
         try {
             let userId = await AsyncStorage.getItem("uid")
@@ -162,9 +167,11 @@ const GardnerProfile = ({ navigation }) => {
                     {/* Bio */}
                     <Text style={styles.bioText}>{Bio}</Text>
                     {/* Phone number */}
-                    <View style={styles.userInfoContiner} >
-                        <FontAwesome name="phone" size={24} color="gray" />
-                        <Text style={styles.userInfoText}>{Phone}</Text>
+                    <View style={styles.userInfoContiner}>
+                        <FontAwesome name="phone" size={24} color="gray"/>
+                        <Text style={styles.userInfoText} 
+                        //   onPress={ (event) => {call(event)}}
+                          >{Phone}</Text>
                     </View>
 
                     {/* Map */}
