@@ -204,7 +204,10 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>We need your permission!</Text>
+          <Text style={styles.permission}>We need your permission!</Text>
+          <Text style={styles.permissionSteps}>Go to Settings > Privacy > Location Services.</Text>
+          <Text style={styles.permissionText}>Make sure that Location Services is on. Scroll down to find the app. Tap Garsah and select an option: ALWAYS</Text>
+          
         </View>
       );
     }
@@ -297,4 +300,23 @@ const styles = StyleSheet.create({
 
     elevation: 2,
   },
+  permission:{
+
+    fontFamily:'Khmer-MN-Bold',
+    fontSize:22
+  },
+
+  permissionSteps:{
+    color:'#3D6A4B',
+    fontFamily:'Khmer-MN-Bold',
+    fontSize:18
+
+  },
+
+  permissionText:{
+    fontFamily:'Khmer-MN',
+    fontSize:17,
+    textAlign:'center',
+  paddingLeft:20,
+  paddingRight:20 },
 });
