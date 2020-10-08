@@ -77,51 +77,57 @@ export default class App extends React.Component {
    
     const uploadPhotoAsync = async (uri,filename) => {
         console.log('hi')
-   
     return new Promise(async(res,rej)=>{
       const response = await fetch (uri);
       const file = await response.blob();
+      //const file = document.getElementById("file").files[0];
       let upload = firebase.storage().ref(filename).put(file);
+      console.log('hi before upload')
       upload.on(
-      "state.changed", 
-      snapshot => {},
+      "state_changed", 
+      snapshot => {
+      },
    err=>{
      rej(err);
    },
    async() => {
-     const url = await upload.snapshot.ref.getDownloadURL();
-    
-   
-   });
+    console.log("hello3")
+    //const url = await upload.snapshot.ref.getDownloadURL();
+   // return url;
+    getImage();
+    console.log("hello4")
+  
+  }
+ );
     }
     );
     }
 
     const  updateCords = async () =>{
+      //validations
+    
 
      try{
             console.log('helllo user id',this.state.userId)
-        
-        var remoteUri = await uploadPhotoAsync(this.state.avatar,`avatars/${this.state.userId}`);
-        console.log('remoteurl'+remoteUri)
+       
+         var remoteUri = await uploadPhotoAsync(this.state.avatar,`avatars/${this.state.userId}`);
+
+         console.log('remoteurl'+remoteUri)
         let db = await this.firestore.collection('users').doc(this.state.userId)
         db.update({avatar:remoteUri})
-       this.setState({avatar:remoteUri});
+        //getImage();
+        this.setState({avatar:remoteUri});
 
     }catch(error){
         Alert.alert(error)
     }
-
       //save cloud firestore
       firebase.firestore().collection('users').doc(userId).update({
         name: this.state.name,
         Bio: this.state.Bio,
         Phone: this.state.Phone,
       }).then((response) => {
-//         if (this.state.avatar){
-// remoteUri = await this.uploadPhotoAsync(avatar,avatar/${this.uid})
-//         }
-        //Storage Async
+       
         save()
         //Navigate 
         this.props.navigation.reset({
@@ -134,7 +140,6 @@ export default class App extends React.Component {
     }
   
     
-  
      const save = async () => {
       try {
         await AsyncStorage.setItem("name", this.state.name+'')
@@ -187,6 +192,37 @@ export default class App extends React.Component {
         { cancelable: false }
       )
     }
+    const getImage = async () =>{
+      
+//console.log("userid"+currentUser)
+let imageRef = firebase.storage().ref('avatars/'+userId);
+imageRef.getDownloadURL().then((url) => {
+  //from url you can fetched the uploaded image easily
+  console.log("get image "+url)
+  this.setState({avatar:url});
+})
+.catch((e) => console.log('getting downloadURL of image error => ', e));}
+
+
+    const Validate = ()=>{
+      if (name == "") {
+        alert("please enter your name");
+      } else if (name.length < 2) {
+        alert("Your name need to be at least 2 characters.");
+      } else if (/[^0-9]/.test(Phone)) {
+        alert("Phone need to contain only numbers.");
+      } else if (!Phone.startsWith("05")) {
+        alert("please enter the correct phone number format 05xxxxxxxx");
+      } else if (Phone.length < 10) {
+        alert("Your phone need to be at least 10 number.");
+      } 
+      else if ((Phone.length > 10)){
+        alert("Your phone need to be maxiumum of 10 numbers.");
+      }
+      else {
+        update();
+      }
+    }
 
     
     // Screen contant
@@ -201,8 +237,8 @@ export default class App extends React.Component {
         <View style={styles.profileInfoView}>
         <View style = {styles.img}>
          <Image
-          // source={require("../assets/blank.png")}///// here is the error 
-        //source ={this.state({ uri:{avatar} })}
+           //source={require("../assets/blank.png")}///// here is the error 
+        // source ={this.state({ uri:{avatar} })}
         source={{ uri: this.state.avatar}}
           style={styles.prifileImg}
         /> 
@@ -313,7 +349,8 @@ export default class App extends React.Component {
                     style={styles.editButton}
          >
                     <Text style={styles.editText}   onPress={() => {
-                       update();
+                      Validate()
+                       //update();
                       }}> Save Changes</Text>
                 </TouchableOpacity>
                   

@@ -99,9 +99,7 @@ const GardnerProfile = ({ navigation }) => {
     }
 
     const getImage = async () =>{
-
         let currentUser = firebase.auth().currentUser.uid
-
  console.log("userid"+currentUser)
 let imageRef = firebase.storage().ref('avatars/'+currentUser);
 imageRef.getDownloadURL().then((url) => {
@@ -152,7 +150,7 @@ imageRef.getDownloadURL().then((url) => {
 
     
 
-    if(avatar){
+    //if(avatar){
     return (
       
         <View style={styles.container}>
@@ -237,14 +235,15 @@ imageRef.getDownloadURL().then((url) => {
 
         </View>
      
-    );}else{
+    );
+//}else{
 
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text>refreashing ur information</Text>
-            </View>
-          );
-    }
+    //     return (
+    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    //           <Text>We are still processing your information </Text>
+    //         </View>
+    //       );
+    // }
 
 
 
