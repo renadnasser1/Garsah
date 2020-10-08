@@ -72,7 +72,7 @@ function AmateurRoot() {
 
       <AmateurTab.Screen name="profile"
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-person" color={color} size={size} />
           ),
@@ -87,11 +87,23 @@ function GardnerRoot() {
   return (
     <GardnerTab.Navigator
       tabBarOptions={{
+        showLabel:false,
         activeTintColor: '#3D6A4B',
         inactiveTintColor: 'gray',
       }}
     >
-            <GardnerTab.Screen
+
+
+      <GardnerTab.Screen
+        name="Home"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Foundation name="home" color={color} size={size} />
+          ),
+        }}
+        component={Home} />
+
+      <GardnerTab.Screen
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-person" color={color} size={size} />
@@ -100,16 +112,6 @@ function GardnerRoot() {
         }} name="profile"
 
         component={GardnerStackNav} />
-
-      <GardnerTab.Screen
-        name="Home"
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Foundation name="home" color={color} size={size} />
-          ),
-        }}
-        component={Home} />
 
     </GardnerTab.Navigator>
   );
@@ -126,17 +128,20 @@ function GardnerStackNav() {
 
       <GardnerStack.Screen name="Profile"
         options={{
-          headerShown: false,
+          title:'My Profile',
+          color:'black'
         }}
 
         component={GardnerProfile} />
 
-     { <GardnerStack.Screen
+      {<GardnerStack.Screen
         name="EditGardenerProfile"
+        options={{
+          title:'Edit Profile',}}
         component={EditGardenerProfile}
       />}
 
-    {<GardnerStack.Screen
+      {<GardnerStack.Screen
         name="LocationMap"
         component={LocationMap}
       />}
@@ -158,18 +163,18 @@ function AmatureStackNav() {
         }}
 
         component={AmateurProfile} />
-  
-     <AmatureStack.Screen
+
+      <AmatureStack.Screen
         name="EditAmateurProfile"
         component={EditAmateurProfile}
-       
+
       />
-       {/*  <AmatureStack.Screen
+      {/*  <AmatureStack.Screen
         name="AddThread"
         component={AddThread}
       />*/}
-     
-      </AmatureStack.Navigator>
+
+    </AmatureStack.Navigator>
 
   );
 }

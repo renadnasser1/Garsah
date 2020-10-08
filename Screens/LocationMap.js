@@ -131,10 +131,7 @@ export default class App extends React.Component {
         save()
         //Navigate 
         if(isEditting){
-          this.props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'GardnerRoot' }],
-        })
+          this.props.navigation.pop();
 
         }else{
         this.props.navigation.reset({

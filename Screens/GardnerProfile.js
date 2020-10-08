@@ -77,9 +77,9 @@ const GardnerProfile = ({ navigation }) => {
           )
 
     }
-const call=() =>{
-    Linking.openURL(`tel:${Phone}`)
-}
+// const call=() =>{
+//     Linking.openURL(`tel:${Phone}`)
+// }
     const load = async () => {
         try {
             let userId = await AsyncStorage.getItem("uid")
@@ -204,7 +204,13 @@ imageRef.getDownloadURL().then((url) => {
 
                         <MapView style={styles.mapStyle}
                         scrollEnabled	={false}
-                            initialRegion={{
+                        intialRegion={{
+                            latitude: latNum,
+                            longitude: longNum,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421
+                        }}
+                        region={{
                                 latitude: latNum,
                                 longitude: longNum,
                                 latitudeDelta: 0.0922,
@@ -232,9 +238,9 @@ imageRef.getDownloadURL().then((url) => {
 
             <View style={styles.body}>
                 <Text style={styles.myPlantText}>My Plants</Text>
-                <TouchableOpacity style={styles.plus}>
+                {/* <TouchableOpacity style={styles.plus}>
             <Entypo name="plus" size={44} color="white" />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             </View>
 
 
@@ -265,7 +271,7 @@ const styles = StyleSheet.create({
 
     },
     header: {
-        paddingTop: 60,
+        paddingTop: 5,
         backgroundColor: 'white',
         shadowColor: "#000",
         shadowOffset: {
@@ -328,7 +334,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: "white",
         borderColor: '#CFD590',
-        marginTop: 88,
+        marginTop: 40,
         right: 30,
         shadowColor: "#000",
         shadowOffset: {
