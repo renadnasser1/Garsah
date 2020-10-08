@@ -61,9 +61,17 @@ export default class App extends React.Component {
       let email = await AsyncStorage.getItem("email")
       let Bio = await AsyncStorage.getItem("Bio")
       let Phone = await AsyncStorage.getItem("Phone")
-      let avatar = await AsyncStorage.getItem("avatar")
+      
+      let imageRef = firebase.storage().ref('avatars/' + userId);
+      imageRef.getDownloadURL().then((url) => {
+        //from url you can fetched the uploaded image easily
+        this.setState({ avatar: url });
 
-      this.setState({ userId, name, email, Bio, Phone, avatar }, () => console.log('State: ', this.state))
+        
+      })
+        .catch((e) => console.log('getting downloadURL of image error => ', e));
+
+      this.setState({ userId, name, email, Bio, Phone }, () => console.log('State: ', this.state))
     } catch (err) {
       alert(err)
 
@@ -89,54 +97,53 @@ export default class App extends React.Component {
           },
           err => {
             rej(err);
-          },
-          async () => {
-            console.log("hello3")
-            //const url = await upload.snapshot.ref.getDownloadURL();
-            // return url;
-            getImage();
-            console.log("hello4")
+          });
 
-          }
-        );
+          firebase.firestore().collection('users').doc(userId).update({
+            name: this.state.name,
+            Bio: this.state.Bio,
+            Phone: this.state.Phone,
+            avatar: this.state.avatar
+          }).then((response) => {
+    
+            save()
+            //Navigate 
+            this.props.navigation.reset({
+              index: 0,
+              routes: [{ name: 'GardnerRoot' }],
+            })
+          }).catch((error) => {
+            Alert.alert(error);
+          });
       }
       );
     }
 
     const updateCords = async () => {
+
       //validations
 
 
-      try {
-        console.log('helllo user id', this.state.userId)
-
         var remoteUri = await uploadPhotoAsync(this.state.avatar, `avatars/${this.state.userId}`);
-
-        console.log('remoteurl' + remoteUri)
-        let db = await this.firestore.collection('users').doc(this.state.userId)
-        db.update({ avatar: remoteUri })
-        //getImage();
-        this.setState({ avatar: remoteUri });
-
-      } catch (error) {
-        Alert.alert(error)
-      }
+        // getImage();
+        
       //save cloud firestore
-      firebase.firestore().collection('users').doc(userId).update({
-        name: this.state.name,
-        Bio: this.state.Bio,
-        Phone: this.state.Phone,
-      }).then((response) => {
+      // firebase.firestore().collection('users').doc(userId).update({
+      //   name: this.state.name,
+      //   Bio: this.state.Bio,
+      //   Phone: this.state.Phone,
+      //   avatar: this.state.avatar
+      // }).then((response) => {
 
-        save()
-        //Navigate 
-        this.props.navigation.reset({
-          index: 0,
-          routes: [{ name: 'GardnerRoot' }],
-        })
-      }).catch((error) => {
-        Alert.alert(error);
-      });
+      //   save()
+      //   //Navigate 
+      //   this.props.navigation.reset({
+      //     index: 0,
+      //     routes: [{ name: 'GardnerRoot' }],
+      //   })
+      // }).catch((error) => {
+      //   Alert.alert(error);
+      // });
     }
 
 
@@ -192,17 +199,18 @@ export default class App extends React.Component {
         { cancelable: false }
       )
     }
-    const getImage = async () => {
 
-      //console.log("userid"+currentUser)
-      let imageRef = firebase.storage().ref('avatars/' + userId);
-      imageRef.getDownloadURL().then((url) => {
-        //from url you can fetched the uploaded image easily
-        console.log("get image " + url)
-        this.setState({ avatar: url });
-      })
-        .catch((e) => console.log('getting downloadURL of image error => ', e));
-    }
+    // const getImage = async () => {
+
+    //   let imageRef = firebase.storage().ref('avatars/' + userId);
+    //   imageRef.getDownloadURL().then((url) => {
+    //     //from url you can fetched the uploaded image easily
+    //     this.setState({ avatar: url });
+
+        
+    //   })
+    //     .catch((e) => console.log('getting downloadURL of image error => ', e));
+    // }
 
 
     const Validate = () => {
@@ -277,8 +285,7 @@ export default class App extends React.Component {
                 textAlignVertical={'top'}
                 defaultValue={Bio}
                 placeholder={'Enter your bio here'}
-                onChangeText={(text) => this.setState({ Bio: text })}  //backend here? //how to get uid from firebase??
-                // onChangeText={(text) => this.setState({ fBio:text })}
+                onChangeText={(text) => this.setState({ Bio: text })}  
                 style={styles.profileInfoText}
               ></TextInput>
             </View>
@@ -298,7 +305,7 @@ export default class App extends React.Component {
                 keyboardType={'number-pad'}
                 defaultValue={Phone}
                 placeholder={"Enter your Phone number here"}
-                onChangeText={(text) => this.setState({ Phone: text })} //backend here? //how to get uid from firebase??
+                onChangeText={(text) => this.setState({ Phone: text })} 
                 style={styles.profileInfoText}
               ></TextInput>
             </View>
@@ -311,26 +318,6 @@ export default class App extends React.Component {
               }}
             />
 
-
-            {/* <View style={{ flexDirection: "row" }}>
-              <Text style={styles.profileInfoText}>Email: </Text>
-              <TextInput color="#696969"
-                keyboardType={'email-address'}
-                defaultValue={email}
-                editable={false}
-                placeholder={"Enter your email here"}
-                //onChangeText={(text) => setFEmail(text)}
-                style={styles.profileInfoText}
-              ></TextInput>
-
-            </View> */}
-            {/* <View
-              style={{
-                borderBottomColor: '#C0C0C0',
-                borderBottomWidth: 1,
-                marginBottom: 10,
-              }}
-            /> */}
 
             {/* <View style={styles.header}> */}
             <View style={styles.profileInfoText} >

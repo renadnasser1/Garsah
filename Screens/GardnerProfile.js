@@ -14,7 +14,7 @@ import {
     StyleSheet,
     Image,
     ActivityIndicator,
-   // AsyncStorage,
+    // AsyncStorage,
     Dimensions,
     Linking,
     Alert
@@ -23,7 +23,7 @@ import {
 // Icons
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons';
 
 //Firebase
 import * as firebase from "firebase";
@@ -40,38 +40,39 @@ const GardnerProfile = ({ navigation }) => {
 
     const [uid, setUid] = useState()
     const [name, setName] = useState()
-    const [long,setlong] = useState() 
-    const [lat,setlat] = useState() 
-    const [longNum,setlongNum] = useState() 
-    const [latNum,setlatNum] = useState() 
-    const [Phone,setPhone] = useState()  
-    const [Bio,setBio] = useState() 
-    const [avatar,setAvatar] = useState() 
+    const [long, setlong] = useState()
+    const [lat, setlat] = useState()
+    const [longNum, setlongNum] = useState()
+    const [latNum, setlatNum] = useState()
+    const [Phone, setPhone] = useState()
+    const [Bio, setBio] = useState()
+    const [avatar, setAvatar] = useState()
 
     const isVisible = useIsFocused();
 
     const onEditPress = () => {
         navigation.navigate("EditGardenerProfile");
-        };
-     
-    const onMapPress = (cords) =>{
+    };
+
+    const onMapPress = (cords) => {
 
         Alert.alert(
             '',
             'Garsah Will redirect you to Maps',
             [
-              {text: 'Cancel', onPress: () => console.log('') },
-              {text: 'Open', onPress: () => 
-              OpenMapDirections(null, cords, 'w').then(res => {
-                console.log(res)
-              })
-        
-            
-            },
-        
+                { text: 'Cancel', onPress: () => console.log('') },
+                {
+                    text: 'Open', onPress: () =>
+                        OpenMapDirections(null, cords, 'w').then(res => {
+                            console.log(res)
+                        })
+
+
+                },
+
             ],
             { cancelable: false }
-          )
+        )
 
     }
 
@@ -79,10 +80,11 @@ const GardnerProfile = ({ navigation }) => {
         try {
             let userId = await AsyncStorage.getItem("uid")
             let name = await AsyncStorage.getItem("name")
-            let Bio= await AsyncStorage.getItem("Bio")
+            let Bio = await AsyncStorage.getItem("Bio")
             let Phone = await AsyncStorage.getItem("Phone")
             let lat = await AsyncStorage.getItem("latitude")
             let long = await AsyncStorage.getItem("longitude")
+            
 
             setUid(userId)
             setName(name)
@@ -91,52 +93,31 @@ const GardnerProfile = ({ navigation }) => {
             setlatNum(Number(lat))
             setlongNum(Number(long))
             setlat(lat)
-            console.log(lat,long)
+            console.log(lat, long)
         } catch (err) {
             alert(err)
 
         }
     }
 
-    const getImage = async () =>{
+    const getImage = async () => {
         let currentUser = firebase.auth().currentUser.uid
- console.log("userid"+currentUser)
-let imageRef = firebase.storage().ref('avatars/'+currentUser);
-imageRef.getDownloadURL().then((url) => {
-    //from url you can fetched the uploaded image easily
-    console.log(url)
-    setAvatar(url);
-  })
-  .catch((e) => console.log('getting downloadURL of image error => ', e));
-
-        // let ref = firebase.storage().ref('avatars/'+uid);
-        // ref.getDownloadURL().then(function(url) {
-        //     console('hhihihi')
-        //     // `url` is the download URL for 'images/stars.jpg'
-          
-        //     // This can be downloaded directly:
-        //     var xhr = new XMLHttpRequest();
-        //     xhr.responseType = 'blob';
-        //     xhr.onload = function(event) {
-        //       var blob = xhr.response;
-        //     };
-        //     xhr.open('GET', url);
-        //     xhr.send();
-          
-        //     // Or inserted into an <img> element:
-        //     console.log('URLLLL',url)
-        //     setAvatar(url)
-        //   }).catch(function(error) {
-        //     // Handle any errors
-        //   });
-        }
+        console.log("userid" + currentUser)
+        let imageRef = firebase.storage().ref('avatars/' + currentUser);
+        imageRef.getDownloadURL().then((url) => {
+            //from url you can fetched the uploaded image easily
+            console.log(url)
+            setAvatar(url);
+        })
+            .catch((e) => console.log('getting downloadURL of image error => ', e));
+    }
 
     useEffect(() => {
         if (isVisible) {
             load()
             getImage()
-            console.log({avatar}); 
-         }
+            console.log({ avatar });
+        }
     }, [isVisible])
 
     let [fontsLoaded] = useFonts({
@@ -148,15 +129,15 @@ imageRef.getDownloadURL().then((url) => {
         return <AppLoading />;
     }
 
-    
 
-    //if(avatar){
+
+    if(avatar){
     return (
-      
+
         <View style={styles.container}>
             <View style={styles.header}>
                 {/* Image */}
-                <Image source={{uri:avatar}} style={styles.prifileImg} />
+                <Image source={{ uri: avatar }} style={styles.prifileImg} />
 
                 {/* <Image
                  source={{ uri:{avatar}}}
@@ -168,9 +149,9 @@ imageRef.getDownloadURL().then((url) => {
                 <TouchableOpacity
                     style={styles.editButton}
                 >
-                    <Text style={styles.editText}   onPress={() => {
+                    <Text style={styles.editText} onPress={() => {
                         onEditPress();
-                      }}> Edit Profile</Text>
+                    }}> Edit Profile</Text>
                 </TouchableOpacity>
 
                 {/* Profile Information */}
@@ -190,13 +171,13 @@ imageRef.getDownloadURL().then((url) => {
                     <View style={styles.userInfoContiner}>
                         <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
                         <Text style={styles.userInfoText}> My Location</Text></View>
-                        
-                        <View>
-                       
-                        </View>
 
-                        <MapView style={styles.mapStyle}
-                        scrollEnabled	={false}
+                    <View>
+
+                    </View>
+
+                    <MapView style={styles.mapStyle}
+                        scrollEnabled={false}
                         intialRegion={{
                             latitude: latNum,
                             longitude: longNum,
@@ -204,25 +185,26 @@ imageRef.getDownloadURL().then((url) => {
                             longitudeDelta: 0.0421
                         }}
                         region={{
-                                latitude: latNum,
-                                longitude: longNum,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421
-                            }}
+                            latitude: latNum,
+                            longitude: longNum,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421
+                        }}
 
-                            onPress={ (event) => onMapPress(event.nativeEvent.coordinate) 
+                        onPress={(event) => onMapPress(event.nativeEvent.coordinate)
                         }
-                            
-                            > 
 
-                            <MapView.Marker
-                             coordinate={{
-                                latitude:latNum,
-                                longitude:longNum}}
-                              pinColor={'red'}
-                            />
-                      
-                      </MapView>
+                    >
+
+                        <MapView.Marker
+                            coordinate={{
+                                latitude: latNum,
+                                longitude: longNum
+                            }}
+                            pinColor={'red'}
+                        />
+
+                    </MapView>
 
                 </View>
 
@@ -240,16 +222,16 @@ imageRef.getDownloadURL().then((url) => {
 
 
         </View>
-     
-    );
-//}else{
 
-    //     return (
-    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    //           <Text>We are still processing your information </Text>
-    //         </View>
-    //       );
-    // }
+    );
+    }else{
+
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <Text>We are still processing your information </Text>
+            </View>
+          );
+    }
 
 
 
@@ -362,21 +344,21 @@ const styles = StyleSheet.create({
     mapStyle: {
         width: Dimensions.get('window').width,
         height: 250,
-        left:-25
-      },
+        left: -25
+    },
 
-      plus:{
-          position:'absolute',
-          alignSelf:'flex-end',
-          right:10,
-          bottom:-130,
-          backgroundColor:'#CFD590',
-          borderRadius:100,
-          padding:5,
-          paddingBottom:-5,
-          alignItems:'center'
+    plus: {
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        right: 10,
+        bottom: -130,
+        backgroundColor: '#CFD590',
+        borderRadius: 100,
+        padding: 5,
+        paddingBottom: -5,
+        alignItems: 'center'
 
-      }
+    }
 
 
 })
