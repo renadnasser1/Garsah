@@ -199,7 +199,7 @@ imageRef.getDownloadURL().then((url) => {
 
                         <MapView style={styles.mapStyle}
                         scrollEnabled	={false}
-                            initialRegion={{
+                        region={{
                                 latitude: latNum,
                                 longitude: longNum,
                                 latitudeDelta: 0.0922,
