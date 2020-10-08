@@ -59,14 +59,15 @@ function SplashScreen({ navigation }) {
 
         setTimeout(function () {
 
+
             // feach current user
             firebase.auth().onAuthStateChanged((currentUser) => {
 
                 //check if signed in 
                 if (currentUser != null) {
+                    console.log('user')
                     //get user photo 
-                    //var url = getImage();
-                    //console.log("avatar splash "+ url)
+
                     // get users info
                     var docRef = firebase.firestore().collection("users").doc(currentUser.uid);
 
