@@ -99,9 +99,7 @@ const GardnerProfile = ({ navigation }) => {
     }
 
     const getImage = async () =>{
-
         let currentUser = firebase.auth().currentUser.uid
-
  console.log("userid"+currentUser)
 let imageRef = firebase.storage().ref('avatars/'+currentUser);
 imageRef.getDownloadURL().then((url) => {

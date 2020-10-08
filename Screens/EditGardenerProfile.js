@@ -77,7 +77,6 @@ export default class App extends React.Component {
    
     const uploadPhotoAsync = async (uri,filename) => {
         console.log('hi')
-   
     return new Promise(async(res,rej)=>{
       const response = await fetch (uri);
       const file = await response.blob();
@@ -93,7 +92,9 @@ export default class App extends React.Component {
    },
    async() => {
     console.log("hello3")
-    const url = await upload.snapshot.ref.getDownloadURL();
+    //const url = await upload.snapshot.ref.getDownloadURL();
+   // return url;
+    getImage();
     console.log("hello4")
   
   }
@@ -103,13 +104,18 @@ export default class App extends React.Component {
     }
 
     const  updateCords = async () =>{
+      //validations
+    
+
      try{
             console.log('helllo user id',this.state.userId)
-        
-        var remoteUri = await uploadPhotoAsync(this.state.avatar,`avatars/${this.state.userId}`);
-        console.log('remoteurl'+remoteUri)
+       
+         var remoteUri = await uploadPhotoAsync(this.state.avatar,`avatars/${this.state.userId}`);
+
+         console.log('remoteurl'+remoteUri)
         let db = await this.firestore.collection('users').doc(this.state.userId)
         db.update({avatar:remoteUri})
+        //getImage();
         this.setState({avatar:remoteUri});
 
     }catch(error){
@@ -185,6 +191,37 @@ export default class App extends React.Component {
         ],
         { cancelable: false }
       )
+    }
+    const getImage = async () =>{
+      
+//console.log("userid"+currentUser)
+let imageRef = firebase.storage().ref('avatars/'+userId);
+imageRef.getDownloadURL().then((url) => {
+  //from url you can fetched the uploaded image easily
+  console.log("get image "+url)
+  this.setState({avatar:url});
+})
+.catch((e) => console.log('getting downloadURL of image error => ', e));}
+
+
+    const Validate = ()=>{
+      if (name == "") {
+        alert("please enter your name");
+      } else if (name.length < 2) {
+        alert("Your name need to be at least 2 characters.");
+      } else if (/[^0-9]/.test(Phone)) {
+        alert("Phone need to contain only numbers.");
+      } else if (!Phone.startsWith("05")) {
+        alert("please enter the correct phone number format 05xxxxxxxx");
+      } else if (Phone.length < 10) {
+        alert("Your phone need to be at least 10 number.");
+      } 
+      else if ((Phone.length > 10)){
+        alert("Your phone need to be maxiumum of 10 numbers.");
+      }
+      else {
+        update();
+      }
     }
 
     
@@ -312,7 +349,8 @@ export default class App extends React.Component {
                     style={styles.editButton}
          >
                     <Text style={styles.editText}   onPress={() => {
-                       update();
+                      Validate()
+                       //update();
                       }}> Save Changes</Text>
                 </TouchableOpacity>
                   
