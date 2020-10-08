@@ -74,7 +74,7 @@ export default class App extends React.Component {
           (error) => console.log('Error:', error))
 
       } else {
-        isEditting = false;
+        isEditting = true;
         latitude = Number(latitude)
         longitude = Number(longitude)
 

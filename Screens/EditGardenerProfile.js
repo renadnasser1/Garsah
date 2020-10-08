@@ -50,7 +50,7 @@ export default class App extends React.Component {
     Bio: '',
     Phone: '',
     isLoading: false,
-    avatar: '../assets/blank.png',
+    avatar: '',
   }
 
   async componentDidMount() {
@@ -246,9 +246,9 @@ export default class App extends React.Component {
           <View style={styles.profileInfoView}>
             <View style={styles.img}>
               <Image
-                //source={require("../assets/blank.png")}///// here is the error 
-                // source ={this.state({ uri:{avatar} })}
-                source={{ uri: this.state.avatar }}
+                source={this.state.avatar ?
+                  {uri: this.state.avatar} : require("../assets/blank.png")}
+
                 style={styles.prifileImg}
               />
 

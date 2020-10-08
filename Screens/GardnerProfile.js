@@ -51,6 +51,7 @@ const GardnerProfile = ({ navigation }) => {
     const [Bio, setBio] = useState()
     const [avatar, setAvatar] = useState()
 
+
     const isVisible = useIsFocused();
 
     const onEditPress = () => {
@@ -114,7 +115,10 @@ const GardnerProfile = ({ navigation }) => {
             console.log(url)
             setAvatar(url);
         })
-            .catch((e) => console.log('getting downloadURL of image error => ', e));
+            .catch((e) => console.log('getting downloadURL of image error => ', e),
+            
+            );
+
     }
 
     useEffect(() => {
@@ -136,13 +140,15 @@ const GardnerProfile = ({ navigation }) => {
 
 
 
-    if(avatar){
+    if(lat){
     return (
 
         <View style={styles.container}>
             <View style={styles.header}>
                 {/* Image */}
-                <Image source={{ uri: avatar }} style={styles.prifileImg} />
+                <Image source={avatar ?
+                    {uri:avatar} : require("../assets/blank.png")} style={styles.prifileImg} />
+                
 
                 {/* <Image
                  source={{ uri:{avatar}}}
