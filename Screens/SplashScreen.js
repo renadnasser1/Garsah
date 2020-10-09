@@ -13,11 +13,14 @@ import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
+
+
+
 function SplashScreen({ navigation }) {
 
 
 
-    const save = async (name, email, gardner, lat ,long,uid,Bio,Phone,avatar) => {
+    const save = async (name, email, gardner, lat ,long,uid,Bio,Phone) => {
         try {
 
             await AsyncStorage.setItem("name", name)
@@ -97,7 +100,7 @@ function SplashScreen({ navigation }) {
                                 // Use a UserInfo instance method
                                 console.log(userInfo.name);
 
-                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '',userInfo.Latitude + '',userInfo.Longitude + '',currentUser.uid+'',userInfo.Bio+'',userInfo.Phone+'',);
+                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '',userInfo.Latitude + '',userInfo.Longitude + '',currentUser.uid+'',userInfo.Bio+'',userInfo.Phone+'');
 
                                 // redirect user
                                 if (userInfo.Gardner == false) {

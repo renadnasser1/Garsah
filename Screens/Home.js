@@ -1,17 +1,18 @@
 import React from "react";
+import Svg, { Path } from "react-native-svg"
+
 import {
     View,
     Text,
-    TextInput,
-    TouchableOpacity,
-    Dimensions,
     StyleSheet,
-    StatusBar,
-    Image,
     Button,
 } from "react-native";
 import * as firebase from "firebase";
-import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-community/async-storage';
+
+//Fonts
+import { useFonts } from 'expo-font';
+import { AppLoading } from 'expo';
 
 
 //Navigation
@@ -37,23 +38,32 @@ const homepage = ({ navigation }) => {
   const onLogoutPress = async () => {
         firebase.auth()
         .signOut()
-        .then(() => navigation.navigate('Login')).catch((error) => {
+        .then(() => navigation.navigate('Login')), AsyncStorage.getAllKeys()
+        .then(keys => AsyncStorage.multiRemove(keys))
+        .then(() => alert('success')).catch((error) => {
           alert(error)
         });
 
 }
 
+let [fontsLoaded] = useFonts({
+  'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
+  'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
+});
+
+if (!fontsLoaded) {
+  return <AppLoading />;
+}
+
 
     return(
+      
+      
 
     <View style={styles.container}>
+ 
          <Text style={styles.text}>Homepage is coming real soon!! </Text>
-         <TouchableOpacity
-        underlayColor="#fff"
-        onPress={() => onLogoutPress()}
-      >
-        <Text style={styles.ResetText}>LogOut</Text>
-      </TouchableOpacity> 
+
     </View>
     );
 
@@ -75,5 +85,6 @@ const styles = StyleSheet.create({
         color: "black",
         fontWeight:'bold',
         paddingLeft: 10,
+        fontFamily:'Khmer-MN-Bold'
       },
 });
