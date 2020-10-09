@@ -175,9 +175,9 @@ const GardnerProfile = ({ navigation }) => {
                     {/* Phone number */}
                     <View style={styles.userInfoContiner}>
                         <FontAwesome name="phone" size={24} color="gray"/>
-                        <Text style={styles.userInfoText} 
+                         <Text style={styles.userInfoText} 
                         //   onPress={ (event) => {call(event)}}
-                          >{Phone}</Text>
+                          >{Phone ? Phone : "No phone added"}</Text>
                     </View>
 
                     {/* Map */}

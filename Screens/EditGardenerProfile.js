@@ -218,14 +218,14 @@ export default class App extends React.Component {
         alert("please enter your name");
       } else if (name.length < 2) {
         alert("Your name need to be at least 2 characters.");
-      } else if (/[^0-9]/.test(Phone)) {
+      } else if (/[^0-9]/.test(Phone) && Phone != "") {
         alert("Phone need to contain only numbers.");
-      } else if (!Phone.startsWith("05")) {
+      } else if (!Phone.startsWith("05") && Phone != "") {
         alert("please enter the correct phone number format 05xxxxxxxx");
-      } else if (Phone.length < 10) {
+      } else if (Phone.length < 10 && Phone != "") {
         alert("Your phone need to be at least 10 number.");
       }
-      else if ((Phone.length > 10)) {
+      else if ((Phone.length > 10) && Phone != "") {
         alert("Your phone need to be maxiumum of 10 numbers.");
       }
       else {
