@@ -34,16 +34,16 @@ const font = () => {
 
 export default class App extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
   }
   state = {
-    Marker:{
+    Marker: {
       latitude: '',
       longitude: '',
     },
-    userId:'',
-    isEditting:false,
+    userId: '',
+    isEditting: false,
   }
 
 
@@ -62,23 +62,28 @@ export default class App extends React.Component {
       let longitude = await AsyncStorage.getItem("longitude")
 
       var isEditting;
-      if (latitude==''){
+      if (latitude==="") {
+        isEditting = false;
+        console.log('Here')
+        navigator.geolocation.getCurrentPosition(
+          ({ coords: { latitude, longitude } }) => this.setState({
+            Marker: {
+              latitude, longitude
+            }, isEditting, userId
+          }, () => console.log('State: ', this.state)),
+          (error) => console.log('Error:', error))
 
-      isEditting = false;
-      navigator.geolocation.getCurrentPosition(
-        ({ coords: { latitude, longitude } }) => this.setState({ Marker:{
-          latitude,longitude
-        }, isEditting,userId}, () => console.log('State: ', this.state)),
-        (error) => console.log('Error:', error) )
+      } else {
+        isEditting = true;
+        latitude = Number(latitude)
+        longitude = Number(longitude)
 
-      }else{
-      isEditting = true;
-      latitude =  Number(latitude)
-      longitude = Number(longitude)
-
-      this.setState({ Marker:{
-        latitude,longitude
-      } ,isEditting,userId},() => console.log('State: ', this.state)) }
+        this.setState({
+          Marker: {
+            latitude, longitude
+          }, isEditting, userId
+        }, () => console.log('State: ', this.state))
+      }
 
     } catch (err) {
       alert(err)
@@ -89,13 +94,21 @@ export default class App extends React.Component {
 
   render() {
 
-    const { Marker , isEditting,userId } = this.state
+    const { Marker, isEditting, userId } = this.state
 
 
+    const onLogoutPress = async () => {
+      firebase.auth()
+        .signOut()
+        .then(() => navigation.navigate('Login')).catch((error) => {
+          alert(error)
+        });
+
+    }
 
 
     const onSetLocationPress = () => {
-      
+
       Alert.alert(
         '',
         'Are you sure you want to save this location? ',
@@ -103,8 +116,8 @@ export default class App extends React.Component {
           {
             text: 'Cancel', onPress: () =>
               console.log(''),
-        
-              
+
+
           },
           {
             text: 'Save', onPress: () =>
@@ -130,15 +143,15 @@ export default class App extends React.Component {
         //Storage Async
         save()
         //Navigate 
-        if(isEditting){
+        if (isEditting) {
           this.props.navigation.pop();
 
-        }else{
-        this.props.navigation.reset({
-          index: 0,
-          routes: [{ name: 'GardnerRoot' }],
-      })
-    }
+        } else {
+          this.props.navigation.reset({
+            index: 0,
+            routes: [{ name: 'GardnerRoot' }],
+          })
+        }
       }).catch((error) => {
         Alert.alert(error);
       });
@@ -147,8 +160,9 @@ export default class App extends React.Component {
     const save = async () => {
       try {
 
-        await AsyncStorage.setItem("latitude", this.state.Marker.latitude+'')
-        await AsyncStorage.setItem("longitude", this.state.Marker.longitude+'')
+        console.log('at save')
+        await AsyncStorage.setItem("latitude", this.state.Marker.latitude + '')
+        await AsyncStorage.setItem("longitude", this.state.Marker.longitude + '')
 
       } catch (err) {
         alert(err)
@@ -165,8 +179,8 @@ export default class App extends React.Component {
         <View style={styles.container}>
           <MapView style={styles.mapStyle}
             initialRegion={{
-              latitude:this.state.Marker.latitude,
-              longitude:this.state.Marker.longitude,
+              latitude: this.state.Marker.latitude,
+              longitude: this.state.Marker.longitude,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421
             }}
@@ -175,7 +189,7 @@ export default class App extends React.Component {
             <MapView.Marker
               draggable
               coordinate={this.state.Marker}
-              onDragEnd={(e) => { this.setState({Marker:e.nativeEvent.coordinate}) }}
+              onDragEnd={(e) => { this.setState({ Marker: e.nativeEvent.coordinate }) }}
               pinColor={'red'}
             />
 
@@ -207,7 +221,16 @@ export default class App extends React.Component {
           <Text style={styles.permission}>We need your permission!</Text>
           <Text style={styles.permissionSteps}>Go to Settings {">"} Privacy {">"} Location Services.</Text>
           <Text style={styles.permissionText}>Make sure that Location Services is on. Scroll down to find the app. Tap Garsah and select an option: ALWAYS</Text>
-          
+          <View style={styles.container}>
+            <Text style={styles.text}>Homepage is coming real soon!! </Text>
+            <TouchableOpacity
+              underlayColor="#fff"
+              onPress={() => onLogoutPress()}
+            >
+              <Text style={styles.ResetText}>LogOut</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
       );
     }
@@ -300,23 +323,24 @@ const styles = StyleSheet.create({
 
     elevation: 2,
   },
-  permission:{
+  permission: {
 
-    fontFamily:'Khmer-MN-Bold',
-    fontSize:22
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 22
   },
 
-  permissionSteps:{
-    color:'#3D6A4B',
-    fontFamily:'Khmer-MN-Bold',
-    fontSize:18
+  permissionSteps: {
+    color: '#3D6A4B',
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 18
 
   },
 
-  permissionText:{
-    fontFamily:'Khmer-MN',
-    fontSize:17,
-    textAlign:'center',
-  paddingLeft:20,
-  paddingRight:20 },
+  permissionText: {
+    fontFamily: 'Khmer-MN',
+    fontSize: 17,
+    textAlign: 'center',
+    paddingLeft: 20,
+    paddingRight: 20
+  },
 });
