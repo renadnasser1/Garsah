@@ -43,7 +43,7 @@ export default class App extends React.Component {
       longitude: '',
     },
     userId: '',
-    isEditting: false,
+    isEditting: '',
   }
 
 
@@ -57,31 +57,33 @@ export default class App extends React.Component {
 
     try {
 
-      let userId = await AsyncStorage.getItem("uid")
+    //  let userId = await AsyncStorage.getItem("uid")
       let latitude = await AsyncStorage.getItem("latitude")
       let longitude = await AsyncStorage.getItem("longitude")
 
-      var isEditting;
-      if (latitude==="") {
-        isEditting = false;
+      let userId = firebase.auth().currentUser.uid
+
+     console.log('frist lat',userId)
+      if (latitude==""  || latitude  == null) {
+        var isEditting = false;
         console.log('Here')
         navigator.geolocation.getCurrentPosition(
           ({ coords: { latitude, longitude } }) => this.setState({
             Marker: {
               latitude, longitude
-            }, isEditting, userId
+            },  userId,isEditting
           }, () => console.log('State: ', this.state)),
           (error) => console.log('Error:', error))
 
       } else {
-        isEditting = true;
+        var isEditting = true;
         latitude = Number(latitude)
         longitude = Number(longitude)
 
         this.setState({
           Marker: {
             latitude, longitude
-          }, isEditting, userId
+          }, userId,isEditting
         }, () => console.log('State: ', this.state))
       }
 
@@ -99,10 +101,12 @@ export default class App extends React.Component {
 
     const onLogoutPress = async () => {
       firebase.auth()
-        .signOut()
-        .then(() => navigation.navigate('Login')).catch((error) => {
-          alert(error)
-        });
+      .signOut()
+      .then(() => navigation.navigate('Login')), AsyncStorage.getAllKeys()
+      .then(keys => AsyncStorage.multiRemove(keys))
+      .then(() => alert('success')).catch((error) => {
+        alert(error)
+      });
 
     }
 
@@ -134,16 +138,18 @@ export default class App extends React.Component {
     }
 
     const updateCords = () => {
+      console.log(userId)
+      console.log( this.state.Marker.latitude,this.state.Marker.longitude)
 
       //save cloud firestore
-      firebase.firestore().collection('users').doc(userId).update({
+      firebase.firestore().collection('users').doc(this.state.userId).update({
         Latitude: this.state.Marker.latitude,
         Longitude: this.state.Marker.longitude,
       }).then((response) => {
         //Storage Async
         save()
         //Navigate 
-        if (isEditting) {
+        if (isEditting === true) {
           this.props.navigation.pop();
 
         } else {
@@ -216,20 +222,22 @@ export default class App extends React.Component {
 
       );
     } else {
+  
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={styles.permission}>We need your permission!</Text>
           <Text style={styles.permissionSteps}>Go to Settings > Privacy > Location Services.</Text>
           <Text style={styles.permissionText}>Make sure that Location Services is on. Scroll down to find the app. Tap Garsah and select an option: ALWAYS</Text>
-          <View style={styles.container}>
-            <Text style={styles.text}>Homepage is coming real soon!! </Text>
-            <TouchableOpacity
-              underlayColor="#fff"
-              onPress={() => onLogoutPress()}
-            >
-              <Text style={styles.ResetText}>LogOut</Text>
-            </TouchableOpacity>
-          </View>
+        
+          <TouchableOpacity
+        style={styles.logoutButton}
+        underlayColor="#fff"
+        onPress={() => onLogoutPress()}
+      >
+        <Text style={styles.logotext}>Logout </Text>
+      </TouchableOpacity>
+
+
 
         </View>
       );
@@ -343,4 +351,30 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20
   },
+
+  logoutButton: {
+    width: 280,
+    height: 40,
+    marginTop: 50,
+    padding:5,
+    backgroundColor: "#EFF6F9",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#fff",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.65,
+
+    elevation: 1,
+  },
+  logotext:{
+    fontFamily: 'Khmer-MN',
+    fontSize: 17,
+    textAlign: 'center',
+  }
 });

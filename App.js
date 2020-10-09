@@ -63,16 +63,14 @@ function AmateurRoot() {
       <AmateurTab.Screen
         name="Home"
         options={{
-          tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <Foundation name="home" color={color} size={size} />
           ),
         }}
-        component={Home} />
+        component={HomeStackNav} />
 
       <AmateurTab.Screen name="profile"
         options={{
-          tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-person" color={color} size={size} />
           ),
@@ -100,8 +98,9 @@ function GardnerRoot() {
           tabBarIcon: ({ color, size }) => (
             <Foundation name="home" color={color} size={size} />
           ),
+          headerShown:true
         }}
-        component={Home} />
+        component={HomeStackNav} />
 
       <GardnerTab.Screen
         options={{
@@ -119,6 +118,22 @@ function GardnerRoot() {
 
 const GardnerStack = createStackNavigator();
 const AmatureStack = createStackNavigator();
+const HomeStack = createStackNavigator();
+
+function HomeStackNav() {
+  return (
+    <GardnerStack.Navigator>
+            <GardnerStack.Screen name="Profile"
+        options={{
+          title:'Home',
+          color:'black'
+        }}
+
+        component={Home} />
+    </GardnerStack.Navigator>
+      );
+    }
+    
 
 function GardnerStackNav() {
   return (
