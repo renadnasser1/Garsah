@@ -226,7 +226,7 @@ export default class App extends React.Component {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={styles.permission}>We need your permission!</Text>
-          <Text style={styles.permissionSteps}>Go to Settings > Privacy > Location Services.</Text>
+          <Text style={styles.permissionSteps}>Go to Settings {">"} Privacy {">"} Location Services.</Text>
           <Text style={styles.permissionText}>Make sure that Location Services is on. Scroll down to find the app. Tap Garsah and select an option: ALWAYS</Text>
         
           <TouchableOpacity
