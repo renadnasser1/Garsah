@@ -171,7 +171,7 @@ const GardnerProfile = ({ navigation }) => {
                     <Text style={styles.profileInfoText}>{name}</Text>
 
                     {/* Bio */}
-                    <Text style={styles.bioText}>{Bio}</Text>
+                    <Text style={styles.bioText}>{Bio!=null ? Bio : ""}</Text>
                     {/* Phone number */}
                     <View style={styles.userInfoContiner}>
                         <FontAwesome name="phone" size={24} color="gray"/>

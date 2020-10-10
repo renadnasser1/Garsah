@@ -40,7 +40,7 @@ const homepage = ({ navigation }) => {
         .signOut()
         .then(() => navigation.navigate('Login')), AsyncStorage.getAllKeys()
         .then(keys => AsyncStorage.multiRemove(keys))
-        .then(() => alert('success')).catch((error) => {
+        .then(() => alert('logged out successfully')).catch((error) => {
           alert(error)
         });
 
