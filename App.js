@@ -179,6 +179,10 @@ function AmatureStackNav() {
         component={AmateurProfile} />
 
       <AmatureStack.Screen
+       options={{
+          title:'Edit Profile',
+          color:'black'
+        }}
         name="EditAmateurProfile"
         component={EditAmateurProfile}
 

@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
 
     },
     header: {
-        paddingTop: 5,
+        paddingTop: 50,
         backgroundColor: 'white',
         shadowColor: "#000",
         shadowOffset: {
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: "white",
         borderColor: '#CFD590',
-        marginTop: 40,
+        marginTop: 90,
         right: 30,
         shadowColor: "#000",
         shadowOffset: {
