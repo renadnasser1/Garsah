@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Svg, { Path } from "react-native-svg"
 import MapView, { Marker } from 'react-native-maps';
 import { OpenMapDirections } from 'react-native-navigation-directions';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -25,15 +24,13 @@ import {
 // Icons
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 
 //Firebase
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-import { render } from "react-dom";
-import { call } from "react-native-reanimated";
+
 
 
 
@@ -50,6 +47,7 @@ const GardnerProfile = ({ navigation }) => {
     const [Phone, setPhone] = useState()
     const [Bio, setBio] = useState()
     const [avatar, setAvatar] = useState()
+    const[currentCords,setCurrentCords]=useState()
 
 
     const isVisible = useIsFocused();
@@ -58,18 +56,22 @@ const GardnerProfile = ({ navigation }) => {
         navigation.navigate("EditGardenerProfile");
     };
 
+  
     const onMapPress = (cords) => {
 
         Alert.alert(
             '',
-            'Garsah Will redirect you to Maps',
+            'Garsah Will redirect you to google map',
             [
                 { text: 'Cancel', onPress: () => console.log('') },
                 {
                     text: 'Open', onPress: () =>
-                        OpenMapDirections(null, cords, 'w').then(res => {
-                            console.log(res)
-                        })
+                    // OpenMapDirections(null, cords, 'd').then(res => {
+                    //     console.log(res)
+                    // })
+                  
+                    Linking.openURL('https://www.google.com/maps/search/?api=1&query='+cords['latitude']+','+cords['longitude'])
+                    
 
 
                 },
@@ -117,7 +119,6 @@ const GardnerProfile = ({ navigation }) => {
             setAvatar(url);
         })
             .catch((e) => console.log('getting downloadURL of image error => ', e),
-            
             );
 
     }
