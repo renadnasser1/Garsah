@@ -52,6 +52,7 @@ export default class App extends React.Component {
     Phone: '',
     isLoading: false,
     avatar: '',
+    isLoading:false
   }
 
   async componentDidMount() {
@@ -81,7 +82,7 @@ export default class App extends React.Component {
 
 
   render() {
-    const { userId, name, email, Bio, Phone, flag, avatar } = this.state
+    const { userId, name, email, Bio, Phone, flag, avatar,isLoading } = this.state
 
     
     const uploadPhotoAsync = async (uri, filename) => {
@@ -117,10 +118,16 @@ export default class App extends React.Component {
     
             save()
             //Navigate 
+            setTimeout(function(){
+              this.setState({isLoading:false})
             this.props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'Profile' }]
-          })
+              index: 0,
+              routes: [{ name: 'Profile' }]
+            })
+            
+            }
+            .bind(this),2500);
+
 
           }).catch((error) => {
             Alert.alert(error);
@@ -130,6 +137,7 @@ export default class App extends React.Component {
     }
 
     const updateCords = async () => {
+      this.setState({isLoading:true})
 
       //validations
 
@@ -258,6 +266,11 @@ export default class App extends React.Component {
 
                 style={styles.prifileImg}
               />
+              <ActivityIndicator animating={this.state.isLoading}
+              size='large'
+              style={styles.loading}>
+
+              </ActivityIndicator>
 
               <Text style={styles.editText}
                 onPress={() => { handleChangeAvatar() }}
@@ -347,7 +360,6 @@ export default class App extends React.Component {
               >
                 <Text style={styles.editText} onPress={() => {
                   Validate()
-                  //update();
                 }}> Save Changes</Text>
               </TouchableOpacity>
 
@@ -501,7 +513,13 @@ const styles = StyleSheet.create({
   arrow:{
     alignSelf:'flex-end',
     bottom:6
-  }
+  },
+  loading: {
+    position: "absolute",
+    alignSelf:'center',
+    marginTop:300,
+    zIndex: 2,
+  },
 
 
 
