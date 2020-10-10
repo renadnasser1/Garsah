@@ -280,6 +280,8 @@ export default class App extends React.Component {
                 textAlignVertical={'top'}
                 defaultValue={Bio}
                 placeholder={'Enter your bio here'}
+                returnKeyType="done"
+                blurOnSubmit={true}
                 onChangeText={(text) => this.setState({ Bio: text })}  
                 style={styles.profileInfoText}
               ></TextInput>
@@ -297,6 +299,7 @@ export default class App extends React.Component {
             <View style={styles.profileInfoText} >
             
               <TouchableOpacity
+         
                 style={styles.editButton}
               >
                 <Text style={styles.editText} onPress={() => {
@@ -359,7 +362,7 @@ const styles = StyleSheet.create({
   },
   img: {
     alignSelf: 'center',
-    marginTop:-80
+    marginTop:80
 
   },
   profileInfoView: {

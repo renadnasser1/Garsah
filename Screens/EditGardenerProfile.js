@@ -285,6 +285,8 @@ export default class App extends React.Component {
               <TextInput
                 color="#696969"
                 maxLength={100}
+                onSubmitEditing={() => { this.secondTextInput.focus(); }}
+               blurOnSubmit={false}
                 multiline={true}
                 textAlignVertical={'top'}
                 defaultValue={Bio}
@@ -308,6 +310,8 @@ export default class App extends React.Component {
               <TextInput color="#696969"
                 keyboardType={'number-pad'}
                 defaultValue={Phone}
+              returnKeyType="done"
+                ref={(input) => { this.secondTextInput = input; }}
                 placeholder={"Enter your Phone number here"}
                 onChangeText={(text) => this.setState({ Phone: text })} 
                 style={styles.profileInfoText}
@@ -396,6 +400,7 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 2,
       height: 4,
+   
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
@@ -405,7 +410,7 @@ const styles = StyleSheet.create({
 
   },
   profileInfoView: {
-    paddingTop: 90,
+    paddingTop: 120,
     paddingLeft: 25,
     paddingRight: 25,
     bottom: 100,
