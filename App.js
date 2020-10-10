@@ -173,9 +173,8 @@ function AmatureStackNav() {
 
     <AmatureStack.Navigator>
       <AmatureStack.Screen name="Profile"
-        options={{
-          headerShown: false
-        }}
+      options={{
+        title:' Profile',}}
 
         component={AmateurProfile} />
 

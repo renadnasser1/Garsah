@@ -93,7 +93,7 @@ export default class App extends React.Component {
     const uploadPhotoAsync = async (uri, filename) => {
       console.log('hi')
       return new Promise(async (res, rej) => {
-        if(this.state.avatar){
+        if(this.state.avatar){ // here amal solution
         const response = await fetch(uri);
         const file = await response.blob();
         //const file = document.getElementById("file").files[0];
@@ -117,7 +117,7 @@ export default class App extends React.Component {
             //Navigate 
             this.props.navigation.reset({
               index: 0,
-              routes: [{ name: 'AmateurRoot' }],
+              routes: [{ name: 'Profile' }]
             })
           }).catch((error) => {
             Alert.alert(error);
@@ -358,7 +358,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
   },
   img: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop:-80
 
   },
   profileInfoView: {
