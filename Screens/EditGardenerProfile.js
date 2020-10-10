@@ -83,10 +83,11 @@ export default class App extends React.Component {
   render() {
     const { userId, name, email, Bio, Phone, flag, avatar } = this.state
 
-
+    
     const uploadPhotoAsync = async (uri, filename) => {
       console.log('hi')
       return new Promise(async (res, rej) => {
+        if(this.state.avatar){ // here amal solution
         const response = await fetch(uri);
         const file = await response.blob();
         //const file = document.getElementById("file").files[0];
@@ -99,11 +100,18 @@ export default class App extends React.Component {
           err => {
             rej(err);
           });
-
+        }
+        //  if (this.Bio.state==null){
+        //     Bio.state=""
+        //   }
+        //   if (this.Phone.state==null){
+        //     this.Phone.state=""
+        //   }
+      
           firebase.firestore().collection('users').doc(userId).update({
             name: this.state.name,
-            Bio: this.state.Bio,
-            Phone: this.state.Phone,
+            Bio: this.state.Bio+"",
+            Phone: this.state.Phone+"",
             avatar: this.state.avatar
           }).then((response) => {
     
@@ -220,16 +228,13 @@ export default class App extends React.Component {
         alert("please enter your name");
       } else if (name.length < 2) {
         alert("Your name need to be at least 2 characters.");
-      } else if (/[^0-9]/.test(Phone)) {
-        alert("Phone need to contain only numbers.");
-      } else if (!Phone.startsWith("05")) {
+      } else if (Phone != null &&  Phone != "" && !Phone.startsWith("05") ) {
         alert("please enter the correct phone number format 05xxxxxxxx");
-      } else if (Phone.length < 10) {
+      } else if (Phone != null && Phone != "" &&  (Phone.length < 10) ) {
         alert("Your phone need to be at least 10 number.");
       }
-      else if ((Phone.length > 10)) {
-        alert("Your phone need to be maxiumum of 10 numbers.");
-      }
+      else if (Phone != null && Phone != "" && (Phone.length > 10) ) {
+        alert("Your phone need to be maxiumum of 10 numbers."); }
       else {
         update();
       }
