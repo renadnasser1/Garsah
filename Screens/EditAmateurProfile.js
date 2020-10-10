@@ -235,10 +235,8 @@ export default class App extends React.Component {
 
 
     return (
-      <KeyboardAvoidingView
-        behavior='padding'
-        style={{ flex: 1 }}  >
-        <View style={styles.container}>
+      <View>
+        
           {/* Profile Information */}
           <View style={styles.profileInfoView}>
             <View style={styles.img}>
@@ -317,7 +315,7 @@ export default class App extends React.Component {
           </View>
 
         </View>
-      </KeyboardAvoidingView>
+    
     );
   }//render
   // class 
