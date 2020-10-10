@@ -5,6 +5,7 @@ import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from "@react-navigation/native";
 
+
 import {
   View,
   Text,
@@ -109,9 +110,10 @@ export default class App extends React.Component {
             save()
             //Navigate 
             this.props.navigation.reset({
-              index: 0,
-              routes: [{ name: 'GardnerRoot' }],
-            })
+            index: 0,
+            routes: [{ name: 'Profile' }]
+          })
+
           }).catch((error) => {
             Alert.alert(error);
           });

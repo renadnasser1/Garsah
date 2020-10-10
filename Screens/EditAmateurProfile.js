@@ -117,7 +117,7 @@ export default class App extends React.Component {
             //Navigate 
             this.props.navigation.reset({
               index: 0,
-              routes: [{ name: 'AmateurRoot' }],
+              routes: [{ name: 'Profile' }]
             })
           }).catch((error) => {
             Alert.alert(error);
@@ -360,7 +360,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
   },
   img: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop:-80
 
   },
   profileInfoView: {

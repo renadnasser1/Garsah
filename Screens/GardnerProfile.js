@@ -107,6 +107,7 @@ const GardnerProfile = ({ navigation }) => {
     }
 
     const getImage = async () => {
+        console.log('get image called')
         let currentUser = firebase.auth().currentUser.uid
         console.log("userid" + currentUser)
         let imageRef = firebase.storage().ref('avatars/' + currentUser);
@@ -121,11 +122,15 @@ const GardnerProfile = ({ navigation }) => {
 
     }
 
+
     useEffect(() => {
-        if (isVisible) {
+
+      
+        if (isVisible) {  
+            console.log('in in use effect')
+     
             load()
             getImage()
-            console.log({ avatar });
         }
     }, [isVisible])
 

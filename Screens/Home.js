@@ -39,8 +39,7 @@ const homepage = ({ navigation }) => {
         firebase.auth()
         .signOut()
         .then(() => navigation.navigate('Login')), AsyncStorage.getAllKeys()
-        .then(keys => AsyncStorage.multiRemove(keys))
-        .then(() => alert('success')).catch((error) => {
+        .then(keys => AsyncStorage.multiRemove(keys)).catch((error) => {
           alert(error)
         });
 

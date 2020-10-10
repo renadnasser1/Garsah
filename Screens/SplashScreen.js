@@ -113,7 +113,10 @@ function SplashScreen({ navigation }) {
                                 // redirect user
                                 if (userInfo.Gardner == true) {
                                      if(userInfo.Latitude==''){
-                                        navigation.navigate("LocationMap");
+                                        navigation.reset({
+                                            index: 0,
+                                            routes: [{ name: 'LocationMap' }],
+                                        });
 
                                      }else{
                                     navigation.reset({
