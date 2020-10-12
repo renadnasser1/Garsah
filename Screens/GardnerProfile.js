@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
     },
     profileInfoView: {
-        paddingTop: 25,
+        
         paddingLeft: 25,
         paddingRight: 25,
         borderBottomColor: 'gray'
@@ -359,11 +359,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'Khmer-MN-Bold',
         color: 'gray',
+        marginBottom: -5,
     },
     mapStyle: {
         width: Dimensions.get('window').width,
         height: 250,
-        left: -25
+        left: -25,
+        
     },
 
     plus: {
