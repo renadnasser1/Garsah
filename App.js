@@ -24,6 +24,9 @@ import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
 import Addplant from "./Screens/Addplant";
+import trefle from "./Screens/trefle";
+
+
 
 
 // Firebase
@@ -208,6 +211,15 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
         <Stack.Navigator>
+
+        
+        <Stack.Screen
+            name="trefle"
+            component={trefle}
+            options={{
+              headerShown: false,
+            }}
+          />
 
           <Stack.Screen
             name="SplashScreen"
