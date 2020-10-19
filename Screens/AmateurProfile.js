@@ -16,7 +16,7 @@ import {
     StyleSheet,
     Image,
     ActivityIndicator,
-    // AsyncStorage,
+    ScrollView,
     Dimensions,
     Linking,
     Alert
@@ -132,7 +132,7 @@ const AmateurProfile = ({ navigation }) => {
 
     return (
 
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.header}>
                 {/* Image */}
                 <Image source={avatar ?
@@ -186,7 +186,7 @@ const AmateurProfile = ({ navigation }) => {
 
 
 
-        </View>
+        </ScrollView>
 
     );
     

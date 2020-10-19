@@ -46,7 +46,7 @@ const AddPost = ({ navigation }) => {
        <View >
        <View>
   
-       <Image source={require("../assets/plain-white-background.jpg")} style={styles.img} />
+        {/* <Image source={require("../assets/plain-white-background.jpg")} style={styles.img} /> */}
 
        <Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}></Ionicons>
        </View>

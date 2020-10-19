@@ -14,12 +14,17 @@
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
     "expo": "~38.0.8",
+    "expo-image-picker": "~8.3.0",
     "expo-permissions": "~9.0.1",
     "expo-status-bar": "^1.0.2",
     "firebase": "^7.9.0",
+    "mobx": "^6.0.1",
+    "node-fetch": "^2.6.1",
     "react": "~16.11.0",
+    "react-autocomplete": "^1.8.1",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
+    "react-native-autocomplete-input": "^4.2.0",
     "react-native-elements": "^2.3.2",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-ionicons": "^4.6.5",
@@ -32,8 +37,7 @@
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
     "react-native-svg": "12.1.0",
-    "react-native-web": "~0.11.7",
-    "expo-image-picker": "~8.3.0"
+    "react-native-web": "~0.11.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
