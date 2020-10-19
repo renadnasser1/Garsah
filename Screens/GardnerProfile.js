@@ -234,7 +234,7 @@ const GardnerProfile = ({ navigation }) => {
                 <Text style={styles.myPlantText}>My Plants</Text>
                 {/* <TouchableOpacity style={styles.plus}>
             <Entypo name="plus" size={44} color="white" />
-            </TouchableOpacity> */}
+            </TouchableOpacity>  */}
             </View>
 
 

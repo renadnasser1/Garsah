@@ -18,8 +18,38 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo'; 
 import { Ionicons } from "@expo/vector-icons";
-import Svg, { Path } from "react-native-svg"
-const AddPost = ({ navigation }) => {
+import Svg, { Path } from "react-native-svg";
+import * as ImagePicker from 'expo-image-picker';
+const AddThread = ({ navigation }) => {
+
+    const [image, setImage] = useState(null)
+    const [permissions, setPermissions] = useState(false)
+    useEffect(() => {
+        (async () => {
+            const status1 = await (await ImagePicker.requestCameraRollPermissionsAsync()).status
+            const { status } = await ImagePicker.requestCameraPermissionsAsync()
+            if (status !== 'granted' || status1 !== 'granted') {
+                alert('Sorry, we need camera permissions to make this work!');
+            } else {
+                setPermissions(true)
+            }
+        })();
+    }, []);
+    const pickImageCameraRoll = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.cancelled) {
+            setImage(result.uri);
+        }
+       // the image is set in case no cansallation .. if so what shall we do ? Now the image is set 
+        };
+
+        // Save to DB 
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -48,18 +78,33 @@ const AddPost = ({ navigation }) => {
   
        <Image source={require("../assets/plain-white-background.jpg")} style={styles.img} />
 
-       <Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}></Ionicons>
+       <Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
+      onPress={() => {
+        pickImageCameraRoll();
+                    }}
+       
+       ></Ionicons>
        </View>
        <View style={styles.inputFiled}>
        <TextInput
      placeholder={"Caption"}
         ></TextInput></View>
-
+<View>
+<TextInput
+style = {styles.input}
+     placeholder={"Name"}
+        ></TextInput>
+        <TextInput
+style = {styles.input}
+     placeholder={"Type"}
+        ></TextInput>
+</View>
        </View>
 
     </View>);
 }
-export default AddPost;
+export default AddThread;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -73,6 +118,31 @@ const styles = StyleSheet.create({
             paddingLeft:10,
             width: 310,
             height: 60,
+            borderTopLeftRadius: 10,
+            borderBottomLeftRadius: 10,
+            borderBottomEndRadius: 10,
+            borderTopRightRadius: 10,
+            flexDirection: "row",
+            backgroundColor: "#fff",
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 4,
+            },
+            shadowOpacity: 0.2,
+            shadowRadius: 4.65,
+        
+            elevation: 8,
+            
+          },
+          input: {
+            paddingLeft:80,
+            paddingBottom:10,
+            marginLeft:50,
+            marginBottom:30,
+            paddingLeft:10,
+            width: 310,
+            height: 40,
             borderTopLeftRadius: 10,
             borderBottomLeftRadius: 10,
             borderBottomEndRadius: 10,
