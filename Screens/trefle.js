@@ -43,51 +43,44 @@ export default class apiCall extends Component{
 
 async componentDidMount(){
 
-  //const hi = await apiCalls.functions.getAllPlants();
-  
+  //End point and token
   const acssesToken = 'PqkcgwjM19loWLf_mmid8W6UOm8jtwWwnWn8RWO8IuM';
   const allPlantsURL = 'http://trefle.io/api/v1/genus?token='+acssesToken;
 
+  //Make request
   const fetch = require('node-fetch') ;
-  
-    const response = await fetch(allPlantsURL);
+  const response = await fetch(allPlantsURL);
+
+    // check if success
+    if (response.status>=200 && response.status<=299){
+
     const json = await response.json();
+
+    if(!json.data[0].name){
+      return
+    }
 
     var genusName = new Array();
 
     for (var i = 0; i < json.data.length; i++) {
         var counter = json.data[i];
-        genusName[i]=counter.name;
+       genusName[i]=counter.name;
     }
 
     this.setState({genus:genusName})
+  }
 
   }
 
-  // handleInputChange = () => {
-  //   this.setState({
-  //     query: this.search.value
-  //   })
-  // }
 
-  // getInfo = () => {
-
-  //   this.setState({
-  //     results: data.data})
-
-  // }
-
-  findFilm(query) {
+  findPlant(query) {
     if (query === '') {
       return [];
     }
 
     const { genus } = this.state;
-    // const regex = new RegExp(`${query.trim()}`, 'i');
     var key = query.trim()
-    console.log(query)
     var array = genus.filter((item)=> item.includes(key) );
-    console.log(array)
     return array
   }
 
@@ -95,7 +88,7 @@ async componentDidMount(){
 
 render(){
   const { query } = this.state;
-  const genus = this.findFilm(query);
+  const genus = this.findPlant(query);
 
     return(
       
@@ -116,15 +109,6 @@ render(){
       )}
     />
 
-{/* <View style={styles.descriptionContainer}>
-          {genus.length > 0 ? (
-            AutocompleteExample.renderFilm(films[0])
-          ) : (
-            <Text style={styles.infoText}>
-              Enter Title of a Star Wars movie
-            </Text>
-          )}
-        </View> */}
 
 
     </View>

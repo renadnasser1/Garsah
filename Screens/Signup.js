@@ -51,10 +51,7 @@ const SignupScrean = ({ navigation }) => {
 
     // redirect user
     if (Gardner == true) {
-      // navigation.reset({
-      //   index: 0,
-      //   routes: [{ name: 'GardnerRoot' }],
-      // });
+
     navigation.navigate("LocationMap" ,{
       name: name,
       email: email,
@@ -118,7 +115,10 @@ const SignupScrean = ({ navigation }) => {
     } else if (!/[0-9]/.test(password)) {
       alert("Password need to contain numbers.");
       setIsLoding(false);
-    } else
+    } else{
+    var arrayPosts = new Array();
+    var arrayMessages = new Array();
+
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
@@ -134,7 +134,9 @@ const SignupScrean = ({ navigation }) => {
             Latitude:'',
             Bio:'',
             Phone:'',
-            avatar:''//check this again 
+            avatar:'',
+            posts:arrayPosts,
+            messages:arrayMessages,
           };
 
           const usersRef = firebase.firestore().collection("users");
@@ -154,6 +156,7 @@ const SignupScrean = ({ navigation }) => {
           alert(error);
           setIsLoding(false);
         });
+      }
   };
 
   return (
