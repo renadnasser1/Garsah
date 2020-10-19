@@ -26,6 +26,9 @@ import EditAmateurProfile from "./Screens/EditAmateurProfile";
 import AddThread from "./Screens/AddThread";
 import Plant from "./Screens/Plant";
 import trefle from "./Screens/trefle";
+import MessagesPage from "./Screens/MessagesPage";
+import Chat from "./Screens/Chat";
+import Addplant from "./Screens/Addplant";
 
 
 // Firebase
@@ -44,7 +47,9 @@ var firebaseConfig = {
 };
 
 // Initialize Firebase
+if (!firebase.apps.length) {
 firebase.initializeApp(firebaseConfig);
+}
 //firebase.analytics();
 
 const AmateurTab = createBottomTabNavigator();
@@ -61,6 +66,7 @@ function AmateurRoot() {
         inactiveTintColor: 'gray',
       }}
     >
+      
 
       <AmateurTab.Screen
         name="Home"
@@ -70,6 +76,15 @@ function AmateurRoot() {
           ),
         }}
         component={HomeStackNav} />
+
+        <AmateurTab.Screen
+        name="Messages"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="ios-mail" color={color} size={size} />
+          ),
+        }}
+        component={MessageStackNav}/>
 
       <AmateurTab.Screen name="profile"
         options={{
@@ -104,6 +119,15 @@ function GardnerRoot() {
         }}
         component={HomeStackNav} />
 
+<GardnerTab.Screen
+        name="Messages"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="ios-mail" color={color} size={size} />
+          ),
+        }}
+        component={MessageStackNav} />
+
       <GardnerTab.Screen
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -121,6 +145,24 @@ function GardnerRoot() {
 const GardnerStack = createStackNavigator();
 const AmatureStack = createStackNavigator();
 const HomeStack = createStackNavigator();
+const MessageStack = createStackNavigator();
+
+function MessageStackNav() {
+  return (
+    <MessageStack.Navigator>
+         <MessageStack.Screen name="Messages"
+      options={{
+        title:'Messages',}}
+        component={MessagesPage} />
+        
+
+           <MessageStack.Screen name="Chat"
+      options={{
+        title:'Chat',}}
+        component={Chat} />
+    </MessageStack.Navigator>
+      );
+    }
 
 function HomeStackNav() {
   return (
@@ -141,7 +183,6 @@ function GardnerStackNav() {
   return (
 
     <GardnerStack.Navigator>
-
 
       <GardnerStack.Screen name="Profile"
         options={{
