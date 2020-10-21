@@ -108,33 +108,7 @@ const GardnerProfile = ({ navigation }) => {
                 console.log("Error getting document:", error);
             });
 
-
-            //get posts 
-
-            // await asyncForEach(postsID, async (id) => {
-            //     var docRef = firebase.firestore().collection("Posts").doc(id);
-            //     await docRef.get().then(function (doc) {
-            //          if (doc.exists) {
-            //              var post = {
-            //                  postId: id,
-            //                  name: doc.data().Name,
-            //                  date: doc.data().Date[0],
-            //                  image: doc.data().Images[0],
-            //              };
-            //              console.log(posts.push(post));
-            //          }
-            //          else {
-            //              // doc.data() will be undefined in this case
-            //              console.log("No such document!");
-            //          }
-            //      }).catch(function (error) {
-            //          console.log("Error getting document:", error);
-            //      });
-            // });
-            // console.log('Done');
-            // console.log(posts);
-
-            // var i=0 ; i< postsID.length;i++
+            //Get all posts
             for (id of postsID) {
 
                 var docRef = firebase.firestore().collection("Posts").doc(id);
@@ -210,19 +184,13 @@ const GardnerProfile = ({ navigation }) => {
 
     if (lat) {
         return (
-
             <View style={styles.container}>
+
+            <ScrollView>
                 <View style={styles.header}>
                     {/* Image */}
                     <Image source={avatar ?
                         { uri: avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
-
-
-                    {/* <Image
-                 source={{ uri:{avatar}}}
-                 style={styles.prifileImg}
-                 /> */}
-
 
                     {/* Edit Profile button */}
                     <TouchableOpacity
@@ -300,7 +268,6 @@ const GardnerProfile = ({ navigation }) => {
                         data={postss}
                         renderItem={({ item, index }) =>
                             (<View key={item.key} >
-
                                 <Text>{item.name} </Text>
                                 <Text>{item.date} </Text>
 
@@ -318,28 +285,28 @@ const GardnerProfile = ({ navigation }) => {
 
                     />
 
-
-
-                    <TouchableOpacity style={styles.plus}>
-                        <Entypo name="plus" size={44} color="white"
-                            onPress={() =>
-                                navigation.navigate('AddThread')
-                            } />
-                    </TouchableOpacity>
-
                 </View>
 
+                
+         </ScrollView>
 
+            <View style={styles.plus}>
+            <TouchableOpacity >
+                               <Entypo name="plus" size={44} color="white"
+                                   onPress={() =>
+                                       navigation.navigate('AddThread')
+                                   } />
+                           </TouchableOpacity></View>
+           
 
-
-            </View>
+              </View>
 
         );
     } else {
 
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>We are still processing your information </Text>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', fontFamily: 'Khmer-MN-Bold' }}>
+                <Text>We are processing your information</Text>
             </View>
         );
     }
@@ -461,13 +428,23 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'flex-end',
         right: 10,
-        bottom: -130,
+        bottom: 10,
         backgroundColor: '#CFD590',
         borderRadius: 100,
         padding: 5,
         paddingBottom: -5,
-        alignItems: 'center'
+        alignItems: 'center',
+        zIndex:2,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 4.0,
 
+        elevation: 3,
+      
     }
 
 
