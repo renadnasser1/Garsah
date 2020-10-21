@@ -3,124 +3,124 @@ import  Svg, { Defs, ClipPath, Path, G } from "react-native-svg"
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-community/async-storage';
 
-// import {
-//   View,
-//   Text,
-//   TouchableOpacity,
-//   TextInput,
-//   StyleSheet,
-//   Button,
-//   Image,
-//   ActivityIndicator
-// } from "react-native";
-// import * as firebase from "firebase";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+  Button,
+  Image,
+  ActivityIndicator
+} from "react-native";
+import * as firebase from "firebase";
 
-// //Fonts
-// import { useFonts } from 'expo-font';
-// import { AppLoading } from 'expo';
-
-
-// //Navigation
+//Fonts
+import { useFonts } from 'expo-font';
+import { AppLoading } from 'expo';
 
 
-
-// const homepage = ({ navigation }) => {
-
-//   const isVisible = useIsFocused();
-
-//                   const load = async () => {
-
-//                     const db = firebase.firestore()
-//                     let usersref = db.collection("users")
-//                     const snapshot = await usersref.where('Gardner', '==', true).limit(2).get();
-// if (snapshot.empty) {
-//   console.log('No matching documents.');
-//   return;
-// }  
-
-// snapshot.forEach(doc => {
-//   console.log(doc.id, '=>', doc.data());
-// });
-// var randomItem = snapshot[Math.floor(Math.random()*snapshot.length)];
-
-//                     //filter(user => user.Gardner === true)
-//                     // .then(snapshot => { // then get the snapshot which contains an array of objects
-//                     //   snapshot.val() // use ES6 filter method to return your array containing the values that match with the condition
-//                     // })
-//                     //console.log(usersref)
-//                   //   queryRef = usersref.where("Gardner", "==", true)
-//                   // console.log(queryRef)
-//                  // queryRef = postsRef.whereField("Gardener", isEqualTo: true)
-//                   //  .order(by: "random")
-//                   //  .limit(to: 1)
-
-//                                      //.order(by: "random")
-//                                     // .limit(to: 1)
-
-//                   }       
-
-
-//                   useEffect(() => {
-//                     if (isVisible) {
-//                         load()
-//                        // getGardenersProfiles()
-//                        // console.log({ avatar });
-//                     }
-//                 }, [isVisible])            
+//Navigation
 
 
 
-//   React.useLayoutEffect(() => {
-//     navigation.setOptions({
+const homepage = ({ navigation }) => {
+
+  const isVisible = useIsFocused();
+
+                  const load = async () => {
+
+                    const db = firebase.firestore()
+                    let usersref = db.collection("users")
+                    const snapshot = await usersref.where('Gardner', '==', true).limit(2).get();
+if (snapshot.empty) {
+  console.log('No matching documents.');
+  return;
+}  
+
+snapshot.forEach(doc => {
+  console.log(doc.id, '=>', doc.data());
+});
+var randomItem = snapshot[Math.floor(Math.random()*snapshot.length)];
+
+                    //filter(user => user.Gardner === true)
+                    // .then(snapshot => { // then get the snapshot which contains an array of objects
+                    //   snapshot.val() // use ES6 filter method to return your array containing the values that match with the condition
+                    // })
+                    //console.log(usersref)
+                  //   queryRef = usersref.where("Gardner", "==", true)
+                  // console.log(queryRef)
+                 // queryRef = postsRef.whereField("Gardener", isEqualTo: true)
+                  //  .order(by: "random")
+                  //  .limit(to: 1)
+
+                                     //.order(by: "random")
+                                    // .limit(to: 1)
+
+                  }       
+
+
+                  useEffect(() => {
+                    if (isVisible) {
+                        load()
+                       // getGardenersProfiles()
+                       // console.log({ avatar });
+                    }
+                }, [isVisible])            
+
+
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
       
-//       title:'Home',
-//       headerLeft: () => (
-//         <Button 
-//          onPress={() => onLogoutPress()}
-//          title="Logout" />
-//       ),
-//     });
-//   }, [navigation]);
+      title:'Home',
+      headerLeft: () => (
+        <Button 
+         onPress={() => onLogoutPress()}
+         title="Logout" />
+      ),
+    });
+  }, [navigation]);
 
 
-//   const onLogoutPress = async () => {
-//         firebase.auth()
-//         .signOut()
-//         .then(() => navigation.navigate('Login')), AsyncStorage.getAllKeys()
-//         .then(keys => AsyncStorage.multiRemove(keys)).catch((error) => {
-//           alert(error)
-//         });
+  const onLogoutPress = async () => {
+        firebase.auth()
+        .signOut()
+        .then(() => navigation.navigate('Login')), AsyncStorage.getAllKeys()
+        .then(keys => AsyncStorage.multiRemove(keys)).catch((error) => {
+          alert(error)
+        });
 
-// }
+}
 
-// let [fontsLoaded] = useFonts({
-//   'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
-//   'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
-// });
+let [fontsLoaded] = useFonts({
+  'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
+  'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
+});
 
-// if (!fontsLoaded) {
-//   return <AppLoading />;
-// }
+if (!fontsLoaded) {
+  return <AppLoading />;
+}
 
-// const getImage = async (PUID) => { //<---------------- getting profile pictures
-//   //let currentUser = firebase.auth().currentUser.uid
-//   console.log("userid" + PUID)
-//   let imageRef = firebase.storage().ref('avatars/' + PUID);
-//   imageRef.getDownloadURL().then((url) => {
-//       //from url you can fetched the uploaded image easily
-//       console.log(url)
-//       //setAvatar(url);
-//       return(url);
-//   })
-//       .catch((e) => console.log('getting downloadURL of image error => ', e),
+const getImage = async (PUID) => { //<---------------- getting profile pictures
+  //let currentUser = firebase.auth().currentUser.uid
+  console.log("userid" + PUID)
+  let imageRef = firebase.storage().ref('avatars/' + PUID);
+  imageRef.getDownloadURL().then((url) => {
+      //from url you can fetched the uploaded image easily
+      console.log(url)
+      //setAvatar(url);
+      return(url);
+  })
+      .catch((e) => console.log('getting downloadURL of image error => ', e),
       
-//       );
+      );
 
-// }
+}
 
 
 
-//     return(
+    return(
 
     
     <View style={styles.container}>
@@ -209,7 +209,7 @@ import AsyncStorage from '@react-native-community/async-storage';
     </View>
     
 
-
+    )}
 
 export default homepage;
 

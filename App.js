@@ -23,7 +23,7 @@ import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
-import AddThread from "./Screens/AddThread";
+//import AddThread from "./Screens/AddThread";
 import Plant from "./Screens/Plant";
 import trefle from "./Screens/trefle";
 import MessagesPage from "./Screens/MessagesPage";
@@ -206,7 +206,7 @@ function GardnerStackNav() {
       />}
 
       {  <GardnerStack.Screen
-        name="AddPlant"
+        name="Addplant"
         component={Addplant}
       />}
 

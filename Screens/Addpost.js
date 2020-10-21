@@ -32,7 +32,7 @@ const font = () => {
   });
 }
 
-export default class AddThread extends React.Component {
+export default class AddPost extends React.Component {
 
   constructor(props) {
     super(props)
@@ -330,7 +330,6 @@ export default class AddThread extends React.Component {
 
               <View style={styles.modelBody}>
                 <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20, }}>Progress Reminder</Text>
-                
           <RadioGroup
                 Style={styles.groubReminder}
                 radioGroupList={radioGroupList}
@@ -549,7 +548,6 @@ const styles = StyleSheet.create({
     fontSize: 17
 
   },
-
 
 
 })
