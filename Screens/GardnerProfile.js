@@ -305,7 +305,7 @@ const GardnerProfile = ({ navigation }) => {
                                 <Text>{item.date} </Text>
 
                                 <TouchableOpacity style={{ width: 50, height: 50 }} onPress={() =>
-                                    navigation.navigate('Plant',item)
+                                    navigation.navigate('Addplant',item)
                                 }>
                                     <Image
                                         style={{ width: 50, height: 50 }}
@@ -366,10 +366,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.1,
         shadowRadius: 4.65,
-
         elevation: 4,
-
-
     },
     prifileImg: {
         width: 60,
