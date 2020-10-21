@@ -206,8 +206,8 @@ function GardnerStackNav() {
       />}
 
       {  <GardnerStack.Screen
-        name="AddThread"
-        component={AddThread}
+        name="AddPlant"
+        component={Addplant}
       />}
 
     {  <GardnerStack.Screen
