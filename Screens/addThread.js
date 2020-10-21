@@ -330,7 +330,10 @@ export default class AddThread extends React.Component {
 
               <View style={styles.modelBody}>
                 <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20, }}>Progress Reminder</Text>
+<<<<<<< HEAD
                 
+=======
+>>>>>>> 1a4270d1c50591acf3b6f7ab05b6dfb7030bc675
           <RadioGroup
                 Style={styles.groubReminder}
                 radioGroupList={radioGroupList}
@@ -549,7 +552,10 @@ const styles = StyleSheet.create({
     fontSize: 17
 
   },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1a4270d1c50591acf3b6f7ab05b6dfb7030bc675
 
 
 })

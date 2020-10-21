@@ -294,7 +294,7 @@ const GardnerProfile = ({ navigation }) => {
             <TouchableOpacity >
                                <Entypo name="plus" size={44} color="white"
                                    onPress={() =>
-                                       navigation.navigate('AddThread')
+                                       navigation.navigate('AddPlant')
                                    } />
                            </TouchableOpacity></View>
            
