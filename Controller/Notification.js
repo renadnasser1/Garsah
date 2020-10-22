@@ -44,26 +44,30 @@ export function removeAll(){
     console.log('removed')
 }
 
-export async function schedulePushNotification(reminder) {
+export async function schedulePushNotification(reminder,id) {
 
+    //Data needed
     let reminderName = reminder.progres;
     let reminderPeriod = reminder.period;
-    var repeat;
 
-    if(reminderPeriod == 'day'){
-        repeat=1
-    }else if (reminderPeriod == 'week'){
-        repeat=7
-    }else{
-        repeat=30
-    }console.log('our reminder',reminderName)
-    console.log(reminderName)
-    
+    var repeat = () =>{
+        if(reminderPeriod == 'day'){
+            return 1
+        }else if (reminderPeriod == 'week'){
+            return 7
+        }else{
+            return 30
+        }
+    }
+
+    console.log(repeat)
+
+//set schedule notfication
  const reminderIdentifire = await Notifications.scheduleNotificationAsync({
     content: {
       title: reminderName+" you're plant",
       //body: 'Here is the notification body',
-      data: { screen: 'Plant' },
+      data: { screen: 'GardnerPlantProgress',threadId:id },
     },
     trigger: { 
         seconds:60,

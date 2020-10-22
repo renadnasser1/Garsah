@@ -254,7 +254,7 @@ const GardnerProfile = ({ navigation }) => {
 
                                 <TouchableOpacity style={{ width: 50, height: 50 }} 
                                 onPress={() =>
-                                    navigation.navigate('GardnerPlantProgress',{itemsend:item})
+                                    navigation.navigate('GardnerPlantProgress',{thread:item.key})
                                 }>
                                     <Image
                                         style={{ width: 50, height: 50 }}

@@ -16,7 +16,7 @@ import { periodWater, periodTreatment } from '../Component/period';
 import { progress } from '../Component/progress';
 
 //Functions 
-import {registerForPushNotificationsAsync,schedulePushNotification,removeAll} from '../Controller/Notification'
+import { registerForPushNotificationsAsync, schedulePushNotification, removeAll } from '../Controller/Notification'
 
 //Firebase
 import * as firebase from "firebase";
@@ -65,7 +65,7 @@ export default class AddPlant extends React.Component {
     inActiveBgColor: "#DFE2DD",
     selectedProgress: '',
     selectedPeriod: '',
-    pushToken:'',
+    pushToken: '',
   }
 
   async componentDidMount() {
@@ -88,7 +88,7 @@ export default class AddPlant extends React.Component {
 
   }
   render() {
-    const { image, name, caption, userId, progressArray, showModel, selectedPeriod, selectedProgress,pushToken } = this.state
+    const { image, name, caption, userId, progressArray, showModel, selectedPeriod, selectedProgress, pushToken } = this.state
 
     const pickImageCameraRoll = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -130,42 +130,54 @@ export default class AddPlant extends React.Component {
       );
     }
 
-    const uploadPost = () => {
+    const uploadPost = async () => {
 
       //For update
       // regions: firebase.firestore.FieldValue.arrayUnion("greater_virginia")
 
+      //Vars
       var newPost = firebase.firestore().collection("Posts").doc();
       var images = [this.state.imageURL]
       var captions = [this.state.caption]
       var dates = [this.state.date]
       var postId = newPost.id
       var reminders = this.state.progressArray
-      var id1='';
-      var id2='';
+      var id1 = '';
+      var id2 = '';
 
-       for(var i =0 ; i<reminders.length;i++){
-          await schedulePushNotification(reminders[i]).then((id) => {
-            console.log('notifi id '+id)
-            id1=id
-            id2=id
+      //Set Reminders
+      if (reminders.length!=0){
 
-          });  
+        registerForPushNotificationsAsync().then((token) => {
+          this.setState({ pushToken: token }, () => console.log('token', this.state.pushToken))
+        })
+
+      for (var i = 0; i < reminders.length; i++) {
+        await schedulePushNotification(reminders[i],postId).then((id) => {
+          console.log('notifi id ' + id)
+          if (i == 0) {
+            id1 = id
+          } else {
+            id2 = id
           }
+          
+        });
+      }
+    }
+      var i = 0;
+      var result = reminders.map(function (item) {
+        i++
+        var obj = Object.assign({}, item);
+        if (i == 1) {
+          obj.idNotifcation = id1;
+        } else {
+          obj.notificationID = id2;
+        }
+        obj.postID=postId;
+        return obj;
+      })
 
-          var i =0;
-          var result = reminders.map(function(item) {
-            i++
-            var obj = Object.assign({}, item);
-            if(i==1){
-            obj.idNotifcation = id1;
-            }else{
-              obj.idNotifcation = id2; 
-            }
-            return obj;
-          })
-
-
+      //Add new post
       newPost.set({
         Captions: captions,
         Date: dates,
@@ -174,16 +186,16 @@ export default class AddPlant extends React.Component {
         Images: images,
         Pid: postId,
         Reminders: result,
-        PushToken:this.state.pushToken
-
       }).then((response) => {
 
       }).catch((error) => {
         Alert.alert(error);
       });
 
+      //add push token and 
       firebase.firestore().collection('users').doc(userId).update({
-        posts: firebase.firestore.FieldValue.arrayUnion(postId)
+        posts: firebase.firestore.FieldValue.arrayUnion(postId),
+        push_token: this.state.pushToken
       }).then((response) => {
 
         //Navigate 
@@ -244,10 +256,7 @@ export default class AddPlant extends React.Component {
     }
 
     const setModalVisible = (visible) => {
-     // removeAll()
-      registerForPushNotificationsAsync().then((token) => {
-        this.setState( {pushToken:token},() => console.log('token',this.state.pushToken))
-      })
+     //  removeAll()
       this.setState({ showModel: visible });
     }
 
@@ -315,7 +324,7 @@ export default class AddPlant extends React.Component {
           period: this.state.selectedPeriod
         }
         this.state.progressArray.push(reminder);
-     
+
         closeModel();
       }
 

@@ -35,13 +35,14 @@ function SplashScreen({ navigation }) {
         //Notifacation:
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
+        //called when user click notfication
         notificationListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             const screen = response.notification.request.content.data.screen;
-            console.log(response)
-            console.log('onSplash')
-            navigation.navigate(screen)
+            const id = response.notification.request.content.data.threadId
+            navigation.navigate(screen,{threadID:id})
         });
     
+        //not sure
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             console.log('clicked')
           //console.log(response);
