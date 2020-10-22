@@ -272,7 +272,7 @@ const GardnerProfile = ({ navigation }) => {
                                 <Text>{item.date} </Text>
 
                                 <TouchableOpacity style={{ width: 50, height: 50 }} onPress={() =>
-                                    navigation.navigate('Plant',item)
+                                    navigation.navigate('Plant',{user:item})
                                 }>
                                     <Image
                                         style={{ width: 50, height: 50 }}

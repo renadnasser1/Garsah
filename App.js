@@ -23,7 +23,6 @@ import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
-import AddThread from "./Screens/AddThread";
 import Plant from "./Screens/Plant";
 import trefle from "./Screens/trefle";
 import MessagesPage from "./Screens/MessagesPage";
@@ -107,6 +106,7 @@ function GardnerRoot() {
         inactiveTintColor: 'gray',
       }}
     >
+
 
 
       <GardnerTab.Screen
@@ -276,6 +276,11 @@ export default class App extends React.Component {
               headerShown: false,
             }}
           />
+
+{  <Stack.Screen
+        name="Plant"
+        component={Plant}
+      />}
 
           <Stack.Screen
             name="Login"

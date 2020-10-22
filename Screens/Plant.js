@@ -20,7 +20,7 @@ import Svg, { Path } from "react-native-svg"
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 
-export default class AddThread extends React.Component {
+export default class Plant extends React.Component {
 
   constructor(props) {
     super(props)
