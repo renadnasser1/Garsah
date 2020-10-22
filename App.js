@@ -29,8 +29,8 @@ import GardnerPlantProgress from "./Screens/GardnerPlantProgress";
 import trefle from "./Screens/trefle";
 import MessagesPage from "./Screens/MessagesPage";
 import Chat from "./Screens/Chat";
+import ViewGardenerProfile from "./Screens/ViewGardenerProfile";
 import Addplant from "./Screens/Addplant";
-
 
 // Firebase
 import * as firebase from "firebase";
@@ -166,16 +166,27 @@ function MessageStackNav() {
 
 function HomeStackNav() {
   return (
-    <GardnerStack.Navigator>
-            <GardnerStack.Screen name="Profile"
+    <HomeStack.Navigator>
+      
+            <HomeStack.Screen name="Home"
         options={{
           title:'Home',
           color:'black'
         }}
         component={Home} />
-      
-    
-    </GardnerStack.Navigator>
+         <HomeStack.Screen name="ViewGardenerProfile"
+        options={{
+          title:'ViewGardenerProfile',
+          color:'black'
+        }}
+        component={ViewGardenerProfile} />
+
+         <HomeStack.Screen name="Chat"
+      options={{
+        title:'Chat',}}
+        component={Chat} />
+       
+    </HomeStack.Navigator>
       );
     }
     
