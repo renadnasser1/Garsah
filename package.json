@@ -20,7 +20,7 @@
     "firebase": "^7.9.0",
     "mobx": "^6.0.1",
     "node-fetch": "^2.6.1",
-    "react": "~16.11.0",
+    "react": "^16.11.0",
     "react-autocomplete": "^1.8.1",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
@@ -40,7 +40,8 @@
     "react-native-screens": "~2.9.0",
     "react-native-svg": "12.1.0",
     "react-native-web": "~0.11.7",
-    "expo-notifications": "~0.3.3"
+    "expo-notifications": "~0.3.3",
+    "save": "^2.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

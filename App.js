@@ -24,11 +24,13 @@ import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
 import Plant from "./Screens/Plant";
+import Post from "./Screens/Post";
+import GardnerPlantProgress from "./Screens/GardnerPlantProgress";
 import trefle from "./Screens/trefle";
 import MessagesPage from "./Screens/MessagesPage";
 import Chat from "./Screens/Chat";
+import ViewGardenerProfile from "./Screens/ViewGardenerProfile";
 import Addplant from "./Screens/Addplant";
-
 
 // Firebase
 import * as firebase from "firebase";
@@ -107,8 +109,6 @@ function GardnerRoot() {
       }}
     >
 
-
-
       <GardnerTab.Screen
         name="Home"
         options={{
@@ -154,8 +154,8 @@ function MessageStackNav() {
       options={{
         title:'Messages',}}
         component={MessagesPage} />
-        
-
+     
+         
            <MessageStack.Screen name="Chat"
       options={{
         title:'Chat',}}
@@ -166,15 +166,27 @@ function MessageStackNav() {
 
 function HomeStackNav() {
   return (
-    <GardnerStack.Navigator>
-            <GardnerStack.Screen name="Profile"
+    <HomeStack.Navigator>
+      
+            <HomeStack.Screen name="Home"
         options={{
           title:'Home',
           color:'black'
         }}
-
         component={Home} />
-    </GardnerStack.Navigator>
+         <HomeStack.Screen name="ViewGardenerProfile"
+        options={{
+          title:'ViewGardenerProfile',
+          color:'black'
+        }}
+        component={ViewGardenerProfile} />
+
+         <HomeStack.Screen name="Chat"
+      options={{
+        title:'Chat',}}
+        component={Chat} />
+       
+    </HomeStack.Navigator>
       );
     }
     
@@ -192,7 +204,10 @@ function GardnerStackNav() {
 
         component={GardnerProfile} />
 
-
+{  <GardnerStack.Screen
+        name="GardnerPlantProgress"
+        component={GardnerPlantProgress}
+      />}
       {<GardnerStack.Screen
         name="EditGardenerProfile"
         options={{
@@ -206,15 +221,16 @@ function GardnerStackNav() {
       />}
 
       {  <GardnerStack.Screen
-        name="AddPlant"
+        name="Addplant"
         component={Addplant}
       />}
 
     {  <GardnerStack.Screen
-        name="Plant"
-        component={Plant}
+        name="Post"
+        component={Post}
       />}
-
+         
+    
     </GardnerStack.Navigator>
 
 
@@ -231,6 +247,7 @@ function AmatureStackNav() {
         title:' Profile',}}
 
         component={AmateurProfile} />
+       
 
       <AmatureStack.Screen
        options={{
@@ -332,6 +349,8 @@ export default class App extends React.Component {
               headerShown: false,
             }}
           />
+
+
 
 
         </Stack.Navigator>
