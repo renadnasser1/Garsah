@@ -8,7 +8,13 @@ import * as firebase from 'firebase'
 
 
 
-const Chat = ({ navigation }) => { //<--------- props here ???
+const Chat = ({ route, navigation }) => { //<--------- props here ???
+
+   //getting the user2  id
+   const param = route.params;
+   const uidstr = JSON.stringify(param.id)
+   const uid2 = JSON.parse(uidstr)
+   const [user2, setUser2] = useState()
 
      const db = firebase.firestore()
      const chatsRef = db.collection('Messages')
@@ -17,12 +23,13 @@ const Chat = ({ navigation }) => { //<--------- props here ???
     const [name, setName] = useState('')
     const [uid, setUid] = useState()
     const [messages, setMessages] = useState([])
-    const  cId = chatID()
+    const  cId = chatID() //<---- wrong
+    console.log(cId)
 
    // const [user2,setUser2] = useState("AU5Pl2iDMCWQUl8RnYazaRLXygL2","Atheer")
-   const uid2 ="AU5Pl2iDMCWQUl8RnYazaRLXygL2"
-   const uname = "Atheer"
-   const user2 = {uid2,uname}
+  //  const uid2 ="AU5Pl2iDMCWQUl8RnYazaRLXygL2"
+  //  const uname = "Atheer"
+  //  const user2 = {uid2,uname}
 
    const load = async () => {
     try {
@@ -33,6 +40,18 @@ const Chat = ({ navigation }) => { //<--------- props here ???
         const user = { currentUser, name }
         console.log(user)
         setUser(user)
+        //getting user 2 info 
+        const db = firebase.firestore()
+  let usersref = db.collection("users")
+  const snapshot = await usersref.where('id', '==', uid2).get();
+  if (snapshot.empty) {
+  console.log('No matching documents.');
+  return;
+  }
+  var g1 = snapshot.docs[0].data();
+  let name2 = g1.name
+  const user2 = {uid2,name2}
+  setUser2(user2)
     } catch (err) {
         alert(err)
 
@@ -42,7 +61,7 @@ const Chat = ({ navigation }) => { //<--------- props here ???
   useEffect(() => {
            load()
          const unsubscribe = chatsRef .doc(cId)
-         .collection('chats').onSnapshot((querySnapshot) => {
+         .collection('chats').onSnapshot((querySnapshot) => { //<----here is the problem
             const messagesFirestore = querySnapshot
                 .docChanges()
                 .filter(({ type }) => type === 'added')
@@ -88,6 +107,7 @@ const Chat = ({ navigation }) => { //<--------- props here ???
         chatIDpre.push(chateeID)
         chatIDpre.sort()
         return chatIDpre.join('_')
+        //return chatIDpre
     }
 
     function renderBubble(props) {
