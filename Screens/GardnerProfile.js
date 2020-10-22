@@ -3,8 +3,6 @@ import MapView, { Marker } from 'react-native-maps';
 import { OpenMapDirections } from 'react-native-navigation-directions';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused } from "@react-navigation/native";
-
-
 import {
     View,
     Text,
@@ -29,11 +27,6 @@ import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-
-
-
-
-
 
 const GardnerProfile = ({ navigation }) => {
 
@@ -74,8 +67,6 @@ const GardnerProfile = ({ navigation }) => {
 
                         Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + cords['latitude'] + ',' + cords['longitude'])
 
-
-
                 },
 
             ],
@@ -94,7 +85,6 @@ const GardnerProfile = ({ navigation }) => {
             let Phone = await AsyncStorage.getItem("Phone")
             let lat = await AsyncStorage.getItem("latitude")
             let long = await AsyncStorage.getItem("longitude")
-
             //get posts id array
             var docRef = firebase.firestore().collection("users").doc(userId);
             await docRef.get().then(function (doc) {
@@ -107,15 +97,14 @@ const GardnerProfile = ({ navigation }) => {
             }).catch(function (error) {
                 console.log("Error getting document:", error);
             });
-
             //Get all posts
             for (id of postsID) {
-
                 var docRef = firebase.firestore().collection("Posts").doc(id);
                 await docRef.get().then(function (doc) {
                     if (doc.exists) {
                         var post = {
                             key: id,
+                            postID: doc.data().Pid,
                             name: doc.data().Name,
                             date: doc.data().Date[0],
                             image: doc.data().Images[0],
@@ -126,10 +115,9 @@ const GardnerProfile = ({ navigation }) => {
                         console.log("No such document!");
                     }
                 }).catch(function (error) {
-                    console.log("Error getting document:", error);
+                    console.log("Error getting document: catch ", error);
                 });
             }
-
             setPostss(posts)
             setUid(userId)
             setName(name)
@@ -153,13 +141,8 @@ const GardnerProfile = ({ navigation }) => {
         })
             .catch((e) => console.log('getting downloadURL of image error => '),
             );
-
     }
-
-
     useEffect(() => {
-
-
         if (isVisible) {
 
             load()
@@ -183,7 +166,7 @@ const GardnerProfile = ({ navigation }) => {
 
 
     //if (lat) {
-        if (true){
+        if (lat){
         return (
             <View style={styles.container}>
 
@@ -259,36 +242,30 @@ const GardnerProfile = ({ navigation }) => {
                     </View>
 
                 </View>
-
-
                 <View style={styles.body}>
-
-
                     <Text style={styles.myPlantText}>My Plants</Text>
                     <FlatList
                         data={postss}
                         renderItem={({ item, index }) =>
                             (<View key={item.key} >
+                            <Text>{item.postID}</Text>
                                 <Text>{item.name} </Text>
                                 <Text>{item.date} </Text>
 
-                                <TouchableOpacity style={{ width: 50, height: 50 }} onPress={() =>
-                                    navigation.navigate('Plant',item)
+                                <TouchableOpacity style={{ width: 50, height: 50 }} 
+                                onPress={() =>
+                                    navigation.navigate('GardnerPlantProgress',{itemsend:item})
                                 }>
                                     <Image
                                         style={{ width: 50, height: 50 }}
                                         source={{ uri: item.image }}
                                     />
                                 </TouchableOpacity>
-
                             </View>)}
                         keyExtractor={item => item.key}
-
                     />
 
                 </View>
-
-                
          </ScrollView>
 
             <View style={styles.plus}>

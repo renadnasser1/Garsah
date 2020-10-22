@@ -31,7 +31,7 @@ const font = () => {
     'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
   });
 }
-//thread 
+// Add thread form  done 
 export default class AddPlant extends React.Component {
 
   constructor(props) {
@@ -54,8 +54,6 @@ export default class AddPlant extends React.Component {
     inActiveBgColor: "white",
   }
 
-
-
   async componentDidMount() {
 
     try {
@@ -75,9 +73,6 @@ export default class AddPlant extends React.Component {
     }
 
   }
-
-
-
   render() {
     const { image, name, caption, userId, isProgress, showModel } = this.state
 
@@ -110,38 +105,29 @@ export default class AddPlant extends React.Component {
         );
 
     }
-
     const uploadPhotoAsync = async (uri, filename) => {
-
       return new Promise(async (res, rej) => {
         if (this.state.image) { // here amal solution
           const response = await fetch(uri);
           const file = await response.blob();
           let upload = firebase.storage().ref(filename).put(file).then(function (snapshot) {
             getImage();
-
           });
-
         }
-
       }
       );
     }
 
     const uploadPost = () => {
 
-
       //For update
       // regions: firebase.firestore.FieldValue.arrayUnion("greater_virginia")
 
       var newPost = firebase.firestore().collection("Posts").doc();
-
       var images = [this.state.imageURL]
       var captions = [this.state.caption]
       var dates = [this.state.date]
       var postId = newPost.id
-
-
       console.log('image url', this.state.imageURL)
       newPost.set({
         Captions: captions,
@@ -151,8 +137,6 @@ export default class AddPlant extends React.Component {
         Images: images,
         Pid: postId
       }).then((response) => {
-
-
 
       }).catch((error) => {
         Alert.alert(error);
@@ -198,7 +182,7 @@ export default class AddPlant extends React.Component {
               console.log('')
           },
           {
-            text: 'Save Changes', onPress: () =>
+            text: 'Post', onPress: () =>
               uploadPhoto()
           },
 

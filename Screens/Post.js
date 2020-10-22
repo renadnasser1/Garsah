@@ -12,7 +12,6 @@ import {
     ImageBackground,
     KeyboardAvoidingView,
     Alert,
-   
   } from "react-native";
   
   //Firebase
@@ -25,12 +24,13 @@ import Svg, { Path } from "react-native-svg";
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 
-export default class Plant extends React.Component {
+
+// the form for the post in the thread 
+export default class Post extends React.Component {
 
     constructor(props) {
         super(props)
       }
-    
       state = {
         image: '',
         imageURL: '',
@@ -61,6 +61,7 @@ export default class Plant extends React.Component {
       render() {
         const { image,caption,userId } = this.state
     
+        // local url 
         const pickImageCameraRoll = async () => {
           let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -77,20 +78,18 @@ export default class Plant extends React.Component {
         // get image again 
         const getImage = async () => {
           console.log(this.state.photoPath)
-        // where i set the image ??? 
           let imageRef = firebase.storage().ref('Posts/' + this.state.photoPath);
           imageRef.getDownloadURL().then((url) => {
               //from url you can fetched the uploaded image easily
               console.log(url)
               this.setState({imageURL:url})
               uploadPost()
-    
           })
               .catch((e) => console.log('getting downloadURL of image error => ', e),
               );
     
       } // end get image 
-    //2nd upload it to the photo ##2 
+          // put on storage 
         const uploadPhotoAsync = async (uri, filename) => {
           return new Promise(async (res, rej) => {
             if(this.state.image){ // here amal solution
@@ -98,14 +97,13 @@ export default class Plant extends React.Component {
             const file = await response.blob();
             let upload = firebase.storage().ref(filename).put(file).then(function(snapshot) {
               getImage();
-              
             });
             }
            
           }
           );
         }// end upload async 
-         // get the photo + the post details with it .. هنا نوف ارجعي سوي فيتش واعكسي وحطيه 
+         // get the photo + the post details with it 
         const uploadPost= () =>{
           //For update
           // regions: firebase.firestore.FieldValue.arrayUnion("greater_virginia")
@@ -134,7 +132,6 @@ export default class Plant extends React.Component {
     
                              //Navigate 
                              setTimeout(function(){
-    
                               this.props.navigation.reset({
                                 index: 0,
                                 routes: [{ name: 'Profile' }]
@@ -144,7 +141,7 @@ export default class Plant extends React.Component {
               })
         }// end upload post 
     
-       // the first step upload the photos to the storage in the Posts 
+       // create a path a send to the firestorage 
           const uploadPhoto = async () => {
           this.setState({isLoading:true})
           var date = new Date();
@@ -165,12 +162,12 @@ export default class Plant extends React.Component {
                   console.log('')
               },
               {
-                text: 'Save Changes', onPress: () =>
+                text: 'Post', onPress: () =>
                 uploadPhoto()
               },
     
             ],
-            { cancelable: false }
+            { cancelable: true}
           )
         } // end confirm 
         const validate = () => {
@@ -183,7 +180,7 @@ export default class Plant extends React.Component {
           }
         }// end validation 
 
-
+//----------------------------------------------------------------------
     return (
       <KeyboardAvoidingView
       behavior='padding'
