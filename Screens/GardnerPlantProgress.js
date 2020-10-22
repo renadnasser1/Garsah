@@ -42,6 +42,7 @@ export default class GardnerPlantProgress extends React.Component {
 
 
   state = {
+    thread:'',
     name: '',
     images: [],
     dates: [],
@@ -69,30 +70,30 @@ export default class GardnerPlantProgress extends React.Component {
 
       var localpost = ''
        this.setState({ ThreadId: this.props.route.params.threadID }, () => { console.log('thread id  ',this.state.ThreadId) })
-      const x = this.state.ThreadId
-      console.log(x)
-      var docRef = firebase.firestore().collection("Posts").doc(x);
+
+       //get
+      var id = this.state.ThreadId
+      var docRef = firebase.firestore().collection("Posts").doc(id);
       await docRef.get().then(function (doc) {
         if (doc.exists) {
           var post = {
-            key: x,
+            key: id,
             name: doc.data().Name,
             dates: doc.data().Date,
             images: doc.data().Images,
             caption: doc.data().Captions
 
           };
-          //this.setState({localpost:post})
           localpost = post
         } else {
-          // doc.data() will be undefined in this case
           console.log("No such document!");
         }
       }).catch(function (error) {
         console.log("Error getting document:", error);
       });
-      this.setState({ localpost: localpost })
-      console.log("After set state " + this.state.localpost.images)
+
+      this.setState({ thread: localpost })
+      console.log("After set state " + this.state.thread.images)
       //   this.setState({postss:localpost})  
       //   console.log(this.state.postss.dates)
     } catch (err) {
@@ -103,18 +104,17 @@ export default class GardnerPlantProgress extends React.Component {
     const { name, dates, images, caption, ThreadId } = this.state
 
     const move = () => {
-      this.props.navigation.reset({
-        index: 0,
-        routes: [{ name: 'Post' }]
-      })
-    }
+      
+        this.props.navigation.navigate("Post",{ThreadID:this.state.ThreadId})
+      }
+    
     //get posts id array
     return (
 
       <View>
 
         <Text>Reached the plant progress page </Text>
-        <Text>Post id {this.state.ThreadId} </Text>
+        <Text>Post id {this.state.thread.images} </Text>
         <View style={styles.plus}>
           <TouchableOpacity >
             <Entypo name="plus" size={44} color="white"
