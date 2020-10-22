@@ -31,8 +31,8 @@ const font = () => {
     'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
   });
 }
-//thread 
-export default class AddPlant extends React.Component {
+
+export default class AddPost extends React.Component {
 
   constructor(props) {
     super(props)

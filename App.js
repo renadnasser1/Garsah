@@ -23,6 +23,9 @@ import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
+//import AddThread from "./Screens/AddThread";
+import Plant from "./Screens/Plant";
+import trefle from "./Screens/trefle";
 import MessagesPage from "./Screens/MessagesPage";
 import Chat from "./Screens/Chat";
 import ViewGardenerProfile from "./Screens/ViewGardenerProfile";
@@ -201,6 +204,7 @@ function GardnerStackNav() {
 
         component={GardnerProfile} />
 
+
       {<GardnerStack.Screen
         name="EditGardenerProfile"
         options={{
@@ -211,6 +215,16 @@ function GardnerStackNav() {
       {<GardnerStack.Screen
         name="LocationMap"
         component={LocationMap}
+      />}
+
+      {  <GardnerStack.Screen
+        name="Addplant"
+        component={Addplant}
+      />}
+
+    {  <GardnerStack.Screen
+        name="Plant"
+        component={Plant}
       />}
 
     </GardnerStack.Navigator>
@@ -239,10 +253,6 @@ function AmatureStackNav() {
         component={EditAmateurProfile}
 
       />
-      {/*  <AmatureStack.Screen
-        name="AddThread"
-        component={AddThread}
-      />*/}
 
     </AmatureStack.Navigator>
 
@@ -261,6 +271,16 @@ export default class App extends React.Component {
       <NavigationContainer>
         <Stack.Navigator>
 
+
+        
+        {/* <Stack.Screen
+            name="trefle"
+            component={trefle}
+            options={{
+              headerShown: false,
+            }}
+          /> */}
+
           <Stack.Screen
             name="SplashScreen"
             component={SplashScreen}
@@ -268,7 +288,6 @@ export default class App extends React.Component {
               headerShown: false,
             }}
           />
-
 
           <Stack.Screen
             name="Login"

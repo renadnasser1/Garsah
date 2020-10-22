@@ -5,9 +5,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused } from "@react-navigation/native";
 
 
-
-
-
 import {
     View,
     Text,
@@ -15,15 +12,17 @@ import {
     StyleSheet,
     Image,
     ActivityIndicator,
-    // AsyncStorage,
     Dimensions,
     Linking,
-    Alert
+    Alert,
+    FlatList,
+    ScrollView
 } from "react-native";
 
 // Icons
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 //Firebase
 import * as firebase from "firebase";
@@ -47,8 +46,11 @@ const GardnerProfile = ({ navigation }) => {
     const [Phone, setPhone] = useState()
     const [Bio, setBio] = useState()
     const [avatar, setAvatar] = useState()
-    const[currentCords,setCurrentCords]=useState()
+    const [currentCords, setCurrentCords] = useState()
+    const [postss, setPostss] = useState()
 
+    var postsID = []
+    var posts = []
 
     const isVisible = useIsFocused();
 
@@ -56,7 +58,7 @@ const GardnerProfile = ({ navigation }) => {
         navigation.navigate("EditGardenerProfile");
     };
 
-  
+
     const onMapPress = (cords) => {
 
         Alert.alert(
@@ -66,12 +68,12 @@ const GardnerProfile = ({ navigation }) => {
                 { text: 'Cancel', onPress: () => console.log('') },
                 {
                     text: 'Open', onPress: () =>
-                    // OpenMapDirections(null, cords, 'd').then(res => {
-                    //     console.log(res)
-                    // })
-                  
-                    Linking.openURL('https://www.google.com/maps/search/?api=1&query='+cords['latitude']+','+cords['longitude'])
-                    
+                        // OpenMapDirections(null, cords, 'd').then(res => {
+                        //     console.log(res)
+                        // })
+
+                        Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + cords['latitude'] + ',' + cords['longitude'])
+
 
 
                 },
@@ -81,9 +83,9 @@ const GardnerProfile = ({ navigation }) => {
         )
 
     }
-// const call=() =>{
-//     Linking.openURL(`tel:${Phone}`)
-// }
+    // const call=() =>{
+    //     Linking.openURL(`tel:${Phone}`)
+    // }
     const load = async () => {
         try {
             let userId = await AsyncStorage.getItem("uid")
@@ -92,8 +94,43 @@ const GardnerProfile = ({ navigation }) => {
             let Phone = await AsyncStorage.getItem("Phone")
             let lat = await AsyncStorage.getItem("latitude")
             let long = await AsyncStorage.getItem("longitude")
-            
 
+            //get posts id array
+            var docRef = firebase.firestore().collection("users").doc(userId);
+            await docRef.get().then(function (doc) {
+                if (doc.exists) {
+                    postsID = doc.data().posts;
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+            });
+
+            //Get all posts
+            for (id of postsID) {
+
+                var docRef = firebase.firestore().collection("Posts").doc(id);
+                await docRef.get().then(function (doc) {
+                    if (doc.exists) {
+                        var post = {
+                            key: id,
+                            name: doc.data().Name,
+                            date: doc.data().Date[0],
+                            image: doc.data().Images[0],
+                        };
+                        posts.push(post);
+                    } else {
+                        // doc.data() will be undefined in this case
+                        console.log("No such document!");
+                    }
+                }).catch(function (error) {
+                    console.log("Error getting document:", error);
+                });
+            }
+
+            setPostss(posts)
             setUid(userId)
             setName(name)
             setBio(Bio)
@@ -101,7 +138,6 @@ const GardnerProfile = ({ navigation }) => {
             setlatNum(Number(lat))
             setlongNum(Number(long))
             setlat(lat)
-            console.log(lat, long)
         } catch (err) {
             alert(err)
 
@@ -109,16 +145,13 @@ const GardnerProfile = ({ navigation }) => {
     }
 
     const getImage = async () => {
-        console.log('get image called')
         let currentUser = firebase.auth().currentUser.uid
-        console.log("userid" + currentUser)
         let imageRef = firebase.storage().ref('avatars/' + currentUser);
         imageRef.getDownloadURL().then((url) => {
             //from url you can fetched the uploaded image easily
-            console.log(url)
             setAvatar(url);
         })
-            .catch((e) => console.log('getting downloadURL of image error => ', e),
+            .catch((e) => console.log('getting downloadURL of image error => '),
             );
 
     }
@@ -126,10 +159,9 @@ const GardnerProfile = ({ navigation }) => {
 
     useEffect(() => {
 
-      
-        if (isVisible) {  
-            console.log('in in use effect')
-     
+
+        if (isVisible) {
+
             load()
             getImage()
         }
@@ -144,112 +176,140 @@ const GardnerProfile = ({ navigation }) => {
         return <AppLoading />;
     }
 
+    // const toPlant = (item) => (
+    //     console.log('to Plant'),
+    //  navigation.navigate('Plant')
+    //   );
 
 
-    if(lat){
-    return (
+    //if (lat) {
+        if (true){
+        return (
+            <View style={styles.container}>
 
-        <View style={styles.container}>
-            <View style={styles.header}>
-                {/* Image */}
-                <Image source={avatar ?
-                    {uri:avatar} : require("../assets/blank.png")} style={styles.prifileImg} />
-                
+            <ScrollView>
+                <View style={styles.header}>
+                    {/* Image */}
+                    <Image source={avatar ?
+                        { uri: avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
 
-                {/* <Image
-                 source={{ uri:{avatar}}}
-                 style={styles.prifileImg}
-                 /> */}
-
-
-                {/* Edit Profile button */}
-                <TouchableOpacity
-                    style={styles.editButton}
-                >
-                    <Text style={styles.editText} onPress={() => {
-                        onEditPress();
-                    }}> Edit Profile</Text>
-                </TouchableOpacity>
-
-                {/* Profile Information */}
-                <View style={styles.profileInfoView}>
-                    {/* Name */}
-                    <Text style={styles.profileInfoText}>{name}</Text>
-
-                    {/* Bio */}
-                    <Text style={styles.bioText}>{Bio!=null ? Bio : ""}</Text>
-                    {/* Phone number */}
-                    <View style={styles.userInfoContiner}>
-                        <FontAwesome name="phone" size={24} color="gray"/>
-                         <Text style={styles.userInfoText} 
-                        //   onPress={ (event) => {call(event)}}
-                          >{Phone ? Phone : "No phone added"}</Text>
-                    </View>
-
-                    {/* Map */}
-                    <View style={styles.userInfoContiner}>
-                        <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
-                        <Text style={styles.userInfoText}> My Location</Text></View>
-
-                    <View>
-
-                    </View>
-
-                    <MapView style={styles.mapStyle}
-                        scrollEnabled={false}
-                        intialRegion={{
-                            latitude: latNum,
-                            longitude: longNum,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        }}
-                        region={{
-                            latitude: latNum,
-                            longitude: longNum,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        }}
-
-                        onPress={(event) => onMapPress(event.nativeEvent.coordinate)
-                        }
-
+                    {/* Edit Profile button */}
+                    <TouchableOpacity
+                        style={styles.editButton}
                     >
+                        <Text style={styles.editText} onPress={() => {
+                            onEditPress();
+                        }}> Edit Profile</Text>
+                    </TouchableOpacity>
 
-                        <MapView.Marker
-                            coordinate={{
+                    {/* Profile Information */}
+                    <View style={styles.profileInfoView}>
+                        {/* Name */}
+                        <Text style={styles.profileInfoText}>{name}</Text>
+
+                        {/* Bio */}
+                        <Text style={styles.bioText}>{Bio != null ? Bio : ""}</Text>
+                        {/* Phone number */}
+                        <View style={styles.userInfoContiner}>
+                            <FontAwesome name="phone" size={24} color="gray" />
+                            <Text style={styles.userInfoText}
+                            //   onPress={ (event) => {call(event)}}
+                            >{Phone ? Phone : "No phone added"}</Text>
+                        </View>
+
+                        {/* Map */}
+                        <View style={styles.userInfoContiner}>
+                            <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
+                            <Text style={styles.userInfoText}> My Location</Text></View>
+
+                        <View>
+
+                        </View>
+
+                        <MapView style={styles.mapStyle}
+                            scrollEnabled={false}
+                            intialRegion={{
                                 latitude: latNum,
-                                longitude: longNum
+                                longitude: longNum,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421
                             }}
-                            pinColor={'red'}
-                        />
+                            region={{
+                                latitude: latNum,
+                                longitude: longNum,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421
+                            }}
 
-                    </MapView>
+                            onPress={(event) => onMapPress(event.nativeEvent.coordinate)
+                            }
+
+                        >
+
+                            <MapView.Marker
+                                coordinate={{
+                                    latitude: latNum,
+                                    longitude: longNum
+                                }}
+                                pinColor={'red'}
+                            />
+
+                        </MapView>
+
+                    </View>
 
                 </View>
 
-            </View>
+
+                <View style={styles.body}>
 
 
-            <View style={styles.body}>
-                <Text style={styles.myPlantText}>My Plants</Text>
-                {/* <TouchableOpacity style={styles.plus}>
-            <Entypo name="plus" size={44} color="white" />
-            </TouchableOpacity> */}
-            </View>
+                    <Text style={styles.myPlantText}>My Plants</Text>
+                    <FlatList
+                        data={postss}
+                        renderItem={({ item, index }) =>
+                            (<View key={item.key} >
+                                <Text>{item.name} </Text>
+                                <Text>{item.date} </Text>
 
+                                <TouchableOpacity style={{ width: 50, height: 50 }} onPress={() =>
+                                    navigation.navigate('Plant',item)
+                                }>
+                                    <Image
+                                        style={{ width: 50, height: 50 }}
+                                        source={{ uri: item.image }}
+                                    />
+                                </TouchableOpacity>
 
+                            </View>)}
+                        keyExtractor={item => item.key}
 
+                    />
 
-        </View>
+                </View>
 
-    );
-    }else{
+                
+         </ScrollView>
+
+            <View style={styles.plus}>
+            <TouchableOpacity >
+                               <Entypo name="plus" size={44} color="white"
+                                   onPress={() =>
+                                       navigation.navigate('Addplant')
+                                   } />
+                           </TouchableOpacity></View>
+           
+
+              </View>
+
+        );
+    } else {
 
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text>We are still processing your information </Text>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', fontFamily: 'Khmer-MN-Bold' }}>
+                <Text>We are processing your information</Text>
             </View>
-          );
+        );
     }
 
 
@@ -295,7 +355,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
     },
     profileInfoView: {
-        
+
         paddingLeft: 25,
         paddingRight: 25,
         borderBottomColor: 'gray'
@@ -365,20 +425,30 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: 250,
         left: -25,
-        
+
     },
 
     plus: {
         position: 'absolute',
         alignSelf: 'flex-end',
         right: 10,
-        bottom: -130,
+        bottom: 10,
         backgroundColor: '#CFD590',
         borderRadius: 100,
         padding: 5,
         paddingBottom: -5,
-        alignItems: 'center'
+        alignItems: 'center',
+        zIndex:2,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 4.0,
 
+        elevation: 3,
+      
     }
 
 
