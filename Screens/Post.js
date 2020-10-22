@@ -40,12 +40,15 @@ export default class Post extends React.Component {
         photoPath:'',
         isLoading:false,
         userId:'',
+        ThreadId :'',
       }
 
       async componentDidMount() {
         try{
           let userId = await AsyncStorage.getItem("uid")
           this.setState({userId:userId})
+          this.setState({ ThreadId: this.props.route.params.ThreadID }, () => { console.log('thread id  ',this.state.ThreadId) })
+
         }catch(err){
         }
        // permissions 
@@ -106,36 +109,19 @@ export default class Post extends React.Component {
          // get the photo + the post details with it 
         const uploadPost= () =>{
           //For update
-          // regions: firebase.firestore.FieldValue.arrayUnion("greater_virginia")
-          var newPost = firebase.firestore().collection("Posts").doc();
-          var images = [this.state.imageURL]
-          var captions = [this.state.caption ]
-          var dates = [this.state.date]
-          var postId = newPost.id
-          console.log('image url',this.state.imageURL)
-          newPost.set({
-                Captions: captions,
-                Date: dates,
-                Name: this.state.name+"",
-                Uid: this.state.userId,
-                Images: images,
-                Pid:postId
-              }).then((response)=>{
-
-            }).catch((error) => {
-                Alert.alert(error);
-              });
-    
-              firebase.firestore().collection('users').doc(userId).update({
-                posts: firebase.firestore.FieldValue.arrayUnion(postId)
-              }).then((response)=>{
+          var postref =  firebase.firestore().collection("Posts").doc(this.state.ThreadId);// Atomically add a new region to the "regions" 
+        postref.update({  
+              Date: firebase.firestore.FieldValue.arrayUnion(this.state.date),
+              Images: firebase.firestore.FieldValue.arrayUnion(this.state.imageURL),
+              Captions: firebase.firestore.FieldValue.arrayUnion(this.state.caption)
+            })
+  
+              .then((response)=>{
     
                              //Navigate 
                              setTimeout(function(){
-                              this.props.navigation.reset({
-                                index: 0,
-                                routes: [{ name: 'Profile' }]
-                              })
+                              this.props.navigation.navigate("GardnerPlantProgress")
+                             
                               
                               }.bind(this),1000);
               })

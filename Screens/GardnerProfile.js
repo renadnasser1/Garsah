@@ -21,6 +21,7 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
 
 //Firebase
 import * as firebase from "firebase";
@@ -250,18 +251,20 @@ const GardnerProfile = ({ navigation }) => {
                         data={postss}
                         renderItem={({ item, index }) =>
                             (<View key={item.key} >
-                            <Text>{item.postID}</Text>
-                                <Text>{item.name} </Text>
-                                <Text>{item.date} </Text>
-
-                                <TouchableOpacity style={{ width: 50, height: 50 }} 
+                            <View  
+                              flexDirection = 'row'>
+                            <Fontisto style={styles.dateicon} name="date" size={24} color="#F9DED4" />
+                            <Text style = {styles.plantdate}>{item.date} </Text></View>
+                                <TouchableOpacity 
                                 onPress={() =>
                                     navigation.navigate('Plant',{threadID:item.key})
                                 }>
-                                    <Image
-                                        style={{ width: 50, height: 50 }}
+                                    <Image style = {styles.plantimage}
+                                       // style={{ width: 500, height: 400 }}
                                         source={{ uri: item.image }}
                                     />
+                                     
+                                <Text style = {styles.plantname}>{item.name} </Text>
                                 </TouchableOpacity>
                             </View>)}
                         keyExtractor={item => item.key}
@@ -355,6 +358,7 @@ const styles = StyleSheet.create({
 
     myPlantText: {
         margin: 20,
+
         fontSize: 18,
         fontFamily: 'Khmer-MN-Bold'
 
@@ -429,7 +433,47 @@ const styles = StyleSheet.create({
 
         elevation: 3,
       
+    },
+    plantname:{
+        fontFamily: 'Khmer-MN-Bold',
+        //color:"#717171",
+        color:"white",
+        marginBottom:25,
+        marginLeft:50,
+        bottom:30,
+        fontSize:18,
+        //backgroundColor:"grey"
+        
+    },
+    plantdate:{
+    fontFamily: 'Khmer-MN-Bold',
+    color:"#717171",
+    marginLeft:5,
+    marginBottom:10,
+
+   
+    },
+    plantimage:{
+        //width: Dimensions.get('window').width,
+        width : 370,
+        height: 250,
+        borderRadius:50,
+        alignItems:"center",
+        marginLeft:20,
+        shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 12,
+},
+shadowOpacity: 0.58,
+shadowRadius: 16.00,
+
+
+    },
+    dateicon:{
+        marginLeft:20,
     }
+    
 
 
 })
