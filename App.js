@@ -25,7 +25,6 @@ import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
 import Plant from "./Screens/Plant";
 import Post from "./Screens/Post";
-import GardnerPlantProgress from "./Screens/GardnerPlantProgress";
 import trefle from "./Screens/trefle";
 import MessagesPage from "./Screens/MessagesPage";
 import Chat from "./Screens/Chat";
@@ -205,8 +204,10 @@ function GardnerStackNav() {
         component={GardnerProfile} />
 
 {  <GardnerStack.Screen
-        name="GardnerPlantProgress"
-        component={GardnerPlantProgress}
+        name="Plant"
+        component={Plant}
+        options={{
+         headerShown:false}}
       />}
       {<GardnerStack.Screen
         name="EditGardenerProfile"

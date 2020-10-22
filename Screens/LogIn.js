@@ -100,7 +100,6 @@ const LogIn = ({ navigation }) => {
       style={{
         position:'absolute',
         right:-80,
-
         zIndex:0,
 top:10       
       }}

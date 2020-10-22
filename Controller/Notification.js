@@ -22,12 +22,14 @@ export default function App() {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-        console.log("hi");
       setNotification(notification);
+      console.log("at notifcation");
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
       console.log(response);
+      console.log("at notifcation");
+
     });
 
     return () => {
@@ -67,7 +69,7 @@ export async function schedulePushNotification(reminder,id) {
     content: {
       title: reminderName+" you're plant",
       //body: 'Here is the notification body',
-      data: { screen: 'GardnerPlantProgress',threadId:id },
+      data: { screen: 'Plant',threadId:id },
     },
     trigger: { 
         seconds:60,

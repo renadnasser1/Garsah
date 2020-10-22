@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 2,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
   SVGC :{
 flex: 1,

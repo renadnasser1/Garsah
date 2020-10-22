@@ -14,6 +14,7 @@ import {
 //Component
 import { periodWater, periodTreatment } from '../Component/period';
 import { progress } from '../Component/progress';
+import {bugItem,waterItem} from '../Component/bugWaterItems'; 
 
 //Functions 
 import { registerForPushNotificationsAsync, schedulePushNotification, removeAll } from '../Controller/Notification'
@@ -142,6 +143,7 @@ export default class AddPlant extends React.Component {
       var dates = [this.state.date]
       var postId = newPost.id
       var reminders = this.state.progressArray
+      var result=[]
       var id1 = '';
       var id2 = '';
 
@@ -163,9 +165,9 @@ export default class AddPlant extends React.Component {
           
         });
       }
-    }
+      //add reminder obj to array item
       var i = 0;
-      var result = reminders.map(function (item) {
+       result = reminders.map(function (item) {
         i++
         var obj = Object.assign({}, item);
         if (i == 1) {
@@ -176,6 +178,8 @@ export default class AddPlant extends React.Component {
         obj.postID=postId;
         return obj;
       })
+    }
+
 
       //Add new post
       newPost.set({
@@ -192,7 +196,7 @@ export default class AddPlant extends React.Component {
         Alert.alert(error);
       });
 
-      //add push token and 
+      //add push token and postId to user
       firebase.firestore().collection('users').doc(userId).update({
         posts: firebase.firestore.FieldValue.arrayUnion(postId),
         push_token: this.state.pushToken
@@ -335,42 +339,6 @@ export default class AddPlant extends React.Component {
         setModalVisible(!showModel);
       });
     }
-
-    const waterItem = () => {
-      return (
-
-        <View
-          style={{
-            backgroundColor: '#CCDDE5',
-            width: 70,
-            height: 70,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 50
-          }}>
-          <Entypo name="water" size={35} color="black" />
-        </View>
-
-      )
-    }
-
-    const bugItem = () => {
-      return (
-        <View style={styles.item}
-          style={{
-            backgroundColor: '#EFCFC4',
-            width: 70,
-            height: 70,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 50
-          }}>
-          <MaterialCommunityIcons name="ladybug" size={35} color="black" />
-        </View>
-      )
-    }
-
-
 
     return (
 

@@ -170,6 +170,7 @@ const GardnerProfile = ({ navigation }) => {
         return (
             <View style={styles.container}>
 
+
             <ScrollView>
                 <View style={styles.header}>
                     {/* Image */}
@@ -244,6 +245,7 @@ const GardnerProfile = ({ navigation }) => {
                 </View>
                 <View style={styles.body}>
                     <Text style={styles.myPlantText}>My Plants</Text>
+                    <View>
                     <FlatList
                         data={postss}
                         renderItem={({ item, index }) =>
@@ -254,7 +256,7 @@ const GardnerProfile = ({ navigation }) => {
 
                                 <TouchableOpacity style={{ width: 50, height: 50 }} 
                                 onPress={() =>
-                                    navigation.navigate('GardnerPlantProgress',{thread:item.key})
+                                    navigation.navigate('Plant',{threadID:item.key})
                                 }>
                                     <Image
                                         style={{ width: 50, height: 50 }}
@@ -264,6 +266,7 @@ const GardnerProfile = ({ navigation }) => {
                             </View>)}
                         keyExtractor={item => item.key}
                     />
+                    </View>
 
                 </View>
          </ScrollView>
