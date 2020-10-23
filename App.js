@@ -23,8 +23,8 @@ import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
-//import AddThread from "./Screens/AddThread";
 import Plant from "./Screens/Plant";
+import Post from "./Screens/Post";
 import trefle from "./Screens/trefle";
 import MessagesPage from "./Screens/MessagesPage";
 import Chat from "./Screens/Chat";
@@ -34,7 +34,7 @@ import Addplant from "./Screens/Addplant";
 // Firebase
 import * as firebase from "firebase";
 
-
+/*
 var firebaseConfig = {
   apiKey: "AIzaSyBS6vgCY1jAxupRVjFj5KJe4w0tanzF7kw",
   authDomain: "garsah-a9d41.firebaseapp.com",
@@ -44,11 +44,22 @@ var firebaseConfig = {
   messagingSenderId: "264805379027",
   appId: "1:264805379027:web:13e9ca5fec31a09b545d26",
   measurementId: "G-VT3T0YDQ24"
+};*/
+
+var firebaseConfig = {
+  apiKey: "AIzaSyDa-dqiBjcABfky3NhCqjFKxvTfag8B-Sg",
+    authDomain: "garsah1-32315.firebaseapp.com",
+    databaseURL: "https://garsah1-32315.firebaseio.com",
+    projectId: "garsah1-32315",
+    storageBucket: "garsah1-32315.appspot.com",
+    messagingSenderId: "579701810770",
+    appId: "1:579701810770:web:e65c6c6aa9675d80f5618b",
+    measurementId: "G-TV59LK051Z"
 };
 
 // Initialize Firebase
 if (!firebase.apps.length) {
-firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 }
 //firebase.analytics();
 
@@ -66,7 +77,7 @@ function AmateurRoot() {
         inactiveTintColor: 'gray',
       }}
     >
-      
+
 
       <AmateurTab.Screen
         name="Home"
@@ -77,14 +88,14 @@ function AmateurRoot() {
         }}
         component={HomeStackNav} />
 
-        <AmateurTab.Screen
+      <AmateurTab.Screen
         name="Messages"
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="ios-mail" color={color} size={size} />
           ),
         }}
-        component={MessageStackNav}/>
+        component={MessageStackNav} />
 
       <AmateurTab.Screen name="profile"
         options={{
@@ -102,12 +113,11 @@ function GardnerRoot() {
   return (
     <GardnerTab.Navigator
       tabBarOptions={{
-        showLabel:false,
+        showLabel: false,
         activeTintColor: '#3D6A4B',
         inactiveTintColor: 'gray',
       }}
     >
-
 
       <GardnerTab.Screen
         name="Home"
@@ -115,11 +125,11 @@ function GardnerRoot() {
           tabBarIcon: ({ color, size }) => (
             <Foundation name="home" color={color} size={size} />
           ),
-          headerShown:true
+          headerShown: true
         }}
         component={HomeStackNav} />
 
-<GardnerTab.Screen
+      <GardnerTab.Screen
         name="Messages"
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -150,46 +160,61 @@ const MessageStack = createStackNavigator();
 function MessageStackNav() {
   return (
     <MessageStack.Navigator>
-         <MessageStack.Screen name="Messages"
-      options={{
-        title:'Messages',}}
+      <MessageStack.Screen name="Messages"
+        options={{
+          title: 'Messages',
+        }}
         component={MessagesPage} />
-        
 
-           <MessageStack.Screen name="Chat"
-      options={{
-        title:'Chat',}}
+
+      <MessageStack.Screen name="Chat"
+        options={{
+          title: 'Chat',
+        }}
         component={Chat} />
     </MessageStack.Navigator>
-      );
-    }
+  );
+}
 
 function HomeStackNav() {
   return (
     <HomeStack.Navigator>
-      
-            <HomeStack.Screen name="Home"
+
+      <HomeStack.Screen name="Home"
         options={{
-          title:'Home',
-          color:'black'
+          title: 'Home',
+          color: 'black'
         }}
         component={Home} />
-         <HomeStack.Screen name="ViewGardenerProfile"
+      <HomeStack.Screen name="ViewGardenerProfile"
         options={{
-          title:'ViewGardenerProfile',
-          color:'black'
+          title: 'ViewGardenerProfile',
+          color: 'black'
         }}
         component={ViewGardenerProfile} />
 
-         <HomeStack.Screen name="Chat"
-      options={{
-        title:'Chat',}}
+      <HomeStack.Screen name="Chat"
+        options={{
+          title: 'Chat',
+        }}
         component={Chat} />
-       
+
+<HomeStack.Screen name="AmateurProfile"
+        options={{
+          title: '',
+        }}
+        component={AmateurProfile} />
+
+<HomeStack.Screen name="GardenerProfile"
+        options={{
+          title: '',
+        }}
+        component={Chat} />
+
     </HomeStack.Navigator>
-      );
-    }
-    
+  );
+}
+
 
 function GardnerStackNav() {
   return (
@@ -198,17 +223,24 @@ function GardnerStackNav() {
 
       <GardnerStack.Screen name="Profile"
         options={{
-          title:'My Profile',
-          color:'black'
+          title: 'My Profile',
+          color: 'black'
         }}
 
         component={GardnerProfile} />
 
-
+      {<GardnerStack.Screen
+        name="Plant"
+        component={Plant}
+        options={{
+          headerShown: false
+        }}
+      />}
       {<GardnerStack.Screen
         name="EditGardenerProfile"
         options={{
-          title:'Edit Profile',}}
+          title: 'Edit Profile',
+        }}
         component={EditGardenerProfile}
       />}
 
@@ -217,15 +249,16 @@ function GardnerStackNav() {
         component={LocationMap}
       />}
 
-      {  <GardnerStack.Screen
+      {<GardnerStack.Screen
         name="Addplant"
         component={Addplant}
       />}
 
-    {  <GardnerStack.Screen
-        name="Plant"
-        component={Plant}
+      {<GardnerStack.Screen
+        name="Post"
+        component={Post}
       />}
+
 
     </GardnerStack.Navigator>
 
@@ -239,15 +272,17 @@ function AmatureStackNav() {
 
     <AmatureStack.Navigator>
       <AmatureStack.Screen name="Profile"
-      options={{
-        title:' Profile',}}
+        options={{
+          title: ' Profile',
+        }}
 
         component={AmateurProfile} />
 
+
       <AmatureStack.Screen
-       options={{
-          title:'Edit Profile',
-          color:'black'
+        options={{
+          title: 'Edit Profile',
+          color: 'black'
         }}
         name="EditAmateurProfile"
         component={EditAmateurProfile}
@@ -272,8 +307,8 @@ export default class App extends React.Component {
         <Stack.Navigator>
 
 
-        
-        {/* <Stack.Screen
+
+          {/* <Stack.Screen
             name="trefle"
             component={trefle}
             options={{
@@ -288,6 +323,11 @@ export default class App extends React.Component {
               headerShown: false,
             }}
           />
+
+          {<Stack.Screen
+            name="Plant"
+            component={Plant}
+          />}
 
           <Stack.Screen
             name="Login"
@@ -339,6 +379,8 @@ export default class App extends React.Component {
               headerShown: false,
             }}
           />
+
+
 
 
         </Stack.Navigator>

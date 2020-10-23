@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef }from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 
 import {
     View,
@@ -15,12 +17,42 @@ import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 
 
+import {registerForPushNotificationsAsync} from '../Controller/Notification'
+
+
 
 function SplashScreen({ navigation }) {
+
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
 
 
 
     const save = async (name, email, gardner, lat ,long,uid,Bio,Phone) => {
+
+        //Notifacation:
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+        //called when user click notfication
+        notificationListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            const screen = response.notification.request.content.data.screen;
+            const id = response.notification.request.content.data.threadId
+            navigation.navigate(screen,{threadID:id})
+        });
+    
+        //not sure
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log('clicked')
+          //console.log(response);
+        });
+    
+        // return () => {
+        //   Notifications.removeNotificationSubscription(notificationListener);
+        //   Notifications.removeNotificationSubscription(responseListener);
+        // };
+
         try {
 
             await AsyncStorage.setItem("name", name)

@@ -3,8 +3,6 @@ import MapView, { Marker } from 'react-native-maps';
 import { OpenMapDirections } from 'react-native-navigation-directions';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused } from "@react-navigation/native";
-
-
 import {
     View,
     Text,
@@ -29,12 +27,8 @@ import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-
-
-
-
-
-
+//Components
+import {plantItem} from '../Component/PostItem'
 const GardnerProfile = ({ navigation }) => {
 
     const [uid, setUid] = useState()
@@ -74,8 +68,6 @@ const GardnerProfile = ({ navigation }) => {
 
                         Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + cords['latitude'] + ',' + cords['longitude'])
 
-
-
                 },
 
             ],
@@ -94,7 +86,6 @@ const GardnerProfile = ({ navigation }) => {
             let Phone = await AsyncStorage.getItem("Phone")
             let lat = await AsyncStorage.getItem("latitude")
             let long = await AsyncStorage.getItem("longitude")
-
             //get posts id array
             var docRef = firebase.firestore().collection("users").doc(userId);
             await docRef.get().then(function (doc) {
@@ -107,15 +98,14 @@ const GardnerProfile = ({ navigation }) => {
             }).catch(function (error) {
                 console.log("Error getting document:", error);
             });
-
             //Get all posts
             for (id of postsID) {
-
                 var docRef = firebase.firestore().collection("Posts").doc(id);
                 await docRef.get().then(function (doc) {
                     if (doc.exists) {
                         var post = {
                             key: id,
+                            postID: doc.data().Pid,
                             name: doc.data().Name,
                             date: doc.data().Date[0],
                             image: doc.data().Images[0],
@@ -126,11 +116,10 @@ const GardnerProfile = ({ navigation }) => {
                         console.log("No such document!");
                     }
                 }).catch(function (error) {
-                    console.log("Error getting document:", error);
+                    console.log("Error getting document: catch ", error);
                 });
             }
-
-            setPostss(posts)
+            setPostss(posts.reverse())
             setUid(userId)
             setName(name)
             setBio(Bio)
@@ -153,13 +142,8 @@ const GardnerProfile = ({ navigation }) => {
         })
             .catch((e) => console.log('getting downloadURL of image error => '),
             );
-
     }
-
-
     useEffect(() => {
-
-
         if (isVisible) {
 
             load()
@@ -183,9 +167,10 @@ const GardnerProfile = ({ navigation }) => {
 
 
     //if (lat) {
-        if (true){
+        if (lat){
         return (
             <View style={styles.container}>
+
 
             <ScrollView>
                 <View style={styles.header}>
@@ -259,36 +244,18 @@ const GardnerProfile = ({ navigation }) => {
                     </View>
 
                 </View>
-
-
                 <View style={styles.body}>
-
-
                     <Text style={styles.myPlantText}>My Plants</Text>
+                    <View>
                     <FlatList
                         data={postss}
                         renderItem={({ item, index }) =>
-                            (<View key={item.key} >
-                                <Text>{item.name} </Text>
-                                <Text>{item.date} </Text>
-
-                                <TouchableOpacity style={{ width: 50, height: 50 }} onPress={() =>
-                                    navigation.navigate('Plant',item)
-                                }>
-                                    <Image
-                                        style={{ width: 50, height: 50 }}
-                                        source={{ uri: item.image }}
-                                    />
-                                </TouchableOpacity>
-
-                            </View>)}
+                            (plantItem(item,navigation))}
                         keyExtractor={item => item.key}
-
                     />
+                    </View>
 
                 </View>
-
-                
          </ScrollView>
 
             <View style={styles.plus}>
@@ -372,9 +339,13 @@ const styles = StyleSheet.create({
         paddingLeft: 25
 
     },
+    body:{
+        marginLeft:0
+    },
 
     myPlantText: {
         margin: 20,
+        marginLeft:40,
         fontSize: 18,
         fontFamily: 'Khmer-MN-Bold'
 
@@ -449,7 +420,47 @@ const styles = StyleSheet.create({
 
         elevation: 3,
       
+    },
+    plantname:{
+        fontFamily: 'Khmer-MN-Bold',
+        //color:"#717171",
+        color:"white",
+        marginBottom:25,
+        marginLeft:50,
+        bottom:30,
+        fontSize:18,
+        //backgroundColor:"grey"
+        
+    },
+    plantdate:{
+    fontFamily: 'Khmer-MN-Bold',
+    color:"#717171",
+    marginLeft:5,
+    marginBottom:10,
+
+   
+    },
+    plantimage:{
+        //width: Dimensions.get('window').width,
+        width : 370,
+        height: 250,
+        borderRadius:50,
+        alignItems:"center",
+        marginLeft:20,
+        shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 12,
+},
+shadowOpacity: 0.58,
+shadowRadius: 16.00,
+
+
+    },
+    dateicon:{
+        marginLeft:20,
     }
+    
 
 
 })

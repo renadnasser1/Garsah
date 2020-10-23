@@ -8,21 +8,33 @@ import {
   Alert,
   AsyncStorage,
   Dimensions,
-  Modal
+  Modal,
+  FlatList
 } from "react-native";
-import RadioGroup from 'react-native-custom-radio-group';
-import {radioGroupList} from '../Component/radioGroupList';
+//Component
+import { periodWater, periodTreatment } from '../Component/period';
+import { progress } from '../Component/progress';
+import {bugItem,waterItem} from '../Component/bugWaterItems'; 
+
+//Functions 
+import { registerForPushNotificationsAsync, schedulePushNotification, removeAll } from '../Controller/Notification'
 
 //Firebase
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
+//Icons
 import { Ionicons } from "@expo/vector-icons";
+import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+
 import Svg, { Path } from "react-native-svg"
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+import RadioGroup from 'react-native-custom-radio-group';
+
 
 
 const font = () => {
@@ -31,7 +43,7 @@ const font = () => {
     'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
   });
 }
-//thread 
+// Add thread form  done 
 export default class AddPlant extends React.Component {
 
   constructor(props) {
@@ -48,13 +60,14 @@ export default class AddPlant extends React.Component {
     photoPath: '',
     isLoading: false,
     userId: '',
-    isProgress: false,
+    progressArray: [],
     showModel: false,
-    activeBgColor: "white",
-    inActiveBgColor: "white",
+    activeBgColor: "#CCDDE5",
+    inActiveBgColor: "#DFE2DD",
+    selectedProgress: '',
+    selectedPeriod: '',
+    pushToken: '',
   }
-
-
 
   async componentDidMount() {
 
@@ -75,11 +88,8 @@ export default class AddPlant extends React.Component {
     }
 
   }
-
-
-
   render() {
-    const { image, name, caption, userId, isProgress, showModel } = this.state
+    const { image, name, caption, userId, progressArray, showModel, selectedPeriod, selectedProgress, pushToken } = this.state
 
     const pickImageCameraRoll = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -96,12 +106,10 @@ export default class AddPlant extends React.Component {
 
     const getImage = async () => {
 
-      console.log(this.state.photoPath)
 
       let imageRef = firebase.storage().ref('Posts/' + this.state.photoPath);
       imageRef.getDownloadURL().then((url) => {
         //from url you can fetched the uploaded image easily
-        console.log(url)
         this.setState({ imageURL: url })
         uploadPost()
 
@@ -110,56 +118,88 @@ export default class AddPlant extends React.Component {
         );
 
     }
-
     const uploadPhotoAsync = async (uri, filename) => {
-
       return new Promise(async (res, rej) => {
         if (this.state.image) { // here amal solution
           const response = await fetch(uri);
           const file = await response.blob();
           let upload = firebase.storage().ref(filename).put(file).then(function (snapshot) {
             getImage();
-
           });
-
         }
-
       }
       );
     }
 
-    const uploadPost = () => {
-
+    const uploadPost = async () => {
 
       //For update
       // regions: firebase.firestore.FieldValue.arrayUnion("greater_virginia")
 
+      //Vars
       var newPost = firebase.firestore().collection("Posts").doc();
-
       var images = [this.state.imageURL]
       var captions = [this.state.caption]
       var dates = [this.state.date]
       var postId = newPost.id
+      var reminders = this.state.progressArray
+      var result=[]
+      var id1 = '';
+      var id2 = '';
+
+      //Set Reminders
+      if (reminders.length!=0){
+
+        registerForPushNotificationsAsync().then((token) => {
+          this.setState({ pushToken: token }, () => console.log('token', this.state.pushToken))
+        })
+
+      for (var i = 0; i < reminders.length; i++) {
+        await schedulePushNotification(reminders[i],postId).then((id) => {
+          console.log('notifi id ' + id)
+          if (i == 0) {
+            id1 = id
+          } else {
+            id2 = id
+          }
+          
+        });
+      }
+      //add reminder obj to array item
+      var i = 0;
+       result = reminders.map(function (item) {
+        i++
+        var obj = Object.assign({}, item);
+        if (i == 1) {
+          obj.idNotifcation = id1;
+        } else {
+          obj.notificationID = id2;
+        }
+        obj.postID=postId;
+        return obj;
+      })
+    }
 
 
-      console.log('image url', this.state.imageURL)
+      //Add new post
       newPost.set({
         Captions: captions,
         Date: dates,
         Name: this.state.name + "",
         Uid: this.state.userId,
         Images: images,
-        Pid: postId
+        Pid: postId,
+        Reminders: result,
       }).then((response) => {
-
-
 
       }).catch((error) => {
         Alert.alert(error);
       });
 
+      //add push token and postId to user
       firebase.firestore().collection('users').doc(userId).update({
-        posts: firebase.firestore.FieldValue.arrayUnion(postId)
+        posts: firebase.firestore.FieldValue.arrayUnion(postId),
+        push_token: this.state.pushToken
       }).then((response) => {
 
         //Navigate 
@@ -183,9 +223,6 @@ export default class AddPlant extends React.Component {
       const remoteUri = await uploadPhotoAsync(this.state.image, `Posts/${this.state.photoPath}`);
 
     }
-    const showmodel = () => {
-      this.setState({ showModel: true })
-    }
 
     const confirm = () => {
 
@@ -198,7 +235,7 @@ export default class AddPlant extends React.Component {
               console.log('')
           },
           {
-            text: 'Save Changes', onPress: () =>
+            text: 'Post', onPress: () =>
               uploadPhoto()
           },
 
@@ -223,22 +260,85 @@ export default class AddPlant extends React.Component {
     }
 
     const setModalVisible = (visible) => {
+     //  removeAll()
       this.setState({ showModel: visible });
     }
 
     const changeStyle = (value) => {
-      if(value == "transport_week") {
-          this.setState({
-                activeBgColor: "#CCDDE5",
-                inActiveBgColor: "#EFF6F9",
-          });
-      } else if(value == "transport_day") {
-          this.setState({
-                activeBgColor: "#CCDDE5",
-                inActiveBgColor: "#EFF6F9",
-          });
-      } 
-}
+      if (value == 'Water') {
+        this.setState({ activeBgColor: "#CCDDE5" })
+      } else if (value == 'Treat') {
+        this.setState({ activeBgColor: "#EFCFC4" })
+      }
+      console.log(value)
+      this.setState({ selectedProgress: value })
+    }
+
+    const updateReminder = () => {
+
+      this.state.progressArray.pop()
+      const reminder = {
+        progres: this.state.selectedProgress,
+        period: this.state.selectedPeriod
+      }
+      this.state.progressArray.push(reminder);
+      closeModel();
+
+    }
+
+    const setReminder = async () => {
+      if (this.state.selectedProgress == '' || this.state.selectedPeriod == '') {
+        Alert.alert('Please make sure you have selecte progress and its reminder');
+        return
+      }
+
+      const isAdded = (progress, array) => {
+        var flag = false
+        array.forEach(function (item) {
+          if (item.progres === progress) {
+            flag = true
+          }
+
+        })
+        return flag;
+
+      }
+      if (isAdded(this.state.selectedProgress, this.state.progressArray)) {
+
+        Alert.alert(
+          '',
+          'You have aleardy added ' + this.state.selectedProgress + ' reminder do ypu want to update it?',
+          [
+            {
+              text: 'Cancel', onPress: () =>
+                console.log('')
+            },
+            {
+              text: 'Update', onPress: (progress) =>
+                updateReminder()
+            },
+
+          ],
+          { cancelable: true }
+        )
+      } else {
+
+        const reminder = {
+          progres: this.state.selectedProgress,
+          period: this.state.selectedPeriod
+        }
+        this.state.progressArray.push(reminder);
+
+        closeModel();
+      }
+
+    }
+
+    const closeModel = () => {
+      this.setState({ selectedProgress: '', selectedPeriod: '' }, () => {
+        setModalVisible(!showModel);
+      });
+    }
 
     return (
 
@@ -289,15 +389,33 @@ export default class AddPlant extends React.Component {
         <View style={styles.progress} >
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.progressText}>Progress </Text>
-            <TouchableOpacity onPress={() => {
-              setModalVisible(true);
-            }}>
-              <AntDesign name="pluscircle" size={24} color="#CFD590" /></TouchableOpacity></View>
+
+            {this.state.progressArray.length == 0 ?
+              <TouchableOpacity onPress={() => {
+                setModalVisible(true);
+              }}>
+                <AntDesign name="pluscircle" size={24} color="#CFD590" /></TouchableOpacity> :
+              <TouchableOpacity onPress={() => {
+                setModalVisible(true);
+              }}>
+                <MaterialCommunityIcons name="circle-edit-outline" size={24} color="#CFD590" /></TouchableOpacity>}
+          </View>
+
+          {/* Progress icons */}
           <View>
-            {this.state.isProgress == false ?
+            {this.state.progressArray.length == 0 ?
               <Text style={styles.text}>No progress reminders added</Text>
-              : null
-            }
+              : <FlatList
+
+                data={this.state.progressArray}
+                horizontal={true}
+                renderItem={({ item }) => <View key={item} style={styles.itemList} >
+                  {item.progres == 'Water' ?
+                    (waterItem()) :
+                    (bugItem())}
+                </View>}
+                keyExtractor={({ item }) => item}
+              />}
           </View>
 
         </View>
@@ -317,26 +435,55 @@ export default class AddPlant extends React.Component {
                 <TouchableOpacity
                   style
                   onPress={() => {
-                    setModalVisible(!showModel);
+                    closeModel();
                   }}>
                   <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
 
                 <View style={styles.progressReminder}>
                   <Text style={{
-                  fontFamily: 'Khmer-MN-Bold',
-                  fontSize: 24,
-                }}>Progress Reminder</Text></View>
-                </View>
+                    fontFamily: 'Khmer-MN-Bold',
+                    fontSize: 24,
+                  }}>Progress Reminder</Text></View>
+              </View>
 
               <View style={styles.modelBody}>
-                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20, }}>Progress Reminder</Text>
-          <RadioGroup
-                Style={styles.groubReminder}
-                radioGroupList={radioGroupList}
-                buttonContainerActiveStyle = {{backgroundColor: this.state.activeBgColor}}
-                buttonContainerInactiveStyle = {{backgroundColor: this.state.inActiveBgColor}}
-                onChange={(value) => {changeStyle(value);}}
-          />
+                {/* Progress Reminder */}
+                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20 }}>Progress Reminder</Text>
+
+                <RadioGroup
+                  radioGroupList={progress}
+                  buttonContainerActiveStyle={{ backgroundColor: this.state.activeBgColor }}
+                  buttonContainerInactiveStyle={{ backgroundColor: this.state.inActiveBgColor }}
+                  onChange={(value) => { changeStyle(value); }}
+                  buttonContainerStyle={styles.groubProgressButton}
+                  containerStyle={styles.groubReminder}
+                />
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                  <Text style={styles.textClearfiy}>  Water</Text><Text style={styles.textClearfiy}>             Treatment</Text></View>
+
+                {/* How often Reminder */}
+                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20, }}>How often should remind you ?</Text>
+
+                <RadioGroup
+                  radioGroupList={this.state.activeBgColor == '#CCDDE5' ? periodWater : periodTreatment}
+                  buttonContainerActiveStyle={{ backgroundColor: "#CCDDE5" }}
+                  buttonContainerInactiveStyle={{ backgroundColor: "#EFF6F9" }}
+                  buttonTextStyle={{ fontFamily: 'Khmer-MN-Bold', fontSize: 17, color: 'black' }}
+                  onChange={(value) => { this.setState({ selectedPeriod: value }); }}
+                  buttonContainerStyle={styles.groubReminderButton}
+                  containerStyle={styles.groubReminder}
+                />
+
+
+
+                <TouchableOpacity
+                  style={styles.postButton}
+                  onPress={() => {
+                    setReminder()
+                  }}
+                >
+                  <Text style={styles.editText}>Set Reminder</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -377,8 +524,7 @@ const styles = StyleSheet.create({
     height: 280,
     width: Dimensions.get('window').width,
     backgroundColor: '#ffff',
-    marginBottom: 50,
-    marginTop: 20,
+    marginBottom: 40,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -481,6 +627,9 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     color: '#717171'
   },
+  itemList: {
+    marginLeft: 20,
+  },
   modelContiner: {
     flex: 1,
     flexDirection: 'row-reverse',
@@ -503,25 +652,52 @@ const styles = StyleSheet.create({
   },
   modelHeader: {
     flexDirection: 'row',
-    margin: 55,
+    marginTop: 40,
+    marginLeft: 55,
+    marginBottom: 20,
   },
   progressReminder: {
     borderBottomWidth: 1,
     borderColor: '#CFD590',
     marginLeft: 50,
     alignSelf: 'center',
-    marginTop: -15,
   },
   modelBody: {
     marginTop: -10,
     marginLeft: 50,
   },
-  groubReminder:{
-    width:100,
+  groubProgressButton: {
+    width: 70,
+    height: 70,
+    borderWidth: 0,
+    marginLeft: 40,
+    borderRadius: 50,
+    alignSelf: 'center'
   },
+  textClearfiy: {
+    color: '#717171',
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 17,
+    marginTop: -15,
+
+  },
+  groubReminder: {
+    alignSelf: 'center',
+    marginLeft: -50,
+    marginBottom: 20
+  },
+  groubReminderButton: {
+    width: 100,
+    height: 40,
+    borderWidth: 0,
+    marginLeft: 40,
+    alignSelf: 'center'
+  },
+
+
   postButton: {
     alignSelf: 'center',
-    marginTop: 20,
+    marginTop: 30,
     marginBottom: 20,
     borderWidth: 2,
     width: 120,
@@ -546,7 +722,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Khmer-MN-Bold',
     color: '#CFD590',
     fontSize: 17
-
   },
 
 

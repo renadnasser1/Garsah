@@ -1,361 +1,425 @@
 import React, { useState, useEffect } from "react";
 import {
-    View,
-    Text,TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    Image,
-    Dimensions,
-    Button,
-    ActivityIndicator,
-    AsyncStorage,
-    ImageBackground,
-    KeyboardAvoidingView,
-    Alert,
-   
-  } from "react-native";
-  
-  //Firebase
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Alert,
+  FlatList,
+  AsyncStorage,
+  Dimensions,
+  Modal,
+  ShadowPropTypesIOS,
+} from "react-native";
+//Firebase
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
-import { AppLoading } from 'expo'; 
-import { Ionicons } from "@expo/vector-icons";
-import Svg, { Path } from "react-native-svg";
-import * as Permissions from 'expo-permissions';
-import * as ImagePicker from 'expo-image-picker';
+import { AppLoading } from 'expo';
 
+import Svg, { Path } from "react-native-svg"
+
+//Icons
+import { Entypo,Ionicons,AntDesign } from '@expo/vector-icons';
+
+//Components
+import { bugItem, waterItem } from '../Component/bugWaterItems';
+import { postItem } from '../Component/PostItem'
+
+const font = () => {
+  let [fontsLoaded] = useFonts({
+    'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
+    'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
+  });
+}
+// the form for the post in the thread 
 export default class Plant extends React.Component {
+  constructor(props) {
+    super(props)
+  }
 
-    constructor(props) {
-        super(props)
-      }
-    
-      state = {
-        image: '',
-        imageURL: '',
-        permissions: '',
-        caption:'',
-        date:'',
-        photoPath:'',
-        isLoading:false,
-        userId:'',
-      }
 
-      async componentDidMount() {
-        try{
-          let userId = await AsyncStorage.getItem("uid")
-          this.setState({userId:userId})
-        }catch(err){
-        }
-       // permissions 
-        const status1 = await (await ImagePicker.requestCameraRollPermissionsAsync()).status
-        const { status } = await ImagePicker.requestCameraPermissionsAsync()
-        if (status !== 'granted' || status1 !== 'granted') {
-          alert('Sorry, we need camera permissions to make this work!');
+  state = {
+    ThreadId: '',
+    name: '',
+    reminders: [],
+    posts: [],
+    userId: '',
+    userName: '',
+    showProgressModel: false,
+    selectedProgress: '',
+    selectedPeriod: '',
+    selectedSent: '',
+  }
+
+
+  async componentDidMount() {
+
+
+
+    try {
+
+      // get user info 
+      let userId = await AsyncStorage.getItem("uid")
+      let name = await AsyncStorage.getItem("name")
+      this.setState({ userId: userId, userName: name })
+
+
+      // get thread id
+      var localThread = ''
+      var localPost = []
+      this.setState({ ThreadId: this.props.route.params.threadID }, () => { console.log('thread id  ', this.state.ThreadId) })
+
+      //get thread info
+      var id = this.state.ThreadId
+      var docRef = firebase.firestore().collection("Posts").doc(id);
+      await docRef.get().then(function (doc) {
+        if (doc.exists) {
+          var post = {
+            id: id,
+            name: doc.data().Name,
+            dates: doc.data().Date,
+            images: doc.data().Images,
+            captions: doc.data().Captions,
+            reminders: doc.data().Reminders,
+          };
+          localThread = post
         } else {
-          this.setState({ permissions: true })
+          console.log("No such document!");
         }
-      }// end did mount 
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
+      });
 
-      render() {
-        const { image,caption,userId } = this.state
-    
-        const pickImageCameraRoll = async () => {
-          let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-          });
-    
-          if (!result.cancelled) {
-            this.setState({ image: result.uri });
-          }
-        };  // end pick image camera roll
-    
-        // get image again 
-        const getImage = async () => {
-          console.log(this.state.photoPath)
-        // where i set the image ??? 
-          let imageRef = firebase.storage().ref('Posts/' + this.state.photoPath);
-          imageRef.getDownloadURL().then((url) => {
-              //from url you can fetched the uploaded image easily
-              console.log(url)
-              this.setState({imageURL:url})
-              uploadPost()
-    
-          })
-              .catch((e) => console.log('getting downloadURL of image error => ', e),
-              );
-    
-      } // end get image 
-    //2nd upload it to the photo ##2 
-        const uploadPhotoAsync = async (uri, filename) => {
-          return new Promise(async (res, rej) => {
-            if(this.state.image){ // here amal solution
-            const response = await fetch(uri);
-            const file = await response.blob();
-            let upload = firebase.storage().ref(filename).put(file).then(function(snapshot) {
-              getImage();
-              
-            });
-            }
-           
-          }
-          );
-        }// end upload async 
-         // get the photo + the post details with it .. هنا نوف ارجعي سوي فيتش واعكسي وحطيه 
-        const uploadPost= () =>{
-          //For update
-          // regions: firebase.firestore.FieldValue.arrayUnion("greater_virginia")
-          var newPost = firebase.firestore().collection("Posts").doc();
-          var images = [this.state.imageURL]
-          var captions = [this.state.caption ]
-          var dates = [this.state.date]
-          var postId = newPost.id
-          console.log('image url',this.state.imageURL)
-          newPost.set({
-                Captions: captions,
-                Date: dates,
-                Name: this.state.name+"",
-                Uid: this.state.userId,
-                Images: images,
-                Pid:postId
-              }).then((response)=>{
+      this.setState({ reminders: localThread.reminders })
+      this.setState({ name: localThread.name })
+      console.log("in ", localThread.dates)
 
-            }).catch((error) => {
-                Alert.alert(error);
-              });
-    
-              firebase.firestore().collection('users').doc(userId).update({
-                posts: firebase.firestore.FieldValue.arrayUnion(postId)
-              }).then((response)=>{
-    
-                             //Navigate 
-                             setTimeout(function(){
-    
-                              this.props.navigation.reset({
-                                index: 0,
-                                routes: [{ name: 'Profile' }]
-                              })
-                              
-                              }.bind(this),1000);
-              })
-        }// end upload post 
-    
-       // the first step upload the photos to the storage in the Posts 
-          const uploadPhoto = async () => {
-          this.setState({isLoading:true})
-          var date = new Date();
-          this.setState({date:date.toJSON().slice(0, 10)})
-          //validations
-          this.setState({photoPath:this.state.userId+'date'+this.state.date+'time'+date.toTimeString().slice(0,8)});
-          const remoteUri = await uploadPhotoAsync(this.state.image,`Posts/${this.state.photoPath}`);
-          
-        } // end upload photo 
-    
-        const confirm = () => {
-          Alert.alert(
-            '',
-            'Are you sure you want to add a post to your thread?',
-            [
-              {
-                text: 'Cancel', onPress: () =>
-                  console.log('')
-              },
-              {
-                text: 'Save Changes', onPress: () =>
-                uploadPhoto()
-              },
-    
-            ],
-            { cancelable: false }
-          )
-        } // end confirm 
-        const validate = () => {
-            if(image == '') {
-             alert("Please add photo");
-              }else if (caption.length > 2200) {
-             alert("Your caption is too long must be maximum 2200.");
-             } else {
-            confirm();
-          }
-        }// end validation 
+      var length = localThread.images.length;
+      for (var i = 0; i < length; i++) {
+        localPost.push({ image: localThread.images[i], date: localThread.dates[i], caption: localThread.captions[i] })
+      }
 
+    } catch (err) {
+    }
+    this.setState({ posts: localPost })
+    console.log(this.state.posts.length)
+
+  }
+  render() {
+    const { thread, ThreadId, posts, selectedProgress, showProgressModel } = this.state
+
+    const move = () => {
+      this.props.navigation.navigate('Post', { ThreadID: this.state.ThreadId })
+    }
+
+    const setModalVisible = (visible, progres, period) => {
+
+      var reapet;
+      var st;
+
+      if (period == 'day') {
+        reapet = 'Daily'
+      } else if (period == 'week') {
+        reapet = 'Weekly'
+      } else reapet = 'Monthly'
+
+      if (progres == 'Water') {
+        st = 'Watring Plant'
+      } else st = 'Treatment Plant'
+
+      this.setState({ selectedProgress: progres, selectedPeriod: reapet, selectedSent: st }, () => {
+        console.log(this.state.selectedProgress, this.state.selectedPeriod)
+        this.setState({ showProgressModel: visible });
+      });
+    }
+    const closeModel = () => {
+      this.setState({ selectedProgress: '', selectedPeriod: '' }, () => {
+        setModalVisible(!showProgressModel);
+      })
+
+    }
+
+    const openOwnerProfile = () => {
+
+    }
 
     return (
-      <KeyboardAvoidingView
-      behavior='padding'
-      style={{ flex: 1 }} >
-     <View
-        style={styles.container}>
-       <View >
-       <View style={styles.SVGC}>
-          <Svg
-            width={773.491}
-            height={785.853}
-            viewBox="0 0 773.491 785.853"
-          >
-            <Path
-              data-name="Path 28"
-              d="M258.442 106.638c38.956 263.273-132.299 191.47-101.8 347.563s223.793 276.81 223.793 276.81 103.861 37.956 83.85-52.908 10.408-6.566 10.408-6.566 11.89-123.027-45.35-207.25-60.016-98.204-60.39-181.102 51.42-62.832 63.047-134.763S385.527.001 385.527.001z"
-              fill="#eff6f9"
-            />
-          </Svg>
-        </View>
-      
-  
-        {/* <Image source={require("../assets/plain-white-background.jpg")} style={styles.img} /> */}
-        <View style={styles.img}>
 
-          {this.state.image ? (
-         <Image source={{ uri: this.state.image }} style={styles.img} />) :
-          (<Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
-           onPress={() => {
-      pickImageCameraRoll();
-           }}
-  ></Ionicons>)
-}
+      <View style={styles.container}>
 
-
-</View>
-       {/* <Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}></Ionicons> */}
-      
-       <View style={styles.inputFiledCaption} >
-          <TextInput
-            placeholder={"Caption"}
-            onChangeText={(text) => this.setState({ caption: text })}
-          ></TextInput></View>
-
-<TouchableOpacity
-          style={styles.postButton}
+        <TouchableOpacity
+        style={styles.back}
           onPress={() => {
-            validate()
-          }}
+            this.props.navigation.pop()
+          }}>
+            <Ionicons name="ios-arrow-dropleft-circle" size={30} color="#CFD590" /></TouchableOpacity>
+
+        {/* Background */}
+        <Svg
+          style={styles.SVGC}
+          width={Dimensions.get('window').width * 2}
+          height={Dimensions.get('window').height}
+          viewBox="0 0 781.276 795.131"
+
         >
-          <Text style={styles.editText}> Post</Text>
-        </TouchableOpacity>
+          <Path
+            data-name="Path 28"
+            d="M258.442 106.638c41.88 266.758-131.504 192.418-99.21 350.65S387.617 739.57 387.617 739.57s105.097 39.43 84.024-52.7 10.428-6.542 10.428-6.542 10.775-124.356-47.773-210.138-61.485-99.954-62.68-183.832 51.224-63.063 62.237-135.726S385.527 0 385.527 0z"
+            fill="#cfd590"
+          />
+        </Svg>
+        <ScrollView>
 
-       </View>
+          {/* User info */}
+          <View style={styles.infoContainer}>
+            <Text style={styles.plantName}> {this.state.name} </Text>
 
-    </View>
-    </KeyboardAvoidingView>
-    ); } 
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+              onPress={()=>{
+                openOwnerProfile()
+              }}
+              >
+                <Text style={styles.ownerName}>Owner | {this.state.userName}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.progressContainer}>
+
+              {/* Progress */}
+
+              {this.state.reminders.length != 0 ? (
+                <View>
+                  <Text style={styles.progressText}>Progress</Text>
+                  <FlatList
+                    data={this.state.reminders}
+                    horizontal={true}
+                    renderItem={({ item, index }) => <View key={item.progres} style={styles.itemList} >
+                      <TouchableOpacity
+                        style={{
+                          padding: 5,
+                          shadowColor: "#000",
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.2,
+                          shadowRadius: 4.0,
+
+                          elevation: 3,
+                        }}
+                        onPress={() =>
+                          setModalVisible(true, item.progres, item.period)
+                        }
+                      >
+                        {item.progres == 'Water' ?
+                          (waterItem()) :
+                          (bugItem())}
+                      </TouchableOpacity>
+                    </View>}
+                    keyExtractor={({ item }) => item}
+                  />
+                </View>) : null}
+
+            </View>
+
+
+          </View>
+          <View style={styles.body}>
+
+            {/* Posts */}
+            {this.state.posts.length != 0 ? (
+              <View>
+                <FlatList
+                  data={posts}
+                  renderItem={({ item }) =>
+                    postItem(item)}
+                  keyExtractor={({ item }) => item}
+                /></View>) : null}
+
+          </View>
+
+        </ScrollView>
+        {/* Progress model */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.showProgressModel}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}>
+          <View style={styles.modelContiner}>
+            <View style={styles.modalView}>
+
+              <View style={styles.modelHeader}>
+                <TouchableOpacity
+                  onPress={() => {
+                    closeModel();
+                  }}>
+                  <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
+
+                <View style={styles.progressReminder}>
+                  <Text style={{
+                    fontFamily: 'Khmer-MN-Bold',
+                    fontSize: 24,
+                  }}>{this.state.selectedProgress} Progress</Text></View>
+              </View>
+              <View style={styles.modelBody}>
+                <View style={{ flowDirection: 'row', alignSelf: 'center' }}>
+                  {this.state.selectedProgress == 'Water' ?
+                    (waterItem()) :
+                    (bugItem())}</View>
+
+                <Text style={styles.progressInfoText}>{this.state.selectedSent} | {this.state.selectedPeriod}</Text>
+
+              </View>
+            </View></View>
+        </Modal>
+
+        <View style={styles.plus}>
+          <TouchableOpacity>
+            <Entypo name="plus" size={44} color="white"
+              onPress={() =>
+                move()
+              } />
+          </TouchableOpacity>
+
+        </View>
+
+      </View>
+    );
+  }
 }
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        backgroundColor: 'white',
-      },
-        inputFiled: {
-            paddingLeft:80,
-            paddingBottom:20,
-            marginLeft:50,
-            marginBottom:30,
-            paddingLeft:10,
-            width: 310,
-            height: 60,
-            borderTopLeftRadius: 10,
-            borderBottomLeftRadius: 10,
-            borderBottomEndRadius: 10,
-            borderTopRightRadius: 10,
-            flexDirection: "row",
-            backgroundColor: "#fff",
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 4,
-            },
-            shadowOpacity: 0.2,
-            shadowRadius: 4.65,
-        
-            elevation: 8,
-            
-          },
-          img: {
-            height: 280,
-            width: Dimensions.get('window').width,
-            backgroundColor: '#ffff',
-            marginBottom: 50,
-            marginTop: 20,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 4,
-            },
-            shadowOpacity: 0.2,
-            shadowRadius: 4.65,
-        
-          },
-          inputFiledCaption: {
+  container: {
+    flex: 2,
+    justifyContent: "center",
+    backgroundColor: 'white',
+    zIndex: 1
 
-            alignSelf: 'center',
-            paddingLeft: 10,
-            paddingBottom: 20,
-            marginBottom: 20,
-            width: 350,
-            height: 90,
-            borderTopLeftRadius: 10,
-            borderBottomLeftRadius: 10,
-            borderBottomEndRadius: 10,
-            borderTopRightRadius: 10,
-            flexDirection: "row",
-            backgroundColor: 'white',
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 4,
-            },
-            shadowOpacity: 0.2,
-            shadowRadius: 4.65,
-        
-            elevation: 8,
-        
-          },
-          icon : {
-          paddingLeft:190,
-          position: 'absolute',
-          top: 130, 
-       
-          },
-          postButton: {
-            alignSelf: 'center',
-            marginTop: 20,
-            marginBottom: 20,
-            borderWidth: 2,
-            width: 120,
-            borderRadius: 20,
-            backgroundColor: "white",
-            borderColor: '#CFD590',
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.1,
-            shadowRadius: 4.65,
-        
-            elevation: 4,
-        
-          },
-          editText: {
-            alignSelf: 'center',
-            paddingTop: 3,
-            fontFamily: 'Khmer-MN-Bold',
-            color: '#CFD590',
-            fontSize: 17
-        
-          },
-          SVGC: {
-            flex: 1,
-            position: 'absolute',
-            top: -50,
-            left: -300,
-          },
-         
-    
-    
-    })
+  },
+  back: {
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    top: 50,
+    left: 20,
+    borderRadius: 100,
+    padding: 5,
+    paddingBottom: -5,
+    alignItems: 'center',
+    zIndex: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,}
+    },
+  SVGC: {
+    flex: 1,
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    top: -150,
+    left: 60,
+    position: 'absolute',
+  },
+  infoContainer: {
+    marginTop: 90,
+    marginLeft: 30,
+  },
+  plantName: {
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 30,
+  },
+
+  ownerName: {
+    fontFamily: 'Khmer-MN-Bold',
+    marginTop: -20,
+    fontSize: 20,
+    paddingLeft: 10,
+    color: '#717171'
+  },
+  progressContainer: {
+    marginTop: 10,
+    marginLeft: 10,
+  },
+  progressText: {
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 22,
+
+  },
+  body: {
+
+    marginTop: 50,
+  },
+  modelContiner: {
+    flex: 1,
+    flexDirection: 'row-reverse',
+    alignItems: 'flex-end',
+    bottom: 0
+  },
+  modalView: {
+
+    width: Dimensions.get('window').width,
+    backgroundColor: 'white',
+    height: Dimensions.get('window').height / 2,
+    borderTopLeftRadius: 150,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  modelHeader: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginTop: 40,
+    marginLeft: -20,
+    // marginBottom: 20,
+  },
+  progressReminder: {
+    borderBottomWidth: 1,
+    borderColor: '#CFD590',
+    marginLeft: 40,
+    alignSelf: 'center',
+  },
+  modelBody: {
+    alignSelf: 'center',
+    marginTop: 50,
+    marginLeft: 20,
+  },
+  progressInfoText: {
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 25,
+    marginTop: 15,
+    alignSelf: 'center'
+
+  },
+  plus: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    right: 10,
+    bottom: 10,
+    backgroundColor: '#CFD590',
+    borderRadius: 100,
+    padding: 5,
+    paddingBottom: -5,
+    alignItems: 'center',
+    zIndex: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.0,
+
+    elevation: 3,
+
+  },
+
+})

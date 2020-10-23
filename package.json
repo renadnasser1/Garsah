@@ -15,6 +15,7 @@
     "@react-navigation/stack": "^5.9.0",
     "expo": "~38.0.8",
     "expo-image-picker": "~8.3.0",
+    "expo-notifications": "^0.3.3",
     "expo-permissions": "~9.0.1",
     "expo-status-bar": "^1.0.2",
     "firebase": "^7.9.0",
