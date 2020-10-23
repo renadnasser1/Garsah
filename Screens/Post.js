@@ -109,6 +109,7 @@ export default class Post extends React.Component {
          // get the photo + the post details with it 
         const uploadPost= () =>{
           //For update
+          console.log('tread id',this.state.ThreadId)
           var postref =  firebase.firestore().collection("Posts").doc(this.state.ThreadId);// Atomically add a new region to the "regions" 
         postref.update({  
               Date: firebase.firestore.FieldValue.arrayUnion(this.state.date),
@@ -120,7 +121,7 @@ export default class Post extends React.Component {
     
                              //Navigate 
                              setTimeout(function(){
-                              this.props.navigation.navigate("GardnerPlantProgress")
+                              this.props.navigation.pop()
                              
                               
                               }.bind(this),1000);

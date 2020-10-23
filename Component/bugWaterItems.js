@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
     View,
+    Text
   } from "react-native";
 
 import { Entypo } from '@expo/vector-icons';
@@ -16,7 +17,8 @@ export const waterItem = () => {
           height: 70,
           alignItems: 'center',
           justifyContent: 'center',
-          borderRadius: 50
+          borderRadius: 50,
+          flexDirection:'row'
         }}>
         <Entypo name="water" size={35} color="black" />
       </View>
@@ -26,14 +28,15 @@ export const waterItem = () => {
 
   export const bugItem = () => {
     return (
-      <View style={styles.item}
+      <View 
         style={{
           backgroundColor: '#EFCFC4',
           width: 70,
           height: 70,
           alignItems: 'center',
           justifyContent: 'center',
-          borderRadius: 50
+          borderRadius: 50,
+          flexDirection:'row'
         }}>
         <MaterialCommunityIcons name="ladybug" size={35} color="black" />
       </View>

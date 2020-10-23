@@ -19,12 +19,12 @@ import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
+
+import Svg, { Path } from "react-native-svg"
+
+//Icons
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
-import Svg, { Path } from "react-native-svg"
-import * as Permissions from 'expo-permissions';
-import * as ImagePicker from 'expo-image-picker';
-//Icons
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';

@@ -21,14 +21,14 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import { Fontisto } from '@expo/vector-icons';
 
 //Firebase
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-
+//Components
+import {plantItem} from '../Component/PostItem'
 const GardnerProfile = ({ navigation }) => {
 
     const [uid, setUid] = useState()
@@ -250,23 +250,7 @@ const GardnerProfile = ({ navigation }) => {
                     <FlatList
                         data={postss}
                         renderItem={({ item, index }) =>
-                            (<View key={item.key} >
-                            <View  
-                              flexDirection = 'row'>
-                            <Fontisto style={styles.dateicon} name="date" size={24} color="#F9DED4" />
-                            <Text style = {styles.plantdate}>{item.date} </Text></View>
-                                <TouchableOpacity 
-                                onPress={() =>
-                                    navigation.navigate('Plant',{threadID:item.key})
-                                }>
-                                    <Image style = {styles.plantimage}
-                                       // style={{ width: 500, height: 400 }}
-                                        source={{ uri: item.image }}
-                                    />
-                                     
-                                <Text style = {styles.plantname}>{item.name} </Text>
-                                </TouchableOpacity>
-                            </View>)}
+                            (plantItem(item,navigation))}
                         keyExtractor={item => item.key}
                     />
                     </View>
@@ -355,10 +339,13 @@ const styles = StyleSheet.create({
         paddingLeft: 25
 
     },
+    body:{
+        marginLeft:-20
+    },
 
     myPlantText: {
         margin: 20,
-
+        marginLeft:40,
         fontSize: 18,
         fontFamily: 'Khmer-MN-Bold'
 

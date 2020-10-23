@@ -11,26 +11,22 @@ import {
   AsyncStorage,
   Dimensions,
   Modal,
-  ShadowPropTypesIOS
+  ShadowPropTypesIOS,
 } from "react-native";
 //Firebase
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from '@expo/vector-icons';
+
 import Svg, { Path } from "react-native-svg"
-import * as Permissions from 'expo-permissions';
-import * as ImagePicker from 'expo-image-picker';
+
 //Icons
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import { NavigationHelpersContext } from "@react-navigation/native";
+import { Entypo,Ionicons,AntDesign } from '@expo/vector-icons';
 
 //Components
 import { bugItem, waterItem } from '../Component/bugWaterItems';
+import { postItem } from '../Component/PostItem'
 
 const font = () => {
   let [fontsLoaded] = useFonts({
@@ -52,6 +48,10 @@ export default class Plant extends React.Component {
     posts: [],
     userId: '',
     userName: '',
+    showProgressModel: false,
+    selectedProgress: '',
+    selectedPeriod: '',
+    selectedSent: '',
   }
 
 
@@ -69,7 +69,7 @@ export default class Plant extends React.Component {
 
       // get thread id
       var localThread = ''
-      var localPost =[]
+      var localPost = []
       this.setState({ ThreadId: this.props.route.params.threadID }, () => { console.log('thread id  ', this.state.ThreadId) })
 
       //get thread info
@@ -98,29 +98,64 @@ export default class Plant extends React.Component {
       console.log("in ", localThread.dates)
 
       var length = localThread.images.length;
-       for (var i = 0; i < length; i++) {
-        localPost.push({ image: localThread.images[i], date: localThread.dates[i],caption: localThread.captions[i] })
+      for (var i = 0; i < length; i++) {
+        localPost.push({ image: localThread.images[i], date: localThread.dates[i], caption: localThread.captions[i] })
       }
 
     } catch (err) {
     }
-    this.setState({posts:localPost})
+    this.setState({ posts: localPost })
     console.log(this.state.posts.length)
 
   }
   render() {
-    const { thread, ThreadId, posts } = this.state
+    const { thread, ThreadId, posts, selectedProgress, showProgressModel } = this.state
 
     const move = () => {
-      this.props.navigation.reset({
-        index: 0,
-        routes: [{ name: 'Post' }]
+      this.props.navigation.navigate('Post', { ThreadID: this.state.ThreadId })
+    }
+
+    const setModalVisible = (visible, progres, period) => {
+
+      var reapet;
+      var st;
+
+      if (period == 'day') {
+        reapet = 'Daily'
+      } else if (period == 'week') {
+        reapet = 'Weekly'
+      } else reapet = 'Monthly'
+
+      if (progres == 'Water') {
+        st = 'Watring Plant'
+      } else st = 'Treatment Plant'
+
+      this.setState({ selectedProgress: progres, selectedPeriod: reapet, selectedSent: st }, () => {
+        console.log(this.state.selectedProgress, this.state.selectedPeriod)
+        this.setState({ showProgressModel: visible });
+      });
+    }
+    const closeModel = () => {
+      this.setState({ selectedProgress: '', selectedPeriod: '' }, () => {
+        setModalVisible(!showProgressModel);
       })
+
+    }
+
+    const openOwnerProfile = () => {
+
     }
 
     return (
 
       <View style={styles.container}>
+
+        <TouchableOpacity
+        style={styles.back}
+          onPress={() => {
+            this.props.navigation.pop()
+          }}>
+            <Ionicons name="ios-arrow-dropleft-circle" size={30} color="#CFD590" /></TouchableOpacity>
 
         {/* Background */}
         <Svg
@@ -136,65 +171,123 @@ export default class Plant extends React.Component {
             fill="#cfd590"
           />
         </Svg>
+        <ScrollView>
 
-        {/* User info */}
-        <View style={styles.infoContainer}>
-          <Text style={styles.plantName}> {this.state.name} </Text>
+          {/* User info */}
+          <View style={styles.infoContainer}>
+            <Text style={styles.plantName}> {this.state.name} </Text>
 
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity>
-              <Text style={styles.ownerName}>Owner | {this.state.userName}</Text>
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+              onPress={()=>{
+                openOwnerProfile()
+              }}
+              >
+                <Text style={styles.ownerName}>Owner | {this.state.userName}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.progressContainer}>
+
+              {/* Progress */}
+
+              {this.state.reminders.length != 0 ? (
+                <View>
+                  <Text style={styles.progressText}>Progress</Text>
+                  <FlatList
+                    data={this.state.reminders}
+                    horizontal={true}
+                    renderItem={({ item, index }) => <View key={item} style={styles.itemList} >
+                      <TouchableOpacity
+                        style={{
+                          padding: 5,
+                          shadowColor: "#000",
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.2,
+                          shadowRadius: 4.0,
+
+                          elevation: 3,
+                        }}
+                        onPress={() =>
+                          setModalVisible(true, item.progres, item.period)
+                        }
+                      >
+                        {item.progres == 'Water' ?
+                          (waterItem()) :
+                          (bugItem())}
+                      </TouchableOpacity>
+                    </View>}
+                    keyExtractor={({ item }) => item}
+                  />
+                </View>) : null}
+
+            </View>
+
+
           </View>
+          <View style={styles.body}>
 
-          <View style={styles.progressContainer}>
-
-
-            {this.state.reminders.length != 0 ? (
+            {/* Posts */}
+            {this.state.posts.length != 0 ? (
               <View>
-                <Text style={styles.progressText}>Progress</Text>
                 <FlatList
-                  data={this.state.reminders}
-                  horizontal={true}
-                  renderItem={({ item }) => <View key={item} style={styles.itemList} >
-                    {item.progres == 'Water' ?
-                      (waterItem()) :
-                      (bugItem())}
-                  </View>}
+                  data={posts}
+                  renderItem={({ item }) =>
+                    postItem(item)}
                   keyExtractor={({ item }) => item}
-                />
-              </View>) : null}
+                /></View>) : null}
 
           </View>
 
+        </ScrollView>
+        {/* Progress model */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.showProgressModel}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}>
+          <View style={styles.modelContiner}>
+            <View style={styles.modalView}>
+
+              <View style={styles.modelHeader}>
+                <TouchableOpacity
+                  onPress={() => {
+                    closeModel();
+                  }}>
+                  <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
+
+                <View style={styles.progressReminder}>
+                  <Text style={{
+                    fontFamily: 'Khmer-MN-Bold',
+                    fontSize: 24,
+                  }}>{this.state.selectedProgress} Progress</Text></View>
+              </View>
+              <View style={styles.modelBody}>
+                <View style={{ flowDirection: 'row', alignSelf: 'center' }}>
+                  {this.state.selectedProgress == 'Water' ?
+                    (waterItem()) :
+                    (bugItem())}</View>
+
+                <Text style={styles.progressInfoText}>{this.state.selectedSent} | {this.state.selectedPeriod}</Text>
+
+              </View>
+            </View></View>
+        </Modal>
+
+        <View style={styles.plus}>
+          <TouchableOpacity>
+            <Entypo name="plus" size={44} color="white"
+              onPress={() =>
+                move()
+              } />
+          </TouchableOpacity>
 
         </View>
-        <View style={styles.body}>
-          {this.state.reminders.length != 0 ? (
-            <View>
-            <FlatList
-              data={posts}
-              renderItem={({ item }) =>
-                <View key={item} >
-                  <Image style={styles.img} source={{ uri: item.image }}></Image>
-                  <Text>{item.caption}</Text>
-                  <Text>{item.date}</Text>
-                </View>}
-              keyExtractor={({ item }) => item}
-            /></View>) : null}
-          <View style={styles.plus}>
-            <TouchableOpacity >
-              <Entypo name="plus" size={44} color="black"
-                onPress={() =>
-                  move()
-                } />
-            </TouchableOpacity>
-
-          </View>
-
-
-        </View>
-
 
       </View>
     );
@@ -208,16 +301,32 @@ const styles = StyleSheet.create({
     zIndex: 1
 
   },
+  back: {
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    top: 50,
+    left: 20,
+    borderRadius: 100,
+    padding: 5,
+    paddingBottom: -5,
+    alignItems: 'center',
+    zIndex: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,}
+    },
   SVGC: {
     flex: 1,
+    position: 'absolute',
     justifyContent: 'center',
     alignItems: 'flex-start',
     top: -150,
-    marginLeft: 60,
+    left: 60,
     position: 'absolute',
   },
   infoContainer: {
-    marginTop: -250,
+    marginTop: 90,
     marginLeft: 30,
   },
   plantName: {
@@ -243,11 +352,75 @@ const styles = StyleSheet.create({
   },
   body: {
 
+    marginTop: 50,
+    marginLeft: -20
+  },
+  modelContiner: {
+    flex: 1,
+    flexDirection: 'row-reverse',
+    alignItems: 'flex-end',
+    bottom: 0
+  },
+  modalView: {
+
+    width: Dimensions.get('window').width,
+    backgroundColor: 'white',
+    height: Dimensions.get('window').height / 2,
+    borderTopLeftRadius: 150,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  modelHeader: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginTop: 40,
+    marginLeft: -20,
+    // marginBottom: 20,
+  },
+  progressReminder: {
+    borderBottomWidth: 1,
+    borderColor: '#CFD590',
+    marginLeft: 40,
+    alignSelf: 'center',
+  },
+  modelBody: {
+    alignSelf: 'center',
+    marginTop: 50,
+    marginLeft: 20,
+  },
+  progressInfoText: {
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 25,
+    marginTop: 15,
+    alignSelf: 'center'
 
   },
-  img: {
-    width: 60,
-    height: 60
-  }
+  plus: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    right: 10,
+    bottom: 10,
+    backgroundColor: '#CFD590',
+    borderRadius: 100,
+    padding: 5,
+    paddingBottom: -5,
+    alignItems: 'center',
+    zIndex: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.0,
+
+    elevation: 3,
+
+  },
 
 })
