@@ -210,6 +210,7 @@ const GardnerProfile = ({ navigation }) => {
                         <View>
 
                         </View>
+                        {lat?(
 
                         <MapView style={styles.mapStyle}
                             scrollEnabled={false}
@@ -239,7 +240,7 @@ const GardnerProfile = ({ navigation }) => {
                                 pinColor={'red'}
                             />
 
-                        </MapView>
+                        </MapView>):null}
 
                     </View>
 

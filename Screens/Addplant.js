@@ -120,7 +120,7 @@ export default class AddPlant extends React.Component {
 
 
   render() {
-    const { image, name, caption, userId, showModel, query,showProgressModel } = this.state
+    const { image, name, caption, userId, showModel, query, showProgressModel } = this.state
     const genus = this.findPlant(query);
 
     const pickImageCameraRoll = async () => {
@@ -398,18 +398,18 @@ export default class AddPlant extends React.Component {
     const closeViewProgressModel = () => {
       console.log(this.state.showProgressModel)
       this.setState({ selectedProgress: '', selectedPeriod: '' }, () => {
-      this.setState({showProgressModel:false})
+        this.setState({ showProgressModel: false })
       })
     }
 
-    const removeReminder=()=>{
+    const removeReminder = () => {
 
-    
-      var array = this.state.progressArray.filter((item) => console.log(item.progres==this.state.selectedProgress));
+
+      var array = this.state.progressArray.filter((item) => console.log(item.progres == this.state.selectedProgress));
       console.log(array)
-      this.setState({progressArray:array})
+      this.setState({ progressArray: array })
       closeViewProgressModel();
-      
+
     }
 
     return (
@@ -430,7 +430,7 @@ export default class AddPlant extends React.Component {
           </Svg>
         </View>
 
-        <View style={styles.img}>
+        <View style={styles.imgContiner}>
 
           {this.state.image ? (
             <Image source={{ uri: this.state.image }} style={styles.img} />) :
@@ -445,8 +445,8 @@ export default class AddPlant extends React.Component {
         </View>
 
         <Autocomplete
-        containerStyle={styles.inputFiled}
-           inputContainerStyle={styles.input}
+          containerStyle={styles.inputFiled}
+          inputContainerStyle={styles.input}
           listStyle={styles.listStyle}
           style={styles.input}
           onFocus={() => {
@@ -483,7 +483,7 @@ export default class AddPlant extends React.Component {
 
         <View style={styles.progress} >
           <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.progressText}>Progress </Text>
+            <Text style={styles.progressText}>Reminders </Text>
 
             {this.state.progressArray.length == 0 ?
               <TouchableOpacity onPress={() => {
@@ -499,38 +499,38 @@ export default class AddPlant extends React.Component {
           {/* Progress icons */}
           <View>
             {this.state.progressArray.length == 0 ?
-              <Text style={styles.text}>No progress reminders added</Text>
+              <Text style={styles.text}>No reminders added</Text>
               : <FlatList
 
                 data={this.state.progressArray}
                 horizontal={true}
-                renderItem={({ item }) => 
-                <View key={item} style={styles.itemList} >
-                      <TouchableOpacity
-                        style={{
-                          padding: 5,
-                          shadowColor: "#000",
-                          shadowOffset: {
-                            width: 0,
-                            height: 3,
-                          },
-                          shadowOpacity: 0.2,
-                          shadowRadius: 4.0,
+                renderItem={({ item }) =>
+                  <View key={item} style={styles.itemList} >
+                    <TouchableOpacity
+                      style={{
+                        padding: 5,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 3,
+                        },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 4.0,
 
-                          elevation: 3,
-                        }}
-                        onPress={() =>
-                          openViewProgressModel(true, item.progres, item.period)
+                        elevation: 3,
+                      }}
+                      onPress={() =>
+                        openViewProgressModel(true, item.progres, item.period)
 
-                        }
-                      >
-                        {item.progres == 'Water' ?
-                          (waterItem()) :
-                          (bugItem())}
-                      </TouchableOpacity>
-                </View>
-                
-              }
+                      }
+                    >
+                      {item.progres == 'Water' ?
+                        (waterItem()) :
+                        (bugItem())}
+                    </TouchableOpacity>
+                  </View>
+
+                }
                 keyExtractor={({ item }) => item}
               />}
           </View>
@@ -550,23 +550,24 @@ export default class AddPlant extends React.Component {
 
               <View style={styles.modelHeader}>
                 <TouchableOpacity
-                  style
+                  style={{ left: -60 }}
                   onPress={() => {
                     closeModel();
-                    
+
                   }}>
-                  <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
+                  <AntDesign name="closecircle" size={26} color="#CFD590"
+                  /></TouchableOpacity>
 
                 <View style={styles.progressReminder}>
                   <Text style={{
                     fontFamily: 'Khmer-MN-Bold',
                     fontSize: 24,
-                  }}>Progress Reminder</Text></View>
+                  }}>Reminders</Text></View>
               </View>
 
               <View style={styles.modelBody}>
                 {/* Progress Reminder */}
-                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20 }}>Progress Reminder</Text>
+                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20,paddingLeft:30 }}>Reminders</Text>
 
                 <RadioGroup
                   radioGroupList={progress}
@@ -580,7 +581,7 @@ export default class AddPlant extends React.Component {
                   <Text style={styles.textClearfiy}>  Water</Text><Text style={styles.textClearfiy}>             Treatment</Text></View>
 
                 {/* How often Reminder */}
-                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20, }}>How often should remind you ?</Text>
+                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20,paddingLeft:30 }}>How often should remind you ?</Text>
 
                 <RadioGroup
                   radioGroupList={this.state.activeBgColor == '#CCDDE5' ? periodWater : periodTreatment}
@@ -608,8 +609,8 @@ export default class AddPlant extends React.Component {
 
         </Modal>
 
-      {/* Modal view and remove notifcation */}
-              {/* Progress model */}
+        {/* Modal view and remove notifcation */}
+        {/* Progress model */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -618,41 +619,36 @@ export default class AddPlant extends React.Component {
             Alert.alert("Modal has been closed.");
           }}>
           <View style={styles.modelContiner}>
-            <View style={styles.modalView}>
+            <View style={styles.modalViewProg}>
 
               <View style={styles.modelHeader}>
                 <TouchableOpacity
+                 style={{left:-100,paddingTop:8}}
                   onPress={() => {
                     closeViewProgressModel();
                   }}>
                   <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
-
-                <View style={styles.progressReminder}>
-                  <Text style={{
-                    fontFamily: 'Khmer-MN-Bold',
-                    fontSize: 24,
-                  }}>{this.state.selectedProgress} Progress</Text></View>
               </View>
               <View style={styles.modelBody}>
-                <View style={{ flowDirection: 'row', alignSelf: 'center',paddingTop:30 }}>
+                <View style={{ flowDirection: 'row', alignSelf: 'center', paddingTop: 30 }}>
                   {this.state.selectedProgress == 'Water' ?
                     (waterItem()) :
                     (bugItem())}</View>
 
                 <Text style={styles.progressInfoText}>{this.state.selectedSent} | {this.state.selectedPeriod}</Text>
                 <TouchableOpacity
-          style={styles.removeButton}
-          onPress={() => {
-           removeReminder()
-          }}
-        >
-          <Text style={styles.editText}> Remove Reminder</Text>
-        </TouchableOpacity>
+                  style={styles.removeButton}
+                  onPress={() => {
+                    removeReminder()
+                  }}
+                >
+                  <Text style={styles.editText}> Remove Reminder</Text>
+                </TouchableOpacity>
 
               </View>
             </View></View>
         </Modal>
-      
+
 
 
 
@@ -685,12 +681,25 @@ const styles = StyleSheet.create({
     top: -50,
     left: -300,
   },
-
-  img: {
+  imgContiner: {
+    marginTop: 25,
     height: 280,
     width: Dimensions.get('window').width,
     backgroundColor: '#ffff',
     marginBottom: 40,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.65,
+
+  },
+  img: {
+    height: 280,
+    width: Dimensions.get('window').width,
+    backgroundColor: '#ffff',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -765,9 +774,9 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   input: {
-    borderWidth:0,
+    borderWidth: 0,
     paddingLeft: 10,
-    paddingTop:5,
+    paddingTop: 5,
     fontSize: 20,
     fontFamily: 'Khmer-MN',
   },
@@ -822,22 +831,33 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5
   },
+  modalViewProg: {
+
+    width: Dimensions.get('window').width,
+    backgroundColor: 'white',
+    height: Dimensions.get('window').height / 2.4,
+    borderTopLeftRadius: 150,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
   modelHeader: {
+    alignSelf: 'center',
     flexDirection: 'row',
-    alignSelf:'center',
     marginTop: 40,
-    marginLeft: 5,
     marginBottom: 20,
   },
   progressReminder: {
     borderBottomWidth: 1,
     borderColor: '#CFD590',
-    marginLeft: 20,
     alignSelf: 'center',
   },
   modelBody: {
     marginTop: -10,
-    marginLeft: 50,
   },
   groubProgressButton: {
     width: 70,
@@ -888,7 +908,7 @@ const styles = StyleSheet.create({
     elevation: 4,
 
   },
-    progressInfoText: {
+  progressInfoText: {
     fontFamily: 'Khmer-MN-Bold',
     fontSize: 25,
     marginTop: 15,
@@ -902,7 +922,7 @@ const styles = StyleSheet.create({
     color: '#CFD590',
     fontSize: 17
   },
-  removeButton:{
+  removeButton: {
     alignSelf: 'center',
     marginTop: 28,
     marginBottom: 20,
