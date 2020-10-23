@@ -119,7 +119,7 @@ const GardnerProfile = ({ navigation }) => {
                     console.log("Error getting document: catch ", error);
                 });
             }
-            setPostss(posts)
+            setPostss(posts.reverse())
             setUid(userId)
             setName(name)
             setBio(Bio)
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
 
     },
     body:{
-        marginLeft:-20
+        marginLeft:0
     },
 
     myPlantText: {

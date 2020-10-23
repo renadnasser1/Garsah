@@ -11,23 +11,25 @@ import {
 } from "react-native";
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { EvilIcons } from '@expo/vector-icons'; 
 
 
 export const plantItem = (item, navigation) => {
     return (
-        <View key={item.key} >
+        <View key={item.name} style={styles.post} >
             <View
                 flexDirection='row'>
                 <MaterialCommunityIcons style={styles.dateicon} name="record-circle" size={20} color="#F9DED4" />
-                {/* <Fontisto style={styles.dateicon} name="date" size={24} color="#F9DED4" /> */}
                 <Text style={styles.plantdate}>{item.date} </Text></View>
             <TouchableOpacity
                 onPress={() =>
                     navigation.navigate('Plant', { threadID: item.key })
                 }>
+                <View style={styles.imgeContiner}>
+                <EvilIcons name="image" size={50} color="white" style={{zIndex:1,alignSelf:'center',paddingTop:110,position:'absolute'}}/>
                 <Image style={styles.plantimage}
                     source={{ uri: item.image }}
-                />
+                /></View>
 
                 <Text style={styles.plantname}>{item.name} </Text>
             </TouchableOpacity>
@@ -36,17 +38,17 @@ export const plantItem = (item, navigation) => {
 
 export const postItem = (item) => {
     return (
-        <View key={item.key} style={styles.post} >
+        <View style={styles.post} key={item.image} >
             <View
                 flexDirection='row'>
                 {item.date?
                 <MaterialCommunityIcons style={styles.dateicon} name="record-circle" size={20} color="#F9DED4" />
-                //<Fontisto style={styles.dateicon} name="date" size={24} color="#F9DED4" style={{marginLeft:35}}/>
                 :null}
 
                 <Text style={styles.plantdate}>{item.date} </Text></View>
             <View
             style={styles.imgeContiner}>
+                <EvilIcons name="image" size={50} color="white" style={{zIndex:1,alignSelf:'center',paddingTop:110,position:'absolute'}}/>
                 <Image style={styles.plantimage}
                     source={{ uri: item.image }}
                 /></View>
@@ -74,8 +76,8 @@ const styles = StyleSheet.create({
     plantname: {
         fontFamily: 'Khmer-MN-Bold',
         color: "black",
-        marginLeft: 20,
         paddingLeft:10,
+        marginTop:-14,
         bottom: 30,
         fontSize: 18,
         backgroundColor: "rgba(239, 237, 237, 0.5)",
@@ -93,31 +95,23 @@ const styles = StyleSheet.create({
      shadowColor: "#000",
         shadowOffset: {
             width: 0,
-            height: 5,
+            height: 3,
         },
         shadowOpacity: 0.20,
-        shadowRadius: 2.00,
-        marginBottom:10,
+        shadowRadius: 10.00,
+    marginBottom:10,
+    backgroundColor:'#DFE2DD',
+    zIndex:0
+    
     },
     plantimage: {
         width: Dimensions.get('window').width,
         height: 250,
         alignItems: "center",
-        marginLeft: 20,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 4.0,
-    
-        elevation: 3,
+        zIndex:2
     },
     captionContiner: {
-
         paddingLeft:50,
-
     },
     captionText:{
         fontFamily:'Khmer-MN',

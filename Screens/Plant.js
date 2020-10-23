@@ -197,7 +197,7 @@ export default class Plant extends React.Component {
                   <FlatList
                     data={this.state.reminders}
                     horizontal={true}
-                    renderItem={({ item, index }) => <View key={item} style={styles.itemList} >
+                    renderItem={({ item, index }) => <View key={item.progres} style={styles.itemList} >
                       <TouchableOpacity
                         style={{
                           padding: 5,
@@ -353,7 +353,6 @@ const styles = StyleSheet.create({
   body: {
 
     marginTop: 50,
-    marginLeft: -20
   },
   modelContiner: {
     flex: 1,
