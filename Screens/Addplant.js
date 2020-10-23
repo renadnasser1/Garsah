@@ -9,15 +9,18 @@ import {
   AsyncStorage,
   Dimensions,
   Modal,
-  FlatList
+  FlatList,
 } from "react-native";
+import Autocomplete from 'react-native-autocomplete-input';
+
 //Component
 import { periodWater, periodTreatment } from '../Component/period';
 import { progress } from '../Component/progress';
-import {bugItem,waterItem} from '../Component/bugWaterItems'; 
+import { bugItem, waterItem } from '../Component/bugWaterItems';
 
 //Functions 
 import { registerForPushNotificationsAsync, schedulePushNotification, removeAll } from '../Controller/Notification'
+import { getAllPlants } from '../Controller/APIcalls'
 
 //Firebase
 import * as firebase from "firebase";
@@ -60,6 +63,9 @@ export default class AddPlant extends React.Component {
     photoPath: '',
     isLoading: false,
     userId: '',
+    query: '',
+    result: [],
+    genus: [],
     progressArray: [],
     showModel: false,
     activeBgColor: "#CCDDE5",
@@ -67,6 +73,12 @@ export default class AddPlant extends React.Component {
     selectedProgress: '',
     selectedPeriod: '',
     pushToken: '',
+    suggestionList: true,
+    showProgressModel: false,
+    selectedProgress: '',
+    selectedPeriod: '',
+    selectedSent: '',
+
   }
 
   async componentDidMount() {
@@ -79,6 +91,10 @@ export default class AddPlant extends React.Component {
 
     }
 
+    await getAllPlants().then((genusName) => {
+      this.setState({ genus: genusName }, () => console.log('genusName', this.state.genus))
+    })
+
     const status1 = await (await ImagePicker.requestCameraRollPermissionsAsync()).status
     const { status } = await ImagePicker.requestCameraPermissionsAsync()
     if (status !== 'granted' || status1 !== 'granted') {
@@ -87,9 +103,25 @@ export default class AddPlant extends React.Component {
       this.setState({ permissions: true })
     }
 
+    console.log('affteer', this.state.genus)
   }
+
+  findPlant(query) {
+    if (query === '') {
+      return [];
+    }
+
+    const { genus } = this.state;
+    var key = query.trim()
+    var array = genus.filter((item) => item.includes(key));
+    return array
+  }
+
+
+
   render() {
-    const { image, name, caption, userId, progressArray, showModel, selectedPeriod, selectedProgress, pushToken } = this.state
+    const { image, name, caption, userId, showModel, query,showProgressModel } = this.state
+    const genus = this.findPlant(query);
 
     const pickImageCameraRoll = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -105,7 +137,6 @@ export default class AddPlant extends React.Component {
     };
 
     const getImage = async () => {
-
 
       let imageRef = firebase.storage().ref('Posts/' + this.state.photoPath);
       imageRef.getDownloadURL().then((url) => {
@@ -143,42 +174,42 @@ export default class AddPlant extends React.Component {
       var dates = [this.state.date]
       var postId = newPost.id
       var reminders = this.state.progressArray
-      var result=[]
+      var result = []
       var id1 = '';
       var id2 = '';
 
       //Set Reminders
-      if (reminders.length!=0){
+      if (reminders.length != 0) {
 
         registerForPushNotificationsAsync().then((token) => {
           this.setState({ pushToken: token }, () => console.log('token', this.state.pushToken))
         })
 
-      for (var i = 0; i < reminders.length; i++) {
-        await schedulePushNotification(reminders[i],postId).then((id) => {
-          console.log('notifi id ' + id)
-          if (i == 0) {
-            id1 = id
-          } else {
-            id2 = id
-          }
-          
-        });
-      }
-      //add reminder obj to array item
-      var i = 0;
-       result = reminders.map(function (item) {
-        i++
-        var obj = Object.assign({}, item);
-        if (i == 1) {
-          obj.idNotifcation = id1;
-        } else {
-          obj.notificationID = id2;
+        for (var i = 0; i < reminders.length; i++) {
+          await schedulePushNotification(reminders[i], postId).then((id) => {
+            console.log('notifi id ' + id)
+            if (i == 0) {
+              id1 = id
+            } else {
+              id2 = id
+            }
+
+          });
         }
-        obj.postID=postId;
-        return obj;
-      })
-    }
+        //add reminder obj to array item
+        var i = 0;
+        result = reminders.map(function (item) {
+          i++
+          var obj = Object.assign({}, item);
+          if (i == 1) {
+            obj.idNotifcation = id1;
+          } else {
+            obj.notificationID = id2;
+          }
+          obj.postID = postId;
+          return obj;
+        })
+      }
 
 
       //Add new post
@@ -260,7 +291,7 @@ export default class AddPlant extends React.Component {
     }
 
     const setModalVisible = (visible) => {
-     //  removeAll()
+      //  removeAll()
       this.setState({ showModel: visible });
     }
 
@@ -333,11 +364,52 @@ export default class AddPlant extends React.Component {
       }
 
     }
-
+    //Methods Modal set notfication
     const closeModel = () => {
       this.setState({ selectedProgress: '', selectedPeriod: '' }, () => {
         setModalVisible(!showModel);
       });
+    }
+    //Methods Modal remove and view notfication
+    const openViewProgressModel = (visible, progres, period) => {
+
+      var reapet;
+      var st;
+      console.log(visible)
+
+      //Time
+      if (period == 'day') {
+        reapet = 'Daily'
+      } else if (period == 'week') {
+        reapet = 'Weekly'
+      } else reapet = 'Monthly'
+
+      //Sentence
+      if (progres == 'Water') {
+        st = 'Watring Plant'
+      } else st = 'Treatment Plant'
+
+      //set state
+      this.setState({ selectedProgress: progres, selectedPeriod: reapet, selectedSent: st }, () => {
+        console.log(this.state.selectedProgress, this.state.selectedPeriod)
+        this.setState({ showProgressModel: visible });
+      });
+    }
+    const closeViewProgressModel = () => {
+      console.log(this.state.showProgressModel)
+      this.setState({ selectedProgress: '', selectedPeriod: '' }, () => {
+      this.setState({showProgressModel:false})
+      })
+    }
+
+    const removeReminder=()=>{
+
+    
+      var array = this.state.progressArray.filter((item) => console.log(item.progres==this.state.selectedProgress));
+      console.log(array)
+      this.setState({progressArray:array})
+      closeViewProgressModel();
+      
     }
 
     return (
@@ -372,17 +444,40 @@ export default class AddPlant extends React.Component {
 
         </View>
 
-        <View style={styles.inputFiled}>
-          <TextInput
-            placeholder={"Name"}
-            onChangeText={(text) => this.setState({ name: text })}
-          ></TextInput>
+        <Autocomplete
+        containerStyle={styles.inputFiled}
+           inputContainerStyle={styles.input}
+          listStyle={styles.listStyle}
+          style={styles.input}
+          onFocus={() => {
+            this.setState({ suggestionList: false })
+          }}
+          onBlur={() => {
+            this.setState({ suggestionList: true })
+          }}
+          hideResults={this.state.suggestionList}
+          placeholder={"Plant's Name"}
+          data={genus}
+          defaultValue={query}
+          onChangeText={text => this.setState({ query: text })}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity onPress={() => this.setState({ query: item })}>
+              {index == 0 ?
+                <Text style={styles.text}>Suggestions</Text> : null}
+              <Text>{item}</Text>
+            </TouchableOpacity>
+          )}
+        />
 
-        </View>
 
         <View style={styles.inputFiledCaption} >
           <TextInput
+            maxLength={2200}
+            blurOnSubmit={true}
+            multiline={true}
+            textAlignVertical={'top'}
             placeholder={"Caption"}
+            style={styles.input}
             onChangeText={(text) => this.setState({ caption: text })}
           ></TextInput></View>
 
@@ -409,18 +504,40 @@ export default class AddPlant extends React.Component {
 
                 data={this.state.progressArray}
                 horizontal={true}
-                renderItem={({ item }) => <View key={item} style={styles.itemList} >
-                  {item.progres == 'Water' ?
-                    (waterItem()) :
-                    (bugItem())}
-                </View>}
+                renderItem={({ item }) => 
+                <View key={item} style={styles.itemList} >
+                      <TouchableOpacity
+                        style={{
+                          padding: 5,
+                          shadowColor: "#000",
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.2,
+                          shadowRadius: 4.0,
+
+                          elevation: 3,
+                        }}
+                        onPress={() =>
+                          openViewProgressModel(true, item.progres, item.period)
+
+                        }
+                      >
+                        {item.progres == 'Water' ?
+                          (waterItem()) :
+                          (bugItem())}
+                      </TouchableOpacity>
+                </View>
+                
+              }
                 keyExtractor={({ item }) => item}
               />}
           </View>
 
         </View>
 
-        {/* Model notifcation */}
+        {/* Model set notifcation */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -436,6 +553,7 @@ export default class AddPlant extends React.Component {
                   style
                   onPress={() => {
                     closeModel();
+                    
                   }}>
                   <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
 
@@ -490,6 +608,54 @@ export default class AddPlant extends React.Component {
 
         </Modal>
 
+      {/* Modal view and remove notifcation */}
+              {/* Progress model */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.showProgressModel}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}>
+          <View style={styles.modelContiner}>
+            <View style={styles.modalView}>
+
+              <View style={styles.modelHeader}>
+                <TouchableOpacity
+                  onPress={() => {
+                    closeViewProgressModel();
+                  }}>
+                  <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
+
+                <View style={styles.progressReminder}>
+                  <Text style={{
+                    fontFamily: 'Khmer-MN-Bold',
+                    fontSize: 24,
+                  }}>{this.state.selectedProgress} Progress</Text></View>
+              </View>
+              <View style={styles.modelBody}>
+                <View style={{ flowDirection: 'row', alignSelf: 'center',paddingTop:30 }}>
+                  {this.state.selectedProgress == 'Water' ?
+                    (waterItem()) :
+                    (bugItem())}</View>
+
+                <Text style={styles.progressInfoText}>{this.state.selectedSent} | {this.state.selectedPeriod}</Text>
+                <TouchableOpacity
+          style={styles.removeButton}
+          onPress={() => {
+           removeReminder()
+          }}
+        >
+          <Text style={styles.editText}> Remove Reminder</Text>
+        </TouchableOpacity>
+
+              </View>
+            </View></View>
+        </Modal>
+      
+
+
+
 
         <TouchableOpacity
           style={styles.postButton}
@@ -535,12 +701,9 @@ const styles = StyleSheet.create({
 
   },
   inputFiled: {
-
+    borderWidth: 0,
     alignSelf: 'center',
-    paddingLeft: 10,
-    paddingBottom: 20,
-    marginBottom: 20,
-    width: 350,
+    width: 390,
     height: 49,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
@@ -555,17 +718,15 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 4.65,
-
     elevation: 8,
 
   },
   inputFiledCaption: {
 
     alignSelf: 'center',
-    paddingLeft: 10,
-    paddingBottom: 20,
+    marginTop: 20,
     marginBottom: 20,
-    width: 350,
+    width: 390,
     height: 90,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
@@ -584,27 +745,38 @@ const styles = StyleSheet.create({
     elevation: 8,
 
   },
-  input: {
-    paddingLeft: 80,
-    paddingBottom: 10,
-    marginLeft: 50,
-    marginBottom: 30,
+  listStyle: {
+    borderWidth: 1,
+    alignSelf: 'center',
     paddingLeft: 10,
-    width: 310,
-    height: 40,
-    flexDirection: "row",
-    backgroundColor: "#ffff",
+    marginBottom: 20,
+    marginLeft: 13,
+    width: 390,
+    borderBottomLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    backgroundColor: '#fff',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.2,
-    shadowRadius: 4.65,
-
+    shadowOpacity: 0.5,
+    shadowRadius: 10.65,
     elevation: 8,
   },
+  input: {
+    borderWidth:0,
+    paddingLeft: 10,
+    paddingTop:5,
+    fontSize: 20,
+    fontFamily: 'Khmer-MN',
+  },
+  inputName: {
+    fontSize: 20,
+    fontFamily: 'Khmer-MN',
+    borderWidth: 0,
 
+  },
   icon: {
     alignSelf: 'center',
     position: 'absolute',
@@ -619,7 +791,7 @@ const styles = StyleSheet.create({
   progressText: {
     color: '#717171',
     fontFamily: 'Khmer-MN-Bold',
-    fontSize: 20,
+    fontSize: 22,
     marginRight: 240,
   },
   text: {
@@ -652,14 +824,15 @@ const styles = StyleSheet.create({
   },
   modelHeader: {
     flexDirection: 'row',
+    alignSelf:'center',
     marginTop: 40,
-    marginLeft: 55,
+    marginLeft: 5,
     marginBottom: 20,
   },
   progressReminder: {
     borderBottomWidth: 1,
     borderColor: '#CFD590',
-    marginLeft: 50,
+    marginLeft: 20,
     alignSelf: 'center',
   },
   modelBody: {
@@ -697,7 +870,7 @@ const styles = StyleSheet.create({
 
   postButton: {
     alignSelf: 'center',
-    marginTop: 30,
+    marginTop: 28,
     marginBottom: 20,
     borderWidth: 2,
     width: 120,
@@ -715,7 +888,13 @@ const styles = StyleSheet.create({
     elevation: 4,
 
   },
+    progressInfoText: {
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 25,
+    marginTop: 15,
+    alignSelf: 'center'
 
+  },
   editText: {
     alignSelf: 'center',
     paddingTop: 3,
@@ -723,6 +902,26 @@ const styles = StyleSheet.create({
     color: '#CFD590',
     fontSize: 17
   },
+  removeButton:{
+    alignSelf: 'center',
+    marginTop: 28,
+    marginBottom: 20,
+    borderWidth: 2,
+    width: 180,
+    borderRadius: 20,
+    backgroundColor: "white",
+    borderColor: '#CFD590',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4.65,
+
+    elevation: 4,
+
+  }
 
 
 })

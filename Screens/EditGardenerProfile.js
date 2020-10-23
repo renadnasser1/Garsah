@@ -298,7 +298,6 @@ export default class App extends React.Component {
               <TextInput
                 color="#696969"
                 maxLength={100}
-               
                blurOnSubmit={true}
                 multiline={true}
                 textAlignVertical={'top'}
@@ -433,7 +432,6 @@ const styles = StyleSheet.create({
 
 
   profileInfoText: {
-
     fontSize: 25,
     fontFamily: 'Khmer-MN'
   },

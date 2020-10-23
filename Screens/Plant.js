@@ -139,7 +139,6 @@ export default class Plant extends React.Component {
       this.setState({ selectedProgress: '', selectedPeriod: '' }, () => {
         setModalVisible(!showProgressModel);
       })
-
     }
 
     const openOwnerProfile = () => {
@@ -178,13 +177,9 @@ export default class Plant extends React.Component {
             <Text style={styles.plantName}> {this.state.name} </Text>
 
             <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity
-              onPress={()=>{
-                openOwnerProfile()
-              }}
-              >
+
                 <Text style={styles.ownerName}>Owner | {this.state.userName}</Text>
-              </TouchableOpacity>
+
             </View>
 
             <View style={styles.progressContainer}>
