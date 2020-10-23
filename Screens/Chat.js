@@ -14,52 +14,56 @@ const Chat = ({ route, navigation }) => { //<--------- props here ???
    const param = route.params;
    const uidstr = JSON.stringify(param.id)
    const uid2 = JSON.parse(uidstr)
-   const [user2, setUser2] = useState()
+   //const [user2, setUser2] = useState()
 
      const db = firebase.firestore()
      const chatsRef = db.collection('Messages')
 
-    const [user, setUser] = useState(null)
-    const [name, setName] = useState('')
-    const [uid, setUid] = useState()
+    //const [user1, setUser] = useState(null)
+    //const [uname, setName] = useState('')
+    //const [uid, setUid] = useState()
+    const [avatar, setAvatar] = useState()
     const [messages, setMessages] = useState([])
-    const  cId = chatID() //<---- wrong
-    console.log(cId)
+    const  cId = chatID() //<---- 
+    const  uid = getIdN() 
+    //var uname = ''
+    
 
-   // const [user2,setUser2] = useState("AU5Pl2iDMCWQUl8RnYazaRLXygL2","Atheer")
-  //  const uid2 ="AU5Pl2iDMCWQUl8RnYazaRLXygL2"
-  //  const uname = "Atheer"
-  //  const user2 = {uid2,uname}
 
    const load = async () => {
     try {
         let currentUser = firebase.auth().currentUser.uid
         let name = await AsyncStorage.getItem("name")
-        //setUid(currentUser)
-        setName(name)
-        const user = { currentUser, name }
-        console.log(user)
-        setUser(user)
-        //getting user 2 info 
-        const db = firebase.firestore()
-  let usersref = db.collection("users")
-  const snapshot = await usersref.where('id', '==', uid2).get();
-  if (snapshot.empty) {
-  console.log('No matching documents.');
-  return;
-  }
-  var g1 = snapshot.docs[0].data();
-  let name2 = g1.name
-  const user2 = {uid2,name2}
-  setUser2(user2)
+       // for(let i = 0; i<1 ;i++)
+       // setName(name)
+
     } catch (err) {
         alert(err)
 
     }
 } //End load
 
+const getImage = async (g1) => { //<---------------- getting profile pictures
+  let imageRef = firebase.storage().ref('avatars/' + g1);
+  imageRef.getDownloadURL().then((url) => {
+  setAvatar(url)
+  })
+      .catch((e) =>
+       console.log('getting downloadURL of image error => ')
+      // , e),
+      );
+
+}//end get image
+
+function getIdN (){
+  return firebase.auth().currentUser.uid
+}//end getidn
+
   useEffect(() => {
            load()
+           getImage(uid)
+           console.log(uid)
+           //console.log(uname)
          const unsubscribe = chatsRef .doc(cId)
          .collection('chats').onSnapshot((querySnapshot) => { //<----here is the problem
             const messagesFirestore = querySnapshot
@@ -78,6 +82,11 @@ const Chat = ({ route, navigation }) => { //<--------- props here ???
    }, [])
 
     async function handleSend(messages) {
+
+      const res = await chatsRef.doc(cId).set({
+        cid: cId
+      }, { merge: true });
+
         const writes = messages.map((m) => chatsRef
         .doc(cId)
         .collection('chats').add(m))
@@ -90,13 +99,6 @@ const Chat = ({ route, navigation }) => { //<--------- props here ???
         [messages]
     )
 
-//     //  const sendChatMessage = (chatID, chat) => {
-//     //     return db
-//     //       .collection('messages')
-//     //       .doc(chatID)
-//     //       .collection('chats')
-//     //       .add(chat);
-//     //   };
 
     function chatID() {
         let currentUser = firebase.auth().currentUser.uid
@@ -107,7 +109,6 @@ const Chat = ({ route, navigation }) => { //<--------- props here ???
         chatIDpre.push(chateeID)
         chatIDpre.sort()
         return chatIDpre.join('_')
-        //return chatIDpre
     }
 
     function renderBubble(props) {
@@ -142,25 +143,17 @@ const Chat = ({ route, navigation }) => { //<--------- props here ???
     return(
         <View style={styles.container}>
 
-            
- 
-    <GiftedChat messages={messages} user={user} onSend={handleSend} 
-    renderBubble={renderBubble} renderSend={renderSend}  alwaysShowSend/>
-
+    <GiftedChat messages={messages} user={{_id:uid,avatar:avatar? avatar:require("../assets/blank.png")}} onSend={handleSend} 
+    renderBubble={renderBubble} renderSend={renderSend}  alwaysShowSend
+     />
+{/* renderUsernameOnMessage={true} */}
     </View>
+    // user={{
+    //   _id: currentuser.id,
+    //   }}
+      
     );
 
-
-// return(  <<--------------------------- UNCOMMENT THIS FOR EMERGENCIES
-      
-      
-
-//     <View style={styles.container}>
- 
-//          <Text style={styles.text}>Homepage is coming real soon!! </Text>
-
-//     </View>
-//     );
 }//End chat const
 
 export default Chat;

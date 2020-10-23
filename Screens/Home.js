@@ -11,13 +11,23 @@ import {
   StyleSheet,
   Button,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  ScrollView,
+  RefreshControl,
 } from "react-native";
 import * as firebase from "firebase";
 
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
+
+const font = () => {
+  let [fontsLoaded] = useFonts({
+    'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
+    'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
+  });
+}
+
 
 export default class Home extends React.Component {
 
@@ -37,7 +47,16 @@ export default class Home extends React.Component {
    id3:'',
    id4:'',
    id5:'',
+   refreshing: false,
   }
+
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.componentDidMount().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
+
 
   async componentDidMount() {
 
@@ -113,9 +132,30 @@ export default class Home extends React.Component {
           //console.log(this.state.avatar1)
          });
     })
-        .catch((e) =>
+        .catch((e) =>{
          console.log('getting downloadURL of image error => ')
         // , e),
+        // if(n == 1) 
+        // this.setState({avatar1:require("../assets/blank.png")}, () => {
+        //   //console.log(this.state.avatar1)
+        //  });
+        //   else if(n == 2)
+        //   this.setState({avatar2:require("../assets/blank.png")}, () => {
+        //    // console.log(this.state.avatar1)
+        //    });
+        //   else if(n == 3)
+        //   this.setState({avatar3:require("../assets/blank.png")}, () => {
+        //     //console.log(this.state.avatar1)
+        //    });
+        //   else if(n == 4)
+        //   this.setState({avatar4:require("../assets/blank.png")}, () => {
+        //     //console.log(this.state.avatar1)
+        //    });
+        //   else if(n == 5)
+        //   this.setState({avatar5:require("../assets/blank.png")}, () => {
+        //     //console.log(this.state.avatar1)
+        //    });
+        }
         );
 
   }//end get image
@@ -137,7 +177,13 @@ export default class Home extends React.Component {
     const { avatar1,avatar2,avatar3,avatar4,avatar5,id1, id2, id3, id4, id5} = this.state
 
     return(
-
+<ScrollView 
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }>
       <View style={styles.container}>
 
 <View style={styles.SVGC}>
@@ -180,7 +226,11 @@ export default class Home extends React.Component {
     </Svg>
 </View>
 
+
+
+
  <View style={styles.content}>
+
 
   <Text style={styles.text}>Gardeners </Text>
 
@@ -241,10 +291,10 @@ export default class Home extends React.Component {
    >log out</Text>
 
  </View>
+ 
 
-
-       </View> //end container
-
+       </View> 
+       </ScrollView>
     ); //end return
 
   }//end render
