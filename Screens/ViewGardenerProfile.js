@@ -165,7 +165,28 @@ setPost(postTemp)
     if (!fontsLoaded) {
         return <AppLoading />;
     }
+    const onMapPress = (cords) => {
 
+        Alert.alert(
+            '',
+            'Garsah Will redirect you to google map',
+            [
+                { text: 'Cancel', onPress: () => console.log('') },
+                {
+                    text: 'Open', onPress: () =>
+                        // OpenMapDirections(null, cords, 'd').then(res => {
+                        //     console.log(res)
+                        // })
+
+                        Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + cords['latitude'] + ',' + cords['longitude'])
+
+                },
+
+            ],
+            { cancelable: false }
+        )
+
+    }
 
     // if(lat){
 return(
@@ -232,8 +253,8 @@ return(
                             longitudeDelta: 0.0421
                         }}
 
-                        // onPress={(event) => onMapPress(event.nativeEvent.coordinate)
-                        // }
+                        onPress={(event) => onMapPress(event.nativeEvent.coordinate)
+                        }
 
                     >
 
@@ -249,7 +270,7 @@ return(
 
                  </View>
                  <View style={styles.body}>
-                    <Text style={styles.myPlantText}>My Plants</Text>
+                    <Text style={styles.myPlantText}>{name}'s Plants</Text>
                     <View>
                     <FlatList
                         data={post}
