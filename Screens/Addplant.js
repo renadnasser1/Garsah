@@ -29,7 +29,7 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 //Icons
-import { Ionicons,Entypo,MaterialCommunityIcons,AntDesign } from "@expo/vector-icons";
+import { Ionicons,MaterialCommunityIcons,AntDesign } from "@expo/vector-icons";
 
 
 import Svg, { Path } from "react-native-svg"
@@ -125,7 +125,7 @@ export default class AddPlant extends React.Component {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [16, 9],
         quality: 1,
       });
 
@@ -184,7 +184,7 @@ export default class AddPlant extends React.Component {
         })
 
         for (var i = 0; i < reminders.length; i++) {
-          await schedulePushNotification(reminders[i], postId).then((id) => {
+          await schedulePushNotification(reminders[i], postId,this.state.name).then((id) => {
             console.log('notifi id ' + id)
             if (i == 0) {
               id1 = id
@@ -236,7 +236,7 @@ export default class AddPlant extends React.Component {
           this.setState({ isLoading: false })
           this.props.navigation.reset({
             index: 0,
-            routes: [{ name: 'Profile' }]
+            routes: [{ name: 'GardnerProfile' }]
           })
 
         }.bind(this), 1000);
@@ -289,7 +289,7 @@ export default class AddPlant extends React.Component {
     }
 
     const setModalVisible = (visible) => {
-      //  removeAll()
+      //removeAll()
       this.setState({ showModel: visible });
     }
 
@@ -433,13 +433,18 @@ export default class AddPlant extends React.Component {
           </Svg>
         </View>
 
-      <ActivityIndicator animating={this.state.isLoading} size="large" style={{  position:'absolute', zIndex:4, alignSelf:'center',
-      marginVertical:'50%'}} />
-
         <View style={styles.imgContiner}>
 
           {this.state.image ? (
-            <Image source={{ uri: this.state.image }} style={styles.img} />) :
+            <View>
+            <Image source={{ uri: this.state.image }} style={styles.img} />
+            <MaterialCommunityIcons name="circle-edit-outline" size={35} color="#CFD590" style={styles.iconEdit}
+              onPress={() => {
+                pickImageCameraRoll();
+              }}
+            ></MaterialCommunityIcons>
+            </View>
+            ) :
             (<Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
               onPress={() => {
                 pickImageCameraRoll();
@@ -461,20 +466,37 @@ export default class AddPlant extends React.Component {
           onBlur={() => {
             this.setState({ suggestionList: true })
           }}
+          renderSeparator={ () =>(
+            <View
+            style={{
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+              marginBottom: 10,
+            }}
+          />
+          )
+          }
           hideResults={this.state.suggestionList}
           placeholder={"Plant's Name"}
           data={genus}
           defaultValue={name}
           onChangeText={text => {
-            this.setState({ name: text })
-        
-        }}
+            this.setState({ name: text })   }}
           renderItem={({ item, index }) => (
+            <View>
             <TouchableOpacity onPress={() => this.setState({ name: item })}>
               {index == 0 ?
                 <Text style={styles.text}>Suggestions</Text> : null}
-              <Text>{item}</Text>
+              <Text style={{padding:2}}>{item}</Text>
             </TouchableOpacity>
+            <View
+            style={{
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+              marginBottom: 10,
+            }}
+          />
+           </View>
           )}
         />
 
@@ -530,7 +552,6 @@ export default class AddPlant extends React.Component {
                       }}
                       onPress={() =>
                         openViewProgressModel(true, item.progres, item.period)
-
                       }
                     >
                       {item.progres == 'Water' ?
@@ -734,7 +755,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderBottomEndRadius: 10,
     borderTopRightRadius: 10,
-    flexDirection: "row",
     backgroundColor: 'white',
     shadowColor: "#000",
     shadowOffset: {
@@ -771,13 +791,10 @@ const styles = StyleSheet.create({
 
   },
   listStyle: {
-    position:'absolute',
+    alignSelf:'center',
+    fontSize: 15,
+    fontFamily: 'Khmer-MN',
     borderWidth: 1,
-    alignSelf: 'center',
-    top:45,
-    padding: 10,
-    marginLeft:-20,
-    marginBottom: 20,
     width: 390,
     borderBottomLeftRadius: 10,
     borderBottomEndRadius: 10,
@@ -808,6 +825,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     top: 130,
+
+  },
+  iconEdit: {
+    alignSelf:'flex-end',
+    position: 'absolute',
+    top: 230,
+    paddingRight:20,
 
   },
   progress: {

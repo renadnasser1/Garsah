@@ -153,9 +153,7 @@ export default class Plant extends React.Component {
       })
     }
 
-    const openOwnerProfile = () => {
 
-    }
 
     return (
 
@@ -197,10 +195,10 @@ export default class Plant extends React.Component {
             <View style={styles.progressContainer}>
 
               {/* Progress */}
+              <Text style={styles.progressText}>Progress</Text>
 
               {this.state.reminders.length != 0 ? (
                 <View>
-                  <Text style={styles.progressText}></Text>
                   <FlatList
                     data={this.state.reminders}
                     horizontal={true}

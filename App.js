@@ -225,7 +225,7 @@ function HomeStackNav() {
         component={Home} />
       <HomeStack.Screen name="ViewGardenerProfile"
         options={{
-          title: 'ViewGardenerProfile',
+          title: '',
           color: 'black'
         }}
         component={ViewGardenerProfile} />
@@ -236,17 +236,7 @@ function HomeStackNav() {
         }}
         component={Chat} />
 
-      <HomeStack.Screen name="AmateurProfile"
-        options={{
-          title: '',
-        }}
-        component={AmateurProfile} />
 
-      <HomeStack.Screen name="GardenerProfile"
-        options={{
-          title: '',
-        }}
-        component={Chat} />
 
     </HomeStack.Navigator>
   );
@@ -287,9 +277,9 @@ function GardnerStackNav() {
       />}
 
       {<GardnerStack.Screen
-        name="Add Post"
+        name="Post"
         options={({ navigation }) => ({
-          title: 'Add Plant',
+          title: 'Add Post',
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.pop()}><Text
@@ -405,6 +395,9 @@ export default class App extends React.Component {
 
           {<Stack.Screen
             name="Plant"
+            options={{
+              headerShown: false,
+            }}
             component={Plant}
           />}
 
@@ -473,7 +466,7 @@ export default class App extends React.Component {
 
 }
 
-//console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 
 //Style

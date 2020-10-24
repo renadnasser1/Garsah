@@ -46,7 +46,7 @@ export function removeAll(){
     console.log('removed')
 }
 
-export async function schedulePushNotification(reminder,id) {
+export async function schedulePushNotification(reminder,id,name) {
 
     //Data needed
     let reminderName = reminder.progres;
@@ -65,7 +65,7 @@ export async function schedulePushNotification(reminder,id) {
 //set schedule notfication
  const reminderIdentifire = await Notifications.scheduleNotificationAsync({
     content: {
-      title: reminderName+" you're plant",
+      title: "Don't forget to "+reminderName+" your "+name+" 🌱",
       //body: 'Here is the notification body',
       data: { screen: 'Plant',threadId:id },
     },

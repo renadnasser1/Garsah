@@ -75,9 +75,7 @@ const GardnerProfile = ({ navigation }) => {
         )
 
     }
-    // const call=() =>{
-    //     Linking.openURL(`tel:${Phone}`)
-    // }
+
     const load = async () => {
         try {
             let userId = await AsyncStorage.getItem("uid")

@@ -194,12 +194,20 @@ return(
                     {/* Bio */}
                     <Text style={styles.bioText}>{Bio!=null ? Bio : ""}</Text>
                     {/* Phone number */}
+                    {(Phone && Phone!='null')?(
                     <View style={styles.userInfoContiner}>
                         <FontAwesome name="phone" size={24} color="gray"/>
-                         <Text style={styles.userInfoText} 
-                        //   onPress={ (event) => {call(event)}}
-                          >{Phone ? Phone : "No phone added"}</Text>
-                    </View>
+                         <Text style={[styles.userInfoText,{ textDecorationLine: 'underline',textDecorationColor:'#CFD590',color:'#CFD590'}]} 
+                           onPress={ () => {Linking.openURL(`tel:${Phone}`)}}
+
+                          >{Phone}</Text>
+                    </View>):
+                    <View style={styles.userInfoContiner}>
+                        <FontAwesome name="phone" size={24} color="gray"/>
+                         <Text style={styles.userInfoText}
+                          >No phone added</Text>
+                    </View>}
+
                       {/* Map */}
                       <View style={styles.userInfoContiner}>
                         <FontAwesome5 name="map-marker-alt" size={24} color="gray" />

@@ -122,7 +122,7 @@ export default class App extends React.Component {
               this.setState({isLoading:false})
             this.props.navigation.reset({
               index: 0,
-              routes: [{ name: 'Profile' }]
+              routes: [{ name: 'GardnerProfile' }]
             })
             
             }
