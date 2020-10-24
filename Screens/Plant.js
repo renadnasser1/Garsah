@@ -11,7 +11,6 @@ import {
   AsyncStorage,
   Dimensions,
   Modal,
-  ShadowPropTypesIOS,
 } from "react-native";
 //Firebase
 import * as firebase from "firebase";
