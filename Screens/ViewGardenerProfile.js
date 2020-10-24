@@ -14,6 +14,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     Image,
+    FlatList,
     ActivityIndicator,
     // AsyncStorage,
     Dimensions,
@@ -30,7 +31,9 @@ import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-import { set } from "react-native-reanimated";
+import { set, concat } from "react-native-reanimated";
+import { ScrollView } from "react-native-gesture-handler";
+import {plantItem} from '../Component/PostItem'
 
 const ViewGardenerProfile = ({ route, navigation }) => {
 
@@ -49,6 +52,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
     const [Phone, setPhone] = useState()
     const [Bio, setBio] = useState()
     const [avatar, setAvatar] = useState()
+    const [post,setPost]=useState([])
 
     const isVisible = useIsFocused();
 
@@ -59,9 +63,8 @@ const ViewGardenerProfile = ({ route, navigation }) => {
 
     useEffect(() => {
 
-      
         if (isVisible) {  
-            console.log('in in use effect')
+           // console.log('in in use effect')
            // console.log("lat "+ lat)
      
             load()
@@ -72,35 +75,80 @@ const ViewGardenerProfile = ({ route, navigation }) => {
 
     const load = async () => {
         try {
-            const db = firebase.firestore()
+    const db = firebase.firestore()
   let usersref = db.collection("users")
   const snapshot = await usersref.where('id', '==', uid).get();
   if (snapshot.empty) {
   console.log('No matching documents.');
   return;
   }
+ var posts = []
+  var postTemp=[]
+  
   var g1 = snapshot.docs[0].data();
   setName(g1.name)
-  setlongNum(Number(g1.Longtitude))
-  //console.log(longNum)
-  setlat(g1.Latitude)
-  //console.log(g1.Latitude)
+  console.log(g1.Latitude)
+  console.log(Number(g1.Latitude))
+  console.log(g1.Longtitude)
+  console.log(Number(g1.Longitude))
+  setlongNum(Number(g1.Longitude))
   setlatNum(Number(g1.Latitude))
+  
+//   setlongNum(Number(g1.Longtitude))
+//   console.log(longNum)
+//   setlat(Numnber(g1.Latitude))
+//   console.log(g1.Latitude)
+//   setlatNum(Number(g1.Latitude))
   setPhone(g1.Phone)
   setBio(g1.Bio)
+// setlongNum( Number(g1.Longtitude))
+// console.log(g1.Longtitude+"lonnng")
+// setlatNum(Number(g1.Latitude))
+// console.log(longNum+"laaattt")
   getImage(g1.id)
+console.log(g1.posts.length)
 
-        } catch (err) {
-            console.log(err)
-
+  for(let i=0 ; i<g1.posts.length; i++){
+    posts.push(g1.posts[i])
+//setPost(posts)
+//console.log(posts)
+  }
+  //fetch images from collection posts 
+  for (id of posts) {
+    var docRef = firebase.firestore().collection("Posts").doc(id);
+    await docRef.get().then(function (doc) {
+        if (doc.exists) {
+            var post = {
+                key: id,
+                name: doc.data().Pid,
+                name: doc.data().Name,
+                date: doc.data().Date[0],
+                image: doc.data().Images[0],
+            };
+            postTemp.push(post);
+    
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
         }
-    }
+    }).catch(function (error) {
+        console.log("Error getting document: catch ", error);
+    });
+}
+
+setPost(postTemp)
+        }//try1
+         catch (err) {
+            console.log(err)
+        }
+     
+    }//end method
 
     const getImage = async (id) => {
         let imageRef = firebase.storage().ref('avatars/' + id);
         imageRef.getDownloadURL().then((url) => {
             //from url you can fetched the uploaded image easily
-            console.log(url)
+           // console.log(url)
             setAvatar(url);
         })
             .catch((e) => console.log('getting downloadURL of image error => ')
@@ -122,7 +170,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
     // if(lat){
 return(
     <View  style={styles.container}>
-
+<ScrollView>
          <View style={styles.header}>
 
               {/* Image */}
@@ -161,11 +209,11 @@ return(
 
                     </View>
 
-                    {/* <MapView style={styles.mapStyle}
+                    <MapView style={styles.mapStyle}
                         scrollEnabled={false}
                         intialRegion={{
                             latitude: latNum,
-                            longitude: longNum,
+                            longitude:longNum,
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421
                         }}
@@ -189,13 +237,25 @@ return(
                             pinColor={'red'}
                         />
 
-                    </MapView> */}
+                    </MapView> 
 
                  </View>
-
+                 <View style={styles.body}>
+                    <Text style={styles.myPlantText}>My Plants</Text>
+                    <View>
+                    <FlatList
+                        data={post}
+                        renderItem={({ item, index }) =>
+                            (plantItem(item,navigation))}
+                        keyExtractor={item => item.key}
+                    />
+                    </View>
+                    
+                    
+                    </View>
 
          </View>
-
+</ScrollView>
     </View>
 );
                 // }else{

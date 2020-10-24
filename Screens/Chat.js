@@ -26,36 +26,22 @@ const Chat = ({ route, navigation }) => { //<--------- props here ???
    const uidstr = JSON.stringify(param.id)
 
    const uid2 = JSON.parse(uidstr)
-
    //const [user2, setUser2] = useState()
-
- 
 
      const db = firebase.firestore()
 
      const chatsRef = db.collection('Messages')
 
- 
-
     //const [user1, setUser] = useState(null)
-
     //const [uname, setName] = useState('')
-
     //const [uid, setUid] = useState()
-
     const [avatar, setAvatar] = useState()
-
     const [messages, setMessages] = useState([])
-
     const  cId = chatID() //<---- 
-
     const  uid = getIdN() 
-
     //var uname = ''
-
     
 
- 
 
    const load = async () => {
 
@@ -64,12 +50,8 @@ const Chat = ({ route, navigation }) => { //<--------- props here ???
         let currentUser = firebase.auth().currentUser.uid
 
         let name = await AsyncStorage.getItem("name")
-
        // for(let i = 0; i<1 ;i++)
-
        // setName(name)
-
- 
 
     } catch (err) {
 
@@ -81,50 +63,28 @@ const Chat = ({ route, navigation }) => { //<--------- props here ???
 
 } //End load
 
- 
-
 const getImage = async (g1) => { //<---------------- getting profile pictures
-
   let imageRef = firebase.storage().ref('avatars/' + g1);
-
   imageRef.getDownloadURL().then((url) => {
-
   setAvatar(url)
-
   })
-
       .catch((e) =>
-
        console.log('getting downloadURL of image error => ')
-
       // , e),
-
       );
-
- 
 
 }//end get image
 
- 
-
 function getIdN (){
-
   return firebase.auth().currentUser.uid
-
 }//end getidn
-
- 
 
   useEffect(() => {
 
            load()
-
            getImage(uid)
-
            console.log(uid)
-
            //console.log(uname)
-
          const unsubscribe = chatsRef .doc(cId)
 
          .collection('chats').onSnapshot((querySnapshot) => { //<----here is the problem
@@ -161,15 +121,9 @@ function getIdN (){
 
     async function handleSend(messages) {
 
- 
-
       const res = await chatsRef.doc(cId).set({
-
         cid: cId
-
       }, { merge: true });
-
- 
 
         const writes = messages.map((m) => chatsRef
 
@@ -193,7 +147,6 @@ function getIdN (){
 
     )
 
- 
 
     function chatID() {
 
@@ -212,7 +165,6 @@ function getIdN (){
         chatIDpre.sort()
 
         return chatIDpre.join('_')
-
     }
 
  
@@ -279,29 +231,16 @@ function getIdN (){
 
         <View style={styles.container}>
 
- 
-
-    <GiftedChat messages={messages} user={{_id:uid,avatar:avatar}} onSend={handleSend} 
-
+    <GiftedChat messages={messages} user={{_id:uid,avatar:avatar? avatar:require("../assets/blank.png")}} onSend={handleSend} 
     renderBubble={renderBubble} renderSend={renderSend}  alwaysShowSend
-
      />
-
 {/* renderUsernameOnMessage={true} */}
-
     </View>
-
     // user={{
-
     //   _id: currentuser.id,
-
     //   }}
-
       
-
     );
-
- 
 
 }//End chat const
 

@@ -119,9 +119,11 @@ export default class Post extends React.Component {
 
         .then((response) => {
 
-          //Navigate 
+          //Navigate
+          
           setTimeout(function () {
-            this.props.navigation.pop();
+            this.setState({isLoading:false}) 
+            this.props.navigation.pop()
 
 
           }.bind(this), 1000);
@@ -193,6 +195,7 @@ export default class Post extends React.Component {
             {/* <Image source={require("../assets/plain-white-background.jpg")} style={styles.img} /> */}
             <View style={styles.imgContiner}>
 
+
               {this.state.image ? (
                 <Image source={{ uri: this.state.image }} style={styles.img} />) :
                 (<Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
@@ -227,6 +230,11 @@ export default class Post extends React.Component {
             </TouchableOpacity>
 
           </View>
+          <ActivityIndicator animating={this.state.isLoading}
+              size='large'
+              style={styles.loading}>
+
+              </ActivityIndicator>
 
         </View>
       </KeyboardAvoidingView>
@@ -389,6 +397,12 @@ const styles = StyleSheet.create({
     paddingTop:5,
     fontSize: 20,
     fontFamily: 'Khmer-MN',
+  },
+  loading: {
+    position: "absolute",
+    alignSelf:'center',
+    marginTop:300,
+    zIndex: 2,
   },
 
 

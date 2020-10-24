@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View , Button} from "react-native";
 import Constants from "expo-constants";
 //navigation
 import { NavigationContainer } from "@react-navigation/native";
@@ -46,6 +46,17 @@ var firebaseConfig = {
   measurementId: "G-VT3T0YDQ24"
 };
 
+// var firebaseConfig = {
+//   apiKey: "AIzaSyDa-dqiBjcABfky3NhCqjFKxvTfag8B-Sg",
+//     authDomain: "garsah1-32315.firebaseapp.com",
+//     databaseURL: "https://garsah1-32315.firebaseio.com",
+//     projectId: "garsah1-32315",
+//     storageBucket: "garsah1-32315.appspot.com",
+//     messagingSenderId: "579701810770",
+//     appId: "1:579701810770:web:e65c6c6aa9675d80f5618b",
+//     measurementId: "G-TV59LK051Z"
+// };
+
 // Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -54,6 +65,15 @@ if (!firebase.apps.length) {
 
 const AmateurTab = createBottomTabNavigator();
 const GardnerTab = createBottomTabNavigator();
+
+const onLogoutPress = async () => {
+  firebase.auth()
+  .signOut()
+  .then(() => this.props.navigation.navigate('Login')), AsyncStorage.getAllKeys()
+  .then(keys => AsyncStorage.multiRemove(keys)).catch((error) => {
+    alert(error)
+  });}
+
 
 
 //Amateur Tabs
@@ -172,7 +192,13 @@ function HomeStackNav() {
       <HomeStack.Screen name="Home"
         options={{
           title: 'Home',
-          color: 'black'
+          color: 'black',
+         //headerShown: false,
+          // headerLeft: () => (
+          //   <Button 
+          //    onPress={() => Home.onLogoutPress()}
+          //    title="Logout" />
+          //),
         }}
         component={Home} />
       <HomeStack.Screen name="ViewGardenerProfile"
@@ -218,13 +244,13 @@ function GardnerStackNav() {
 
         component={GardnerProfile} />
 
-      {<GardnerStack.Screen
+       {<GardnerStack.Screen
         name="Plant"
         component={Plant}
         options={{
           headerShown: false
         }}
-      />}
+      />} 
       {<GardnerStack.Screen
         name="EditGardenerProfile"
         options={{
@@ -285,9 +311,15 @@ function AmatureStackNav() {
 
 
 
+
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
+
+  constructor(props) {
+    super(props)
+  }
+
 
 
   render() {

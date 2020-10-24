@@ -160,90 +160,80 @@ const GardnerProfile = ({ navigation }) => {
         return <AppLoading />;
     }
 
-    // const toPlant = (item) => (
-    //     console.log('to Plant'),
-    //  navigation.navigate('Plant')
-    //   );
+    if(lat){
+    return (
+        <View style={styles.container}>
 
 
-    //if (lat) {
-    if (lat) {
-        return (
-            <View style={styles.container}>
+            <ScrollView>
+                <View style={styles.header}>
+                    {/* Image */}
+                    <Image source={avatar ?
+                        { uri: avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
 
+                    {/* Edit Profile button */}
+                    <TouchableOpacity
+                        style={styles.editButton}
+                    >
+                        <Text style={styles.editText} onPress={() => {
+                            onEditPress();
+                        }}> Edit Profile</Text>
+                    </TouchableOpacity>
 
-                <ScrollView>
-                    <View style={styles.header}>
-                        {/* Image */}
-                        <Image source={avatar ?
-                            { uri: avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
+                    {/* Profile Information */}
+                    <View style={styles.profileInfoView}>
+                        {/* Name */}
+                        <Text style={styles.profileInfoText}>{name}</Text>
 
-                        {/* Edit Profile button */}
-                        <TouchableOpacity
-                            style={styles.editButton}
-                        >
-                            <Text style={styles.editText} onPress={() => {
-                                onEditPress();
-                            }}> Edit Profile</Text>
-                        </TouchableOpacity>
-
-                        {/* Profile Information */}
-                        <View style={styles.profileInfoView}>
-                            {/* Name */}
-                            <Text style={styles.profileInfoText}>{name}</Text>
-
-                            {/* Bio */}
-                            <Text style={styles.bioText}>{Bio != null ? Bio : ""}</Text>
-                            {/* Phone number */}
-                            <View style={styles.userInfoContiner}>
-                                <FontAwesome name="phone" size={24} color="gray" />
-                                <Text style={styles.userInfoText}
-                                //   onPress={ (event) => {call(event)}}
-                                >{Phone ? Phone : "No phone added"}</Text>
-                            </View>
-
-                            {/* Map */}
-                            <View style={styles.userInfoContiner}>
-                                <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
-                                <Text style={styles.userInfoText}> My Location</Text></View>
-
-                            <View>
-
-                            </View>
-                            {lat ? (
-
-                                <MapView style={styles.mapStyle}
-                                    scrollEnabled={false}
-                                    intialRegion={{
-                                        latitude: latNum,
-                                        longitude: longNum,
-                                        latitudeDelta: 0.0922,
-                                        longitudeDelta: 0.0421
-                                    }}
-                                    region={{
-                                        latitude: latNum,
-                                        longitude: longNum,
-                                        latitudeDelta: 0.0922,
-                                        longitudeDelta: 0.0421
-                                    }}
-
-                                    onPress={(event) => onMapPress(event.nativeEvent.coordinate)
-                                    }
-
-                                >
-
-                                    <MapView.Marker
-                                        coordinate={{
-                                            latitude: latNum,
-                                            longitude: longNum
-                                        }}
-                                        pinColor={'red'}
-                                    />
-
-                                </MapView>) : null}
-
+                        {/* Bio */}
+                        <Text style={styles.bioText}>{Bio != null ? Bio : ""}</Text>
+                        {/* Phone number */}
+                        <View style={styles.userInfoContiner}>
+                            <FontAwesome name="phone" size={24} color="gray" />
+                            <Text style={styles.userInfoText}
+                            //   onPress={ (event) => {call(event)}}
+                            >{Phone ? Phone : "No phone added"}</Text>
                         </View>
 
+                        {/* Map */}
+                        <View style={styles.userInfoContiner}>
+                            <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
+                            <Text style={styles.userInfoText}> My Location</Text></View>
+
+                        {lat ? (
+
+                            <MapView style={styles.mapStyle}
+                                scrollEnabled={false}
+                                intialRegion={{
+                                    latitude: latNum,
+                                    longitude: longNum,
+                                    latitudeDelta: 0.0922,
+                                    longitudeDelta: 0.0421
+                                }}
+                                region={{
+                                    latitude: latNum,
+                                    longitude: longNum,
+                                    latitudeDelta: 0.0922,
+                                    longitudeDelta: 0.0421
+                                }}
+
+                                onPress={(event) => onMapPress(event.nativeEvent.coordinate)
+                                }
+
+                            >
+
+                                <MapView.Marker
+                                    coordinate={{
+                                        latitude: latNum,
+                                        longitude: longNum
+                                    }}
+                                    pinColor={'red'}
+                                />
+
+                            </MapView>) : null}
+
+
+                    </View>
                     </View>
                     <View style={styles.body}>
                         <Text style={styles.myPlantText}>My Plants</Text>
@@ -273,9 +263,8 @@ const GardnerProfile = ({ navigation }) => {
 
             </View>
 
-        );
-    } else {
-
+            );
+    }else{
         return (
             <View style={{alignSelf: 'center',top:400}}>
                 <Text style={styles.noDataText}>Hold tight, We are processing your information</Text>
@@ -283,24 +272,24 @@ const GardnerProfile = ({ navigation }) => {
         );
     }
 
-
-
-}//end class 
+    }//end class
 
 export default GardnerProfile;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "white",
 
-    },
+            
+const styles = StyleSheet.create({
+                container: {
+                flex: 1,
+            backgroundColor: "white",
+    
+        },
     header: {
-        paddingTop: 5,
-        backgroundColor: 'white',
-        shadowColor: "#000",
+                paddingTop: 5,
+            backgroundColor: 'white',
+            shadowColor: "#000",
         shadowOffset: {
-            width: 0,
+                width: 0,
             height: 4,
         },
         shadowOpacity: 0.1,
@@ -311,15 +300,15 @@ const styles = StyleSheet.create({
 
     },
     prifileImg: {
-        width: 60,
-        height: 60,
-        borderRadius: 50,
-        padding: 45,
-        marginTop: 20,
-        marginLeft: 20,
-        shadowColor: "#000",
+                width: 60,
+            height: 60,
+            borderRadius: 50,
+            padding: 45,
+            marginTop: 20,
+            marginLeft: 20,
+            shadowColor: "#000",
         shadowOffset: {
-            width: 2,
+                width: 2,
             height: 4,
         },
         shadowOpacity: 0.3,
@@ -327,47 +316,47 @@ const styles = StyleSheet.create({
     },
     profileInfoView: {
 
-        paddingLeft: 25,
-        paddingRight: 25,
-        borderBottomColor: 'gray'
-
-    },
+                paddingLeft: 25,
+            paddingRight: 25,
+            borderBottomColor: 'gray'
+    
+        },
     profileInfoText: {
-        fontSize: 25,
-        fontFamily: 'Khmer-MN'
-    },
+                fontSize: 25,
+            fontFamily: 'Khmer-MN'
+        },
     bioText: {
-        fontSize: 20,
-        fontFamily: 'Khmer-MN',
-        color: 'gray',
-        paddingLeft: 25
-
-    },
+                fontSize: 20,
+            fontFamily: 'Khmer-MN',
+            color: 'gray',
+            paddingLeft: 25
+    
+        },
     body: {
-        marginLeft: 0
-    },
-
+                marginLeft: 0
+        },
+    
     myPlantText: {
-        margin: 20,
-        marginLeft: 40,
-        fontSize: 18,
-        fontFamily: 'Khmer-MN-Bold'
-
-    },
-
+                margin: 20,
+            marginLeft: 40,
+            fontSize: 18,
+            fontFamily: 'Khmer-MN-Bold'
+    
+        },
+    
     editButton: {
-        position: 'absolute',
-        alignSelf: 'flex-end',
-        borderWidth: 2,
-        width: 90,
-        borderRadius: 20,
-        backgroundColor: "white",
-        borderColor: '#CFD590',
-        marginTop: 40,
-        right: 30,
-        shadowColor: "#000",
+                position: 'absolute',
+            alignSelf: 'flex-end',
+            borderWidth: 2,
+            width: 90,
+            borderRadius: 20,
+            backgroundColor: "white",
+            borderColor: '#CFD590',
+            marginTop: 40,
+            right: 30,
+            shadowColor: "#000",
         shadowOffset: {
-            width: 0,
+                width: 0,
             height: 2,
         },
         shadowOpacity: 0.1,
@@ -377,46 +366,46 @@ const styles = StyleSheet.create({
 
     },
     editText: {
-        paddingLeft: 6,
-        paddingTop: 3,
-        fontFamily: 'Khmer-MN-Bold',
-        color: '#CFD590',
-
-    },
+                paddingLeft: 6,
+            paddingTop: 3,
+            fontFamily: 'Khmer-MN-Bold',
+            color: '#CFD590',
+    
+        },
     userInfoContiner: {
-        flexDirection: 'row',
-        marginBottom: 5,
-
-    },
-
+                flexDirection: 'row',
+            marginBottom: 5,
+    
+        },
+    
     userInfoText: {
-        paddingLeft: 4,
-        fontSize: 20,
-        fontFamily: 'Khmer-MN-Bold',
-        color: 'gray',
-        marginBottom: -5,
-    },
+                paddingLeft: 4,
+            fontSize: 20,
+            fontFamily: 'Khmer-MN-Bold',
+            color: 'gray',
+            marginBottom: -5,
+        },
     mapStyle: {
-        width: Dimensions.get('window').width,
-        height: 250,
-        left: -25,
-
-    },
-
+                width: Dimensions.get('window').width,
+            height: 250,
+            left: -25,
+    
+        },
+    
     plus: {
-        position: 'absolute',
-        alignSelf: 'flex-end',
-        right: 10,
-        bottom: 10,
-        backgroundColor: '#CFD590',
-        borderRadius: 100,
-        padding: 5,
-        paddingBottom: -5,
-        alignItems: 'center',
-        zIndex: 2,
-        shadowColor: "#000",
+                position: 'absolute',
+            alignSelf: 'flex-end',
+            right: 10,
+            bottom: 10,
+            backgroundColor: '#CFD590',
+            borderRadius: 100,
+            padding: 5,
+            paddingBottom: -5,
+            alignItems: 'center',
+            zIndex: 2,
+            shadowColor: "#000",
         shadowOffset: {
-            width: 0,
+                width: 0,
             height: 3,
         },
         shadowOpacity: 0.2,
@@ -426,34 +415,34 @@ const styles = StyleSheet.create({
 
     },
     plantname: {
-        fontFamily: 'Khmer-MN-Bold',
-        //color:"#717171",
-        color: "white",
-        marginBottom: 25,
-        marginLeft: 50,
-        bottom: 30,
-        fontSize: 18,
-        //backgroundColor:"grey"
-
-    },
+                fontFamily: 'Khmer-MN-Bold',
+            //color:"#717171",
+            color: "white",
+            marginBottom: 25,
+            marginLeft: 50,
+            bottom: 30,
+            fontSize: 18,
+            //backgroundColor:"grey"
+    
+        },
     plantdate: {
-        fontFamily: 'Khmer-MN-Bold',
-        color: "#717171",
-        marginLeft: 5,
-        marginBottom: 10,
-
-
-    },
+                fontFamily: 'Khmer-MN-Bold',
+            color: "#717171",
+            marginLeft: 5,
+            marginBottom: 10,
+    
+    
+        },
     plantimage: {
-        //width: Dimensions.get('window').width,
-        width: 370,
-        height: 250,
-        borderRadius: 50,
-        alignItems: "center",
-        marginLeft: 20,
-        shadowColor: "#000",
+                //width: Dimensions.get('window').width,
+                width: 370,
+            height: 250,
+            borderRadius: 50,
+            alignItems: "center",
+            marginLeft: 20,
+            shadowColor: "#000",
         shadowOffset: {
-            width: 0,
+                width: 0,
             height: 12,
         },
         shadowOpacity: 0.58,
@@ -462,17 +451,17 @@ const styles = StyleSheet.create({
 
     },
     dateicon: {
-        marginLeft: 20,
-    },
+                marginLeft: 20,
+        },
     noDataText: {
-        flex: 1,
-        alignSelf: 'center',
-        fontFamily: 'Khmer-MN-Bold',
-        fontSize: 17,
-        color:'#717171'
-
-    }
-
-
-
+                flex: 1,
+            alignSelf: 'center',
+            fontFamily: 'Khmer-MN-Bold',
+            fontSize: 17,
+            color:'#717171'
+    
+        }
+    
+    
+    
 })

@@ -233,7 +233,7 @@ export default class AddPlant extends React.Component {
 
         //Navigate 
         setTimeout(function () {
-          this.setState({isLoading:false})
+          this.setState({ isLoading: false })
           this.props.navigation.reset({
             index: 0,
             routes: [{ name: 'Profile' }]
@@ -414,6 +414,11 @@ export default class AddPlant extends React.Component {
 
       <View
         style={styles.container}>
+          <ActivityIndicator animating={this.state.isLoading}
+              size='large'
+              style={styles.loading}>
+
+              </ActivityIndicator>
         <View style={styles.SVGC}>
           <Svg
             width={773.491}
@@ -956,7 +961,13 @@ const styles = StyleSheet.create({
 
     elevation: 4,
 
-  }
+  },
 
+  loading: {
+    position: "absolute",
+    alignSelf:'center',
+    marginTop:300,
+    zIndex: 2,
+  },
 
 })
