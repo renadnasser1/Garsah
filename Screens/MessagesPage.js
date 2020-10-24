@@ -182,8 +182,6 @@ export default class MessagesPage extends React.Component {
       </View>
 
       <View style={styles.content}>
-
-      <Text style={styles.title}>Messages: </Text>
       <ScrollView 
       refreshControl={
         <RefreshControl
@@ -232,11 +230,11 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
     nametext: {
-      fontSize: 25,
+      fontSize: 22,
       color: "#2B2B2B",
       fontWeight:'bold',
       paddingLeft: 10,
-      paddingTop: 5,
+      paddingTop: 11,
       fontFamily:'Khmer-MN-Bold'
     },
     msgtext: {
@@ -311,6 +309,7 @@ const styles = StyleSheet.create({
   },
   content:{
       position:"absolute",
+      paddingTop:30
   },
   
 });
