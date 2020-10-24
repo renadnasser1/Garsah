@@ -12,7 +12,9 @@ import {
   Button,
   Image,
   ActivityIndicator,
-  FlatList
+  FlatList,
+  ScrollView,
+  RefreshControl,
 } from "react-native";
 
 import * as firebase from "firebase";
@@ -26,7 +28,16 @@ export default class MessagesPage extends React.Component {
   state = { //<--------------------- fill this later
     chats: [],
     user:[],
+    tempavatar:'',
+    refreshing:false,
   }
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.componentDidMount().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
+
 
   async componentDidMount() {
 
@@ -83,17 +94,21 @@ export default class MessagesPage extends React.Component {
   
      for(let k=0; k<userchats.length;k++){
 
+      this.setState({tempavatar:''}, () => {
+        //console.log(this.state.avatar1)
+       });
        var id = userchats[k]
+       this.getImage(id)
        const snapshot = await usersref.where('id', '==', id).get();
   if (snapshot.empty) {
   console.log('No matching documents.');
   return;
   }  
   name = snapshot.docs[0].data().name;
-  //avatar = getImage(id)
-  //console.log(avatar)
+  avatar = this.state.tempavatar
+  console.log(avatar)
   key = k
-  var obj = {name:name,id:id, key:key}
+  var obj = {name:name,id:id,avatar:avatar, key:key}
   userinfo[k]= obj
      }//end for loop
 
@@ -106,7 +121,9 @@ export default class MessagesPage extends React.Component {
   getImage = async (g1) => { //<---------------- getting profile pictures 
     let imageRef = firebase.storage().ref('avatars/' + g1);
     imageRef.getDownloadURL().then((url) => {
-      //return url
+      this.setState({tempavatar:url}, () => {
+        //console.log(this.state.avatar1)
+       });
     }) .catch((e) =>
          console.log('getting downloadURL of image error => ')
         // , e),
@@ -167,7 +184,13 @@ export default class MessagesPage extends React.Component {
       <View style={styles.content}>
 
       <Text style={styles.title}>Messages: </Text>
-
+      <ScrollView 
+      refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}
+        />
+      }> 
       <FlatList
       data = {this.state.user}
       renderItem ={({item}) => (
@@ -175,11 +198,13 @@ export default class MessagesPage extends React.Component {
         style={styles.ChatElement}
         onPress={() => this.props.navigation.navigate("Chat", {id:item.id})}
         >
-       <Image source={require("../assets/blank.png")} style={styles.prifileImg} />
+        <Image source={item.avatar ?
+          {uri:item.avatar} : require("../assets/blank.png")} style={styles.prifileImg} />
        <Text style={styles.nametext}>{item.name}</Text>
        </TouchableOpacity>
       )}
       />
+      </ScrollView>
              
             
 
@@ -287,4 +312,5 @@ const styles = StyleSheet.create({
   content:{
       position:"absolute",
   },
+  
 });
