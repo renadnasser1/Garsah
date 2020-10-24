@@ -167,7 +167,6 @@ const GardnerProfile = ({ navigation }) => {
 
 
     //if (lat) {
-        if (lat){
         return (
             <View style={styles.container}>
 
@@ -211,6 +210,8 @@ const GardnerProfile = ({ navigation }) => {
 
                         </View>
 
+                       {lat?(
+
                         <MapView style={styles.mapStyle}
                             scrollEnabled={false}
                             intialRegion={{
@@ -239,8 +240,7 @@ const GardnerProfile = ({ navigation }) => {
                                 pinColor={'red'}
                             />
 
-                        </MapView>
-
+                        </MapView>):null}
                     </View>
 
                 </View>
@@ -270,14 +270,14 @@ const GardnerProfile = ({ navigation }) => {
               </View>
 
         );
-    } else {
+    // } else {
 
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', fontFamily: 'Khmer-MN-Bold' }}>
-                <Text>We are processing your information</Text>
-            </View>
-        );
-    }
+    //     return (
+    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', fontFamily: 'Khmer-MN-Bold' }}>
+    //             <Text>We are processing your information</Text>
+    //         </View>
+    //     );
+    // }
 
 
 

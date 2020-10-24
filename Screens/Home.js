@@ -228,8 +228,21 @@ export default class Home extends React.Component {
 
 
 
-
  <View style={styles.content}>
+{/* 
+ <View style={styles.header}>
+   <TouchableOpacity
+                    style={styles.editButton}
+                >
+                    <Text style={styles.editText} onPress={() => {
+                       onLogoutPress()
+                    }}> Log Out</Text>
+                </TouchableOpacity>
+
+                
+   </View> */}
+
+
 
 
   <Text style={styles.text}>Gardeners </Text>
@@ -280,16 +293,21 @@ export default class Home extends React.Component {
                {uri:this.state.avatar5} : require("../assets/blank.png")} style={styles.prifileImg} />
         </TouchableOpacity>
 
-        
-
-             
-   
    </View>
 
    <Text style={styles.text}
    onPress={() => this.onLogoutPress()}
    >log out</Text>
 
+<TouchableOpacity
+                    style={styles.editButton}
+                >
+                    <Text style={styles.editText} onPress={() => {
+                       onLogoutPress()
+                    }}> Log Out</Text>
+                </TouchableOpacity>
+
+             
  </View>
  
 
@@ -341,4 +359,38 @@ flex: 1,
       shadowOpacity: 0.3,
       shadowRadius: 4.65,
   },
+  editButton: {
+   // position: 'absolute',
+    alignSelf: 'flex-end',
+    borderWidth: 2,
+    width: 90,
+    borderRadius: 20,
+    backgroundColor: "white",
+    borderColor: '#CFD590',
+    marginTop: 45,
+    right: 150,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4.65,
+
+    elevation: 4,
+
+},
+editText: {
+  paddingLeft: 12,
+  paddingTop: 3,
+  fontFamily: 'Khmer-MN-Bold',
+  color: 'black',
+
+},
+header:{
+  backgroundColor: "white",
+  width: 500,
+  height:90,
+  
+}
 });

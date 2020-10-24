@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View , Button} from "react-native";
 import Constants from "expo-constants";
 //navigation
 import { NavigationContainer } from "@react-navigation/native";
@@ -65,6 +65,15 @@ if (!firebase.apps.length) {
 
 const AmateurTab = createBottomTabNavigator();
 const GardnerTab = createBottomTabNavigator();
+
+const onLogoutPress = async () => {
+  firebase.auth()
+  .signOut()
+  .then(() => this.props.navigation.navigate('Login')), AsyncStorage.getAllKeys()
+  .then(keys => AsyncStorage.multiRemove(keys)).catch((error) => {
+    alert(error)
+  });}
+
 
 
 //Amateur Tabs
@@ -183,7 +192,13 @@ function HomeStackNav() {
       <HomeStack.Screen name="Home"
         options={{
           title: 'Home',
-          color: 'black'
+          color: 'black',
+         //headerShown: false,
+          // headerLeft: () => (
+          //   <Button 
+          //    onPress={() => Home.onLogoutPress()}
+          //    title="Logout" />
+          //),
         }}
         component={Home} />
       <HomeStack.Screen name="ViewGardenerProfile"
@@ -296,9 +311,15 @@ function AmatureStackNav() {
 
 
 
+
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
+
+  constructor(props) {
+    super(props)
+  }
+
 
 
   render() {
