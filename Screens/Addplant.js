@@ -247,15 +247,19 @@ export default class AddPlant extends React.Component {
 
 
     const validate = () => {
-      if (name == "") {
+      if (image == '') {
+        alert("Please add photo");}
+      else if (name == "") {
         alert("Please enter the name of plant ");
       } else if (name.length < 2) {
-        alert("Your name need to be at least 2 characters.");
+        alert("Your plant's name need to be at least 2 characters.");
+      } 
+      else if (name.length>30){
+        alert("Your plant name is too long please re enter it correctly")
       } else if (caption.length > 2200) {
-        alert("Your caption is too long must be maximum 2200.");
-      } else if (image == '') {
-        alert("Please add photo");
-      } else {
+        alert("Your caption is too long It must be maximum 2200 charcaters.");
+      }  
+       else {
         confirm();
       }
     }
