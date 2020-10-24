@@ -139,7 +139,6 @@ export default class Plant extends React.Component {
       this.setState({ selectedProgress: '', selectedPeriod: '' }, () => {
         setModalVisible(!showProgressModel);
       })
-
     }
 
     const openOwnerProfile = () => {
@@ -178,13 +177,9 @@ export default class Plant extends React.Component {
             <Text style={styles.plantName}> {this.state.name} </Text>
 
             <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity
-              onPress={()=>{
-                openOwnerProfile()
-              }}
-              >
+
                 <Text style={styles.ownerName}>Owner | {this.state.userName}</Text>
-              </TouchableOpacity>
+
             </View>
 
             <View style={styles.progressContainer}>
@@ -193,7 +188,7 @@ export default class Plant extends React.Component {
 
               {this.state.reminders.length != 0 ? (
                 <View>
-                  <Text style={styles.progressText}>Progress</Text>
+                  <Text style={styles.progressText}></Text>
                   <FlatList
                     data={this.state.reminders}
                     horizontal={true}
@@ -256,16 +251,11 @@ export default class Plant extends React.Component {
 
               <View style={styles.modelHeader}>
                 <TouchableOpacity
+                style={{left:-90}}
                   onPress={() => {
                     closeModel();
                   }}>
                   <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
-
-                <View style={styles.progressReminder}>
-                  <Text style={{
-                    fontFamily: 'Khmer-MN-Bold',
-                    fontSize: 24,
-                  }}>{this.state.selectedProgress} Progress</Text></View>
               </View>
               <View style={styles.modelBody}>
                 <View style={{ flowDirection: 'row', alignSelf: 'center' }}>
@@ -364,7 +354,7 @@ const styles = StyleSheet.create({
 
     width: Dimensions.get('window').width,
     backgroundColor: 'white',
-    height: Dimensions.get('window').height / 2,
+    height: Dimensions.get('window').height / 3,
     borderTopLeftRadius: 150,
     shadowOffset: {
       width: 0,
@@ -389,7 +379,7 @@ const styles = StyleSheet.create({
   },
   modelBody: {
     alignSelf: 'center',
-    marginTop: 50,
+    marginTop: 30,
     marginLeft: 20,
   },
   progressInfoText: {

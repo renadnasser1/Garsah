@@ -34,7 +34,7 @@ import Addplant from "./Screens/Addplant";
 // Firebase
 import * as firebase from "firebase";
 
-/*
+
 var firebaseConfig = {
   apiKey: "AIzaSyBS6vgCY1jAxupRVjFj5KJe4w0tanzF7kw",
   authDomain: "garsah-a9d41.firebaseapp.com",
@@ -44,18 +44,18 @@ var firebaseConfig = {
   messagingSenderId: "264805379027",
   appId: "1:264805379027:web:13e9ca5fec31a09b545d26",
   measurementId: "G-VT3T0YDQ24"
-};*/
-
-var firebaseConfig = {
-  apiKey: "AIzaSyDa-dqiBjcABfky3NhCqjFKxvTfag8B-Sg",
-    authDomain: "garsah1-32315.firebaseapp.com",
-    databaseURL: "https://garsah1-32315.firebaseio.com",
-    projectId: "garsah1-32315",
-    storageBucket: "garsah1-32315.appspot.com",
-    messagingSenderId: "579701810770",
-    appId: "1:579701810770:web:e65c6c6aa9675d80f5618b",
-    measurementId: "G-TV59LK051Z"
 };
+
+// var firebaseConfig = {
+//   apiKey: "AIzaSyDa-dqiBjcABfky3NhCqjFKxvTfag8B-Sg",
+//     authDomain: "garsah1-32315.firebaseapp.com",
+//     databaseURL: "https://garsah1-32315.firebaseio.com",
+//     projectId: "garsah1-32315",
+//     storageBucket: "garsah1-32315.appspot.com",
+//     messagingSenderId: "579701810770",
+//     appId: "1:579701810770:web:e65c6c6aa9675d80f5618b",
+//     measurementId: "G-TV59LK051Z"
+// };
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -229,13 +229,13 @@ function GardnerStackNav() {
 
         component={GardnerProfile} />
 
-      {<GardnerStack.Screen
+       {<GardnerStack.Screen
         name="Plant"
         component={Plant}
         options={{
           headerShown: false
         }}
-      />}
+      />} 
       {<GardnerStack.Screen
         name="EditGardenerProfile"
         options={{
