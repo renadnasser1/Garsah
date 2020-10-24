@@ -1,10 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, AsyncStorage } from "react-native";
 import Constants from "expo-constants";
+import * as Notifications from 'expo-notifications';
+
 //navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {unsubscribe} from './Controller/Notification'
 
 // import { AppLoading } from 'expo';
 //Icons

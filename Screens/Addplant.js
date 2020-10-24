@@ -296,7 +296,7 @@ export default class AddPlant extends React.Component {
     }
 
     const setModalVisible = (visible) => {
-      //removeAll()
+     //removeAll()
       this.setState({ showModel: visible });
     }
 

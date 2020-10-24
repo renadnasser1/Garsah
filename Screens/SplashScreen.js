@@ -48,10 +48,7 @@ function SplashScreen({ navigation }) {
           //console.log(response);
         });
     
-        // return () => {
-        //   Notifications.removeNotificationSubscription(notificationListener);
-        //   Notifications.removeNotificationSubscription(responseListener);
-        // };
+
 
         try {
 

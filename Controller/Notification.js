@@ -46,6 +46,11 @@ export function removeAll(){
     console.log('removed')
 }
 
+export function unsubscribe(){
+  Notifications.removeNotificationSubscription(notificationListener);
+  Notifications.removeNotificationSubscription(responseListener);
+}
+
 export async function schedulePushNotification(reminder,id,name) {
 
     //Data needed
@@ -54,11 +59,11 @@ export async function schedulePushNotification(reminder,id,name) {
 
     var repeat;
         if(reminderPeriod == 'day'){
-          repeat = 1
+          repeat = 86400
         }else if (reminderPeriod == 'week'){
-          repeat = 7
+          repeat = 604800
         }else{
-          return await setMonthlyNoti(reminderName,id)
+          repeat = 2629743.83
         }
     
 
@@ -71,7 +76,7 @@ export async function schedulePushNotification(reminder,id,name) {
     },
     trigger: { 
         //seconds:60,
-        day: repeat,
+        seconds: repeat,
         repeats: true },
   });
 
