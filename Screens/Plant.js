@@ -54,11 +54,19 @@ export default class Plant extends React.Component {
     selectedSent: '',
   }
 
+ 
+
 
   async componentDidMount() {
 
+    
 
+    await this.fetchData();        
 
+  }
+
+   async fetchData(){
+    console.log('called fetchData')
     try {
 
       // get user info 
@@ -106,10 +114,15 @@ export default class Plant extends React.Component {
     }
     this.setState({ posts: localPost })
     console.log(this.state.posts.length)
-
   }
+
+
   render() {
     const { thread, ThreadId, posts, selectedProgress, showProgressModel } = this.state
+
+    this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {
+      await this.fetchData()
+    });
 
     const move = () => {
       this.props.navigation.navigate('Post', { ThreadID: this.state.ThreadId })

@@ -28,7 +28,7 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 //Components
-import {plantItem} from '../Component/PostItem'
+import { plantItem } from '../Component/PostItem'
 const GardnerProfile = ({ navigation }) => {
 
     const [uid, setUid] = useState()
@@ -167,115 +167,118 @@ const GardnerProfile = ({ navigation }) => {
 
 
     //if (lat) {
-        if (lat){
+    if (lat) {
         return (
             <View style={styles.container}>
 
 
-            <ScrollView>
-                <View style={styles.header}>
-                    {/* Image */}
-                    <Image source={avatar ?
-                        { uri: avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
+                <ScrollView>
+                    <View style={styles.header}>
+                        {/* Image */}
+                        <Image source={avatar ?
+                            { uri: avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
 
-                    {/* Edit Profile button */}
-                    <TouchableOpacity
-                        style={styles.editButton}
-                    >
-                        <Text style={styles.editText} onPress={() => {
-                            onEditPress();
-                        }}> Edit Profile</Text>
-                    </TouchableOpacity>
-
-                    {/* Profile Information */}
-                    <View style={styles.profileInfoView}>
-                        {/* Name */}
-                        <Text style={styles.profileInfoText}>{name}</Text>
-
-                        {/* Bio */}
-                        <Text style={styles.bioText}>{Bio != null ? Bio : ""}</Text>
-                        {/* Phone number */}
-                        <View style={styles.userInfoContiner}>
-                            <FontAwesome name="phone" size={24} color="gray" />
-                            <Text style={styles.userInfoText}
-                            //   onPress={ (event) => {call(event)}}
-                            >{Phone ? Phone : "No phone added"}</Text>
-                        </View>
-
-                        {/* Map */}
-                        <View style={styles.userInfoContiner}>
-                            <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
-                            <Text style={styles.userInfoText}> My Location</Text></View>
-
-                        <View>
-
-                        </View>
-                        {lat?(
-
-                        <MapView style={styles.mapStyle}
-                            scrollEnabled={false}
-                            intialRegion={{
-                                latitude: latNum,
-                                longitude: longNum,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421
-                            }}
-                            region={{
-                                latitude: latNum,
-                                longitude: longNum,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421
-                            }}
-
-                            onPress={(event) => onMapPress(event.nativeEvent.coordinate)
-                            }
-
+                        {/* Edit Profile button */}
+                        <TouchableOpacity
+                            style={styles.editButton}
                         >
+                            <Text style={styles.editText} onPress={() => {
+                                onEditPress();
+                            }}> Edit Profile</Text>
+                        </TouchableOpacity>
 
-                            <MapView.Marker
-                                coordinate={{
-                                    latitude: latNum,
-                                    longitude: longNum
-                                }}
-                                pinColor={'red'}
-                            />
+                        {/* Profile Information */}
+                        <View style={styles.profileInfoView}>
+                            {/* Name */}
+                            <Text style={styles.profileInfoText}>{name}</Text>
 
-                        </MapView>):null}
+                            {/* Bio */}
+                            <Text style={styles.bioText}>{Bio != null ? Bio : ""}</Text>
+                            {/* Phone number */}
+                            <View style={styles.userInfoContiner}>
+                                <FontAwesome name="phone" size={24} color="gray" />
+                                <Text style={styles.userInfoText}
+                                //   onPress={ (event) => {call(event)}}
+                                >{Phone ? Phone : "No phone added"}</Text>
+                            </View>
+
+                            {/* Map */}
+                            <View style={styles.userInfoContiner}>
+                                <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
+                                <Text style={styles.userInfoText}> My Location</Text></View>
+
+                            <View>
+
+                            </View>
+                            {lat ? (
+
+                                <MapView style={styles.mapStyle}
+                                    scrollEnabled={false}
+                                    intialRegion={{
+                                        latitude: latNum,
+                                        longitude: longNum,
+                                        latitudeDelta: 0.0922,
+                                        longitudeDelta: 0.0421
+                                    }}
+                                    region={{
+                                        latitude: latNum,
+                                        longitude: longNum,
+                                        latitudeDelta: 0.0922,
+                                        longitudeDelta: 0.0421
+                                    }}
+
+                                    onPress={(event) => onMapPress(event.nativeEvent.coordinate)
+                                    }
+
+                                >
+
+                                    <MapView.Marker
+                                        coordinate={{
+                                            latitude: latNum,
+                                            longitude: longNum
+                                        }}
+                                        pinColor={'red'}
+                                    />
+
+                                </MapView>) : null}
+
+                        </View>
 
                     </View>
+                    <View style={styles.body}>
+                        <Text style={styles.myPlantText}>My Plants</Text>
+                        <View>
+                            {postss.length == 0 ?
+                                <Text style={styles.noDataText} >No plants added yet</Text>
+                                :
+                                <FlatList
+                                    data={postss}
+                                    renderItem={({ item, index }) =>
+                                        (plantItem(item, navigation))}
+                                    keyExtractor={item => item.key}
+                                />}
+                        </View>
 
-                </View>
-                <View style={styles.body}>
-                    <Text style={styles.myPlantText}>My Plants</Text>
-                    <View>
-                    <FlatList
-                        data={postss}
-                        renderItem={({ item, index }) =>
-                            (plantItem(item,navigation))}
-                        keyExtractor={item => item.key}
-                    />
                     </View>
+                </ScrollView>
 
-                </View>
-         </ScrollView>
+                <View style={styles.plus}>
+                    <TouchableOpacity >
+                        <Entypo name="plus" size={44} color="white"
+                            onPress={() =>
+                                navigation.navigate('Addplant')
+                            } />
+                    </TouchableOpacity></View>
 
-            <View style={styles.plus}>
-            <TouchableOpacity >
-                               <Entypo name="plus" size={44} color="white"
-                                   onPress={() =>
-                                       navigation.navigate('Addplant')
-                                   } />
-                           </TouchableOpacity></View>
-           
 
-              </View>
+            </View>
 
         );
     } else {
 
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', fontFamily: 'Khmer-MN-Bold' }}>
-                <Text>We are processing your information</Text>
+            <View style={{alignSelf: 'center',top:400}}>
+                <Text style={styles.noDataText}>Hold tight, We are processing your information</Text>
             </View>
         );
     }
@@ -340,13 +343,13 @@ const styles = StyleSheet.create({
         paddingLeft: 25
 
     },
-    body:{
-        marginLeft:0
+    body: {
+        marginLeft: 0
     },
 
     myPlantText: {
         margin: 20,
-        marginLeft:40,
+        marginLeft: 40,
         fontSize: 18,
         fontFamily: 'Khmer-MN-Bold'
 
@@ -410,7 +413,7 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingBottom: -5,
         alignItems: 'center',
-        zIndex:2,
+        zIndex: 2,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -420,48 +423,56 @@ const styles = StyleSheet.create({
         shadowRadius: 4.0,
 
         elevation: 3,
-      
+
     },
-    plantname:{
+    plantname: {
         fontFamily: 'Khmer-MN-Bold',
         //color:"#717171",
-        color:"white",
-        marginBottom:25,
-        marginLeft:50,
-        bottom:30,
-        fontSize:18,
+        color: "white",
+        marginBottom: 25,
+        marginLeft: 50,
+        bottom: 30,
+        fontSize: 18,
         //backgroundColor:"grey"
-        
-    },
-    plantdate:{
-    fontFamily: 'Khmer-MN-Bold',
-    color:"#717171",
-    marginLeft:5,
-    marginBottom:10,
 
-   
     },
-    plantimage:{
+    plantdate: {
+        fontFamily: 'Khmer-MN-Bold',
+        color: "#717171",
+        marginLeft: 5,
+        marginBottom: 10,
+
+
+    },
+    plantimage: {
         //width: Dimensions.get('window').width,
-        width : 370,
+        width: 370,
         height: 250,
-        borderRadius:50,
-        alignItems:"center",
-        marginLeft:20,
+        borderRadius: 50,
+        alignItems: "center",
+        marginLeft: 20,
         shadowColor: "#000",
-shadowOffset: {
-	width: 0,
-	height: 12,
-},
-shadowOpacity: 0.58,
-shadowRadius: 16.00,
+        shadowOffset: {
+            width: 0,
+            height: 12,
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.00,
 
 
     },
-    dateicon:{
-        marginLeft:20,
+    dateicon: {
+        marginLeft: 20,
+    },
+    noDataText: {
+        flex: 1,
+        alignSelf: 'center',
+        fontFamily: 'Khmer-MN-Bold',
+        fontSize: 17,
+        color:'#717171'
+
     }
-    
+
 
 
 })

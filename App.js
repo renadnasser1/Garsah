@@ -383,6 +383,9 @@ export default class App extends React.Component {
 
 }
 
+//console.disableYellowBox = true;
+
+
 //Style
 const styles = StyleSheet.create({
   container: {

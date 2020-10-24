@@ -121,7 +121,7 @@ export default class Post extends React.Component {
 
           //Navigate 
           setTimeout(function () {
-            this.props.navigation.pop()
+            this.props.navigation.pop();
 
 
           }.bind(this), 1000);

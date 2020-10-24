@@ -10,6 +10,7 @@ import {
   Dimensions,
   Modal,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import Autocomplete from 'react-native-autocomplete-input';
 
@@ -28,10 +29,8 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 //Icons
-import { Ionicons } from "@expo/vector-icons";
-import { Entypo } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons,Entypo,MaterialCommunityIcons,AntDesign } from "@expo/vector-icons";
+
 
 import Svg, { Path } from "react-native-svg"
 import * as Permissions from 'expo-permissions';
@@ -61,9 +60,7 @@ export default class AddPlant extends React.Component {
     caption: '',
     date: '',
     photoPath: '',
-    isLoading: false,
     userId: '',
-    query: '',
     result: [],
     genus: [],
     progressArray: [],
@@ -78,6 +75,7 @@ export default class AddPlant extends React.Component {
     selectedProgress: '',
     selectedPeriod: '',
     selectedSent: '',
+    isLoading:false,
 
   }
 
@@ -106,13 +104,13 @@ export default class AddPlant extends React.Component {
     console.log('affteer', this.state.genus)
   }
 
-  findPlant(query) {
-    if (query === '') {
+  findPlant(name) {
+    if (name === '') {
       return [];
     }
 
     const { genus } = this.state;
-    var key = query.trim()
+    var key = name.trim()
     var array = genus.filter((item) => item.includes(key));
     return array
   }
@@ -120,8 +118,8 @@ export default class AddPlant extends React.Component {
 
 
   render() {
-    const { image, name, caption, userId, showModel, query, showProgressModel } = this.state
-    const genus = this.findPlant(query);
+    const { image, name, caption, userId, showModel, showProgressModel } = this.state
+    const genus = this.findPlant(name);
 
     const pickImageCameraRoll = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -235,7 +233,7 @@ export default class AddPlant extends React.Component {
 
         //Navigate 
         setTimeout(function () {
-
+          this.setState({isLoading:false})
           this.props.navigation.reset({
             index: 0,
             routes: [{ name: 'Profile' }]
@@ -266,8 +264,8 @@ export default class AddPlant extends React.Component {
               console.log('')
           },
           {
-            text: 'Post', onPress: () =>
-              uploadPhoto()
+            text: 'Post', onPress: () =>{
+              uploadPhoto()}
           },
 
         ],
@@ -430,6 +428,9 @@ export default class AddPlant extends React.Component {
           </Svg>
         </View>
 
+      <ActivityIndicator animating={this.state.isLoading} size="large" style={{  position:'absolute', zIndex:4, alignSelf:'center',
+      marginVertical:'50%'}} />
+
         <View style={styles.imgContiner}>
 
           {this.state.image ? (
@@ -446,7 +447,7 @@ export default class AddPlant extends React.Component {
 
         <Autocomplete
           containerStyle={styles.inputFiled}
-          inputContainerStyle={styles.input}
+          inputContainerStyle={{borderWidth:0}}
           listStyle={styles.listStyle}
           style={styles.input}
           onFocus={() => {
@@ -458,10 +459,13 @@ export default class AddPlant extends React.Component {
           hideResults={this.state.suggestionList}
           placeholder={"Plant's Name"}
           data={genus}
-          defaultValue={query}
-          onChangeText={text => this.setState({ query: text })}
+          defaultValue={name}
+          onChangeText={text => {
+            this.setState({ name: text })
+        
+        }}
           renderItem={({ item, index }) => (
-            <TouchableOpacity onPress={() => this.setState({ query: item })}>
+            <TouchableOpacity onPress={() => this.setState({ name: item })}>
               {index == 0 ?
                 <Text style={styles.text}>Suggestions</Text> : null}
               <Text>{item}</Text>
@@ -485,19 +489,19 @@ export default class AddPlant extends React.Component {
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.progressText}>Reminders </Text>
 
-            {this.state.progressArray.length == 0 ?
+            
               <TouchableOpacity onPress={() => {
                 setModalVisible(true);
               }}>
-                <AntDesign name="pluscircle" size={24} color="#CFD590" /></TouchableOpacity> :
-              <TouchableOpacity onPress={() => {
-                setModalVisible(true);
-              }}>
-                <MaterialCommunityIcons name="circle-edit-outline" size={24} color="#CFD590" /></TouchableOpacity>}
+                {this.state.progressArray.length == 0 ?(
+                <AntDesign name="pluscircle" size={24} color="#CFD590" />)
+                : <MaterialCommunityIcons name="circle-edit-outline" size={24} color="#CFD590" />}
+                </TouchableOpacity> 
+
           </View>
 
           {/* Progress icons */}
-          <View>
+          <View style={{margainBottom:20}}>
             {this.state.progressArray.length == 0 ?
               <Text style={styles.text}>No reminders added</Text>
               : <FlatList
@@ -550,7 +554,7 @@ export default class AddPlant extends React.Component {
 
               <View style={styles.modelHeader}>
                 <TouchableOpacity
-                  style={{ left: -60 }}
+                  style={{ left: -80 }}
                   onPress={() => {
                     closeModel();
 
@@ -567,7 +571,7 @@ export default class AddPlant extends React.Component {
 
               <View style={styles.modelBody}>
                 {/* Progress Reminder */}
-                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20,paddingLeft:30 }}>Reminders</Text>
+                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20,paddingLeft:40 }}>Reminders</Text>
 
                 <RadioGroup
                   radioGroupList={progress}
@@ -576,12 +580,19 @@ export default class AddPlant extends React.Component {
                   onChange={(value) => { changeStyle(value); }}
                   buttonContainerStyle={styles.groubProgressButton}
                   containerStyle={styles.groubReminder}
+                  icon={
+                    <Ionicons
+                      name="ios-add"
+                      size={25}
+                      color="#2c9dd1"
+                    />
+                  }
                 />
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                   <Text style={styles.textClearfiy}>  Water</Text><Text style={styles.textClearfiy}>             Treatment</Text></View>
 
                 {/* How often Reminder */}
-                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20,paddingLeft:30 }}>How often should remind you ?</Text>
+                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20,paddingLeft:40,paddingTop:10 }}>How often should remind you ?</Text>
 
                 <RadioGroup
                   radioGroupList={this.state.activeBgColor == '#CCDDE5' ? periodWater : periodTreatment}
@@ -629,7 +640,7 @@ export default class AddPlant extends React.Component {
                   }}>
                   <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
               </View>
-              <View style={styles.modelBody}>
+              <View style={{alignSelf:'center',marginTop:-30}}>
                 <View style={{ flowDirection: 'row', alignSelf: 'center', paddingTop: 30 }}>
                   {this.state.selectedProgress == 'Water' ?
                     (waterItem()) :
@@ -755,11 +766,13 @@ const styles = StyleSheet.create({
 
   },
   listStyle: {
+    position:'absolute',
     borderWidth: 1,
     alignSelf: 'center',
-    paddingLeft: 10,
+    top:45,
+    padding: 10,
+    marginLeft:-20,
     marginBottom: 20,
-    marginLeft: 13,
     width: 390,
     borderBottomLeftRadius: 10,
     borderBottomEndRadius: 10,
@@ -796,12 +809,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 350,
     height: 100,
+    marginBottom:20,
   },
   progressText: {
     color: '#717171',
     fontFamily: 'Khmer-MN-Bold',
     fontSize: 22,
-    marginRight: 240,
+    marginRight: 230,
   },
   text: {
     fontFamily: 'Khmer-MN',
@@ -843,7 +857,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   modelHeader: {
     alignSelf: 'center',
@@ -855,6 +869,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#CFD590',
     alignSelf: 'center',
+    left:-10,
   },
   modelBody: {
     marginTop: -10,
@@ -890,7 +905,7 @@ const styles = StyleSheet.create({
 
   postButton: {
     alignSelf: 'center',
-    marginTop: 28,
+    marginTop: 18,
     marginBottom: 20,
     borderWidth: 2,
     width: 120,
