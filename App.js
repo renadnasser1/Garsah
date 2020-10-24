@@ -345,7 +345,7 @@ function AmatureStackNav() {
     <AmatureStack.Navigator>
       <AmatureStack.Screen name="Profile"
         options={{
-          title: ' Profile',
+          title: 'Profile',
         }}
 
         component={AmateurProfile} />

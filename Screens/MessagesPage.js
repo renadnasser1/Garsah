@@ -182,6 +182,7 @@ export default class MessagesPage extends React.Component {
       </View>
 
       <View style={styles.content}>
+
       <ScrollView 
       refreshControl={
         <RefreshControl
@@ -196,6 +197,7 @@ export default class MessagesPage extends React.Component {
         style={styles.ChatElement}
         onPress={() => this.props.navigation.navigate("Chat", {id:item.id})}
         >
+        
         <Image source={item.avatar ?
           {uri:item.avatar} : require("../assets/blank.png")} style={styles.prifileImg} />
        <Text style={styles.nametext}>{item.name}</Text>
@@ -230,11 +232,11 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
     nametext: {
-      fontSize: 22,
+      fontSize: 25,
       color: "#2B2B2B",
       fontWeight:'bold',
       paddingLeft: 10,
-      paddingTop: 11,
+      paddingTop: 5,
       fontFamily:'Khmer-MN-Bold'
     },
     msgtext: {
@@ -309,7 +311,6 @@ const styles = StyleSheet.create({
   },
   content:{
       position:"absolute",
-      paddingTop:30
   },
   
 });

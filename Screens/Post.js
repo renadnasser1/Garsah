@@ -123,7 +123,7 @@ export default class Post extends React.Component {
           
           setTimeout(function () {
             this.setState({isLoading:false}) 
-            this.props.navigation.pop()
+            this.props.navigation.goBack()
 
 
           }.bind(this), 1000);

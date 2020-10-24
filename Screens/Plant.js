@@ -100,7 +100,10 @@ export default class Plant extends React.Component {
         console.log("Error getting document:", error);
       });
 
-      this.setState({ reminders: localThread.reminders })
+      if(localThread.reminders==''||localThread.reminders==null){
+        this.setState({ reminders: [] })
+      }else{
+      this.setState({ reminders: localThread.reminders })}
       this.setState({ name: localThread.name })
       console.log("in ", localThread.dates)
 
