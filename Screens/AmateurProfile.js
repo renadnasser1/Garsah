@@ -137,12 +137,6 @@ const AmateurProfile = ({ navigation }) => {
                 {/* Image */}
                 <Image source={avatar ?
                     {uri:avatar} : require("../assets/blank.png")} style={styles.prifileImg} />
-                
-
-                {/* <Image
-                 source={{ uri:{avatar}}}
-                 style={styles.prifileImg}
-                 /> */}
 
 
                 {/* Edit Profile button */}

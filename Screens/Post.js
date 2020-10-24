@@ -19,7 +19,7 @@ import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons,MaterialCommunityIcons} from "@expo/vector-icons";
 import Svg, { Path } from "react-native-svg";
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
@@ -195,14 +195,23 @@ export default class Post extends React.Component {
             {/* <Image source={require("../assets/plain-white-background.jpg")} style={styles.img} /> */}
             <View style={styles.imgContiner}>
 
-              {this.state.image ? (
-                <Image source={{ uri: this.state.image }} style={styles.img} />) :
-                (<Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
-                  onPress={() => {
-                    pickImageCameraRoll();
-                  }}
-                ></Ionicons>)
-              }
+
+            {this.state.image ? (
+            <View>
+            <Image source={{ uri: this.state.image }} style={styles.img} />
+            <MaterialCommunityIcons name="circle-edit-outline" size={35} color="#CFD590" style={styles.iconEdit}
+              onPress={() => {
+                pickImageCameraRoll();
+              }}
+            ></MaterialCommunityIcons>
+            </View>
+            ) :
+            (<Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
+              onPress={() => {
+                pickImageCameraRoll();
+              }}
+            ></Ionicons>)
+          }
 
 
             </View>
@@ -329,6 +338,13 @@ const styles = StyleSheet.create({
     paddingLeft: 190,
     position: 'absolute',
     top: 130,
+
+  },
+  iconEdit: {
+    alignSelf:'flex-end',
+    position: 'absolute',
+    top: 230,
+    paddingRight:20,
 
   },
   postButton: {

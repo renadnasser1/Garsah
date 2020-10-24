@@ -46,34 +46,47 @@ export function removeAll(){
     console.log('removed')
 }
 
-export async function schedulePushNotification(reminder,id) {
+export async function schedulePushNotification(reminder,id,name) {
 
     //Data needed
     let reminderName = reminder.progres;
     let reminderPeriod = reminder.period;
 
-    var repeat = () =>{
+    var repeat;
         if(reminderPeriod == 'day'){
-            return 1
+          repeat = 1
         }else if (reminderPeriod == 'week'){
-            return 7
+          repeat = 7
         }else{
-            return 30
+          return await setMonthlyNoti(reminderName,id)
         }
-    }
-
-    console.log(repeat)
+    
 
 //set schedule notfication
  const reminderIdentifire = await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Don't forget to "+reminderName+" your "+name+" 🌱",
+      //body: 'Here is the notification body',
+      data: { screen: 'Plant',threadId:id },
+    },
+    trigger: { 
+        //seconds:60,
+        day: repeat,
+        repeats: true },
+  });
+
+  return reminderIdentifire ;
+}
+
+export async function setMonthlyNoti(reminderName,id) {
+  const reminderIdentifire = await Notifications.scheduleNotificationAsync({
     content: {
       title: reminderName+" you're plant",
       //body: 'Here is the notification body',
       data: { screen: 'Plant',threadId:id },
     },
     trigger: { 
-        seconds:60,
-        //day: repeat,
+        month: 1,
         repeats: true },
   });
 

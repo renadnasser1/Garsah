@@ -11,7 +11,6 @@ import {
   AsyncStorage,
   Dimensions,
   Modal,
-  ShadowPropTypesIOS,
 } from "react-native";
 //Firebase
 import * as firebase from "firebase";
@@ -54,11 +53,19 @@ export default class Plant extends React.Component {
     selectedSent: '',
   }
 
+ 
+
 
   async componentDidMount() {
 
+    
 
+    await this.fetchData();        
 
+  }
+
+   async fetchData(){
+    console.log('called fetchData')
     try {
 
       // get user info 
@@ -106,10 +113,15 @@ export default class Plant extends React.Component {
     }
     this.setState({ posts: localPost })
     console.log(this.state.posts.length)
-
   }
+
+
   render() {
     const { thread, ThreadId, posts, selectedProgress, showProgressModel } = this.state
+
+    this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {
+      await this.fetchData()
+    });
 
     const move = () => {
       this.props.navigation.navigate('Post', { ThreadID: this.state.ThreadId })
@@ -141,9 +153,7 @@ export default class Plant extends React.Component {
       })
     }
 
-    const openOwnerProfile = () => {
 
-    }
 
     return (
 
@@ -185,10 +195,10 @@ export default class Plant extends React.Component {
             <View style={styles.progressContainer}>
 
               {/* Progress */}
+              <Text style={styles.progressText}>Progress</Text>
 
               {this.state.reminders.length != 0 ? (
                 <View>
-                  <Text style={styles.progressText}></Text>
                   <FlatList
                     data={this.state.reminders}
                     horizontal={true}

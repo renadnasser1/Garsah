@@ -161,16 +161,6 @@ export default class Home extends React.Component {
   }//end get image
 
 
-     onLogoutPress = async () => {
-        firebase.auth()
-        .signOut()
-        .then(() => this.props.navigation.navigate('Login')), AsyncStorage.getAllKeys()
-        .then(keys => AsyncStorage.multiRemove(keys)).catch((error) => {
-          alert(error)
-        });}
-
-
-  
 
   render () {
 
@@ -229,20 +219,6 @@ export default class Home extends React.Component {
 
 
  <View style={styles.content}>
-{/* 
- <View style={styles.header}>
-   <TouchableOpacity
-                    style={styles.editButton}
-                >
-                    <Text style={styles.editText} onPress={() => {
-                       onLogoutPress()
-                    }}> Log Out</Text>
-                </TouchableOpacity>
-
-                
-   </View> */}
-
-
 
 
   <Text style={styles.text}>Gardeners </Text>
@@ -295,17 +271,7 @@ export default class Home extends React.Component {
 
    </View>
 
-   <Text style={styles.text}
-   onPress={() => this.onLogoutPress()}
-   >log out</Text>
-
-<TouchableOpacity
-                    style={styles.editButton}
-                >
-                    <Text style={styles.editText} onPress={() => {
-                       onLogoutPress()
-                    }}> Log Out</Text>
-                </TouchableOpacity>
+   <Text style={[styles.text,{alignSelf:'center',marginVertical:'40%'}]} >More is coming, Stay tuned 🌱</Text>
 
              
  </View>
@@ -331,10 +297,10 @@ flex: 1,
   alignItems:'flex-start'
 },      
  text: {
+   paddingTop:30,
         fontSize: 23,
         color: "black",
-        fontWeight:'bold',
-        paddingLeft: 10,
+        paddingLeft: 15,
         fontFamily:'Khmer-MN-Bold'
       },
       content:{

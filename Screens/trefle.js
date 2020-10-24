@@ -10,7 +10,6 @@ import {
 
 import Autocomplete from 'react-native-autocomplete-input';
 //import {getAllPlants} from '../APIcalls.js';
-import PostController from '../Controller/PostController';
 
 
 //Fonts

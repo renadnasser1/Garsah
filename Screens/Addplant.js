@@ -7,18 +7,21 @@ import {
   Image,
   Alert,
   AsyncStorage,
-  ActivityIndicator,
   Dimensions,
   Modal,
-  FlatList
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
+import Autocomplete from 'react-native-autocomplete-input';
+
 //Component
 import { periodWater, periodTreatment } from '../Component/period';
 import { progress } from '../Component/progress';
-import {bugItem,waterItem} from '../Component/bugWaterItems'; 
+import { bugItem, waterItem } from '../Component/bugWaterItems';
 
 //Functions 
 import { registerForPushNotificationsAsync, schedulePushNotification, removeAll } from '../Controller/Notification'
+import { getAllPlants } from '../Controller/APIcalls'
 
 //Firebase
 import * as firebase from "firebase";
@@ -26,10 +29,8 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 //Icons
-import { Ionicons } from "@expo/vector-icons";
-import { Entypo } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons,MaterialCommunityIcons,AntDesign } from "@expo/vector-icons";
+
 
 import Svg, { Path } from "react-native-svg"
 import * as Permissions from 'expo-permissions';
@@ -59,8 +60,9 @@ export default class AddPlant extends React.Component {
     caption: '',
     date: '',
     photoPath: '',
-    isLoading: false,
     userId: '',
+    result: [],
+    genus: [],
     progressArray: [],
     showModel: false,
     activeBgColor: "#CCDDE5",
@@ -68,6 +70,13 @@ export default class AddPlant extends React.Component {
     selectedProgress: '',
     selectedPeriod: '',
     pushToken: '',
+    suggestionList: true,
+    showProgressModel: false,
+    selectedProgress: '',
+    selectedPeriod: '',
+    selectedSent: '',
+    isLoading:false,
+
   }
 
   async componentDidMount() {
@@ -80,6 +89,10 @@ export default class AddPlant extends React.Component {
 
     }
 
+    await getAllPlants().then((genusName) => {
+      this.setState({ genus: genusName }, () => console.log('genusName', this.state.genus))
+    })
+
     const status1 = await (await ImagePicker.requestCameraRollPermissionsAsync()).status
     const { status } = await ImagePicker.requestCameraPermissionsAsync()
     if (status !== 'granted' || status1 !== 'granted') {
@@ -88,15 +101,31 @@ export default class AddPlant extends React.Component {
       this.setState({ permissions: true })
     }
 
+    console.log('affteer', this.state.genus)
   }
+
+  findPlant(name) {
+    if (name === '') {
+      return [];
+    }
+
+    const { genus } = this.state;
+    var key = name.trim()
+    var array = genus.filter((item) => item.includes(key));
+    return array
+  }
+
+
+
   render() {
-    const { image, name, caption, userId, progressArray, showModel, selectedPeriod, selectedProgress, pushToken } = this.state
+    const { image, name, caption, userId, showModel, showProgressModel } = this.state
+    const genus = this.findPlant(name);
 
     const pickImageCameraRoll = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [16, 9],
         quality: 1,
       });
 
@@ -106,7 +135,6 @@ export default class AddPlant extends React.Component {
     };
 
     const getImage = async () => {
-
 
       let imageRef = firebase.storage().ref('Posts/' + this.state.photoPath);
       imageRef.getDownloadURL().then((url) => {
@@ -144,42 +172,42 @@ export default class AddPlant extends React.Component {
       var dates = [this.state.date]
       var postId = newPost.id
       var reminders = this.state.progressArray
-      var result=[]
+      var result = []
       var id1 = '';
       var id2 = '';
 
       //Set Reminders
-      if (reminders.length!=0){
+      if (reminders.length != 0) {
 
         registerForPushNotificationsAsync().then((token) => {
           this.setState({ pushToken: token }, () => console.log('token', this.state.pushToken))
         })
 
-      for (var i = 0; i < reminders.length; i++) {
-        await schedulePushNotification(reminders[i],postId).then((id) => {
-          console.log('notifi id ' + id)
-          if (i == 0) {
-            id1 = id
-          } else {
-            id2 = id
-          }
-          
-        });
-      }
-      //add reminder obj to array item
-      var i = 0;
-       result = reminders.map(function (item) {
-        i++
-        var obj = Object.assign({}, item);
-        if (i == 1) {
-          obj.idNotifcation = id1;
-        } else {
-          obj.notificationID = id2;
+        for (var i = 0; i < reminders.length; i++) {
+          await schedulePushNotification(reminders[i], postId,this.state.name).then((id) => {
+            console.log('notifi id ' + id)
+            if (i == 0) {
+              id1 = id
+            } else {
+              id2 = id
+            }
+
+          });
         }
-        obj.postID=postId;
-        return obj;
-      })
-    }
+        //add reminder obj to array item
+        var i = 0;
+        result = reminders.map(function (item) {
+          i++
+          var obj = Object.assign({}, item);
+          if (i == 1) {
+            obj.idNotifcation = id1;
+          } else {
+            obj.notificationID = id2;
+          }
+          obj.postID = postId;
+          return obj;
+        })
+      }
 
 
       //Add new post
@@ -208,7 +236,7 @@ export default class AddPlant extends React.Component {
           this.setState({ isLoading: false })
           this.props.navigation.reset({
             index: 0,
-            routes: [{ name: 'Profile' }]
+            routes: [{ name: 'GardnerProfile' }]
           })
 
         }.bind(this), 1000);
@@ -236,8 +264,8 @@ export default class AddPlant extends React.Component {
               console.log('')
           },
           {
-            text: 'Post', onPress: () =>
-              uploadPhoto()
+            text: 'Post', onPress: () =>{
+              uploadPhoto()}
           },
 
         ],
@@ -265,7 +293,7 @@ export default class AddPlant extends React.Component {
     }
 
     const setModalVisible = (visible) => {
-     //  removeAll()
+      //removeAll()
       this.setState({ showModel: visible });
     }
 
@@ -338,11 +366,52 @@ export default class AddPlant extends React.Component {
       }
 
     }
-
+    //Methods Modal set notfication
     const closeModel = () => {
       this.setState({ selectedProgress: '', selectedPeriod: '' }, () => {
         setModalVisible(!showModel);
       });
+    }
+    //Methods Modal remove and view notfication
+    const openViewProgressModel = (visible, progres, period) => {
+
+      var reapet;
+      var st;
+      console.log(visible)
+
+      //Time
+      if (period == 'day') {
+        reapet = 'Daily'
+      } else if (period == 'week') {
+        reapet = 'Weekly'
+      } else reapet = 'Monthly'
+
+      //Sentence
+      if (progres == 'Water') {
+        st = 'Watring Plant'
+      } else st = 'Treatment Plant'
+
+      //set state
+      this.setState({ selectedProgress: progres, selectedPeriod: reapet, selectedSent: st }, () => {
+        console.log(this.state.selectedProgress, this.state.selectedPeriod)
+        this.setState({ showProgressModel: visible });
+      });
+    }
+    const closeViewProgressModel = () => {
+      console.log(this.state.showProgressModel)
+      this.setState({ selectedProgress: '', selectedPeriod: '' }, () => {
+        this.setState({ showProgressModel: false })
+      })
+    }
+
+    const removeReminder = () => {
+
+
+      var array = this.state.progressArray.filter((item) => console.log(item.progres == this.state.selectedProgress));
+      console.log(array)
+      this.setState({ progressArray: array })
+      closeViewProgressModel();
+
     }
 
     return (
@@ -368,10 +437,18 @@ export default class AddPlant extends React.Component {
           </Svg>
         </View>
 
-        <View style={styles.img}>
+        <View style={styles.imgContiner}>
 
           {this.state.image ? (
-            <Image source={{ uri: this.state.image }} style={styles.img} />) :
+            <View>
+            <Image source={{ uri: this.state.image }} style={styles.img} />
+            <MaterialCommunityIcons name="circle-edit-outline" size={35} color="#CFD590" style={styles.iconEdit}
+              onPress={() => {
+                pickImageCameraRoll();
+              }}
+            ></MaterialCommunityIcons>
+            </View>
+            ) :
             (<Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
               onPress={() => {
                 pickImageCameraRoll();
@@ -382,55 +459,119 @@ export default class AddPlant extends React.Component {
 
         </View>
 
-        <View style={styles.inputFiled}>
-          <TextInput
-            placeholder={"Name"}
-            onChangeText={(text) => this.setState({ name: text })}
-          ></TextInput>
+        <Autocomplete
+          containerStyle={styles.inputFiled}
+          inputContainerStyle={{borderWidth:0}}
+          listStyle={styles.listStyle}
+          style={styles.input}
+          onFocus={() => {
+            this.setState({ suggestionList: false })
+          }}
+          onBlur={() => {
+            this.setState({ suggestionList: true })
+          }}
+          renderSeparator={ () =>(
+            <View
+            style={{
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+              marginBottom: 10,
+            }}
+          />
+          )
+          }
+          hideResults={this.state.suggestionList}
+          placeholder={"Plant's Name"}
+          data={genus}
+          defaultValue={name}
+          onChangeText={text => {
+            this.setState({ name: text })   }}
+          renderItem={({ item, index }) => (
+            <View>
+            <TouchableOpacity onPress={() => this.setState({ name: item })}>
+              {index == 0 ?
+                <Text style={styles.text}>Suggestions</Text> : null}
+              <Text style={{padding:2}}>{item}</Text>
+            </TouchableOpacity>
+            <View
+            style={{
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+              marginBottom: 10,
+            }}
+          />
+           </View>
+          )}
+        />
 
-        </View>
 
         <View style={styles.inputFiledCaption} >
           <TextInput
+            maxLength={2200}
+            blurOnSubmit={true}
+            multiline={true}
+            textAlignVertical={'top'}
             placeholder={"Caption"}
+            style={styles.input}
             onChangeText={(text) => this.setState({ caption: text })}
           ></TextInput></View>
 
         <View style={styles.progress} >
           <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.progressText}>Progress </Text>
+            <Text style={styles.progressText}>Reminders </Text>
 
-            {this.state.progressArray.length == 0 ?
+            
               <TouchableOpacity onPress={() => {
                 setModalVisible(true);
               }}>
-                <AntDesign name="pluscircle" size={24} color="#CFD590" /></TouchableOpacity> :
-              <TouchableOpacity onPress={() => {
-                setModalVisible(true);
-              }}>
-                <MaterialCommunityIcons name="circle-edit-outline" size={24} color="#CFD590" /></TouchableOpacity>}
+                {this.state.progressArray.length == 0 ?(
+                <AntDesign name="pluscircle" size={24} color="#CFD590" />)
+                : <MaterialCommunityIcons name="circle-edit-outline" size={24} color="#CFD590" />}
+                </TouchableOpacity> 
+
           </View>
 
           {/* Progress icons */}
-          <View>
+          <View style={{margainBottom:20}}>
             {this.state.progressArray.length == 0 ?
-              <Text style={styles.text}>No progress reminders added</Text>
+              <Text style={styles.text}>No reminders added</Text>
               : <FlatList
 
                 data={this.state.progressArray}
                 horizontal={true}
-                renderItem={({ item }) => <View key={item} style={styles.itemList} >
-                  {item.progres == 'Water' ?
-                    (waterItem()) :
-                    (bugItem())}
-                </View>}
+                renderItem={({ item }) =>
+                  <View key={item} style={styles.itemList} >
+                    <TouchableOpacity
+                      style={{
+                        padding: 5,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 3,
+                        },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 4.0,
+
+                        elevation: 3,
+                      }}
+                      onPress={() =>
+                        openViewProgressModel(true, item.progres, item.period)
+                      }
+                    >
+                      {item.progres == 'Water' ?
+                        (waterItem()) :
+                        (bugItem())}
+                    </TouchableOpacity>
+                  </View>
+
+                }
                 keyExtractor={({ item }) => item}
               />}
           </View>
 
         </View>
 
-        {/* Model notifcation */}
+        {/* Model set notifcation */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -443,22 +584,24 @@ export default class AddPlant extends React.Component {
 
               <View style={styles.modelHeader}>
                 <TouchableOpacity
-                  style
+                  style={{ left: -80 }}
                   onPress={() => {
                     closeModel();
+
                   }}>
-                  <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
+                  <AntDesign name="closecircle" size={26} color="#CFD590"
+                  /></TouchableOpacity>
 
                 <View style={styles.progressReminder}>
                   <Text style={{
                     fontFamily: 'Khmer-MN-Bold',
                     fontSize: 24,
-                  }}>Progress Reminder</Text></View>
+                  }}>Reminders</Text></View>
               </View>
 
               <View style={styles.modelBody}>
                 {/* Progress Reminder */}
-                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20 }}>Progress Reminder</Text>
+                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20,paddingLeft:40 }}>Reminders</Text>
 
                 <RadioGroup
                   radioGroupList={progress}
@@ -467,12 +610,19 @@ export default class AddPlant extends React.Component {
                   onChange={(value) => { changeStyle(value); }}
                   buttonContainerStyle={styles.groubProgressButton}
                   containerStyle={styles.groubReminder}
+                  icon={
+                    <Ionicons
+                      name="ios-add"
+                      size={25}
+                      color="#2c9dd1"
+                    />
+                  }
                 />
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                   <Text style={styles.textClearfiy}>  Water</Text><Text style={styles.textClearfiy}>             Treatment</Text></View>
 
                 {/* How often Reminder */}
-                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20, }}>How often should remind you ?</Text>
+                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20,paddingLeft:40,paddingTop:10 }}>How often should remind you ?</Text>
 
                 <RadioGroup
                   radioGroupList={this.state.activeBgColor == '#CCDDE5' ? periodWater : periodTreatment}
@@ -499,6 +649,49 @@ export default class AddPlant extends React.Component {
           </View>
 
         </Modal>
+
+        {/* Modal view and remove notifcation */}
+        {/* Progress model */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.showProgressModel}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}>
+          <View style={styles.modelContiner}>
+            <View style={styles.modalViewProg}>
+
+              <View style={styles.modelHeader}>
+                <TouchableOpacity
+                 style={{left:-100,paddingTop:8}}
+                  onPress={() => {
+                    closeViewProgressModel();
+                  }}>
+                  <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
+              </View>
+              <View style={{alignSelf:'center',marginTop:-30}}>
+                <View style={{ flowDirection: 'row', alignSelf: 'center', paddingTop: 30 }}>
+                  {this.state.selectedProgress == 'Water' ?
+                    (waterItem()) :
+                    (bugItem())}</View>
+
+                <Text style={styles.progressInfoText}>{this.state.selectedSent} | {this.state.selectedPeriod}</Text>
+                <TouchableOpacity
+                  style={styles.removeButton}
+                  onPress={() => {
+                    removeReminder()
+                  }}
+                >
+                  <Text style={styles.editText}> Remove Reminder</Text>
+                </TouchableOpacity>
+
+              </View>
+            </View></View>
+        </Modal>
+
+
+
 
 
         <TouchableOpacity
@@ -529,8 +722,8 @@ const styles = StyleSheet.create({
     top: -50,
     left: -300,
   },
-
-  img: {
+  imgContiner: {
+    marginTop: 25,
     height: 280,
     width: Dimensions.get('window').width,
     backgroundColor: '#ffff',
@@ -544,20 +737,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
 
   },
-  inputFiled: {
-
-    alignSelf: 'center',
-    paddingLeft: 10,
-    paddingBottom: 20,
-    marginBottom: 20,
-    width: 350,
-    height: 49,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomEndRadius: 10,
-    borderTopRightRadius: 10,
-    flexDirection: "row",
-    backgroundColor: 'white',
+  img: {
+    height: 280,
+    width: Dimensions.get('window').width,
+    backgroundColor: '#ffff',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -566,16 +749,33 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4.65,
 
+  },
+  inputFiled: {
+    borderWidth: 0,
+    alignSelf: 'center',
+    width: 390,
+    height: 49,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopRightRadius: 10,
+    backgroundColor: 'white',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.65,
     elevation: 8,
 
   },
   inputFiledCaption: {
 
     alignSelf: 'center',
-    paddingLeft: 10,
-    paddingBottom: 20,
+    marginTop: 20,
     marginBottom: 20,
-    width: 350,
+    width: 390,
     height: 90,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
@@ -594,43 +794,61 @@ const styles = StyleSheet.create({
     elevation: 8,
 
   },
-  input: {
-    paddingLeft: 80,
-    paddingBottom: 10,
-    marginLeft: 50,
-    marginBottom: 30,
-    paddingLeft: 10,
-    width: 310,
-    height: 40,
-    flexDirection: "row",
-    backgroundColor: "#ffff",
+  listStyle: {
+    alignSelf:'center',
+    fontSize: 15,
+    fontFamily: 'Khmer-MN',
+    borderWidth: 1,
+    width: 390,
+    borderBottomLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    backgroundColor: '#fff',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.2,
-    shadowRadius: 4.65,
-
+    shadowOpacity: 0.5,
+    shadowRadius: 10.65,
     elevation: 8,
   },
+  input: {
+    borderWidth: 0,
+    paddingLeft: 10,
+    paddingTop: 5,
+    fontSize: 20,
+    fontFamily: 'Khmer-MN',
+  },
+  inputName: {
+    fontSize: 20,
+    fontFamily: 'Khmer-MN',
+    borderWidth: 0,
 
+  },
   icon: {
     alignSelf: 'center',
     position: 'absolute',
     top: 130,
 
   },
+  iconEdit: {
+    alignSelf:'flex-end',
+    position: 'absolute',
+    top: 230,
+    paddingRight:20,
+
+  },
   progress: {
     alignSelf: 'center',
     width: 350,
     height: 100,
+    marginBottom:20,
   },
   progressText: {
     color: '#717171',
     fontFamily: 'Khmer-MN-Bold',
-    fontSize: 20,
-    marginRight: 240,
+    fontSize: 22,
+    marginRight: 230,
   },
   text: {
     fontFamily: 'Khmer-MN',
@@ -660,21 +878,34 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5
   },
+  modalViewProg: {
+
+    width: Dimensions.get('window').width,
+    backgroundColor: 'white',
+    height: Dimensions.get('window').height / 2.4,
+    borderTopLeftRadius: 150,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
   modelHeader: {
+    alignSelf: 'center',
     flexDirection: 'row',
     marginTop: 40,
-    marginLeft: 55,
     marginBottom: 20,
   },
   progressReminder: {
     borderBottomWidth: 1,
     borderColor: '#CFD590',
-    marginLeft: 50,
     alignSelf: 'center',
+    left:-10,
   },
   modelBody: {
     marginTop: -10,
-    marginLeft: 50,
   },
   groubProgressButton: {
     width: 70,
@@ -707,7 +938,7 @@ const styles = StyleSheet.create({
 
   postButton: {
     alignSelf: 'center',
-    marginTop: 30,
+    marginTop: 18,
     marginBottom: 20,
     borderWidth: 2,
     width: 120,
@@ -725,7 +956,13 @@ const styles = StyleSheet.create({
     elevation: 4,
 
   },
+  progressInfoText: {
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 25,
+    marginTop: 15,
+    alignSelf: 'center'
 
+  },
   editText: {
     alignSelf: 'center',
     paddingTop: 3,
@@ -733,6 +970,27 @@ const styles = StyleSheet.create({
     color: '#CFD590',
     fontSize: 17
   },
+  removeButton: {
+    alignSelf: 'center',
+    marginTop: 28,
+    marginBottom: 20,
+    borderWidth: 2,
+    width: 180,
+    borderRadius: 20,
+    backgroundColor: "white",
+    borderColor: '#CFD590',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4.65,
+
+    elevation: 4,
+
+  },
+
   loading: {
     position: "absolute",
     alignSelf:'center',

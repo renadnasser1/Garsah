@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View , Button} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, AsyncStorage } from "react-native";
 import Constants from "expo-constants";
 //navigation
 import { NavigationContainer } from "@react-navigation/native";
@@ -34,6 +34,9 @@ import Addplant from "./Screens/Addplant";
 // Firebase
 import * as firebase from "firebase";
 
+//Font 
+import { useFonts } from 'expo-font';
+
 
 var firebaseConfig = {
   apiKey: "AIzaSyBS6vgCY1jAxupRVjFj5KJe4w0tanzF7kw",
@@ -63,16 +66,31 @@ if (!firebase.apps.length) {
 }
 //firebase.analytics();
 
+const font = () => {
+  let [fontsLoaded] = useFonts({
+    'Khmer-MN': require('./assets/fonts/KhmerMN-01.ttf'),
+    'Khmer-MN-Bold': require('./assets/fonts/KhmerMN-Bold-02.ttf'),
+  });
+}
+
+//Stacks
 const AmateurTab = createBottomTabNavigator();
 const GardnerTab = createBottomTabNavigator();
 
-const onLogoutPress = async () => {
+const onLogoutPress = async (navigation) => {
   firebase.auth()
-  .signOut()
-  .then(() => this.props.navigation.navigate('Login')), AsyncStorage.getAllKeys()
-  .then(keys => AsyncStorage.multiRemove(keys)).catch((error) => {
-    alert(error)
-  });}
+    .signOut()
+    .then(() => {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }]
+      })
+      AsyncStorage.getAllKeys()
+    })
+    .then(keys => AsyncStorage.multiRemove(keys)).catch((error) => {
+      alert(error)
+    });
+}
 
 
 
@@ -162,6 +180,7 @@ function GardnerRoot() {
 }
 
 const GardnerStack = createStackNavigator();
+const inGardnerStack = createStackNavigator();
 const AmatureStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const MessageStack = createStackNavigator();
@@ -190,20 +209,23 @@ function HomeStackNav() {
     <HomeStack.Navigator>
 
       <HomeStack.Screen name="Home"
-        options={{
+        options={({ navigation }) => ({
           title: 'Home',
-          color: 'black',
-         //headerShown: false,
-          // headerLeft: () => (
-          //   <Button 
-          //    onPress={() => Home.onLogoutPress()}
-          //    title="Logout" />
-          //),
-        }}
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => onLogoutPress(navigation)}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Logout</Text></TouchableOpacity>
+          ),
+        })}
         component={Home} />
       <HomeStack.Screen name="ViewGardenerProfile"
         options={{
-          title: 'ViewGardenerProfile',
+          title: '',
           color: 'black'
         }}
         component={ViewGardenerProfile} />
@@ -214,63 +236,61 @@ function HomeStackNav() {
         }}
         component={Chat} />
 
-<HomeStack.Screen name="AmateurProfile"
-        options={{
-          title: '',
-        }}
-        component={AmateurProfile} />
 
-<HomeStack.Screen name="GardenerProfile"
-        options={{
-          title: '',
-        }}
-        component={Chat} />
 
     </HomeStack.Navigator>
   );
 }
 
 
+
 function GardnerStackNav() {
   return (
 
-    <GardnerStack.Navigator>
-
-      <GardnerStack.Screen name="Profile"
-        options={{
-          title: 'My Profile',
-          color: 'black'
-        }}
-
-        component={GardnerProfile} />
-
-       {<GardnerStack.Screen
-        name="Plant"
-        component={Plant}
-        options={{
-          headerShown: false
-        }}
-      />} 
+    <GardnerStack.Navigator mode='modal'>
       {<GardnerStack.Screen
-        name="EditGardenerProfile"
+        name="Main"
         options={{
-          title: 'Edit Profile',
+          headerShown: false,
         }}
-        component={EditGardenerProfile}
+        component={stackInGardnerStack}
       />}
 
-      {<GardnerStack.Screen
-        name="LocationMap"
-        component={LocationMap}
-      />}
 
       {<GardnerStack.Screen
         name="Addplant"
+        options={({ navigation }) => ({
+          title: 'Add Plant',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.pop()}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Cancel</Text></TouchableOpacity>
+          ),
+        })}
+
         component={Addplant}
       />}
 
       {<GardnerStack.Screen
         name="Post"
+        options={({ navigation }) => ({
+          title: 'Add Post',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.pop()}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Cancel</Text></TouchableOpacity>
+          ),
+        })}
         component={Post}
       />}
 
@@ -278,6 +298,43 @@ function GardnerStackNav() {
     </GardnerStack.Navigator>
 
 
+
+  );
+}
+
+function stackInGardnerStack() {
+  return (
+    <inGardnerStack.Navigator>
+
+      <inGardnerStack.Screen
+        name="GardnerProfile"
+        options={{
+          title: 'My Profile',
+          color: 'black'
+        }}
+
+        component={GardnerProfile} />
+
+      {<inGardnerStack.Screen
+        name="Plant"
+        component={Plant}
+        options={{
+          headerShown: false
+        }}
+      />}
+      {<inGardnerStack.Screen
+        name="EditGardenerProfile"
+        options={{
+          title: 'Edit Profile',
+        }}
+        component={EditGardenerProfile}
+      />}
+
+      {<inGardnerStack.Screen
+        name="LocationMap"
+        component={LocationMap}
+      />}
+    </inGardnerStack.Navigator>
 
   );
 }
@@ -328,15 +385,6 @@ export default class App extends React.Component {
         <Stack.Navigator>
 
 
-
-          {/* <Stack.Screen
-            name="trefle"
-            component={trefle}
-            options={{
-              headerShown: false,
-            }}
-          /> */}
-
           <Stack.Screen
             name="SplashScreen"
             component={SplashScreen}
@@ -347,6 +395,9 @@ export default class App extends React.Component {
 
           {<Stack.Screen
             name="Plant"
+            options={{
+              headerShown: false,
+            }}
             component={Plant}
           />}
 
@@ -414,6 +465,9 @@ export default class App extends React.Component {
   }
 
 }
+
+console.disableYellowBox = true;
+
 
 //Style
 const styles = StyleSheet.create({

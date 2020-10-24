@@ -28,7 +28,7 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 //Components
-import {plantItem} from '../Component/PostItem'
+import { plantItem } from '../Component/PostItem'
 const GardnerProfile = ({ navigation }) => {
 
     const [uid, setUid] = useState()
@@ -75,9 +75,7 @@ const GardnerProfile = ({ navigation }) => {
         )
 
     }
-    // const call=() =>{
-    //     Linking.openURL(`tel:${Phone}`)
-    // }
+
     const load = async () => {
         try {
             let userId = await AsyncStorage.getItem("uid")
@@ -160,15 +158,9 @@ const GardnerProfile = ({ navigation }) => {
         return <AppLoading />;
     }
 
-    // const toPlant = (item) => (
-    //     console.log('to Plant'),
-    //  navigation.navigate('Plant')
-    //   );
-
-
-    //if (lat) {
-        return (
-            <View style={styles.container}>
+    if(lat){
+    return (
+        <View style={styles.container}>
 
 
             <ScrollView>
@@ -206,97 +198,96 @@ const GardnerProfile = ({ navigation }) => {
                             <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
                             <Text style={styles.userInfoText}> My Location</Text></View>
 
-                        <View>
+                        {lat ? (
 
+                            <MapView style={styles.mapStyle}
+                                scrollEnabled={false}
+                                intialRegion={{
+                                    latitude: latNum,
+                                    longitude: longNum,
+                                    latitudeDelta: 0.0922,
+                                    longitudeDelta: 0.0421
+                                }}
+                                region={{
+                                    latitude: latNum,
+                                    longitude: longNum,
+                                    latitudeDelta: 0.0922,
+                                    longitudeDelta: 0.0421
+                                }}
+
+                                onPress={(event) => onMapPress(event.nativeEvent.coordinate)
+                                }
+
+                            >
+
+                                <MapView.Marker
+                                    coordinate={{
+                                        latitude: latNum,
+                                        longitude: longNum
+                                    }}
+                                    pinColor={'red'}
+                                />
+
+                            </MapView>) : null}
+
+
+                    </View>
+                    </View>
+                    <View style={styles.body}>
+                        <Text style={styles.myPlantText}>My Plants</Text>
+                        <View>
+                            {postss.length == 0 ?
+                                <Text style={styles.noDataText} >No plants added yet</Text>
+                                :
+                                <FlatList
+                                    data={postss}
+                                    renderItem={({ item, index }) =>
+                                        (plantItem(item, navigation))}
+                                    keyExtractor={item => item.key}
+                                />}
                         </View>
 
-                       {lat?(
-
-                        <MapView style={styles.mapStyle}
-                            scrollEnabled={false}
-                            intialRegion={{
-                                latitude: latNum,
-                                longitude: longNum,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421
-                            }}
-                            region={{
-                                latitude: latNum,
-                                longitude: longNum,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421
-                            }}
-
-                            onPress={(event) => onMapPress(event.nativeEvent.coordinate)
-                            }
-
-                        >
-
-                            <MapView.Marker
-                                coordinate={{
-                                    latitude: latNum,
-                                    longitude: longNum
-                                }}
-                                pinColor={'red'}
-                            />
-
-                        </MapView>):null}
                     </View>
+                </ScrollView>
 
-                </View>
-                <View style={styles.body}>
-                    <Text style={styles.myPlantText}>My Plants</Text>
-                    <View>
-                    <FlatList
-                        data={postss}
-                        renderItem={({ item, index }) =>
-                            (plantItem(item,navigation))}
-                        keyExtractor={item => item.key}
-                    />
-                    </View>
+                <View style={styles.plus}>
+                    <TouchableOpacity >
+                        <Entypo name="plus" size={44} color="white"
+                            onPress={() =>
+                                navigation.navigate('Addplant')
+                            } />
+                    </TouchableOpacity></View>
 
-                </View>
-         </ScrollView>
 
-            <View style={styles.plus}>
-            <TouchableOpacity >
-                               <Entypo name="plus" size={44} color="white"
-                                   onPress={() =>
-                                       navigation.navigate('Addplant')
-                                   } />
-                           </TouchableOpacity></View>
-           
+            </View>
 
-              </View>
-
+            );
+    }else{
+        return (
+            <View style={{alignSelf: 'center',top:400}}>
+                <Text style={styles.noDataText}>Hold tight, We are processing your information</Text>
+            </View>
         );
-    // } else {
+    }
 
-    //     return (
-    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', fontFamily: 'Khmer-MN-Bold' }}>
-    //             <Text>We are processing your information</Text>
-    //         </View>
-    //     );
-    // }
-
-
-
-}//end class 
+    }//end class
 
 export default GardnerProfile;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "white",
 
-    },
+            
+const styles = StyleSheet.create({
+                container: {
+                flex: 1,
+            backgroundColor: "white",
+    
+        },
     header: {
-        paddingTop: 5,
-        backgroundColor: 'white',
-        shadowColor: "#000",
+                paddingTop: 5,
+            backgroundColor: 'white',
+            shadowColor: "#000",
         shadowOffset: {
-            width: 0,
+                width: 0,
             height: 4,
         },
         shadowOpacity: 0.1,
@@ -307,15 +298,15 @@ const styles = StyleSheet.create({
 
     },
     prifileImg: {
-        width: 60,
-        height: 60,
-        borderRadius: 50,
-        padding: 45,
-        marginTop: 20,
-        marginLeft: 20,
-        shadowColor: "#000",
+                width: 60,
+            height: 60,
+            borderRadius: 50,
+            padding: 45,
+            marginTop: 20,
+            marginLeft: 20,
+            shadowColor: "#000",
         shadowOffset: {
-            width: 2,
+                width: 2,
             height: 4,
         },
         shadowOpacity: 0.3,
@@ -323,47 +314,47 @@ const styles = StyleSheet.create({
     },
     profileInfoView: {
 
-        paddingLeft: 25,
-        paddingRight: 25,
-        borderBottomColor: 'gray'
-
-    },
+                paddingLeft: 25,
+            paddingRight: 25,
+            borderBottomColor: 'gray'
+    
+        },
     profileInfoText: {
-        fontSize: 25,
-        fontFamily: 'Khmer-MN'
-    },
+                fontSize: 25,
+            fontFamily: 'Khmer-MN'
+        },
     bioText: {
-        fontSize: 20,
-        fontFamily: 'Khmer-MN',
-        color: 'gray',
-        paddingLeft: 25
-
-    },
-    body:{
-        marginLeft:0
-    },
-
+                fontSize: 20,
+            fontFamily: 'Khmer-MN',
+            color: 'gray',
+            paddingLeft: 25
+    
+        },
+    body: {
+                marginLeft: 0
+        },
+    
     myPlantText: {
-        margin: 20,
-        marginLeft:40,
-        fontSize: 18,
-        fontFamily: 'Khmer-MN-Bold'
-
-    },
-
+                margin: 20,
+            marginLeft: 40,
+            fontSize: 18,
+            fontFamily: 'Khmer-MN-Bold'
+    
+        },
+    
     editButton: {
-        position: 'absolute',
-        alignSelf: 'flex-end',
-        borderWidth: 2,
-        width: 90,
-        borderRadius: 20,
-        backgroundColor: "white",
-        borderColor: '#CFD590',
-        marginTop: 40,
-        right: 30,
-        shadowColor: "#000",
+                position: 'absolute',
+            alignSelf: 'flex-end',
+            borderWidth: 2,
+            width: 90,
+            borderRadius: 20,
+            backgroundColor: "white",
+            borderColor: '#CFD590',
+            marginTop: 40,
+            right: 30,
+            shadowColor: "#000",
         shadowOffset: {
-            width: 0,
+                width: 0,
             height: 2,
         },
         shadowOpacity: 0.1,
@@ -373,94 +364,102 @@ const styles = StyleSheet.create({
 
     },
     editText: {
-        paddingLeft: 6,
-        paddingTop: 3,
-        fontFamily: 'Khmer-MN-Bold',
-        color: '#CFD590',
-
-    },
+                paddingLeft: 6,
+            paddingTop: 3,
+            fontFamily: 'Khmer-MN-Bold',
+            color: '#CFD590',
+    
+        },
     userInfoContiner: {
-        flexDirection: 'row',
-        marginBottom: 5,
-
-    },
-
+                flexDirection: 'row',
+            marginBottom: 5,
+    
+        },
+    
     userInfoText: {
-        paddingLeft: 4,
-        fontSize: 20,
-        fontFamily: 'Khmer-MN-Bold',
-        color: 'gray',
-        marginBottom: -5,
-    },
+                paddingLeft: 4,
+            fontSize: 20,
+            fontFamily: 'Khmer-MN-Bold',
+            color: 'gray',
+            marginBottom: -5,
+        },
     mapStyle: {
-        width: Dimensions.get('window').width,
-        height: 250,
-        left: -25,
-
-    },
-
+                width: Dimensions.get('window').width,
+            height: 250,
+            left: -25,
+    
+        },
+    
     plus: {
-        position: 'absolute',
-        alignSelf: 'flex-end',
-        right: 10,
-        bottom: 10,
-        backgroundColor: '#CFD590',
-        borderRadius: 100,
-        padding: 5,
-        paddingBottom: -5,
-        alignItems: 'center',
-        zIndex:2,
-        shadowColor: "#000",
+                position: 'absolute',
+            alignSelf: 'flex-end',
+            right: 10,
+            bottom: 10,
+            backgroundColor: '#CFD590',
+            borderRadius: 100,
+            padding: 5,
+            paddingBottom: -5,
+            alignItems: 'center',
+            zIndex: 2,
+            shadowColor: "#000",
         shadowOffset: {
-            width: 0,
+                width: 0,
             height: 3,
         },
         shadowOpacity: 0.2,
         shadowRadius: 4.0,
 
         elevation: 3,
-      
-    },
-    plantname:{
-        fontFamily: 'Khmer-MN-Bold',
-        //color:"#717171",
-        color:"white",
-        marginBottom:25,
-        marginLeft:50,
-        bottom:30,
-        fontSize:18,
-        //backgroundColor:"grey"
-        
-    },
-    plantdate:{
-    fontFamily: 'Khmer-MN-Bold',
-    color:"#717171",
-    marginLeft:5,
-    marginBottom:10,
-
-   
-    },
-    plantimage:{
-        //width: Dimensions.get('window').width,
-        width : 370,
-        height: 250,
-        borderRadius:50,
-        alignItems:"center",
-        marginLeft:20,
-        shadowColor: "#000",
-shadowOffset: {
-	width: 0,
-	height: 12,
-},
-shadowOpacity: 0.58,
-shadowRadius: 16.00,
-
 
     },
-    dateicon:{
-        marginLeft:20,
-    }
+    plantname: {
+                fontFamily: 'Khmer-MN-Bold',
+            //color:"#717171",
+            color: "white",
+            marginBottom: 25,
+            marginLeft: 50,
+            bottom: 30,
+            fontSize: 18,
+            //backgroundColor:"grey"
     
+        },
+    plantdate: {
+                fontFamily: 'Khmer-MN-Bold',
+            color: "#717171",
+            marginLeft: 5,
+            marginBottom: 10,
+    
+    
+        },
+    plantimage: {
+                //width: Dimensions.get('window').width,
+                width: 370,
+            height: 250,
+            borderRadius: 50,
+            alignItems: "center",
+            marginLeft: 20,
+            shadowColor: "#000",
+        shadowOffset: {
+                width: 0,
+            height: 12,
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.00,
 
 
+    },
+    dateicon: {
+                marginLeft: 20,
+        },
+    noDataText: {
+                flex: 1,
+            alignSelf: 'center',
+            fontFamily: 'Khmer-MN-Bold',
+            fontSize: 17,
+            color:'#717171'
+    
+        }
+    
+    
+    
 })
