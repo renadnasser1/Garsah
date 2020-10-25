@@ -49,7 +49,7 @@ const GardnerProfile = ({ navigation }) => {
     const isVisible = useIsFocused();
 
     const onEditPress = () => {
-        if(gardner==true)
+        if(gardner==="true")
         navigation.navigate("EditGardenerProfile");
         else
         navigation.navigate("EditAmateurProfile");
