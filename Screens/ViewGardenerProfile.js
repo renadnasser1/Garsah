@@ -232,7 +232,7 @@ return(
                       {/* Map */}
                       <View style={styles.userInfoContiner}>
                         <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
-                        <Text style={styles.userInfoText}> My Location</Text></View>
+                        <Text style={styles.userInfoText}> {name}'s Location</Text></View>
 
                     <View>
 
@@ -269,21 +269,24 @@ return(
                     </MapView> 
 
                  </View>
-                 <View style={styles.body}>
+
+         </View>
+         <View style={styles.body}>
                     <Text style={styles.myPlantText}>{name}'s Plants</Text>
                     <View>
+                    {post.length == 0 ?
+                                <Text style={styles.noDataText} >No plants added yet</Text>
+                                :
                     <FlatList
                         data={post}
                         renderItem={({ item, index }) =>
                             (plantItem(item,navigation))}
                         keyExtractor={item => item.key}
-                    />
+                    />}
                     </View>
                     
                     
                     </View>
-
-         </View>
 </ScrollView>
     </View>
 );
@@ -424,7 +427,15 @@ const styles = StyleSheet.create({
         paddingBottom: -5,
         alignItems: 'center'
 
-    }
+    },
+    noDataText: {
+        flex: 1,
+    alignSelf: 'center',
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 17,
+    color:'#717171'
+
+}
 
 
 })
