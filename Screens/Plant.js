@@ -70,8 +70,8 @@ export default class Plant extends React.Component {
 
       // get user info 
       let userId = await AsyncStorage.getItem("uid")
-      let name = await AsyncStorage.getItem("name")
-      this.setState({ userId: userId, userName: name })
+      var name;
+      this.setState({ userId: userId})
 
 
       // get thread id
@@ -85,6 +85,7 @@ export default class Plant extends React.Component {
       await docRef.get().then(function (doc) {
         if (doc.exists) {
           var post = {
+            userId:doc.data().Uid,
             id: id,
             name: doc.data().Name,
             dates: doc.data().Date,
@@ -100,11 +101,37 @@ export default class Plant extends React.Component {
         console.log("Error getting document:", error);
       });
 
+      //Reminders
       if(localThread.reminders==''||localThread.reminders==null){
         this.setState({ reminders: [] })
       }else{
       this.setState({ reminders: localThread.reminders })}
+
+
+      //Plant's Name
       this.setState({ name: localThread.name })
+
+      //Owner name
+      console.log('local thread'+localThread.userId)
+      if(this.state.userId!=localThread.userId){
+        //Not owner 
+        var useRef = firebase.firestore().collection("users").doc(localThread.userId);
+        await useRef.get().then(function (doc) {
+          if (doc.exists) {
+             name = doc.data().name;
+          } else {
+            console.log("No such document!");
+          }
+        }).catch(function (error) {
+          console.log("Error getting document:", error);
+        });
+        console.log(name)
+
+        this.setState({ userId: localThread.userId,userName:name})
+      }else{
+         name = await AsyncStorage.getItem("name")
+         this.setState({userName:name})
+      }
       console.log("in ", localThread.dates)
 
       var length = localThread.images.length;
