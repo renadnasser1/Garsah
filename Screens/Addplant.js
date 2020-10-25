@@ -11,8 +11,7 @@ import {
   Modal,
   FlatList,
   ActivityIndicator,
-  KeyboardAvoidingView,
-
+  KeyboardAvoidingView
 } from "react-native";
 import Autocomplete from 'react-native-autocomplete-input';
 
@@ -127,7 +126,7 @@ export default class AddPlant extends React.Component {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [16, 9],
+        aspect: [21, 9],
         quality: 1,
       });
 

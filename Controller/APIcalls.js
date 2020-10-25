@@ -4,7 +4,7 @@
 export async function getAllPlants () {
 
   const acssesToken = 'PqkcgwjM19loWLf_mmid8W6UOm8jtwWwnWn8RWO8IuM';
-  const allPlantsURL = 'http://trefle.io/api/v1/plants?token='+acssesToken;
+  const allPlantsURL = 'https://trefle.io/api/v1/plants?token='+acssesToken;
 
   var genusName = new Array();
   const fetch = require('node-fetch') ;

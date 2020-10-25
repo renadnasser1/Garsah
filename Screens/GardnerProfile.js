@@ -49,7 +49,7 @@ const GardnerProfile = ({ navigation }) => {
     const isVisible = useIsFocused();
 
     const onEditPress = () => {
-        if(gardner==true)
+        if(gardner==="true")
         navigation.navigate("EditGardenerProfile");
         else
         navigation.navigate("EditAmateurProfile");
@@ -89,7 +89,7 @@ const GardnerProfile = ({ navigation }) => {
             let Phone = await AsyncStorage.getItem("Phone")
             let lat = await AsyncStorage.getItem("latitude")
             let long = await AsyncStorage.getItem("longitude")
-            let gardner = await AsyncStorage.getItem("gardner")
+            let gardnerAsync = await AsyncStorage.getItem("gardner")
             //get posts id array
             var docRef = firebase.firestore().collection("users").doc(userId);
             await docRef.get().then(function (doc) {
@@ -131,11 +131,13 @@ const GardnerProfile = ({ navigation }) => {
             setlatNum(Number(lat))
             setlongNum(Number(long))
             setlat(lat)
-            setGardner(gardner)
+            setGardner(gardnerAsync)
+            
         } catch (err) {
             alert(err)
 
         }
+        console.log(gardner)
     }
 
     const getImage = async () => {
@@ -193,7 +195,7 @@ const GardnerProfile = ({ navigation }) => {
                         {/* Bio */}
                         <Text style={styles.bioText}>{Bio != null ? Bio : ""}</Text>
 
-                        {gardner==true?
+                        {gardner==="true"?
                         
                         <View>
                         {/* Phone number */}
