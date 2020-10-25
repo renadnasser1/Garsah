@@ -12,6 +12,7 @@ import { useIsFocused } from "@react-navigation/native";
 import {
     View,
     Text,
+    FlatList,
     TouchableOpacity,
     StyleSheet,
     Image,
@@ -26,6 +27,7 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { plantItem } from '../Component/PostItem'
 
 //Firebase
 import * as firebase from "firebase";
@@ -45,6 +47,10 @@ const AmateurProfile = ({ navigation }) => {
     const [name, setName] = useState()
     const [Bio, setBio] = useState()
     const [avatar, setAvatar] = useState()
+    const [postss, setPostss] = useState()
+
+    var postsID = []
+    var posts = []
 
 
     const isVisible = useIsFocused();
@@ -82,9 +88,40 @@ const AmateurProfile = ({ navigation }) => {
             let userId = await AsyncStorage.getItem("uid")
             let name = await AsyncStorage.getItem("name")
             let Bio = await AsyncStorage.getItem("Bio")
-           
-            
-
+            //get posts id array
+            var docRef = firebase.firestore().collection("users").doc(userId);
+            await docRef.get().then(function (doc) {
+                if (doc.exists) {
+                    postsID = doc.data().posts;
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+            });
+            //Get all posts
+            for (id of postsID) {
+                var docRef = firebase.firestore().collection("Posts").doc(id);
+                await docRef.get().then(function (doc) {
+                    if (doc.exists) {
+                        var post = {
+                            key: id,
+                            postID: doc.data().Pid,
+                            name: doc.data().Name,
+                            date: doc.data().Date[0],
+                            image: doc.data().Images[0],
+                        };
+                        posts.push(post);
+                    } else {
+                        // doc.data() will be undefined in this case
+                        console.log("No such document!");
+                    }
+                }).catch(function (error) {
+                    console.log("Error getting document: catch ", error);
+                });
+            }
+            setPostss(posts.reverse())
             setUid(userId)
             setName(name)
             setBio(Bio)
@@ -131,7 +168,7 @@ const AmateurProfile = ({ navigation }) => {
 
 
     return (
-
+<View>
         <ScrollView style={styles.container}>
             <View style={styles.header}>
                 {/* Image */}
@@ -172,15 +209,33 @@ const AmateurProfile = ({ navigation }) => {
 
             <View style={styles.body}>
                 <Text style={styles.myPlantText}>My Plants</Text>
-                {/* <TouchableOpacity style={styles.plus}>
-            <Entypo name="plus" size={44} color="white" />
-            </TouchableOpacity> */}
+                <View>
+                            {/* {postss.length == 0 ? */}
+                                <Text style={styles.noDataText} >No plants added yet</Text>
+                                {
+                                <FlatList
+                                    data={postss}
+                                    renderItem={({ item, index }) =>
+                                        (plantItem(item, navigation))}
+                                    keyExtractor={item => item.key}
+                                />}
+                        </View>
+
             </View>
 
 
 
 
         </ScrollView>
+        <View style={styles.plus}>
+                    <TouchableOpacity >
+                        <Entypo name="plus" size={44} color="white"
+                            onPress={() =>
+                                navigation.navigate('Addplant')
+                            } />
+                    </TouchableOpacity></View>
+        </View>
+      
 
     );
     
@@ -212,6 +267,9 @@ const styles = StyleSheet.create({
 
 
     },
+    body: {
+        marginLeft: 0
+},
     prifileImg: {
         width: 60,
         height: 60,
@@ -310,7 +368,53 @@ const styles = StyleSheet.create({
         paddingBottom: -5,
         alignItems: 'center'
 
-    }
+    },
+    plantname: {
+        fontFamily: 'Khmer-MN-Bold',
+    //color:"#717171",
+    color: "white",
+    marginBottom: 25,
+    marginLeft: 50,
+    bottom: 30,
+    fontSize: 18,
+    //backgroundColor:"grey"
 
+},
+plantdate: {
+        fontFamily: 'Khmer-MN-Bold',
+    color: "#717171",
+    marginLeft: 5,
+    marginBottom: 10,
+
+
+},
+plantimage: {
+        //width: Dimensions.get('window').width,
+        width: 370,
+    height: 250,
+    borderRadius: 50,
+    alignItems: "center",
+    marginLeft: 20,
+    shadowColor: "#000",
+shadowOffset: {
+        width: 0,
+    height: 12,
+},
+shadowOpacity: 0.58,
+shadowRadius: 16.00,
+
+
+},
+dateicon: {
+        marginLeft: 20,
+},
+noDataText: {
+        flex: 1,
+    alignSelf: 'center',
+    fontFamily: 'Khmer-MN-Bold',
+    fontSize: 17,
+    color:'#717171'
+
+}
 
 })
