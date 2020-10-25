@@ -134,11 +134,9 @@ export default class App extends React.Component {
       this.setState({isLoading:true})
 
       //validations
-
-
         var remoteUri = await uploadPhotoAsync(this.state.avatar, `avatars/${this.state.userId}`);
         // getImage();
-        
+
       //save cloud firestore
       // firebase.firestore().collection('users').doc(userId).update({
       //   name: this.state.name,

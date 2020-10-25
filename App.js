@@ -360,6 +360,24 @@ function AmatureStackNav() {
         component={EditAmateurProfile}
 
       />
+           {<AmatureStack.Screen
+        name="Addplant"
+        options={({ navigation }) => ({
+          title: 'Add Plant',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.pop()}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Cancel</Text></TouchableOpacity>
+          ),
+        })}
+
+        component={Addplant}
+      />}
 
     </AmatureStack.Navigator>
 

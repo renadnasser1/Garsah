@@ -11,23 +11,13 @@ import {
   StyleSheet,
   Button,
   Image,
-  ActivityIndicator,
-  ScrollView,
-  RefreshControl,
+  ActivityIndicator
 } from "react-native";
 import * as firebase from "firebase";
 
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-
-const font = () => {
-  let [fontsLoaded] = useFonts({
-    'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
-    'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
-  });
-}
-
 
 export default class Home extends React.Component {
 
@@ -47,16 +37,7 @@ export default class Home extends React.Component {
    id3:'',
    id4:'',
    id5:'',
-   refreshing: false,
   }
-
-  _onRefresh = () => {
-    this.setState({refreshing: true});
-    this.componentDidMount().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
-
 
   async componentDidMount() {
 
@@ -132,48 +113,31 @@ export default class Home extends React.Component {
           //console.log(this.state.avatar1)
          });
     })
-        .catch((e) =>{
+        .catch((e) =>
          console.log('getting downloadURL of image error => ')
         // , e),
-        // if(n == 1) 
-        // this.setState({avatar1:require("../assets/blank.png")}, () => {
-        //   //console.log(this.state.avatar1)
-        //  });
-        //   else if(n == 2)
-        //   this.setState({avatar2:require("../assets/blank.png")}, () => {
-        //    // console.log(this.state.avatar1)
-        //    });
-        //   else if(n == 3)
-        //   this.setState({avatar3:require("../assets/blank.png")}, () => {
-        //     //console.log(this.state.avatar1)
-        //    });
-        //   else if(n == 4)
-        //   this.setState({avatar4:require("../assets/blank.png")}, () => {
-        //     //console.log(this.state.avatar1)
-        //    });
-        //   else if(n == 5)
-        //   this.setState({avatar5:require("../assets/blank.png")}, () => {
-        //     //console.log(this.state.avatar1)
-        //    });
-        }
         );
 
   }//end get image
 
 
+     onLogoutPress = async () => {
+        firebase.auth()
+        .signOut()
+        .then(() => this.props.navigation.navigate('Login')), AsyncStorage.getAllKeys()
+        .then(keys => AsyncStorage.multiRemove(keys)).catch((error) => {
+          alert(error)
+        });}
+
+
+  
 
   render () {
 
     const { avatar1,avatar2,avatar3,avatar4,avatar5,id1, id2, id3, id4, id5} = this.state
 
     return(
-<ScrollView 
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh}
-          />
-        }>
+
       <View style={styles.container}>
 
 <View style={styles.SVGC}>
@@ -216,10 +180,7 @@ export default class Home extends React.Component {
     </Svg>
 </View>
 
-
-
  <View style={styles.content}>
-
 
   <Text style={styles.text}>Gardeners </Text>
 
@@ -269,16 +230,21 @@ export default class Home extends React.Component {
                {uri:this.state.avatar5} : require("../assets/blank.png")} style={styles.prifileImg} />
         </TouchableOpacity>
 
-   </View>
-
-   <Text style={[styles.text,{alignSelf:'center',marginVertical:'40%'}]} >More is coming, Stay tuned 🌱</Text>
+        
 
              
- </View>
- 
+   
+   </View>
 
-       </View> 
-       </ScrollView>
+   <Text style={styles.text}
+   onPress={() => this.onLogoutPress()}
+   >log out</Text>
+
+ </View>
+
+
+       </View> //end container
+
     ); //end return
 
   }//end render
@@ -297,10 +263,10 @@ flex: 1,
   alignItems:'flex-start'
 },      
  text: {
-   paddingTop:30,
         fontSize: 23,
         color: "black",
-        paddingLeft: 15,
+        fontWeight:'bold',
+        paddingLeft: 10,
         fontFamily:'Khmer-MN-Bold'
       },
       content:{
@@ -325,38 +291,4 @@ flex: 1,
       shadowOpacity: 0.3,
       shadowRadius: 4.65,
   },
-  editButton: {
-   // position: 'absolute',
-    alignSelf: 'flex-end',
-    borderWidth: 2,
-    width: 90,
-    borderRadius: 20,
-    backgroundColor: "white",
-    borderColor: '#CFD590',
-    marginTop: 45,
-    right: 150,
-    shadowColor: "#000",
-    shadowOffset: {
-        width: 0,
-        height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4.65,
-
-    elevation: 4,
-
-},
-editText: {
-  paddingLeft: 12,
-  paddingTop: 3,
-  fontFamily: 'Khmer-MN-Bold',
-  color: 'black',
-
-},
-header:{
-  backgroundColor: "white",
-  width: 500,
-  height:90,
-  
-}
 });
