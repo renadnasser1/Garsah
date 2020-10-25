@@ -139,6 +139,8 @@ export default class MessagesPage extends React.Component {
 
       <View style={styles.container}> 
 
+
+
       <View style={styles.SVGC}>
 
       <Svg
@@ -180,6 +182,8 @@ export default class MessagesPage extends React.Component {
     </Svg>
 
       </View>
+  {this.state.user.length!=0?
+        <View>
 
       <View style={styles.content}>
 
@@ -205,11 +209,12 @@ export default class MessagesPage extends React.Component {
       )}
       />
       </ScrollView>
-             
-            
-
-
+        
       </View>
+      </View>
+      : <View style={{alignSelf: 'center',position:'absolute',top:30}}>
+      <Text style={styles.noDataText}>No Messages </Text>
+  </View>}
       
       </View>
     );//end return
@@ -312,5 +317,13 @@ const styles = StyleSheet.create({
   content:{
       position:"absolute",
   },
+  noDataText: {
+  zIndex:2,
+alignSelf: 'center',
+fontFamily: 'Khmer-MN-Bold',
+fontSize: 17,
+color:'#717171'
+
+}
   
 });
