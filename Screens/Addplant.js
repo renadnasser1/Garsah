@@ -11,6 +11,8 @@ import {
   Modal,
   FlatList,
   ActivityIndicator,
+  KeyboardAvoidingView,
+
 } from "react-native";
 import Autocomplete from 'react-native-autocomplete-input';
 
