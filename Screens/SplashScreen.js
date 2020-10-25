@@ -135,7 +135,7 @@ function SplashScreen({ navigation }) {
                                 if (userInfo.Gardner == false) {
                                     navigation.reset({
                                         index: 0,
-                                        routes: [{ name: 'AmateurRoot' }],
+                                        routes: [{ name: 'GardnerRoot' }],
                                     });
                                 }
 

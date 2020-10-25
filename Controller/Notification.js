@@ -66,6 +66,7 @@ export async function schedulePushNotification(reminder,id,name) {
           repeat = 2629743.83
         }
     
+        console.log(repeat)
 
 //set schedule notfication
  const reminderIdentifire = await Notifications.scheduleNotificationAsync({

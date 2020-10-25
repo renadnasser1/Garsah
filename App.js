@@ -333,6 +333,17 @@ function stackInGardnerStack() {
         component={EditGardenerProfile}
       />}
 
+<inGardnerStack.Screen
+        options={{
+          title: 'Edit Profile',
+          color: 'black'
+        }}
+        name="EditAmateurProfile"
+        component={EditAmateurProfile}
+
+      />
+      
+
       {<inGardnerStack.Screen
         name="LocationMap"
         component={LocationMap}
@@ -469,7 +480,7 @@ export default class App extends React.Component {
 
 }
 
-console.disableYellowBox = true;
+//console.disableYellowBox = true;
 
 
 //Style

@@ -446,6 +446,9 @@ export default class AddPlant extends React.Component {
 
     return (
 
+      <KeyboardAvoidingView
+      behavior='padding'
+      style={{ flex: 1 }} >
       <View
         style={styles.container}>
           <ActivityIndicator animating={this.state.isLoading}
@@ -734,6 +737,7 @@ export default class AddPlant extends React.Component {
         </TouchableOpacity>
 
       </View>
+      </KeyboardAvoidingView>
 
 
     );

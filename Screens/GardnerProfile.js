@@ -33,7 +33,7 @@ const GardnerProfile = ({ navigation }) => {
 
     const [uid, setUid] = useState()
     const [name, setName] = useState()
-    const [long, setlong] = useState()
+    const [gardner, setGardner] = useState()
     const [lat, setlat] = useState()
     const [longNum, setlongNum] = useState()
     const [latNum, setlatNum] = useState()
@@ -49,7 +49,12 @@ const GardnerProfile = ({ navigation }) => {
     const isVisible = useIsFocused();
 
     const onEditPress = () => {
+        if(gardner==true)
         navigation.navigate("EditGardenerProfile");
+        else
+        navigation.navigate("EditAmateurProfile");
+
+        
     };
 
 
@@ -84,6 +89,7 @@ const GardnerProfile = ({ navigation }) => {
             let Phone = await AsyncStorage.getItem("Phone")
             let lat = await AsyncStorage.getItem("latitude")
             let long = await AsyncStorage.getItem("longitude")
+            let gardner = await AsyncStorage.getItem("gardner")
             //get posts id array
             var docRef = firebase.firestore().collection("users").doc(userId);
             await docRef.get().then(function (doc) {
@@ -125,6 +131,7 @@ const GardnerProfile = ({ navigation }) => {
             setlatNum(Number(lat))
             setlongNum(Number(long))
             setlat(lat)
+            setGardner(gardner)
         } catch (err) {
             alert(err)
 
@@ -158,7 +165,7 @@ const GardnerProfile = ({ navigation }) => {
         return <AppLoading />;
     }
 
-    if(lat){
+    if(postss){
     return (
         <View style={styles.container}>
 
@@ -185,6 +192,10 @@ const GardnerProfile = ({ navigation }) => {
 
                         {/* Bio */}
                         <Text style={styles.bioText}>{Bio != null ? Bio : ""}</Text>
+
+                        {gardner==true?
+                        
+                        <View>
                         {/* Phone number */}
                         <View style={styles.userInfoContiner}>
                             <FontAwesome name="phone" size={24} color="gray" />
@@ -229,6 +240,8 @@ const GardnerProfile = ({ navigation }) => {
                                 />
 
                             </MapView>) : null}
+                            </View>
+                          :null}
 
 
                     </View>
