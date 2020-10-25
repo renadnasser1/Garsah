@@ -123,7 +123,7 @@ export default class Post extends React.Component {
           
           setTimeout(function () {
             this.setState({isLoading:false}) 
-            this.props.navigation.pop()
+            this.props.navigation.goBack()
 
 
           }.bind(this), 1000);
@@ -144,7 +144,7 @@ export default class Post extends React.Component {
     const confirm = () => {
       Alert.alert(
         '',
-        'Are you sure you want to add a post to your thread?',
+        'Are you sure you want to add the post to your plant\'s thread?',
         [
           {
             text: 'Cancel', onPress: () =>

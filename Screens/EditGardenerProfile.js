@@ -143,25 +143,7 @@ export default class App extends React.Component {
 
 
         var remoteUri = await uploadPhotoAsync(this.state.avatar, `avatars/${this.state.userId}`);
-        // getImage();
-        
-      //save cloud firestore
-      // firebase.firestore().collection('users').doc(userId).update({
-      //   name: this.state.name,
-      //   Bio: this.state.Bio,
-      //   Phone: this.state.Phone,
-      //   avatar: this.state.avatar
-      // }).then((response) => {
 
-      //   save()
-      //   //Navigate 
-      //   this.props.navigation.reset({
-      //     index: 0,
-      //     routes: [{ name: 'GardnerRoot' }],
-      //   })
-      // }).catch((error) => {
-      //   Alert.alert(error);
-      // });
     }
 
 

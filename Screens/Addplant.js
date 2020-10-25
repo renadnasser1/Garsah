@@ -230,14 +230,17 @@ export default class AddPlant extends React.Component {
         posts: firebase.firestore.FieldValue.arrayUnion(postId),
         push_token: this.state.pushToken
       }).then((response) => {
-
+        console.log('end')
         //Navigate 
         setTimeout(function () {
+
           this.setState({ isLoading: false })
-          this.props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'GardnerProfile' }]
-          })
+          console.log('end2')
+          this.props.navigation.pop()
+          // reset({
+          //   index: 0,
+          //   routes: [{ name: 'GardnerProfile' }]
+          // })
 
         }.bind(this), 1000);
       })
@@ -293,7 +296,7 @@ export default class AddPlant extends React.Component {
     }
 
     const setModalVisible = (visible) => {
-      //removeAll()
+     //removeAll()
       this.setState({ showModel: visible });
     }
 
@@ -309,15 +312,41 @@ export default class AddPlant extends React.Component {
 
     const updateReminder = () => {
 
-      this.state.progressArray.pop()
-      const reminder = {
-        progres: this.state.selectedProgress,
-        period: this.state.selectedPeriod
-      }
-      this.state.progressArray.push(reminder);
+      var selected = this.state.selectedProgress
+      var array = this.state.progressArray
+      var length = this.state.progressArray.length
+
+
+     var array = this.state.progressArray.filter((item) => {return  item.progres != this.state.selectedProgress })
+      console.log(array)
+
+      this.setState({progressArray:array})
+
+    //   for(var i=0;i<length;i++){
+    //     if (array[i].progress == selected ) {
+    //       if(i==0){
+    //         this.state.progressArray.shift()
+    //       continue
+    //       }
+    //       if(i==1){
+    //         this.state.progressArray.pop()
+    //       continue
+    //       }
+    //   }
+    // }
+
+    const reminder = {
+      progres: this.state.selectedProgress,
+      period: this.state.selectedPeriod
+    }
+    this.state.progressArray.push(reminder);
+    //this.setState({progressArray:array})
+    console.log(this.state.progressArray)
+
       closeModel();
 
     }
+  
 
     const setReminder = async () => {
       if (this.state.selectedProgress == '' || this.state.selectedPeriod == '') {
@@ -340,7 +369,7 @@ export default class AddPlant extends React.Component {
 
         Alert.alert(
           '',
-          'You have aleardy added ' + this.state.selectedProgress + ' reminder do ypu want to update it?',
+          'You have aleardy added ' + this.state.selectedProgress + ' reminder do you want to update it?',
           [
             {
               text: 'Cancel', onPress: () =>
@@ -407,7 +436,8 @@ export default class AddPlant extends React.Component {
     const removeReminder = () => {
 
 
-      var array = this.state.progressArray.filter((item) => console.log(item.progres == this.state.selectedProgress));
+      var array = this.state.progressArray.filter((item) =>{
+        return  item.progres != this.state.selectedProgress});
       console.log(array)
       this.setState({ progressArray: array })
       closeViewProgressModel();
@@ -416,6 +446,9 @@ export default class AddPlant extends React.Component {
 
     return (
 
+      <KeyboardAvoidingView
+      behavior='padding'
+      style={{ flex: 1 }} >
       <View
         style={styles.container}>
           <ActivityIndicator animating={this.state.isLoading}
@@ -704,6 +737,7 @@ export default class AddPlant extends React.Component {
         </TouchableOpacity>
 
       </View>
+      </KeyboardAvoidingView>
 
 
     );

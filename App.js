@@ -1,10 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, AsyncStorage } from "react-native";
 import Constants from "expo-constants";
+import * as Notifications from 'expo-notifications';
+
 //navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {unsubscribe} from './Controller/Notification'
 
 // import { AppLoading } from 'expo';
 //Icons
@@ -330,6 +333,17 @@ function stackInGardnerStack() {
         component={EditGardenerProfile}
       />}
 
+<inGardnerStack.Screen
+        options={{
+          title: 'Edit Profile',
+          color: 'black'
+        }}
+        name="EditAmateurProfile"
+        component={EditAmateurProfile}
+
+      />
+      
+
       {<inGardnerStack.Screen
         name="LocationMap"
         component={LocationMap}
@@ -345,7 +359,7 @@ function AmatureStackNav() {
     <AmatureStack.Navigator>
       <AmatureStack.Screen name="Profile"
         options={{
-          title: ' Profile',
+          title: 'Profile',
         }}
 
         component={AmateurProfile} />
@@ -484,7 +498,7 @@ export default class App extends React.Component {
 
 }
 
-console.disableYellowBox = true;
+//console.disableYellowBox = true;
 
 
 //Style

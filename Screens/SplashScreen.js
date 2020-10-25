@@ -48,10 +48,7 @@ function SplashScreen({ navigation }) {
           //console.log(response);
         });
     
-        // return () => {
-        //   Notifications.removeNotificationSubscription(notificationListener);
-        //   Notifications.removeNotificationSubscription(responseListener);
-        // };
+
 
         try {
 
@@ -138,7 +135,7 @@ function SplashScreen({ navigation }) {
                                 if (userInfo.Gardner == false) {
                                     navigation.reset({
                                         index: 0,
-                                        routes: [{ name: 'AmateurRoot' }],
+                                        routes: [{ name: 'GardnerRoot' }],
                                     });
                                 }
 
