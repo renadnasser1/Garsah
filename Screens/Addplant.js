@@ -448,10 +448,9 @@ export default class AddPlant extends React.Component {
     return (
 
       <KeyboardAvoidingView
-      behavior='padding'
-      style={{ flex: 1 }} >
-      <View
-        style={styles.container}>
+      behavior='position'
+      style={styles.container}>
+
           <ActivityIndicator animating={this.state.isLoading}
               size='large'
               style={styles.loading}>
@@ -476,11 +475,13 @@ export default class AddPlant extends React.Component {
           {this.state.image ? (
             <View>
             <Image source={{ uri: this.state.image }} style={styles.img} />
-            <MaterialCommunityIcons name="circle-edit-outline" size={35} color="#CFD590" style={styles.iconEdit}
+            <View
+            style={styles.iconEdit}>
+            <MaterialCommunityIcons name="circle-edit-outline" size={35} color="#CFD590"
               onPress={() => {
                 pickImageCameraRoll();
               }}
-            ></MaterialCommunityIcons>
+            ></MaterialCommunityIcons></View>
             </View>
             ) :
             (<Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
@@ -737,7 +738,6 @@ export default class AddPlant extends React.Component {
           <Text style={styles.editText}> Post</Text>
         </TouchableOpacity>
 
-      </View>
       </KeyboardAvoidingView>
 
 
@@ -860,17 +860,20 @@ const styles = StyleSheet.create({
     borderWidth: 0,
 
   },
+
   icon: {
     alignSelf: 'center',
     position: 'absolute',
     top: 130,
-
   },
   iconEdit: {
+    backgroundColor: "rgba(239, 237, 237, 0.3)",
+    borderRadius:10,
     alignSelf:'flex-end',
     position: 'absolute',
     top: 230,
-    paddingRight:20,
+    width:35,
+    right:5
 
   },
   progress: {
