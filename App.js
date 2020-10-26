@@ -498,7 +498,7 @@ export default class App extends React.Component {
 
 }
 
-//console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 
 //Style

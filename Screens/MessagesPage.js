@@ -134,6 +134,10 @@ export default class MessagesPage extends React.Component {
 
     const { chats, user } = this.state //<--- fill this later
 
+    this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {
+      await this._onRefresh()
+    });
+
     return (
 
       <View style={styles.container}>
@@ -208,6 +212,7 @@ export default class MessagesPage extends React.Component {
                     </TouchableOpacity>
                   )}
                 />
+
               </ScrollView>
               </View>)
               : <View style={{ alignSelf: 'center', position: 'absolute', top: 30,left:210 }}>
