@@ -65,11 +65,7 @@ export default class App extends React.Component {
         imageRef.getDownloadURL().then((url) => {
           //from url you can fetched the uploaded image easily
           
-            this.setState({ avatar: url });
-          
-          
-  
-          
+            this.setState({ avatar: url });  
         })
         .catch((e) => console.log('getting downloadURL of image error => ', e));
       
