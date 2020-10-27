@@ -256,10 +256,18 @@ export default class App extends React.Component {
 
               </ActivityIndicator>
 
-              <Text style={styles.editText}
+              {/* <Text style={styles.editText}
                 onPress={() => { handleChangeAvatar() }}
 
-              > Change Profile Photo</Text></View>
+              > Change Profile Photo</Text> */}
+              <TouchableOpacity
+  
+                    >
+                        <Text style={styles.editText2} onPress={() => {
+                            handleChangeAvatar();
+                        }}>Change Profile Photo</Text>
+                    </TouchableOpacity>
+              </View>
 
             {/* Name */}
             <View style={{ flexDirection: "row" }}>
@@ -446,6 +454,13 @@ const styles = StyleSheet.create({
 
   },
   editText: {
+    alignSelf: 'center',
+    paddingTop: 3,
+    fontFamily: 'Khmer-MN-Bold',
+    color: 'black',
+
+  },
+  editText2: {
     alignSelf: 'center',
     paddingTop: 3,
     fontFamily: 'Khmer-MN-Bold',

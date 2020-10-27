@@ -82,10 +82,11 @@ export default class Home extends React.Component {
 //choosing 5 random gardeners
   for(let i=0 ; i<5 ; i++){
   rg[i]= Gardners[Math.floor(Math.random()*Gardners.length)];
-  // if(i != 0){ //this might solve the unique gardners issue
-  //   while(rg[i-1] == rg[i]){
-  //   rg[i]= Gardners[Math.floor(Math.random()*Gardners.length)];}
-  //   }
+  if(i != 0){ //this might solve the unique gardners issue
+    while(rg[i-1] == rg[i]){
+    rg[i]= Gardners[Math.floor(Math.random()*Gardners.length)];}
+    }
+
     }
   
 //setting avatars for said gardeners

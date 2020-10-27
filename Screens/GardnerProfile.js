@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
                 paddingLeft: 6,
             paddingTop: 3,
             fontFamily: 'Khmer-MN-Bold',
-            color: '#CFD590',
+            color: 'black',
     
         },
     userInfoContiner: {

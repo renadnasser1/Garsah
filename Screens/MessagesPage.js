@@ -136,7 +136,13 @@ export default class MessagesPage extends React.Component {
     const { chats,user } = this.state //<--- fill this later
 
     return(
-
+<ScrollView 
+      refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}
+        />
+      }> 
       <View style={styles.container}> 
 
       <View style={styles.SVGC}>
@@ -183,13 +189,7 @@ export default class MessagesPage extends React.Component {
 
       <View style={styles.content}>
 
-      <ScrollView 
-      refreshControl={
-        <RefreshControl
-          refreshing={this.state.refreshing}
-          onRefresh={this._onRefresh}
-        />
-      }> 
+      
       <FlatList
       data = {this.state.user}
       renderItem ={({item}) => (
@@ -204,7 +204,7 @@ export default class MessagesPage extends React.Component {
        </TouchableOpacity>
       )}
       />
-      </ScrollView>
+      
              
             
 
@@ -212,6 +212,7 @@ export default class MessagesPage extends React.Component {
       </View>
       
       </View>
+      </ScrollView>
     );//end return
 
   }//end render
