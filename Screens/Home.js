@@ -73,7 +73,7 @@ export default class Home extends React.Component {
   let usersref = db.collection("users")
   const snapshot = await usersref.where('Gardner', '==', true).get();
   if (snapshot.empty) {
-  console.log('No matching documents.');
+  console.log('No matching documents !!.');
   return;
   }  
 //Adding gardeners data into an array

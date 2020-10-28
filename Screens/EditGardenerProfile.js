@@ -71,7 +71,7 @@ export default class App extends React.Component {
 
         
       })
-        .catch((e) => console.log('getting downloadURL of image error => ', e));
+        .catch((e) => console.log('getting downloadURL of image error at => ', e));
 
       this.setState({ userId, name, email, Bio, Phone }, () => console.log('State: ', this.state))
     } catch (err) {
