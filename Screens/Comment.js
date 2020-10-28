@@ -29,7 +29,7 @@ const font = () => {
 }
 
 
-export default class Home extends React.Component {
+export default class Comment extends React.Component {
 
   constructor(props) {
     super(props)
@@ -52,7 +52,11 @@ export default class Home extends React.Component {
     this.getGardeners();
 
   }
-  
+  // return (
+  //           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //             <Text>We are still processing your information </Text>
+  //           </View>
+  //         );
 
 }// end class
 
