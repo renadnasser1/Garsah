@@ -87,9 +87,9 @@ export default class Home extends React.Component {
     //posts[i]=snapshot.docs[i].data(); <--- this worked fine
 
     var post = {
-      key: i, //<--- not sure but we want to arrange it by date
+      key: snapshot.docs[i].data().Pid, //<--- not sure but we want to arrange it by date (make it post id)
       uid:snapshot.docs[i].data().Uid,
-      name: snapshot.docs[i].data().Pid,
+      k: i,
       name: snapshot.docs[i].data().Name,
       date: snapshot.docs[i].data().Date[0],
       image: snapshot.docs[i].data().Images[0],
@@ -196,6 +196,17 @@ export default class Home extends React.Component {
     return(
 
       <View style={styles.container}>
+      <ScrollView 
+  // contentContainerStyle={{
+  //   flexDirection:'column',
+  //   }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+          >
 
 <View style={styles.SVGC}>
 <Svg
@@ -243,17 +254,7 @@ export default class Home extends React.Component {
 
 
   <Text style={styles.text}>Gardeners</Text>
-  <ScrollView 
-  // contentContainerStyle={{
-  //   flexDirection:'column',
-  //   }}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-          >
+  
    {/* Random Gardeners Profiles */}
    <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}> 
 
@@ -301,7 +302,7 @@ export default class Home extends React.Component {
         </TouchableOpacity>
 
    </View>
-   </ScrollView>
+   
   
 <View style={styles.body}>
   <View style={{ marginTop: 20}}>
@@ -313,16 +314,17 @@ export default class Home extends React.Component {
       initialNumToRender={this.state.plants.length}
       renderItem={({ item, index }) =>
           (plantItem(item,this.props.navigation))}
-      keyExtractor={item => item.key}
+      keyExtractor={item => item.k}
      
   />}
   </View>
+  
   </View>
 
              
  </View>
  
-
+ </ScrollView>
        </View> 
       
     ); //end return
@@ -340,7 +342,8 @@ const styles = StyleSheet.create({
  flex: 1,
 //backgroundColor: '#fff',
   justifyContent:'center',
-  alignItems:'flex-start'
+  alignItems:'flex-start',
+  position:"absolute",
 },      
  text: {
    paddingTop:30,
@@ -350,7 +353,7 @@ const styles = StyleSheet.create({
         fontFamily:'Khmer-MN-Bold'
       },
       content:{
-        position:"absolute",
+       // position:"absolute",
     },
     prifileImg: {
       width: 40,

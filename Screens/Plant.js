@@ -52,6 +52,7 @@ export default class Plant extends React.Component {
     selectedProgress: '',
     selectedPeriod: '',
     selectedSent: '',
+    isOwner:false,
   }
 
  
@@ -131,19 +132,28 @@ export default class Plant extends React.Component {
         this.setState({ userId: localThread.userId,userName:name})
       }else{
          name = await AsyncStorage.getItem("name")
-         this.setState({userName:name})
+         this.setState({userName:name, isOwner:true})
       }
       console.log("in ", localThread.dates)
 
       var length = localThread.images.length;
       for (var i = 0; i < length; i++) {
-        localPost.push({ image: localThread.images[i], date: localThread.dates[i], caption: localThread.captions[i] })
+        localPost.push({ image: localThread.images[i], date: localThread.dates[i], caption: localThread.captions[i]})
       }
 
     } catch (err) {
     }
     this.setState({ posts: localPost })
     console.log(this.state.posts.length)
+  }
+  onPressOwner=()=>{
+    //alert("pressed")
+  if(this.state.isOwner){
+    this.props.navigation.navigate("GardnerProfile")
+  }//true
+  else {
+    this.props.navigation.navigate("ViewGardenerProfile",{id:this.state.userId})
+  }//false
   }
 
 
@@ -219,7 +229,10 @@ export default class Plant extends React.Component {
 
             <View style={{ flexDirection: 'row' }}>
 
-                <Text style={styles.ownerName}>Owner | {this.state.userName}</Text>
+                <Text style={styles.ownerName}
+               onPress={() => 
+                this.onPressOwner()}
+              >Owner | {this.state.userName}</Text>
 
             </View>
 
