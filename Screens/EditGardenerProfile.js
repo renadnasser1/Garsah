@@ -215,7 +215,7 @@ export default class App extends React.Component {
 
     const Validate = () => {
       if (name == "") {
-        alert("please enter your name");
+        alert("please enter your name..");
       } else if (name.length < 2) {
         alert("Your name need to be at least 2 characters.");
       } else if (Phone != null &&  Phone != "" && !Phone.startsWith("05") ) {
