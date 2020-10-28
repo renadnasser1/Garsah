@@ -195,7 +195,7 @@ export default class Plant extends React.Component {
           onPress={() => {
             this.props.navigation.pop()
           }}>
-            <Ionicons name="ios-arrow-dropleft-circle" size={30} color="#CFD590" /></TouchableOpacity>
+            <Ionicons name="ios-arrow-back" size={30} color="black" /></TouchableOpacity>
 
         {/* Background */}
         <Svg

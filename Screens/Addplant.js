@@ -163,9 +163,6 @@ export default class AddPlant extends React.Component {
 
     const uploadPost = async () => {
 
-      //For update
-      // regions: firebase.firestore.FieldValue.arrayUnion("greater_virginia")
-
       //Vars
       var newPost = firebase.firestore().collection("Posts").doc();
       var images = [this.state.imageURL]
@@ -477,7 +474,7 @@ export default class AddPlant extends React.Component {
             <Image source={{ uri: this.state.image }} style={styles.img} />
             <View
             style={styles.iconEdit}>
-            <MaterialCommunityIcons name="circle-edit-outline" size={35} color="#CFD590"
+            <MaterialCommunityIcons name="circle-edit-outline" size={25} color="white"
               onPress={() => {
                 pickImageCameraRoll();
               }}
@@ -560,8 +557,8 @@ export default class AddPlant extends React.Component {
                 setModalVisible(true);
               }}>
                 {this.state.progressArray.length == 0 ?(
-                <AntDesign name="pluscircle" size={24} color="#CFD590" />)
-                : <MaterialCommunityIcons name="circle-edit-outline" size={24} color="#CFD590" />}
+                <Ionicons name="ios-add" size={32} color="#717171" />)
+                :<MaterialCommunityIcons name="circle-edit-outline" size={25} color="#717171" />}
                 </TouchableOpacity> 
 
           </View>
@@ -624,8 +621,7 @@ export default class AddPlant extends React.Component {
                     closeModel();
 
                   }}>
-                  <AntDesign name="closecircle" size={26} color="#CFD590"
-                  /></TouchableOpacity>
+                  <Ionicons name="ios-close" size={35} color="black" /></TouchableOpacity>
 
                 <View style={styles.progressReminder}>
                   <Text style={{
@@ -703,7 +699,7 @@ export default class AddPlant extends React.Component {
                   onPress={() => {
                     closeViewProgressModel();
                   }}>
-                  <AntDesign name="closecircle" size={26} color="#CFD590" /></TouchableOpacity>
+                 <Ionicons name="ios-close" size={40} color="black"/></TouchableOpacity>
               </View>
               <View style={{alignSelf:'center',marginTop:-30}}>
                 <View style={{ flowDirection: 'row', alignSelf: 'center', paddingTop: 30 }}>
@@ -867,13 +863,14 @@ const styles = StyleSheet.create({
     top: 130,
   },
   iconEdit: {
-    backgroundColor: "rgba(239, 237, 237, 0.3)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderRadius:10,
+    padding:2,
     alignSelf:'flex-end',
     position: 'absolute',
-    top: 230,
-    width:35,
-    right:5
+    top: 240,
+    width:30,
+    right:20
 
   },
   progress: {
