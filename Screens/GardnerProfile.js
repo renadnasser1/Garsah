@@ -55,7 +55,7 @@ const GardnerProfile = ({ navigation }) => {
             navigation.navigate("EditAmateurProfile");
 
 
-    };
+    }
 
 
     const onMapPress = (cords) => {
@@ -67,9 +67,6 @@ const GardnerProfile = ({ navigation }) => {
                 { text: 'Cancel', onPress: () => console.log('') },
                 {
                     text: 'Open', onPress: () =>
-                        // OpenMapDirections(null, cords, 'd').then(res => {
-                        //     console.log(res)
-                        // })
 
                         Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + cords['latitude'] + ',' + cords['longitude'])
 
@@ -109,10 +106,11 @@ const GardnerProfile = ({ navigation }) => {
                     if (doc.exists) {
                         var post = {
                             key: id,
-                            postID: doc.data().Pid,
+                            userID: doc.data().Uid,
                             name: doc.data().Name,
                             date: doc.data().Date[0],
-                            image: doc.data().Images[0],
+                            image: doc.data().Images.pop(),
+                            filePaths:doc.data().FilePaths
                         };
                         posts.push(post);
                     } else {
@@ -257,7 +255,8 @@ const GardnerProfile = ({ navigation }) => {
                                 <FlatList
                                     data={postss}
                                     renderItem={({ item, index }) =>
-                                        (plantItem(item, navigation))}
+                                        plantItem(item, navigation)
+                                    }
                                     keyExtractor={item => item.key}
                                 />}
                         </View>
@@ -429,13 +428,11 @@ const styles = StyleSheet.create({
     },
     plantname: {
         fontFamily: 'Khmer-MN-Bold',
-        //color:"#717171",
         color: "white",
         marginBottom: 25,
         marginLeft: 50,
         bottom: 30,
         fontSize: 18,
-        //backgroundColor:"grey"
 
     },
     plantdate: {

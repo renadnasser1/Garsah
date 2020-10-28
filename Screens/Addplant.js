@@ -166,6 +166,7 @@ export default class AddPlant extends React.Component {
       //Vars
       var newPost = firebase.firestore().collection("Posts").doc();
       var images = [this.state.imageURL]
+      var filePaths = [this.state.photoPath]
       var captions = [this.state.caption]
       var dates = [this.state.date]
       var postId = newPost.id
@@ -217,6 +218,7 @@ export default class AddPlant extends React.Component {
         Images: images,
         Pid: postId,
         Reminders: result,
+        FilePaths:filePaths
       }).then((response) => {
 
       }).catch((error) => {

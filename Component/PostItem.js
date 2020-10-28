@@ -9,18 +9,43 @@ import {
     Image,
     Dimensions,
 } from "react-native";
-import { Fontisto } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { EvilIcons } from '@expo/vector-icons'; 
 
+//Firebase
+import * as firebase from "firebase";
+const deleteThread = (userID,filePaths) =>{
+
+ for(file in filePaths){
+    
+    console.log(file)
+// var desertRef = firebase.storage().ref('Posts/'+file);
+// //Delete the file
+// desertRef.delete().then(function() {
+//   // File deleted successfully
+//   console.log('great')
+// }).catch(function(error) {
+//   // Uh-oh, an error occurred!
+//   console.log('not yet',error)
+// });
+
+    }
+    
+    console.log('file path',filePaths)
+
+}
 
 export const plantItem = (item, navigation) => {
     return (
         <View key={item.name} style={styles.post} >
             <View
                 flexDirection='row'>
-                <MaterialCommunityIcons style={styles.dateicon} name="record-circle" size={20} color="#F9DED4" />
-                <Text style={styles.plantdate}>{item.date} </Text></View>
+                <MaterialCommunityIcons style={styles.dateicon} name="record-circle" size={20} color="#F9DED4"/>
+                <Text style={styles.plantdate}>{item.date} </Text>
+                <TouchableOpacity
+                onPress={() =>
+                    deleteThread(item.userID,item.filePaths)
+                }><Text>Delete</Text></TouchableOpacity></View>
             <TouchableOpacity
                 onPress={() =>
                     navigation.navigate('Plant', { threadID: item.key })
@@ -30,7 +55,6 @@ export const plantItem = (item, navigation) => {
                 <Image style={styles.plantimage}
                     source={{ uri: item.image }}
                 /></View>
-
                 <Text style={styles.plantname}>{item.name} </Text>
             </TouchableOpacity>
         </View>)
@@ -40,12 +64,14 @@ export const postItem = (item) => {
     return (
         <View style={styles.post} key={item.image} >
             <View
-                flexDirection='row'>
+                style={{width: Dimensions.get('window').width,flexDirection:'row'}}>
                 {item.date?
                 <MaterialCommunityIcons style={styles.dateicon} name="record-circle" size={20} color="#F9DED4" />
                 :null}
 
-                <Text style={styles.plantdate}>{item.date} </Text></View>
+                <Text style={styles.plantdate}>{item.date} </Text>
+                {/* <MaterialCommunityIcons name="delete-circle" size={24} color="#3D6A4B" style={{alignSelf:'flex-start'}}/> */}
+                </View>
             <View
             style={styles.imgeContiner}>
                 <EvilIcons name="image" size={50} color="white" style={{zIndex:1,alignSelf:'center',paddingTop:110,position:'absolute'}}/>

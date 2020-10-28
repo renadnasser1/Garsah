@@ -123,7 +123,7 @@ console.log(g1.posts.length)
                 name: doc.data().Pid,
                 name: doc.data().Name,
                 date: doc.data().Date[0],
-                image: doc.data().Images[0],
+                image: doc.data().Images.pop(),
             };
             postTemp.push(post);
     
