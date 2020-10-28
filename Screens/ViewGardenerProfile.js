@@ -5,9 +5,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused } from "@react-navigation/native";
 
 
-
-
-
 import {
     View,
     Text,
