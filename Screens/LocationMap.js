@@ -92,12 +92,16 @@ export default class App extends React.Component {
     }
 
   }
-
+  
 
   render() {
 
     const { Marker, isEditting, userId } = this.state
 
+    const onLaterPress = () => {
+       
+      this.props.navigation.navigate('Home')
+    };
 
     const onLogoutPress = async () => {
       firebase.auth()
@@ -210,6 +214,16 @@ export default class App extends React.Component {
 
               <Text style={styles.editText} > set location </Text>
             </TouchableOpacity>
+
+           {/* MAYBE LATER BUTTON */}
+           
+            {/* <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => onLaterPress()}>
+
+
+              <Text style={styles.editText} > maybe later </Text>
+            </TouchableOpacity> */}
 
             {/* Long Press & Drag the pointer to select exact location */}
 

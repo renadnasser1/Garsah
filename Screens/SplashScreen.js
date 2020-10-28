@@ -42,7 +42,6 @@ function SplashScreen({ navigation }) {
             navigation.navigate(screen,{threadID:id})
         });
     
-        //not sure
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             console.log('clicked')
           //console.log(response);
