@@ -196,17 +196,7 @@ export default class Home extends React.Component {
     return(
 
       <View style={styles.container}>
-      <ScrollView 
-  // contentContainerStyle={{
-  //   flexDirection:'column',
-  //   }}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-          >
+      
 
 <View style={styles.SVGC}>
 <Svg
@@ -248,7 +238,17 @@ export default class Home extends React.Component {
     </Svg>
 </View>
 
-
+<ScrollView 
+  // contentContainerStyle={{
+  //   flexDirection:'column',
+  //   }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+          >
 
  <View style={styles.content}>
 
