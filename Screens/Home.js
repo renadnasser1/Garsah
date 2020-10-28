@@ -278,7 +278,7 @@ export default class Home extends React.Component {
 
    </View>
 
-   <Text style={[styles.text,{alignSelf:'center',marginVertical:'40%'}]} >Welcome to homepage branch 🌱</Text>
+   <Text style={[styles.text,{alignSelf:'center',marginVertical:'40%'}]} >Welcome to homepage branch #22🌱</Text>
 
              
  </View>
