@@ -35,7 +35,7 @@ import { set, concat } from "react-native-reanimated";
 import { ScrollView } from "react-native-gesture-handler";
 import {plantItem} from '../Component/PostItem'
 
-const ViewGardenerProfile = ({ route, navigation }) => {
+const ViewAmateurProfile = ({ route, navigation }) => {
 
     //getting the user id
     const param = route.params;
@@ -45,11 +45,6 @@ const ViewGardenerProfile = ({ route, navigation }) => {
 
     //user info
     const [name, setName] = useState()
-    const [long, setlong] = useState()
-    const [lat, setlat] = useState(0)
-    const [longNum, setlongNum] = useState(0)
-    const [latNum, setlatNum] = useState(0)
-    const [Phone, setPhone] = useState()
     const [Bio, setBio] = useState()
     const [avatar, setAvatar] = useState()
     const [post,setPost]=useState([])
@@ -87,19 +82,14 @@ const ViewGardenerProfile = ({ route, navigation }) => {
   
   var g1 = snapshot.docs[0].data();
   setName(g1.name)
-  console.log(g1.Latitude)
-  console.log(Number(g1.Latitude))
-  console.log(g1.Longtitude)
-  console.log(Number(g1.Longitude))
-  setlongNum(Number(g1.Longitude))
-  setlatNum(Number(g1.Latitude))
+ 
   
 //   setlongNum(Number(g1.Longtitude))
 //   console.log(longNum)
 //   setlat(Numnber(g1.Latitude))
 //   console.log(g1.Latitude)
 //   setlatNum(Number(g1.Latitude))
-  setPhone(g1.Phone)
+
   setBio(g1.Bio)
 // setlongNum( Number(g1.Longtitude))
 // console.log(g1.Longtitude+"lonnng")
@@ -165,30 +155,9 @@ setPost(postTemp)
     if (!fontsLoaded) {
         return <AppLoading />;
     }
-    const onMapPress = (cords) => {
+    
 
-        Alert.alert(
-            '',
-            'Garsah Will redirect you to google map',
-            [
-                { text: 'Cancel', onPress: () => console.log('') },
-                {
-                    text: 'Open', onPress: () =>
-                        // OpenMapDirections(null, cords, 'd').then(res => {
-                        //     console.log(res)
-                        // })
-
-                        Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + cords['latitude'] + ',' + cords['longitude'])
-
-                },
-
-            ],
-            { cancelable: false }
-        )
-
-    }
-
-    // if(lat){
+    
 return(
     <View  style={styles.container}>
 <ScrollView>
@@ -214,91 +183,34 @@ return(
 
                     {/* Bio */}
                     <Text style={styles.bioText}>{Bio!=null ? Bio : ""}</Text>
-                    {/* Phone number */}
-                    {(Phone && Phone!='null')?(
-                    <View style={styles.userInfoContiner}>
-                        <FontAwesome name="phone" size={24} color="gray"/>
-                         <Text style={[styles.userInfoText,{ textDecorationLine: 'underline',textDecorationColor:'#CFD590',color:'#CFD590'}]} 
-                           onPress={ () => {Linking.openURL(`tel:${Phone}`)}}
-
-                          >{Phone}</Text>
-                    </View>):
-                    <View style={styles.userInfoContiner}>
-                        <FontAwesome name="phone" size={24} color="gray"/>
-                         <Text style={styles.userInfoText}
-                          >No phone added</Text>
-                    </View>}
-
-                      {/* Map */}
-                      <View style={styles.userInfoContiner}>
-                        <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
-                        <Text style={styles.userInfoText}> {name}'s Location</Text></View>
+                    
 
                     <View>
 
                     </View>
 
-                    <MapView style={styles.mapStyle}
-                        scrollEnabled={false}
-                        intialRegion={{
-                            latitude: latNum,
-                            longitude:longNum,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        }}
-                        region={{
-                            latitude: latNum,
-                            longitude: longNum,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        }}
-
-                        onPress={(event) => onMapPress(event.nativeEvent.coordinate)
-                        }
-
-                    >
-
-                        <MapView.Marker
-                            coordinate={{
-                                latitude: latNum,
-                                longitude: longNum
-                            }}
-                            pinColor={'red'}
-                        />
-
-                    </MapView> 
+                    
 
                  </View>
-
-         </View>
-         <View style={styles.body}>
+                 <View style={styles.body}>
                     <Text style={styles.myPlantText}>{name}'s Plants</Text>
                     <View>
-                    {post.length == 0 ?
-                                <Text style={styles.noDataText} >No plants added yet</Text>
-                                :
                     <FlatList
                         data={post}
                         renderItem={({ item, index }) =>
                             (plantItem(item,navigation))}
                         keyExtractor={item => item.key}
-                    />}
+                    />
                     </View>
                     
                     
                     </View>
+
+         </View>
 </ScrollView>
     </View>
 );
-                // }else{
-
-                //     return (
-                //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                //           <Text>We are still processing your information </Text>
-                //         </View>
-                //       );
-                // }
-    
+            
    
 
 
@@ -427,15 +339,7 @@ const styles = StyleSheet.create({
         paddingBottom: -5,
         alignItems: 'center'
 
-    },
-    noDataText: {
-        flex: 1,
-    alignSelf: 'center',
-    fontFamily: 'Khmer-MN-Bold',
-    fontSize: 17,
-    color:'#717171'
-
-}
+    }
 
 
 })

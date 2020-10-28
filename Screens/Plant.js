@@ -4,6 +4,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
   StyleSheet,
   Image,
   Alert,
