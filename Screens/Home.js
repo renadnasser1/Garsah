@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import  Svg, { Defs, ClipPath, Path, G } from "react-native-svg"
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-community/async-storage';
+//import { ScrollView } from "react-native-gesture-handler";
+import {plantItem} from '../Component/PostItem'
 
 import {
   View,
@@ -14,6 +16,7 @@ import {
   ActivityIndicator,
   ScrollView,
   RefreshControl,
+  FlatList,
 } from "react-native";
 import * as firebase from "firebase";
 
@@ -47,6 +50,7 @@ export default class Home extends React.Component {
    id3:'',
    id4:'',
    id5:'',
+   plants:[],
    refreshing: false,
   }
 
@@ -61,8 +65,45 @@ export default class Home extends React.Component {
   async componentDidMount() {
 
     this.getGardeners();
+    this.getPosts();
 
   }
+
+  getPosts = async () =>{
+
+    var posts = []
+
+    //getting Posts from DB
+    const db = firebase.firestore()
+  let usersref = db.collection("Posts").orderBy("Date", "desc")
+  const snapshot = await usersref.limit(5).get();
+  if (snapshot.empty) {
+  console.log('No matching documents.');
+  return;
+  }  
+//Adding posts data into an array
+  for(let i=0; i<snapshot.size;i++) 
+  {
+    //posts[i]=snapshot.docs[i].data(); <--- this worked fine
+
+    var post = {
+      key: i, //<--- not sure but we want to arrange it by date
+      uid:snapshot.docs[i].data().Uid,
+      name: snapshot.docs[i].data().Pid,
+      name: snapshot.docs[i].data().Name,
+      date: snapshot.docs[i].data().Date[0],
+      image: snapshot.docs[i].data().Images[0],
+  };
+  posts.push(post);
+  
+  }//end for loop
+  this.setState({ plants: posts }, () => {
+    console.log("plants length " + this.state.plants.length)
+  });
+
+  //console.log(posts[0]);
+
+  }//end get Posts
 
  getGardeners = async () => {
 
@@ -141,26 +182,6 @@ export default class Home extends React.Component {
         .catch((e) =>{
          console.log('getting downloadURL of image error => ')
         // , e),
-        // if(n == 1) 
-        // this.setState({avatar1:require("../assets/blank.png")}, () => {
-        //   //console.log(this.state.avatar1)
-        //  });
-        //   else if(n == 2)
-        //   this.setState({avatar2:require("../assets/blank.png")}, () => {
-        //    // console.log(this.state.avatar1)
-        //    });
-        //   else if(n == 3)
-        //   this.setState({avatar3:require("../assets/blank.png")}, () => {
-        //     //console.log(this.state.avatar1)
-        //    });
-        //   else if(n == 4)
-        //   this.setState({avatar4:require("../assets/blank.png")}, () => {
-        //     //console.log(this.state.avatar1)
-        //    });
-        //   else if(n == 5)
-        //   this.setState({avatar5:require("../assets/blank.png")}, () => {
-        //     //console.log(this.state.avatar1)
-        //    });
         }
         );
 
@@ -170,16 +191,10 @@ export default class Home extends React.Component {
 
   render () {
 
-    const { avatar1,avatar2,avatar3,avatar4,avatar5,id1, id2, id3, id4, id5} = this.state
+    const { avatar1,avatar2,avatar3,avatar4,avatar5,id1, id2, id3, id4, id5, plants} = this.state
 
     return(
-<ScrollView 
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh}
-          />
-        }>
+
       <View style={styles.container}>
 
 <View style={styles.SVGC}>
@@ -228,7 +243,17 @@ export default class Home extends React.Component {
 
 
   <Text style={styles.text}>Gardeners</Text>
-
+  <ScrollView 
+  // contentContainerStyle={{
+  //   flexDirection:'column',
+  //   }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+          >
    {/* Random Gardeners Profiles */}
    <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}> 
 
@@ -276,15 +301,30 @@ export default class Home extends React.Component {
         </TouchableOpacity>
 
    </View>
-
-   <Text style={[styles.text,{alignSelf:'center',marginVertical:'40%'}]} >Welcome to homepage1 branch 🌱</Text>
+   </ScrollView>
+  
+<View style={styles.body}>
+  <View style={{ marginTop: 20}}>
+  {this.state.plants.length == 0 ?
+              <Text style={styles.noDataText} >No plants added yet</Text>
+              :
+  <FlatList
+      data={this.state.plants}
+      initialNumToRender={this.state.plants.length}
+      renderItem={({ item, index }) =>
+          (plantItem(item,this.props.navigation))}
+      keyExtractor={item => item.key}
+     
+  />}
+  </View>
+  </View>
 
              
  </View>
  
 
        </View> 
-       </ScrollView>
+      
     ); //end return
 
   }//end render
@@ -297,7 +337,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   SVGC :{
-flex: 1,
+ flex: 1,
 //backgroundColor: '#fff',
   justifyContent:'center',
   alignItems:'flex-start'
@@ -364,5 +404,13 @@ header:{
   width: 500,
   height:90,
   
+},
+noDataText: {
+  flex: 1,
+alignSelf: 'center',
+fontFamily: 'Khmer-MN-Bold',
+fontSize: 17,
+color:'#717171'
+
 }
 });
