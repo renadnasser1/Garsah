@@ -86,7 +86,6 @@ export default class Home extends React.Component {
     while(rg[i-1] == rg[i]){
     rg[i]= Gardners[Math.floor(Math.random()*Gardners.length)];}
     }
-
     }
   
 //setting avatars for said gardeners
@@ -228,7 +227,7 @@ export default class Home extends React.Component {
  <View style={styles.content}>
 
 
-  <Text style={styles.text}>Gardeners of Garsah </Text>
+  <Text style={styles.text}>Gardeners</Text>
 
    {/* Random Gardeners Profiles */}
    <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}> 
