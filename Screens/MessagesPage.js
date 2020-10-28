@@ -83,7 +83,6 @@ export default class MessagesPage extends React.Component {
     }//end for loop
 
     this.setState({ chats: userchats }, () => {
-      console.log("chat state" + this.state.chats)
     });
 
     var userinfo = [] //store user info objects
@@ -112,7 +111,7 @@ export default class MessagesPage extends React.Component {
     }//end for loop
 
     this.setState({ user: userinfo }, () => {
-      console.log("user info " + this.state.user)
+    //  console.log("user info " + this.state.user)
     });
 
   }//end get chats
