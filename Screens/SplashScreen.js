@@ -46,6 +46,8 @@ function SplashScreen({ navigation }) {
             console.log('clicked')
           //console.log(response);
         });
+    
+
 
         try {
 
