@@ -29,7 +29,7 @@ const font = () => {
 }
 
 
-export default class Home extends React.Component {
+export default class Comment extends React.Component {
 
   constructor(props) {
     super(props)
