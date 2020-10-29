@@ -159,7 +159,7 @@ export default class Plant extends React.Component {
 
 
   render() {
-    const { thread, ThreadId, posts, selectedProgress, showProgressModel } = this.state
+    const { thread, ThreadId, posts, selectedProgress, showProgressModel , isOwner} = this.state
 
     this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {
       await this.fetchData()
@@ -323,7 +323,7 @@ export default class Plant extends React.Component {
               </View>
             </View></View>
         </Modal>
-
+{ this.state.isOwner?
         <View style={styles.plus}>
           <TouchableOpacity>
             <Entypo name="plus" size={44} color="white"
@@ -333,7 +333,7 @@ export default class Plant extends React.Component {
           </TouchableOpacity>
 
         </View>
-
+  : null}
       </View>
     );
   }
