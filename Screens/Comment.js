@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import  Svg, { Defs, ClipPath, Path, G } from "react-native-svg"
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-community/async-storage';
-
 import {
   View,
   Text,
@@ -27,7 +26,8 @@ const font = () => {
     'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
   });
 }
-
+//Icons
+import { Entypo,Ionicons,AntDesign } from '@expo/vector-icons';
 
 export default class Comment extends React.Component {
 
@@ -59,6 +59,7 @@ export default class Comment extends React.Component {
 
     return(
       <ScrollView 
+      style={styles.container}
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
@@ -66,9 +67,17 @@ export default class Comment extends React.Component {
           />
         }>
        
-      <View style={styles.container}>
+      <View >
+     
+        <View style={styles.component1}>
+         <TextInput
+                placeholder={"Enter your comment"}
+           
+                style={styles.inputFiled}
+              ></TextInput>
+              <Ionicons name="ios-send" color='#B7BD74' size={35} />
+</View>
 
-      
 
       </View> 
 
@@ -153,5 +162,32 @@ const styles = StyleSheet.create({
     width: 500,
     height:90,
     
+  },
+  inputFiled: {
+    marginLeft:15,
+    padding: 8,
+    paddingBottom: 2,
+    marginRight:15,
+    width: 340,
+    height: 40,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopRightRadius: 10,
+    flexDirection: "row",
+   backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.65,
+
+    elevation: 8,
+  },
+  component1:{
+ top:670,   
+ flexDirection: "row", 
   }
   });

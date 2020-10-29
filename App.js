@@ -33,6 +33,7 @@ import MessagesPage from "./Screens/MessagesPage";
 import Chat from "./Screens/Chat";
 import ViewGardenerProfile from "./Screens/ViewGardenerProfile";
 import Addplant from "./Screens/Addplant";
+import Comment from "./Screens/Comment";
 
 // Firebase
 import * as firebase from "firebase";
@@ -239,7 +240,21 @@ function HomeStackNav() {
         }}
         component={Chat} />
 
-
+<HomeStack.Screen name="Comment"
+        options={({ navigation }) => ({
+          title: 'Commentt',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.pop()}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Cancel</Text></TouchableOpacity>
+          ),
+        })}
+        component={Comment} />
 
     </HomeStack.Navigator>
   );
@@ -296,6 +311,25 @@ function GardnerStackNav() {
         })}
         component={Post}
       />}
+    
+    {/* {<GardnerStack.Screen
+        name="Comment"
+        options={({ navigation }) => ({
+          title: 'Comment',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.pop()}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Cancel</Text></TouchableOpacity>
+          ),
+        })}
+        component={Comment}
+      />} */}
+    
 
 
     </GardnerStack.Navigator>
@@ -325,6 +359,8 @@ function stackInGardnerStack() {
           headerShown: false
         }}
       />}
+
+
       {<inGardnerStack.Screen
         name="EditGardenerProfile"
         options={{
