@@ -49,10 +49,33 @@ export default class Home extends React.Component {
 
   async componentDidMount() {
 
-    this.getGardeners();
+    // this.getGardeners();
 
-  }
+  } //componentDidMount
   
+  render () {
+
+   // const { avatar1,avatar2,avatar3,avatar4,avatar5,id1, id2, id3, id4, id5} = this.state
+
+    return(
+      <ScrollView 
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }>
+       
+      <View style={styles.container}>
+
+      
+
+      </View> 
+
+</ScrollView>
+    ); //return
+
+  } //Render
 
 }// end class
 
