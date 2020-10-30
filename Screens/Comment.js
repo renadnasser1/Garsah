@@ -43,7 +43,6 @@ export default class Comment extends React.Component {
    comments:[],
    users:[],
    name:'',
-
   }
 
   _onRefresh = () => {
@@ -118,7 +117,6 @@ export default class Comment extends React.Component {
                 marginBottom: 10,
               }}
             /> */}
-
        {/* <FlatList
                   data={this.state.user}
                   renderItem={({ item }) => (
