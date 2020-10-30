@@ -33,10 +33,17 @@ export default class Comment extends React.Component {
 
   constructor(props) {
     super(props)
+
   }
 
   state = {
    refreshing: false,
+   Pid:'',
+   comment :'',
+   comments:[],
+   users:[],
+   name:'',
+
   }
 
   _onRefresh = () => {
@@ -45,18 +52,51 @@ export default class Comment extends React.Component {
       this.setState({refreshing: false});
     });
   }
+  
+  async handleSend(comment) {
+    const db = firebase.firestore()
+    const chatsRef = db.collection('Comments')
+//     var date = moment()
+//       .utcOffset('+05:30')
+//       .format('YYYY-MM-DD hh:mm:ss a');
+//       console.log(date)
+// console.log(time)
+    const res = await chatsRef.doc(this.state.Pid).collection('comments').add(
+     {
+      Comment:comment,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    Name:this.state.name,
+     } 
+    );
 
+      // const writes = comment.map((m) => chatsRef
 
+      //  .doc(this.state.Pid)
+
+      //  .collection('comments').add(m))
+
+      await Promise.all(res)
+
+  }
   async componentDidMount() {
-
+    let name = await AsyncStorage.getItem("name")
+    this.setState({ name: name }, () => { console.log('name', this.state.name) })
+   
+    this.setState({ Pid: this.props.route.params.Pid }, () => { console.log('thread id at cooment ', this.state.Pid) })
+//this.getComment()
     // this.getGardeners();
 
   } //componentDidMount
+  getComment = async () => {
+
+
+
+  }
   
   render () {
 
-   // const { avatar1,avatar2,avatar3,avatar4,avatar5,id1, id2, id3, id4, id5} = this.state
-
+    const { comment} = this.state
+   
     return(
       <ScrollView 
       style={styles.container}
@@ -66,20 +106,53 @@ export default class Comment extends React.Component {
             onRefresh={this._onRefresh}
           />
         }>
+       <View >
        
-      <View >
-     
+{/* <View style={{ flexDirection: 'row'}}> <<<<<<<<<<<<<<<< PUT THIS INSIDE THE FLATLIST ! 
+       <Text style={styles.UsernameText}>User:</Text>
+       <Text style={styles.CommentText}>comment</Text></View>
+       <View 
+              style={{
+                borderBottomColor: '#C0C0C0',
+                borderBottomWidth: 1,
+                marginBottom: 10,
+              }}
+            /> */}
+
+       {/* <FlatList
+                  data={this.state.user}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      style={styles.ChatElement}
+                      onPress={() => this.props.navigation.navigate("Chat", { id: item.id })}
+                    >
+
+                      <Image source={item.avatar ?
+                        { uri: item.avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
+                      <Text style={styles.nametext}>{item.name}</Text>
+                    </TouchableOpacity>
+                  )}
+                /> */}
+       </View>
+
         <View style={styles.component1}>
          <TextInput
+         clearButtonMode="always"
                 placeholder={"Enter your comment"}
-           
+                onChangeText={(text) =>{this.setState({ comment:text}, () => {
+      //console.log("comment of the user is " + this.state.comment)
+    }); }}
                 style={styles.inputFiled}
               ></TextInput>
-              <Ionicons name="ios-send" color='#B7BD74' size={35} />
+              <Ionicons name="ios-send" color='#B7BD74' size={35} 
+               onPress={() =>
+                              this.handleSend(this.state.comment)
+                            } />
 </View>
 
 
-      </View> 
+  
+
 
 </ScrollView>
     ); //return
@@ -91,7 +164,7 @@ export default class Comment extends React.Component {
 const styles = StyleSheet.create({
 
     container: {
-      flex: 2,
+      flex: 1,
       backgroundColor: 'white',
     },
     SVGC :{
@@ -100,56 +173,8 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'flex-start'
   },      
-   text: {
-     paddingTop:30,
-          fontSize: 23,
-          color: "black",
-          paddingLeft: 15,
-          fontFamily:'Khmer-MN-Bold'
-        },
-        content:{
-          position:"absolute",
-      },
-      prifileImg: {
-        width: 40,
-        height: 50,
-        borderRadius: 50,
-        padding: 30,
-       // marginTop: 4,
-       // marginLeft: 5,
-       paddingBottom: 30,
-       marginRight:23,
-       marginLeft:20,
-        //position: "absolute",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 2,
-            height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4.65,
-    },
-    editButton: {
-     // position: 'absolute',
-      alignSelf: 'flex-end',
-      borderWidth: 2,
-      width: 90,
-      borderRadius: 20,
-      backgroundColor: "white",
-      borderColor: '#CFD590',
-      marginTop: 45,
-      right: 150,
-      shadowColor: "#000",
-      shadowOffset: {
-          width: 0,
-          height: 2,
-      },
-      shadowOpacity: 0.1,
-      shadowRadius: 4.65,
-  
-      elevation: 4,
-  
-  },
+   
+ 
   editText: {
     paddingLeft: 12,
     paddingTop: 3,
@@ -187,7 +212,23 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   component1:{
- top:670,   
+position:'absolute', 
+top:670,  
  flexDirection: "row", 
-  }
+  },
+  UsernameText:{
+   
+      margin: 5,
+      marginLeft: 10,
+      fontSize: 22,
+      fontFamily: 'Khmer-MN-Bold'
+
+  },
+  CommentText:{
+    margin: 5,
+    fontSize: 22,
+    fontFamily: 'Khmer-MN'
+
+},
+  
   });

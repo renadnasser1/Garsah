@@ -327,7 +327,7 @@ export default class Plant extends React.Component {
           <TouchableOpacity>
             <FontAwesome name="comment" size={45} color="white"
               onPress={() =>
-                this.props.navigation.navigate("Comment")
+                this.props.navigation.navigate('Comment',{ Pid: this.state.ThreadId})
               } />
           </TouchableOpacity>
 
