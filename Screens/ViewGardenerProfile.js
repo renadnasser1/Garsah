@@ -63,12 +63,8 @@ const ViewGardenerProfile = ({ route, navigation }) => {
 
     useEffect(() => {
 
-        if (isVisible) {  
-           // console.log('in in use effect')
-           // console.log("lat "+ lat)
-     
-            load()
-            
+        if (isVisible) {   
+            load()     
         }
     }, [isVisible])
 
