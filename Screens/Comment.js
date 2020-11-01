@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  FlatList,
   Button,
   Image,
   ActivityIndicator,
@@ -100,15 +101,24 @@ console.log("hello")
 
 for (let i = 0; i < snapshot.size; i++) {
   //Temp[i]=snapshot.docs[i].data()
- 
-}
+  var c = {
+    key: i, //<--- not sure but we want to arrange it by date (make it post id)
+    comment: snapshot.docs[i].data().Comment,
+    name: snapshot.docs[i].data().Name,
+    //date: snapshot.docs[i].data().createdAt.slice(0.12),
 
+};
+Temp.push(c);
+}
+this.setState({ comments: Temp }, () => {
+  console.log("comments " + this.state.comments.length)
+});
 
   }//end get comment 
   
   render () {
 
-    const { comment} = this.state
+    const { comment,comments} = this.state
    
     return(
       <ScrollView 
@@ -120,31 +130,18 @@ for (let i = 0; i < snapshot.size; i++) {
           />
         }>
        <View >
-       
-{/* <View style={{ flexDirection: 'row'}}> <<<<<<<<<<<<<<<< PUT THIS INSIDE THE FLATLIST ! 
-       <Text style={styles.UsernameText}>User:</Text>
-       <Text style={styles.CommentText}>comment</Text></View>
-       <View 
-              style={{
-                borderBottomColor: '#C0C0C0',
-                borderBottomWidth: 1,
-                marginBottom: 10,
-              }}
-            /> */}
-       {/* <FlatList
-                  data={this.state.user}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      style={styles.ChatElement}
-                      onPress={() => this.props.navigation.navigate("Chat", { id: item.id })}
-                    >
+    
 
-                      <Image source={item.avatar ?
-                        { uri: item.avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
-                      <Text style={styles.nametext}>{item.name}</Text>
-                    </TouchableOpacity>
+       <FlatList
+                  data={this.state.comments}
+                  renderItem={({ item }) => (
+             <TouchableOpacity  style={{ flexDirection: 'row',borderBottomColor: '#C0C0C0', borderBottomWidth: 1,marginBottom: 10,}} >
+       <Text  style={styles.UsernameText}>{item.name} : </Text>
+       <Text style={styles.CommentText}>{item.comment}</Text>
+       </TouchableOpacity>
+                   
                   )}
-                /> */}
+                />
        </View>
 
         <View style={styles.component1}>
@@ -159,6 +156,7 @@ for (let i = 0; i < snapshot.size; i++) {
               <Ionicons name="ios-send" color='#B7BD74' size={35} 
                onPress={() =>
                               this.handleSend(this.state.comment)
+                            
                             } />
 </View>
 
