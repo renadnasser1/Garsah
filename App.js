@@ -242,10 +242,10 @@ function HomeStackNav() {
 
 <HomeStack.Screen name="Comment"
         options={({ navigation }) => ({
-          title: 'Commentt',
+          title: 'Comment',
           headerLeft: () => (
             <TouchableOpacity
-              onPress={() => navigation.pop()}><Text
+            onPress={() => navigation.pop()}><Text
                 style={{
                   fontFamily: 'Khmer-MN-Bold',
                   fontSize: 18,

@@ -67,7 +67,7 @@ export default class Plant extends React.Component {
   }
 
    async fetchData(){
-    console.log('called fetchData')
+    //console.log('called fetchData')
     try {
 
       // get user info 

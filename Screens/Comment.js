@@ -16,7 +16,6 @@ import {
   RefreshControl,
 } from "react-native";
 import * as firebase from "firebase";
-
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
@@ -41,6 +40,7 @@ export default class Comment extends React.Component {
   state = {
    refreshing: false,
    Pid:'',
+   plantName:'',
    comment :'',
    comments:[],
    users:[],
@@ -57,12 +57,26 @@ export default class Comment extends React.Component {
   async componentDidMount() {
     let name = await AsyncStorage.getItem("name")
     this.setState({ name: name }, () => { console.log('name', this.state.name) })
-   
+
     this.setState({ Pid: this.props.route.params.Pid }, () => { console.log('thread id at cooment ', this.state.Pid) })
+    this.getPlantName()
     this.getComment()
+    
  
 
   } //componentDidMount
+  
+getPlantName = async () => {
+    
+    const db = firebase.firestore()
+    
+   
+    const commenttRef = db.collection('Posts')
+    const snapshot = await  commenttRef.doc(this.state.Pid).get()
+    var x = snapshot.data().Name
+  
+    this.setState({ plantName: x }, () => { console.log('thread name  ', this.state.plantName) })
+  }
   async handleSend(comment) {
 
       this.textInput.clear()
@@ -94,6 +108,7 @@ export default class Comment extends React.Component {
   }
   getComment = async () => {
     const db = firebase.firestore()
+   
     const commenttRef = db.collection('Comments')
     const snapshot = await commenttRef.doc(this.state.Pid).collection('comments').orderBy("createdAt", "asc").get();
 
@@ -123,24 +138,39 @@ this.setState({ comments: Temp }, () => {
   
   render () {
 
-    const { comment,comments} = this.state
+    const { comment,comments,plantName} = this.state
    
     return(
-      <ScrollView 
+  
+      <View 
       style={styles.container}
+     
+
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={this._onRefresh}
           />
         }>
-       <View >
-    
+       <View>
 
-       <FlatList
+       <View style={styles.SVGC}>
+          
+       <Svg id="Component_12_8" data-name="Component 12 – 8" xmlns="http://www.w3.org/2000/svg" width="773.491" height="990.453" viewBox="0 0 773.491 990.453">
+  <Path id="Path_28" data-name="Path 28" d="M3767-781.556c226.72,139.386,61.635,224.421,200.813,301.393s355.9,6.493,355.9,6.493,95.837-55.164,13.369-98.241,1.659-12.193,1.659-12.193-86.6-88.189-187.912-98.478-113.807-17.149-177.55-70.149-15.081-79.777-62.709-134.92S3767-947.454,3767-947.454Z" transform="translate(-2761.646 -2276.677) rotate(50)" fill="#eff6f9"/>
+  <Path id="Path_29" data-name="Path 29" d="M3763.908-959.452c51.47,23.8,273.349,84.806,147.25,61.593s160.619,86.965,155.523,160.654c7.047,16.827,40.127,15.631,59.658,21.592.728.223-15.547,11.828-14.495,12.119,48.918,13.54,117.314.559,117.314.559V-986.21H3767.181s-23.093,25.549-3.038,24.844S3763.908-959.452,3763.908-959.452Z" transform="translate(-3469.66 1015.222)" fill="#f8f0d7"/>
+  <Path id="Path_39" data-name="Path 39" d="M3767-797.89c185.937,125.662,50.548,202.325,164.691,271.718s291.881,5.853,291.881,5.853,78.6-49.732,10.964-88.568,1.361-10.993,1.361-10.993-133.235-113.677-135.534-81.969c-.91-.119,39.957-5.733,39.957-5.733s-151.867-16.541-204.145-64.323-12.368-71.923-51.428-121.636S3767-947.454,3767-947.454Z" transform="translate(-3590.367 1484.19)" fill="#cfd590"/>
+</Svg>
+
+
+
+       </View>
+     <Text style = {styles.welcome}>Leave a comment on {this.state.plantName}</Text>
+
+       <FlatList style ={{ marginBottom: 120,}}
                   data={this.state.comments}
                   renderItem={({ item }) => (
-             <TouchableOpacity  style={{ flexDirection: 'row',borderBottomColor: '#C0C0C0', borderBottomWidth: 1,marginBottom: 10,}} >
+             <TouchableOpacity  style={{ flexDirection: 'row',borderBottomColor: '#C0C0C0', borderBottomWidth: 1,marginBottom: 10,}}>
        <Text  style={styles.UsernameText}>{item.name} : </Text>
        <Text style={styles.CommentText}>{item.comment}</Text>
        </TouchableOpacity>
@@ -171,7 +201,7 @@ this.setState({ comments: Temp }, () => {
   
 
 
-</ScrollView>
+</View>
     ); //return
 
   } //Render
@@ -205,6 +235,18 @@ const styles = StyleSheet.create({
     height:90,
     
   },
+  welcome :{
+    alignContent:'center',
+    textAlign:'center',
+    fontWeight: "bold",
+    justifyContent: "flex-end",
+    fontFamily:'Khmer-MN-Bold',
+    marginTop:20,
+    fontSize: 26,
+    marginBottom:2,
+    color: '#B7BD74',
+  
+  },
   inputFiled: {
     marginLeft:15,
     padding: 8,
@@ -230,11 +272,11 @@ const styles = StyleSheet.create({
   },
   component1:{
 position:'absolute', 
-top:670,  
+top:677,  
  flexDirection: "row", 
   },
   UsernameText:{
-   
+   //color:"#264730",
       margin: 5,
       marginLeft: 10,
       fontSize: 22,
@@ -242,10 +284,20 @@ top:670,
 
   },
   CommentText:{
+    color: '#494D4B',
     margin: 5,
     fontSize: 22,
     fontFamily: 'Khmer-MN'
 
 },
+SVGC :{
+  flex: 1,
+ backgroundColor: '#fff',
+   justifyContent:'center',
+   alignItems:'flex-start',
+   position:"absolute",
+   top: -160,
+   left: -300,
+ },
   
   });
