@@ -82,15 +82,29 @@ export default class Comment extends React.Component {
     this.setState({ name: name }, () => { console.log('name', this.state.name) })
    
     this.setState({ Pid: this.props.route.params.Pid }, () => { console.log('thread id at cooment ', this.state.Pid) })
-//this.getComment()
-    // this.getGardeners();
+    this.getComment()
+ 
 
   } //componentDidMount
   getComment = async () => {
+    const db = firebase.firestore()
+    const commenttRef = db.collection('Comments')
+    const snapshot = await commenttRef.doc(this.state.Pid).collection('comments').orderBy("createdAt", "asc").get();
+
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return;
+    }
+var Temp = [] ; 
+console.log("hello")
+
+for (let i = 0; i < snapshot.size; i++) {
+  //Temp[i]=snapshot.docs[i].data()
+ 
+}
 
 
-
-  }
+  }//end get comment 
   
   render () {
 
