@@ -29,6 +29,7 @@ const font = () => {
 }
 //Icons
 import { Entypo,Ionicons,AntDesign } from '@expo/vector-icons';
+import { configureFonts } from "react-native-paper";
 
 export default class Comment extends React.Component {
 
@@ -53,7 +54,18 @@ export default class Comment extends React.Component {
     });
   }
   
+  async componentDidMount() {
+    let name = await AsyncStorage.getItem("name")
+    this.setState({ name: name }, () => { console.log('name', this.state.name) })
+   
+    this.setState({ Pid: this.props.route.params.Pid }, () => { console.log('thread id at cooment ', this.state.Pid) })
+    this.getComment()
+ 
+
+  } //componentDidMount
   async handleSend(comment) {
+
+      this.textInput.clear()
     const db = firebase.firestore()
     const chatsRef = db.collection('Comments')
 //     var date = moment()
@@ -76,17 +88,10 @@ export default class Comment extends React.Component {
       //  .collection('comments').add(m))
 
       await Promise.all(res)
+      this.setState({'comment':''})
+      this._onRefresh()
 
   }
-  async componentDidMount() {
-    let name = await AsyncStorage.getItem("name")
-    this.setState({ name: name }, () => { console.log('name', this.state.name) })
-   
-    this.setState({ Pid: this.props.route.params.Pid }, () => { console.log('thread id at cooment ', this.state.Pid) })
-    this.getComment()
- 
-
-  } //componentDidMount
   getComment = async () => {
     const db = firebase.firestore()
     const commenttRef = db.collection('Comments')
@@ -147,6 +152,7 @@ this.setState({ comments: Temp }, () => {
         <View style={styles.component1}>
          <TextInput
          clearButtonMode="always"
+         ref={input => { this.textInput = input }}
                 placeholder={"Enter your comment"}
                 onChangeText={(text) =>{this.setState({ comment:text}, () => {
       //console.log("comment of the user is " + this.state.comment)
@@ -155,6 +161,7 @@ this.setState({ comments: Temp }, () => {
               ></TextInput>
               <Ionicons name="ios-send" color='#B7BD74' size={35} 
                onPress={() =>
+          
                               this.handleSend(this.state.comment)
                             
                             } />
