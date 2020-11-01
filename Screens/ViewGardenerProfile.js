@@ -41,17 +41,17 @@ const ViewGardenerProfile = ({ route, navigation }) => {
     const param = route.params;
     const uidstr = JSON.stringify(param.id)
     const uid = JSON.parse(uidstr)
-    const [user, setUser] = useState()
+    const [user, setUser] = useState(uid)
 
     //user info
-   // const [name, setName] = useState()
-   // const [gardner, setGardner] = useState()
-   // const [long, setlong] = useState()
-    //const [lat, setlat] = useState(0)
+    const [name, setName] = useState()
+    const [gardner, setGardner] = useState()
+    const [long, setlong] = useState()
+    const [lat, setlat] = useState(0)
     const [longNum, setlongNum] = useState(0)
     const [latNum, setlatNum] = useState(0)
-    //const [Phone, setPhone] = useState()
-    //const [Bio, setBio] = useState()
+    const [Phone, setPhone] = useState()
+    const [Bio, setBio] = useState()
     const [avatar, setAvatar] = useState()
     const [post,setPost]=useState([])
 
@@ -87,37 +87,29 @@ const ViewGardenerProfile = ({ route, navigation }) => {
   var postTemp=[]
   
   var g1 = snapshot.docs[0].data();
- // setName(g1.name)
- // setGardner(g1.Gardner)
-  console.log(g1.Latitude)
-  console.log(Number(g1.Latitude))
-  console.log(g1.Longtitude)
-  console.log(Number(g1.Longitude))
+  setName(g1.name)
+  setGardner(g1.Gardner+'')
+  console.log(gardner)
+//   console.log(g1.Latitude)
+//   console.log(Number(g1.Latitude))
+//   console.log(g1.Longtitude)
+//   console.log(Number(g1.Longitude))
   setlongNum(Number(g1.Longitude))
   setlatNum(Number(g1.Latitude))
-
-  var u = {
-      name: g1.name,
-      Gardner:g1.Gardner,
-      Bio: g1.Bio,
-      Phone: g1.Phone,
-  }
-
-  setUser(u)
   
 //   setlongNum(Number(g1.Longtitude))
 //   console.log(longNum)
 //   setlat(Numnber(g1.Latitude))
 //   console.log(g1.Latitude)
 //   setlatNum(Number(g1.Latitude))
- // setPhone(g1.Phone)
-  //setBio(g1.Bio)
+  setPhone(g1.Phone)
+  setBio(g1.Bio)
 // setlongNum( Number(g1.Longtitude))
 // console.log(g1.Longtitude+"lonnng")
 // setlatNum(Number(g1.Latitude))
 // console.log(longNum+"laaattt")
   getImage(g1.id)
- console.log(g1.posts.length)
+console.log(g1.posts.length)
 
   for(let i=0 ; i<g1.posts.length; i++){
     posts.push(g1.posts[i])
