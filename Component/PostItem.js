@@ -8,8 +8,7 @@ import {
     StyleSheet,
     Image,
     Dimensions,
-    Alert,
-    Share
+    Alert
 } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
@@ -19,9 +18,6 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 
 const optionsOwner = ['Delete Plant','Share'];
 const options = ['Share'];
-
-var ActivityView = require('react-native-activity-view');
-
 
 const onPopupEvent = (eventName, index, delet, name, threaID, userID, filePaths,isOwner) => {
     // on IOS it returns the option name as first argument
@@ -70,15 +66,7 @@ const onclick = (eventName, index,item,delet,isOwner) => {
         console.log('selected option', optionName);
         switch (optionName) {
             case 'Share':
-                Share.share(
-                    {
-                      title: "a title",
-                      message: "some message",
-                      // or
-                      url: item.image
-                    },
-                    (options)
-                  );
+                console.log('soon')
                 break;
             case 'Delete Plant':
                 Alert.alert(

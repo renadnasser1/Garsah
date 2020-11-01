@@ -25,7 +25,6 @@
     "react-autocomplete": "^1.8.1",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
-    "react-native-activity-view": "^0.2.11",
     "react-native-autocomplete-input": "^4.2.0",
     "react-native-custom-radio-group": "^1.0.1",
     "react-native-default-menu": "0.0.8",
