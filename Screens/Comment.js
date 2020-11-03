@@ -13,6 +13,7 @@ import {
   Image,
   ActivityIndicator,
   ScrollView,
+  KeyboardAvoidingView,
   RefreshControl,
 } from "react-native";
 import * as firebase from "firebase";
@@ -78,8 +79,13 @@ getPlantName = async () => {
     this.setState({ plantName: x }, () => { console.log('thread name  ', this.state.plantName) })
   }
   async handleSend(comment) {
-
-      this.textInput.clear()
+    if(comment==""){
+      alert("your comment is empty. please re-enter it.");
+    } else if(comment.length > 150){
+      alert("your comment is too long, it shouldn't exceed  150 charachters. please re-enter it.");
+    }else{
+    
+      this.textInput.clear() 
     const db = firebase.firestore()
     const chatsRef = db.collection('Comments')
 //     var date = moment()
@@ -93,6 +99,7 @@ getPlantName = async () => {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     Name:this.state.name,
      } 
+     
     );
 
       // const writes = comment.map((m) => chatsRef
@@ -104,7 +111,8 @@ getPlantName = async () => {
       await Promise.all(res)
       this.setState({'comment':''})
       this._onRefresh()
-
+      
+    }
   }
   getComment = async () => {
     const db = firebase.firestore()
@@ -141,7 +149,10 @@ this.setState({ comments: Temp }, () => {
     const { comment,comments,plantName} = this.state
    
     return(
-  
+      // <KeyboardAvoidingView
+      // behavior='padding'
+      // style={{ flex: 1 }} >
+    
       <View 
       style={styles.container}
      
@@ -165,6 +176,7 @@ this.setState({ comments: Temp }, () => {
 
 
        </View>
+       
      <Text style = {styles.welcome}>Leave a comment on {this.state.plantName}</Text>
 
        <FlatList style ={{ marginBottom: 120,}}
@@ -178,8 +190,9 @@ this.setState({ comments: Temp }, () => {
                   )}
                 />
        </View>
-
+      
         <View style={styles.component1}>
+      
          <TextInput
          clearButtonMode="always"
          ref={input => { this.textInput = input }}
@@ -195,6 +208,7 @@ this.setState({ comments: Temp }, () => {
                               this.handleSend(this.state.comment)
                             
                             } />
+                           
 </View>
 
 
@@ -202,6 +216,7 @@ this.setState({ comments: Temp }, () => {
 
 
 </View>
+// </KeyboardAvoidingView>
     ); //return
 
   } //Render

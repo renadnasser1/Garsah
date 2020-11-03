@@ -150,7 +150,7 @@ export default class Plant extends React.Component {
     //alert("pressed")
   if(this.state.isOwner){
     //this.props.navigation.navigate("GardnerProfile")
-    alert("this is your plant")
+    //alert("this is your plant")
   }//true
   else {
     this.props.navigation.navigate("ViewGardenerProfile",{id:this.state.userId})
