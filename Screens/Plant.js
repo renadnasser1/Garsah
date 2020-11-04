@@ -60,12 +60,11 @@ export default class Plant extends React.Component {
 
   async componentDidMount() {
 
-    
-
     await this.fetchData();        
 
   }
 
+  //get all data 
    async fetchData(){
     console.log('called fetchData')
     try {
@@ -80,7 +79,7 @@ export default class Plant extends React.Component {
       var localThread = ''
       var localPost = []
       this.setState({ ThreadId: this.props.route.params.threadID }, () => { console.log('thread id  ', this.state.ThreadId) })
-
+      this.setState({ deleteTheadFun: this.props.route.params.deleteTheadFun }, () => { console.log('delete thread function   ', this.state.deleteTheadFun) })
       //get thread info
       var id = this.state.ThreadId
       var docRef = firebase.firestore().collection("Posts").doc(id);
@@ -90,9 +89,10 @@ export default class Plant extends React.Component {
             userId:doc.data().Uid,
             id: id,
             name: doc.data().Name,
-            dates: doc.data().Date,
-            images: doc.data().Images,
-            captions: doc.data().Captions,
+            posts: doc.data().posts,
+            // dates: doc.data().Date,
+            // images: doc.data().Images,
+            // captions: doc.data().Captions,
             reminders: doc.data().Reminders,
           };
           localThread = post
@@ -136,14 +136,14 @@ export default class Plant extends React.Component {
       }
       console.log("in ", localThread.dates)
 
-      var length = localThread.images.length;
-      for (var i = 0; i < length; i++) {
-        localPost.push({ image: localThread.images[i], date: localThread.dates[i], caption: localThread.captions[i]})
-      }
+      // var length = localThread.images.length;
+      // for (var i = 0; i < length; i++) {
+      //   localPost.push({ image: localThread.images[i], date: localThread.dates[i], caption: localThread.captions[i] })
+      // }
 
     } catch (err) {
     }
-    this.setState({ posts: localPost })
+    this.setState({ posts: localThread.posts })
     console.log(this.state.posts.length)
   }
   onPressOwner=()=>{
@@ -156,6 +156,7 @@ export default class Plant extends React.Component {
     this.props.navigation.navigate("ViewGardenerProfile",{id:this.state.userId})
   }//false
   }
+
 
 
   render() {
@@ -195,6 +196,42 @@ export default class Plant extends React.Component {
       })
     }
 
+    const deletePost = (post) =>{
+
+      if(this.state.posts.length==1){
+         this.props.route.params.deleteTheadFun (this.state.ThreadId,this.state.userId,[post.filePath])
+        this.props.navigation.goBack()
+        // return
+      }
+      console.log('at post delete')
+
+      //Delete photo from storage 
+      var desertRef = firebase.storage().ref('Posts/'+post.filePath);
+      //Delete the file
+      desertRef.delete().then(function() {
+        console.log('great')
+      }).catch(function(error) {
+        console.log('not yet',error)
+      });
+           
+      
+       //Delete thread id from user posts array 
+       firebase.firestore().collection('Posts').doc(this.state.ThreadId).update({
+              posts: firebase.firestore.FieldValue.arrayRemove(post)
+          }).then(function(){
+              console.log('removed from array')
+          }).catch(function (error){
+              console.log('error',error)
+          })
+              
+      //refresh screen remove from local araay
+          var postArray=this.state.posts
+          var array = postArray.filter((item) => {return  item.filePath != post.filePath })
+           console.log('array after deletion',array)
+           this.setState({posts:array})
+      
+      
+      }
 
 
     return (
@@ -286,7 +323,7 @@ export default class Plant extends React.Component {
                 <FlatList
                   data={posts}
                   renderItem={({ item }) =>
-                    postItem(item)}
+                    postItem(item,deletePost,true)}
                   keyExtractor={({ item }) => item}
                 /></View>) : null}
 

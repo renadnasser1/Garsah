@@ -29,7 +29,9 @@ import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 //Components
 import { plantItem } from '../Component/PostItem'
-const GardnerProfile = ({ navigation }) => {
+
+
+export const GardnerProfile = ({ navigation }) => {
 
     const [uid, setUid] = useState()
     const [name, setName] = useState()
@@ -48,6 +50,7 @@ const GardnerProfile = ({ navigation }) => {
 
     const isVisible = useIsFocused();
 
+
     const onEditPress = () => {
         if (gardner === "true")
             navigation.navigate("EditGardenerProfile");
@@ -55,7 +58,7 @@ const GardnerProfile = ({ navigation }) => {
             navigation.navigate("EditAmateurProfile");
 
 
-    };
+    }
 
 
     const onMapPress = (cords) => {
@@ -67,9 +70,6 @@ const GardnerProfile = ({ navigation }) => {
                 { text: 'Cancel', onPress: () => console.log('') },
                 {
                     text: 'Open', onPress: () =>
-                        // OpenMapDirections(null, cords, 'd').then(res => {
-                        //     console.log(res)
-                        // })
 
                         Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + cords['latitude'] + ',' + cords['longitude'])
 
@@ -80,6 +80,7 @@ const GardnerProfile = ({ navigation }) => {
         )
 
     }
+
 
     const load = async () => {
         try {
@@ -107,14 +108,34 @@ const GardnerProfile = ({ navigation }) => {
                 var docRef = firebase.firestore().collection("Posts").doc(id);
                 await docRef.get().then(function (doc) {
                     if (doc.exists) {
-                        var post = {
+                        var thread = {
                             key: id,
-                            postID: doc.data().Pid,
-                            name: doc.data().Name,
-                            date: doc.data().Date[0],
-                            image: doc.data().Images[0],
+                            name:doc.data().Name,
+                            userID: doc.data().Uid,
+                            posts: doc.data().posts,
+                            date: doc.data().posts[0].date,
+                            image: doc.data().posts.pop().image,
+                            // filePaths:doc.data().posts.FilePaths,
                         };
-                        posts.push(post);
+
+                        //All paths
+                        var paths = [] 
+                        thread.posts.forEach((item)=>
+                        paths.push(item.filePath)
+                        )
+                        console.log('after filter',paths)
+
+                        var localThread ={
+                            key: thread.key,
+                            name:thread.name,
+                            userID:thread.userID,
+                            date:thread.date,
+                            image:thread.image,
+                            filePaths:paths
+                        }
+                        posts.push(localThread);
+
+                        console.log(localThread)
                     } else {
                         // doc.data() will be undefined in this case
                         console.log("No such document!");
@@ -166,6 +187,49 @@ const GardnerProfile = ({ navigation }) => {
     if (!fontsLoaded) {
         return <AppLoading />;
     }
+
+    const deleteThread = (threaID,userID,filePaths) =>{
+        console.log('here')
+
+        //Delete all photos from storage
+            filePaths.forEach(path =>{ console.log(path)
+        
+        var desertRef = firebase.storage().ref('Posts/'+path);
+        //Delete the file
+        desertRef.delete().then(function() {
+          console.log('great')
+        }).catch(function(error) {
+          console.log('not yet',error)
+        });
+        
+            });
+        
+        //Delete thread refrence
+         firebase.firestore().collection("Posts").doc(threaID).delete().then(function() {
+            console.log("Document successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+        
+        
+         //Delete thread id from user posts array 
+         firebase.firestore().collection('users').doc(userID).update({
+                posts: firebase.firestore.FieldValue.arrayRemove(threaID)
+            }).then(function(){
+                console.log('removed from array')
+            }).catch(function (error){
+                console.log('error',error)
+            })
+                
+        //refresh screen remove from local araay
+            var array = postss.filter((item) => {return  item.key != id })
+             console.log('array after deletion',array)
+             setPostss(array)
+          
+        
+        
+        }
+
 
     if (postss) {
         return (
@@ -257,7 +321,8 @@ const GardnerProfile = ({ navigation }) => {
                                 <FlatList
                                     data={postss}
                                     renderItem={({ item, index }) =>
-                                        (plantItem(item, navigation))}
+                                        plantItem(item, navigation,deleteThread,true)
+                                    }
                                     keyExtractor={item => item.key}
                                 />}
                         </View>
@@ -284,6 +349,7 @@ const GardnerProfile = ({ navigation }) => {
             </View>
         );
     }
+
 
 }//end class
 
@@ -429,13 +495,11 @@ const styles = StyleSheet.create({
     },
     plantname: {
         fontFamily: 'Khmer-MN-Bold',
-        //color:"#717171",
         color: "white",
         marginBottom: 25,
         marginLeft: 50,
         bottom: 30,
         fontSize: 18,
-        //backgroundColor:"grey"
 
     },
     plantdate: {

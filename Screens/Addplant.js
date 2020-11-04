@@ -165,9 +165,14 @@ export default class AddPlant extends React.Component {
 
       //Vars
       var newPost = firebase.firestore().collection("Posts").doc();
-      var images = [this.state.imageURL]
-      var captions = [this.state.caption]
-      var dates = [this.state.date]
+
+      var post ={
+        image:this.state.imageURL,
+        filePath:this.state.photoPath,
+        caption:this.state.caption,
+        date:this.state.date
+      }
+      
       var postId = newPost.id
       var reminders = this.state.progressArray
       var result = []
@@ -210,13 +215,11 @@ export default class AddPlant extends React.Component {
 
       //Add new post
       newPost.set({
-        Captions: captions,
-        Date: dates,
         Name: this.state.name + "",
         Uid: this.state.userId,
-        Images: images,
         Pid: postId,
         Reminders: result,
+        posts:[post]
       }).then((response) => {
 
       }).catch((error) => {
@@ -310,28 +313,14 @@ export default class AddPlant extends React.Component {
 
     const updateReminder = () => {
 
-      var selected = this.state.selectedProgress
       var array = this.state.progressArray
-      var length = this.state.progressArray.length
-
 
      var array = this.state.progressArray.filter((item) => {return  item.progres != this.state.selectedProgress })
       console.log(array)
 
       this.setState({progressArray:array})
 
-    //   for(var i=0;i<length;i++){
-    //     if (array[i].progress == selected ) {
-    //       if(i==0){
-    //         this.state.progressArray.shift()
-    //       continue
-    //       }
-    //       if(i==1){
-    //         this.state.progressArray.pop()
-    //       continue
-    //       }
-    //   }
-    // }
+
 
     const reminder = {
       progres: this.state.selectedProgress,

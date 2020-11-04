@@ -64,12 +64,8 @@ const ViewGardenerProfile = ({ route, navigation }) => {
 
     useEffect(() => {
 
-        if (isVisible) {  
-           // console.log('in in use effect')
-           // console.log("lat "+ lat)
-     
-            load()
-            
+        if (isVisible) {   
+            load()     
         }
     }, [isVisible])
 
@@ -125,7 +121,7 @@ console.log(g1.posts.length)
                 name: doc.data().Pid,
                 name: doc.data().Name,
                 date: doc.data().Date[0],
-                image: doc.data().Images[0],
+                image: doc.data().Images.pop(),
             };
             postTemp.push(post);
     
