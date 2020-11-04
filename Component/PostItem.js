@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-
 import {
     View,
     Text,
@@ -8,18 +7,21 @@ import {
     StyleSheet,
     Image,
     Dimensions,
-    Alert
+    Alert,
+    Share
 } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
 import Menu from 'react-native-default-menu';
 import { SimpleLineIcons } from '@expo/vector-icons';
+// import { captureRef } from 'react-native-view-shot';
+// import * as Sharing from 'expo-sharing';
+// import * as FileSystem from 'expo-file-system';
 
+const options = ['Delete Plan'];
 
-const optionsOwner = ['Delete Plant','Share'];
-const options = ['Share'];
-
-const onPopupEvent = (eventName, index, delet, name, threaID, userID, filePaths,isOwner) => {
+// on share pressed
+const onPopupEvent = async (eventName, index, delet, item, threaID, userID, filePaths) => {
     // on IOS it returns the option name as first argument
     // on Android it returns 'itemSelected' or 'dismissed' as first argument
     // the second argument is the index of the selected option. If cancelled, it returns undefined as index
@@ -27,12 +29,11 @@ const onPopupEvent = (eventName, index, delet, name, threaID, userID, filePaths,
     let optionName;
     if (index >= 0) {
         // get option name from 'options' array
-        optionName = isOwner?optionsOwner[index]:options[index]; 
+        optionName = options[index];
         console.log('selected option', optionName);
+
         switch (optionName) {
-            case 'Share':
-                console.log('soon')
-                break;
+
             case 'Delete Plant':
                 Alert.alert(
                     '',
@@ -54,7 +55,7 @@ const onPopupEvent = (eventName, index, delet, name, threaID, userID, filePaths,
     }
 };
 
-const onclick = (eventName, index,item,delet,isOwner) => {
+const onclick = (eventName, index, item, delet) => {
     // on IOS it returns the option name as first argument
     // on Android it returns 'itemSelected' or 'dismissed' as first argument
     // the second argument is the index of the selected option. If cancelled, it returns undefined as index
@@ -62,12 +63,9 @@ const onclick = (eventName, index,item,delet,isOwner) => {
     let optionName;
     if (index >= 0) {
         // get option name from 'options' array
-        optionName = isOwner?optionsOwner[index]:options[index]; 
+        optionName = options[index];
         console.log('selected option', optionName);
         switch (optionName) {
-            case 'Share':
-                console.log('soon')
-                break;
             case 'Delete Plant':
                 Alert.alert(
                     '',
@@ -76,7 +74,6 @@ const onclick = (eventName, index,item,delet,isOwner) => {
                         { text: 'Cancel', onPress: () => console.log('') },
                         {
                             text: 'Delete', onPress: () =>
-
                                 delet(item)
                         },
 
@@ -98,16 +95,16 @@ export const plantItem = (item, navigation, delet, isOwner) => {
                 flexDirection='row'>
                 <MaterialCommunityIcons style={styles.dateicon} name="record-circle" size={20} color="#F9DED4" />
                 <Text style={styles.plantdate}>{item.date} </Text>
-
+                {isOwner?
                 <View>
-                    <Menu options={isOwner ? (optionsOwner) : (options)} onPress={(name, indx) => onPopupEvent(name, indx, delet, item.name, item.key, item.userID, item.filePaths,isOwner)}>
+                    <Menu options={options} onPress={(name, indx) => onPopupEvent(name, indx, delet, item, item.key, item.userID, item.filePaths)}>
                         <SimpleLineIcons style={styles.optionsPost} name="options" size={20} color="black" />
-                    </Menu></View>
+                    </Menu></View>:null}
 
             </View>
             <TouchableOpacity
                 onPress={() =>
-                    navigation.navigate('Plant', { threadID: item.key,deleteTheadFun:delet })
+                    navigation.navigate('Plant', { threadID: item.key, deleteTheadFun: delet })
                 }>
                 <View style={styles.imgeContiner}>
                     <EvilIcons name="image" size={50} color="white" style={{ zIndex: 1, alignSelf: 'center', paddingTop: 110, position: 'absolute' }} />
@@ -122,7 +119,7 @@ export const plantItem = (item, navigation, delet, isOwner) => {
 
 //Plant screen
 
-export const postItem = (item, delet,isOwner) => {
+export const postItem = (item, delet, isOwner) => {
     return (
         <View style={styles.post} key={item.image} >
             <View
@@ -132,11 +129,11 @@ export const postItem = (item, delet,isOwner) => {
                     : null}
 
                 <Text style={styles.plantdate}>{item.date} </Text>
-
+                {isOwner?
                 <View>
-                    <Menu options={isOwner ? (optionsOwner) : (options)} onPress={(name, indx) => onclick(name, indx,item, delet,isOwner)}>
+                    <Menu options={ options} onPress={(name, indx) => onclick(name, indx, item, delet)}>
                         <SimpleLineIcons style={styles.optionsPost} name="options" size={20} color="black" />
-                    </Menu></View>
+                    </Menu></View>:null}
             </View>
             <View
                 style={styles.imgeContiner}>
