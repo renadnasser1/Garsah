@@ -69,7 +69,7 @@ const onclick = (eventName, index, item, delet) => {
             case 'Delete Plant':
                 Alert.alert(
                     '',
-                    'Are you sure you want delete your plant ?',
+                    'Are you sure you want delete your Post ?',
                     [
                         { text: 'Cancel', onPress: () => console.log('') },
                         {
@@ -106,8 +106,8 @@ export const plantItem = (item, navigation, delet, isOwner) => {
             <TouchableOpacity
                 onPress={() =>
                     {isOwner?
-                    navigation.navigate('Plant', { threadID: item.key, deleteTheadFun: delet }):
-                    navigation.navigate('Plant', { threadID: item.key })}
+                    navigation.push('Plant', { threadID: item.key, deleteTheadFun: delet }):
+                    navigation.push('Plant', { threadID: item.key })}
                 }>
                 <View style={styles.imgeContiner}>
                     <EvilIcons name="image" size={50} color="white" style={{ zIndex: 1, alignSelf: 'center', paddingTop: 110, position: 'absolute' }} />

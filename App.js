@@ -214,13 +214,7 @@ function HomeStackNav() {
 
       <HomeStack.Screen name="Home"
         component={Home} />
-      <HomeStack.Screen name="ViewGardenerProfile"
-        options={{
-          title: '',
-          color: 'black',
-          headerShown: false,
-        }}
-        component={ViewGardenerProfile} />
+
 
       {<Stack.Screen
         name="Plant"
@@ -230,6 +224,13 @@ function HomeStackNav() {
         component={Plant}
       />}
 
+      <HomeStack.Screen name="ViewGardenerProfile"
+        options={{
+          title: '',
+          color: 'black',
+          headerShown: false,
+        }}
+        component={ViewGardenerProfile} />
 
       <HomeStack.Screen name="Chat"
         options={{
@@ -248,7 +249,7 @@ function HomeStackNav() {
                   fontSize: 18,
                   paddingLeft: 10,
                   paddingTop: 10
-                }}>Cancel</Text></TouchableOpacity>
+                }}>Back</Text></TouchableOpacity>
           ),
         })}
         component={Comment} />

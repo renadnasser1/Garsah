@@ -276,7 +276,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
                             <FlatList
                                 data={post}
                                 renderItem={({ item, index }) =>
-                                    (plantItem(item, navigation))}
+                                    (plantItem(item, navigation,null,false))}
                                 keyExtractor={item => item.key}
                             />}
                     </View>

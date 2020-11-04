@@ -153,7 +153,7 @@ export default class Plant extends React.Component {
     //alert("this is your plant")
   }//true
   else {
-    this.props.navigation.navigate("ViewGardenerProfile",{id:this.state.userId})
+    this.props.navigation.push("ViewGardenerProfile",{id:this.state.userId})
   }//false
   }
 
