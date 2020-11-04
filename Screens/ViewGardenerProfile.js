@@ -181,7 +181,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
         <TouchableOpacity
         style={styles.back}
           onPress={() => {
-            this.props.navigation.pop()
+            navigation.pop()
           }}>
             <Ionicons name="ios-arrow-back" size={30} color="black" /></TouchableOpacity>
             <ScrollView>
@@ -248,8 +248,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
                                         longitudeDelta: 0.0421
                                     }}
 
-                                    onPress={(event) => onMapPress(event.nativeEvent.coordinate)
-                                    }
+                                    onPress={(event) => onMapPress(event.nativeEvent.coordinate)   }
 
                                 >
 

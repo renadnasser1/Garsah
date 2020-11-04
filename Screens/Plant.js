@@ -323,7 +323,7 @@ export default class Plant extends React.Component {
                 <FlatList
                   data={posts}
                   renderItem={({ item }) =>
-                    postItem(item,deletePost,true)}
+                    postItem(item,deletePost,isOwner)}
                   keyExtractor={({ item }) => item}
                 /></View>) : null}
 

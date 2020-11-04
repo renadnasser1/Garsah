@@ -102,9 +102,12 @@ export const plantItem = (item, navigation, delet, isOwner) => {
                     </Menu></View>:null}
 
             </View>
+            
             <TouchableOpacity
                 onPress={() =>
-                    navigation.navigate('Plant', { threadID: item.key, deleteTheadFun: delet })
+                    {isOwner?
+                    navigation.navigate('Plant', { threadID: item.key, deleteTheadFun: delet }):
+                    navigation.navigate('Plant', { threadID: item.key })}
                 }>
                 <View style={styles.imgeContiner}>
                     <EvilIcons name="image" size={50} color="white" style={{ zIndex: 1, alignSelf: 'center', paddingTop: 110, position: 'absolute' }} />

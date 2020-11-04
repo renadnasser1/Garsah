@@ -7,7 +7,7 @@ import * as Notifications from 'expo-notifications';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {unsubscribe} from './Controller/Notification'
+import { unsubscribe } from './Controller/Notification'
 
 // import { AppLoading } from 'expo';
 //Icons
@@ -218,17 +218,18 @@ function HomeStackNav() {
         options={{
           title: '',
           color: 'black',
-          headerShown:false,
+          headerShown: false,
         }}
         component={ViewGardenerProfile} />
 
-{<Stack.Screen
-            name="Plant"
-            options={{
-              headerShown: false,
-            }}
-            component={Plant}
-          />}
+      {<Stack.Screen
+        name="Plant"
+        options={{
+          headerShown: false,
+        }}
+        component={Plant}
+      />}
+
 
       <HomeStack.Screen name="Chat"
         options={{
@@ -236,12 +237,12 @@ function HomeStackNav() {
         }}
         component={Chat} />
 
-<HomeStack.Screen name="Comment"
+      <HomeStack.Screen name="Comment"
         options={({ navigation }) => ({
           title: 'Comment',
           headerLeft: () => (
             <TouchableOpacity
-            onPress={() => navigation.pop()}><Text
+              onPress={() => navigation.pop()}><Text
                 style={{
                   fontFamily: 'Khmer-MN-Bold',
                   fontSize: 18,
@@ -263,7 +264,7 @@ function GardnerStackNav() {
 
     <GardnerStack.Navigator mode='modal'>
       {<GardnerStack.Screen
-      
+
         name="Main"
         options={{
           headerShown: false,
@@ -308,8 +309,8 @@ function GardnerStackNav() {
         })}
         component={Post}
       />}
-    
-    {/* {<GardnerStack.Screen
+
+      {/* {<GardnerStack.Screen
         name="Comment"
         options={({ navigation }) => ({
           title: 'Comment',
@@ -326,7 +327,7 @@ function GardnerStackNav() {
         })}
         component={Comment}
       />} */}
-    
+
 
 
     </GardnerStack.Navigator>
@@ -341,21 +342,21 @@ function stackInGardnerStack() {
     <inGardnerStack.Navigator>
 
       <inGardnerStack.Screen
-              options={({ navigation }) => ({
-                title: 'Home',
-                headerLeft: () => (
-                  <TouchableOpacity
-                    onPress={() => onLogoutPress(navigation)}><Text
-                      style={{
-                        fontFamily: 'Khmer-MN-Bold',
-                        fontSize: 18,
-                        paddingLeft: 10,
-                        paddingTop: 10
-                      }}>Logout</Text></TouchableOpacity>
-                ),
-                title: 'My Profile',
-                color: 'black'
-              })}
+        options={({ navigation }) => ({
+          title: 'Home',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => onLogoutPress(navigation)}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Logout</Text></TouchableOpacity>
+          ),
+          title: 'My Profile',
+          color: 'black'
+        })}
         name="GardnerProfile"
 
         component={GardnerProfile} />
@@ -377,7 +378,7 @@ function stackInGardnerStack() {
         component={EditGardenerProfile}
       />}
 
-<inGardnerStack.Screen
+      <inGardnerStack.Screen
         options={{
           title: 'Edit Profile',
           color: 'black'
@@ -386,7 +387,7 @@ function stackInGardnerStack() {
         component={EditAmateurProfile}
 
       />
-      
+
 
       {<inGardnerStack.Screen
         name="LocationMap"
