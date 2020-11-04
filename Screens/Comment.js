@@ -178,7 +178,9 @@ this.setState({ comments: Temp }, () => {
        </View>
        
      <Text style = {styles.welcome}>Leave a comment on {this.state.plantName}</Text>
-
+     {comments.length == 0 ?
+             <Text style={styles.noDataText} > Be the first to comment🍀</Text>
+                    :
        <FlatList style ={{ marginBottom: 120,}}
                   data={this.state.comments}
                   renderItem={({ item }) => (
@@ -188,7 +190,7 @@ this.setState({ comments: Temp }, () => {
        </TouchableOpacity>
                    
                   )}
-                />
+                />}
        </View>
       
         <View style={styles.component1}>
@@ -212,8 +214,8 @@ this.setState({ comments: Temp }, () => {
 </View>
 
 
-  
-
+     
+     
 
 </View>
  </KeyboardAvoidingView>
@@ -314,5 +316,14 @@ SVGC :{
    top: -160,
    left: -300,
  },
-  
+ noDataText: {
+ // flex: 1,
+  alignSelf: 'center',
+  fontFamily: 'Khmer-MN-Bold',
+  fontSize: 17,
+  color: '#717171',
+  top :200,
+
+}
+
   });
