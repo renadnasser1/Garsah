@@ -102,11 +102,7 @@ getPlantName = async () => {
      
     );
 
-      // const writes = comment.map((m) => chatsRef
-
-      //  .doc(this.state.Pid)
-
-      //  .collection('comments').add(m))
+    
 
       await Promise.all(res)
       this.setState({'comment':''})
@@ -177,7 +173,9 @@ this.setState({ comments: Temp }, () => {
 
        </View>
        
-     <Text style = {styles.welcome}>Leave a comment on {this.state.plantName}</Text>
+     <Text style = {styles.welcome}>Leave a comment on 
+     <Text style ={styles.PlantName}> {this.state.plantName} </Text>
+     </Text>
      {comments.length == 0 ?
              <Text style={styles.noDataText} > Be the first to comment🍀</Text>
                     :
@@ -263,6 +261,17 @@ const styles = StyleSheet.create({
     marginBottom:2,
     color: '#B7BD74',
   
+  },
+  PlantName:{
+    alignContent:'center',
+    textAlign:'center',
+    fontWeight: "bold",
+    justifyContent: "flex-end",
+    fontFamily:'Khmer-MN-Bold',
+    marginTop:20,
+    fontSize: 26,
+    marginBottom:2,
+    color: 'black' 
   },
   inputFiled: {
     marginLeft:15,
