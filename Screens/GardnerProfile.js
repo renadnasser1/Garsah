@@ -18,9 +18,8 @@ import {
 } from "react-native";
 
 // Icons
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
+import { FontAwesome,FontAwesome5,Entypo } from '@expo/vector-icons';
+
 
 //Firebase
 import * as firebase from "firebase";
@@ -361,7 +360,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
-
     },
     header: {
         paddingTop: 5,

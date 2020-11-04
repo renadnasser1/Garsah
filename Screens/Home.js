@@ -75,26 +75,35 @@ export default class Home extends React.Component {
 
     //getting Posts from DB
   const db = firebase.firestore()
-  let usersref = db.collection("Posts").orderBy("Date", "desc")
+  let usersref = db.collection("Posts")//.orderBy("Date", "desc")
   const snapshot = await usersref.limit(5).get();
   if (snapshot.empty) {
   console.log('No matching documents.');
   return;
   }  
 //Adding posts data into an array
-  for(let i=0; i<snapshot.size;i++) 
-  {
+  for(let i=0; i<snapshot.size;i++) {
     //posts[i]=snapshot.docs[i].data(); <--- this worked fine
-
+console.log(snapshot.docs[i].data())
     var post = {
       key: snapshot.docs[i].data().Pid, //<--- not sure but we want to arrange it by date (make it post id)
       uid:snapshot.docs[i].data().Uid,
       k: i,
+      posts: snapshot.docs[i].data().posts,
       name: snapshot.docs[i].data().Name,
-      date: snapshot.docs[i].data().Date[0],
-      image: snapshot.docs[i].data().Images[0],
   };
-  posts.push(post);
+console.log('posts in home page  ',post.posts)
+  var localPost = {
+    key: post.key, //<--- not sure but we want to arrange it by date (make it post id)
+    uid:post.uid,
+    k: post.k,
+    posts: post.posts,
+    name: post.name,
+    date: post.posts[0].date,
+    image: post.posts.pop().image,
+    
+  }
+  posts.push(localPost);
   
   }//end for loop
   this.setState({ plants: posts }, () => {
@@ -253,7 +262,7 @@ export default class Home extends React.Component {
  <View style={styles.content}>
 
 
-  <Text style={styles.text}>Gardeners of Garsah</Text>
+  <Text style={styles.text}>Gardeners</Text>
   
    {/* Random Gardeners Profiles */}
    <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}> 
@@ -307,8 +316,10 @@ export default class Home extends React.Component {
 <View style={styles.body}>
   <View style={{ marginTop: 20}}>
   {this.state.plants.length == 0 ?
-              <Text style={styles.noDataText} >No plants added yet</Text>
+              <Text style={styles.noDataText} >No plants added </Text>
               :
+              <View>
+              <Text style={styles.text}>Plants</Text>
   <FlatList
       data={this.state.plants}
       initialNumToRender={this.state.plants.length}
@@ -316,7 +327,8 @@ export default class Home extends React.Component {
           (plantItem(item,this.props.navigation))}
       keyExtractor={item => item.k}
      
-  />}
+  />
+  </View>}
   </View>
   
   </View>
