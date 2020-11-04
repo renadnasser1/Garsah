@@ -23,8 +23,7 @@ import {
 } from "react-native";
 
 // Icons
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome,Ionicons,FontAwesome5 } from '@expo/vector-icons';
 
 //Firebase
 import * as firebase from "firebase";
@@ -33,7 +32,7 @@ import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 import { set, concat } from "react-native-reanimated";
 import { ScrollView } from "react-native-gesture-handler";
-import {plantItem} from '../Component/PostItem'
+import { plantItem } from '../Component/PostItem'
 
 const ViewGardenerProfile = ({ route, navigation }) => {
 
@@ -53,109 +52,94 @@ const ViewGardenerProfile = ({ route, navigation }) => {
     const [Phone, setPhone] = useState()
     const [Bio, setBio] = useState()
     const [avatar, setAvatar] = useState()
-    const [post,setPost]=useState([])
+    const [post, setPost] = useState([])
 
     const isVisible = useIsFocused();
 
     const onEditPress = () => {
-        navigation.navigate("Chat", {id:uid});
+        navigation.navigate("Chat", { id: uid });
     };
 
 
     useEffect(() => {
 
-        if (isVisible) {  
-           // console.log('in in use effect')
-           // console.log("lat "+ lat)
-     
+        if (isVisible) {
             load()
-            
         }
     }, [isVisible])
 
 
     const load = async () => {
         try {
-    const db = firebase.firestore()
-  let usersref = db.collection("users")
-  const snapshot = await usersref.where('id', '==', uid).get();
-  if (snapshot.empty) {
-  console.log('No matching documents.');
-  return;
-  }
- var posts = []
-  var postTemp=[]
-  
-  var g1 = snapshot.docs[0].data();
-  setName(g1.name)
-  setGardner(g1.Gardner+'')
-  console.log(gardner)
-//   console.log(g1.Latitude)
-//   console.log(Number(g1.Latitude))
-//   console.log(g1.Longtitude)
-//   console.log(Number(g1.Longitude))
-  setlongNum(Number(g1.Longitude))
-  setlatNum(Number(g1.Latitude))
-  
-//   setlongNum(Number(g1.Longtitude))
-//   console.log(longNum)
-//   setlat(Numnber(g1.Latitude))
-//   console.log(g1.Latitude)
-//   setlatNum(Number(g1.Latitude))
-  setPhone(g1.Phone)
-  setBio(g1.Bio)
-// setlongNum( Number(g1.Longtitude))
-// console.log(g1.Longtitude+"lonnng")
-// setlatNum(Number(g1.Latitude))
-// console.log(longNum+"laaattt")
-  getImage(g1.id)
-console.log(g1.posts.length)
+            const db = firebase.firestore()
+            let usersref = db.collection("users")
+            const snapshot = await usersref.where('id', '==', uid).get();
+            if (snapshot.empty) {
+                console.log('No matching documents.');
+                return;
+            }
+            var posts = []
+            var postTemp = []
 
-  for(let i=0 ; i<g1.posts.length; i++){
-    posts.push(g1.posts[i])
-//setPost(posts)
-//console.log(posts)
-  }
-  //fetch images from collection posts 
-  for (id of posts) {
-    var docRef = firebase.firestore().collection("Posts").doc(id);
-    await docRef.get().then(function (doc) {
-        if (doc.exists) {
-            var post = {
-                key: id,
-                name: doc.data().Pid,
-                name: doc.data().Name,
-                date: doc.data().Date[0],
-                image: doc.data().Images[0],
-            };
-            postTemp.push(post);
-    
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch(function (error) {
-        console.log("Error getting document: catch ", error);
-    });
-}
+            var g1 = snapshot.docs[0].data();
+            setName(g1.name)
+            setGardner(g1.Gardner + '')
+            console.log(gardner)
 
-setPost(postTemp)
+            setlongNum(Number(g1.Longitude))
+            setlatNum(Number(g1.Latitude))
+
+            setPhone(g1.Phone)
+            setBio(g1.Bio)
+
+            getImage(g1.id)
+            console.log(g1.posts.length)
+
+            for (let i = 0; i < g1.posts.length; i++) {
+                posts.push(g1.posts[i])
+                //setPost(posts)
+                //console.log(posts)
+            }
+            //fetch images from collection posts 
+            for (id of posts) {
+                var docRef = firebase.firestore().collection("Posts").doc(id);
+                await docRef.get().then(function (doc) {
+                    if (doc.exists) {
+                        var post = {
+                            key: id,
+                            name: doc.data().Pid,
+                            name: doc.data().Name,
+                            date: doc.data().posts[0].date,
+                            image: doc.data().posts.pop().image,
+                        };
+                        postTemp.push(post);
+
+                    } else {
+                        // doc.data() will be undefined in this case
+                        console.log("No such document!");
+                    }
+                }).catch(function (error) {
+                    console.log("Error getting document: catch ", error);
+                });
+            }
+
+            setPost(postTemp)
         }//try1
-         catch (err) {
+        catch (err) {
             console.log(err)
         }
-     
+
     }//end method
 
     const getImage = async (id) => {
         let imageRef = firebase.storage().ref('avatars/' + id);
         imageRef.getDownloadURL().then((url) => {
             //from url you can fetched the uploaded image easily
-           // console.log(url)
+            // console.log(url)
             setAvatar(url);
         })
             .catch((e) => console.log('getting downloadURL of image error => ')
-            //e),
+                //e),
             );
 
     }
@@ -192,121 +176,126 @@ setPost(postTemp)
     }
 
     // if(lat){
-return(
-    <View  style={styles.container}>
-<ScrollView>
-         <View style={styles.header}>
+    return (
+        <View style={styles.container}>
+        <TouchableOpacity
+        style={styles.back}
+          onPress={() => {
+            navigation.pop()
+          }}>
+            <Ionicons name="ios-arrow-back" size={30} color="black" /></TouchableOpacity>
+            <ScrollView>
+                <View style={styles.header}>
 
-              {/* Image */}
-              <Image source={avatar ?
-                    {uri:avatar} : require("../assets/blank.png")} style={styles.prifileImg} />
+                    {/* Image */}
+                    <Image source={avatar ?
+                        { uri: avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
 
-                      {/* chat button */}
-                <TouchableOpacity
-                    style={styles.editButton}
-                >
-                    <Text style={styles.editText} onPress={() => {
-                        onEditPress();
-                    }}> message me</Text>
-                </TouchableOpacity>
+                    {/* chat button */}
+                    <TouchableOpacity
+                        style={styles.editButton}
+                    >
+                        <Text style={styles.editText} onPress={() => {
+                            onEditPress();
+                        }}> message me</Text>
+                    </TouchableOpacity>
 
-                 {/* Profile Information */}
-                 <View style={styles.profileInfoView}>
-                      {/* Name */}
-                    <Text style={styles.profileInfoText}>{name}</Text>
+                    {/* Profile Information */}
+                    <View style={styles.profileInfoView}>
+                        {/* Name */}
+                        <Text style={styles.profileInfoText}>{name}</Text>
 
-                    {/* Bio */}
-                    <Text style={styles.bioText}>{Bio!=null ? Bio : ""}</Text>
-                    {gardner === "true" ?
-                    <View>
-                    {/* Phone number */}
-                    {(Phone && Phone!='null')?(
-                    <View style={styles.userInfoContiner}>
-                        <FontAwesome name="phone" size={24} color="gray"/>
-                         <Text style={[styles.userInfoText,{ textDecorationLine: 'underline',textDecorationColor:'#CFD590',color:'#CFD590'}]} 
-                           onPress={ () => {Linking.openURL(`tel:${Phone}`)}}
+                        {/* Bio */}
+                        <Text style={styles.bioText}>{Bio != null ? Bio : ""}</Text>
+                        {gardner === "true" ?
+                            <View>
+                                {/* Phone number */}
+                                {(Phone && Phone != 'null') ? (
+                                    <View style={styles.userInfoContiner}>
+                                        <FontAwesome name="phone" size={24} color="gray" />
+                                        <Text style={[styles.userInfoText, { textDecorationLine: 'underline', textDecorationColor: '#CFD590', color: '#CFD590' }]}
+                                            onPress={() => { Linking.openURL(`tel:${Phone}`) }}
 
-                          >{Phone}</Text>
-                    </View>):
-                    <View style={styles.userInfoContiner}>
-                        <FontAwesome name="phone" size={24} color="gray"/>
-                         <Text style={styles.userInfoText}
-                          >No phone added</Text>
-                    </View>}
+                                        >{Phone}</Text>
+                                    </View>) :
+                                    <View style={styles.userInfoContiner}>
+                                        <FontAwesome name="phone" size={24} color="gray" />
+                                        <Text style={styles.userInfoText}
+                                        >No phone added</Text>
+                                    </View>}
 
-                      {/* Map */}
-                      <View style={styles.userInfoContiner}>
-                        <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
-                        <Text style={styles.userInfoText}> {name}'s Location</Text></View>
+                                {/* Map */}
+                                <View style={styles.userInfoContiner}>
+                                    <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
+                                    <Text style={styles.userInfoText}> {name}'s Location</Text></View>
 
-                    <View>
+                                <View>
 
+                                </View>
+
+                                <MapView style={styles.mapStyle}
+                                    scrollEnabled={false}
+                                    intialRegion={{
+                                        latitude: latNum,
+                                        longitude: longNum,
+                                        latitudeDelta: 0.0922,
+                                        longitudeDelta: 0.0421
+                                    }}
+                                    region={{
+                                        latitude: latNum,
+                                        longitude: longNum,
+                                        latitudeDelta: 0.0922,
+                                        longitudeDelta: 0.0421
+                                    }}
+
+                                    onPress={(event) => onMapPress(event.nativeEvent.coordinate)   }
+
+                                >
+
+                                    <MapView.Marker
+                                        coordinate={{
+                                            latitude: latNum,
+                                            longitude: longNum
+                                        }}
+                                        pinColor={'red'}
+                                    />
+
+                                </MapView>
+
+                            </View>
+                            : null}
                     </View>
 
-                    <MapView style={styles.mapStyle}
-                        scrollEnabled={false}
-                        intialRegion={{
-                            latitude: latNum,
-                            longitude:longNum,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        }}
-                        region={{
-                            latitude: latNum,
-                            longitude: longNum,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        }}
-
-                        onPress={(event) => onMapPress(event.nativeEvent.coordinate)
-                        }
-
-                    >
-
-                        <MapView.Marker
-                            coordinate={{
-                                latitude: latNum,
-                                longitude: longNum
-                            }}
-                            pinColor={'red'}
-                        />
-
-                        </MapView> 
-                        
-                        </View>
-                        :null}
-                 </View>
-
-         </View>
-         <View style={styles.body}>
+                </View>
+                <View style={styles.body}>
                     <Text style={styles.myPlantText}>{name}'s Plants</Text>
                     <View>
-                    {post.length == 0 ?
-                                <Text style={styles.noDataText} >No plants added yet</Text>
-                                :
-                    <FlatList
-                        data={post}
-                        renderItem={({ item, index }) =>
-                            (plantItem(item,navigation))}
-                        keyExtractor={item => item.key}
-                    />}
+                        {post.length == 0 ?
+                            <Text style={styles.noDataText} >No plants added yet</Text>
+                            :
+                            <FlatList
+                                data={post}
+                                renderItem={({ item, index }) =>
+                                    (plantItem(item, navigation,null,false))}
+                                keyExtractor={item => item.key}
+                            />}
                     </View>
-                    
-                    
-                    </View>
-</ScrollView>
-    </View>
-);
-                // }else{
 
-                //     return (
-                //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                //           <Text>We are still processing your information </Text>
-                //         </View>
-                //       );
-                // }
-    
-   
+
+                </View>
+            </ScrollView>
+        </View>
+    );
+    // }else{
+
+    //     return (
+    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    //           <Text>We are still processing your information </Text>
+    //         </View>
+    //       );
+    // }
+
+
 
 
 } //end const
@@ -317,10 +306,25 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
+        paddingTop:50,
 
     },
+    back: {
+        position: 'absolute',
+        alignSelf: 'flex-start',
+        top: 50,
+        left: 20,
+        borderRadius: 100,
+        padding: 5,
+        alignItems: 'center',
+        zIndex: 2,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 3,}
+        },
     header: {
-        paddingTop: 5,
+        paddingTop: 23,
         backgroundColor: 'white',
         shadowColor: "#000",
         shadowOffset: {
@@ -350,7 +354,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
     },
     profileInfoView: {
-        
+
         paddingLeft: 25,
         paddingRight: 25,
         borderBottomColor: 'gray'
@@ -383,7 +387,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: "white",
         borderColor: '#CFD590',
-        marginTop: 40,
+        marginTop: 50,
         right: 30,
         shadowColor: "#000",
         shadowOffset: {
@@ -401,8 +405,8 @@ const styles = StyleSheet.create({
         paddingTop: 3,
         fontFamily: 'Khmer-MN-Bold',
         color: 'black',
-    
-      },
+
+    },
     userInfoContiner: {
         flexDirection: 'row',
         marginBottom: 5,
@@ -420,7 +424,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: 250,
         left: -25,
-        
+
     },
 
     plus: {
@@ -437,12 +441,12 @@ const styles = StyleSheet.create({
     },
     noDataText: {
         flex: 1,
-    alignSelf: 'center',
-    fontFamily: 'Khmer-MN-Bold',
-    fontSize: 17,
-    color:'#717171'
+        alignSelf: 'center',
+        fontFamily: 'Khmer-MN-Bold',
+        fontSize: 17,
+        color: '#717171'
 
-}
+    }
 
 
 })

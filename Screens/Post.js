@@ -124,10 +124,14 @@ export default class Post extends React.Component {
       //For update
       console.log('tread id', this.state.ThreadId)
       var postref = firebase.firestore().collection("Posts").doc(this.state.ThreadId);// Atomically add a new region to the "regions" 
+      var post={
+        date:this.state.date,
+        image:this.state.imageURL,
+        caption:this.state.caption,
+        filePath:this.state.photoPath
+      }
       postref.update({
-        Date: firebase.firestore.FieldValue.arrayUnion(this.state.date),
-        Images: firebase.firestore.FieldValue.arrayUnion(this.state.imageURL),
-        Captions: firebase.firestore.FieldValue.arrayUnion(this.state.caption)
+        posts: firebase.firestore.FieldValue.arrayUnion(post),
       })
 
         .then((response) => {

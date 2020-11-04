@@ -27,6 +27,8 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-autocomplete-input": "^4.2.0",
     "react-native-custom-radio-group": "^1.0.1",
+    "react-native-default-menu": "0.0.8",
+    "react-native-dev-menu": "^4.0.2",
     "react-native-elements": "^2.3.2",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-gifted-chat": "^0.16.3",
@@ -42,7 +44,10 @@
     "react-native-svg": "12.1.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.4.2",
-    "save": "^2.4.0"
+    "save": "^2.4.0",
+    "react-native-view-shot": "3.1.2",
+    "expo-sharing": "~8.2.1",
+    "expo-file-system": "~9.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
