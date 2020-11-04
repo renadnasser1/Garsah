@@ -41,6 +41,7 @@ export default class Post extends React.Component {
     isLoading: false,
     userId: '',
     ThreadId: '',
+    plantName:'',
   }
 
   async componentDidMount() {
@@ -59,7 +60,19 @@ export default class Post extends React.Component {
     } else {
       this.setState({ permissions: true })
     }
+    this.getPlantName()
+
   }// end did mount 
+  getPlantName = async () => {
+    
+    const db = firebase.firestore()
+    
+   
+    const commenttRef = db.collection('Posts')
+    const snapshot = await  commenttRef.doc(this.state.ThreadId).get()
+    var x = snapshot.data().Name
+    this.setState({ plantName: x }, () => { console.log('thread name  ', this.state.plantName) })
+       }
 
   render() {
     const { image, caption, userId } = this.state
@@ -191,7 +204,7 @@ export default class Post extends React.Component {
               </Svg>
             </View>
 
-
+            <Text style = {styles.welcome}>Share the progress of {this.state.plantName}</Text>
             {/* <Image source={require("../assets/plain-white-background.jpg")} style={styles.img} /> */}
             <View style={styles.imgContiner}>
 
@@ -334,6 +347,17 @@ const styles = StyleSheet.create({
 
     elevation: 8,
 
+  },
+  welcome :{
+    alignContent:'center',
+    textAlign:'center',
+    fontWeight: "bold",
+    justifyContent: "flex-end",
+    fontFamily:'Khmer-MN-Bold',
+    fontSize: 22,
+    marginBottom:30,
+    color: '#646161',
+  
   },
   icon: {
     paddingLeft: 190,

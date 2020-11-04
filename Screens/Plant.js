@@ -22,7 +22,7 @@ import { AppLoading } from 'expo';
 import Svg, { Path } from "react-native-svg"
 
 //Icons
-import { Entypo,Ionicons,AntDesign } from '@expo/vector-icons';
+import { Entypo,Ionicons,AntDesign ,FontAwesome} from '@expo/vector-icons';
 
 //Components
 import { bugItem, waterItem } from '../Component/bugWaterItems';
@@ -67,7 +67,7 @@ export default class Plant extends React.Component {
   }
 
    async fetchData(){
-    console.log('called fetchData')
+    //console.log('called fetchData')
     try {
 
       // get user info 
@@ -150,7 +150,7 @@ export default class Plant extends React.Component {
     //alert("pressed")
   if(this.state.isOwner){
     //this.props.navigation.navigate("GardnerProfile")
-    alert("this is your plant")
+    //alert("this is your plant")
   }//true
   else {
     this.props.navigation.navigate("ViewGardenerProfile",{id:this.state.userId})
@@ -159,7 +159,7 @@ export default class Plant extends React.Component {
 
 
   render() {
-    const { thread, ThreadId, posts, selectedProgress, showProgressModel , isOwner} = this.state
+    const { thread, ThreadId, posts, selectedProgress, showProgressModel ,isOwner} = this.state
 
     this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {
       await this.fetchData()
@@ -323,7 +323,17 @@ export default class Plant extends React.Component {
               </View>
             </View></View>
         </Modal>
-{ this.state.isOwner?
+        <View style={styles.plus}>
+          <TouchableOpacity>
+            <FontAwesome name="comment" size={45} color="white"
+              onPress={() =>
+                this.props.navigation.navigate('Comment',{ Pid: this.state.ThreadId})
+              } />
+          </TouchableOpacity>
+
+        </View>
+
+        { this.state.isOwner?
         <View style={styles.plus}>
           <TouchableOpacity>
             <Entypo name="plus" size={44} color="white"
@@ -451,8 +461,9 @@ const styles = StyleSheet.create({
     bottom: 10,
     backgroundColor: '#CFD590',
     borderRadius: 100,
-    padding: 5,
-    paddingBottom: -5,
+    padding: 10,
+    // paddingLeft:5,
+    // paddingBottom: 5,
     alignItems: 'center',
     zIndex: 2,
     shadowColor: "#000",

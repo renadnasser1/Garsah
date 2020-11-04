@@ -88,7 +88,6 @@ export default class MessagesPage extends React.Component {
 
     var userinfo = [] //store user info objects
     var name, avatar, key
-
     let usersref = db.collection("users")
 
     for (let k = 0; k < userchats.length; k++) {
