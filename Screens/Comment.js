@@ -149,9 +149,9 @@ this.setState({ comments: Temp }, () => {
     const { comment,comments,plantName} = this.state
    
     return(
-      // <KeyboardAvoidingView
-      // behavior='padding'
-      // style={{ flex: 1 }} >
+       <KeyboardAvoidingView
+      behavior='padding'
+      style={{ flex: 1 }} >
     
       <View 
       style={styles.container}
