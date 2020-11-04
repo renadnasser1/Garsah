@@ -84,11 +84,12 @@ const ViewGardenerProfile = ({ route, navigation }) => {
   
   var g1 = snapshot.docs[0].data();
   setName(g1.name)
-  setGardner(g1.Gardner)
-  console.log(g1.Latitude)
-  console.log(Number(g1.Latitude))
-  console.log(g1.Longtitude)
-  console.log(Number(g1.Longitude))
+  setGardner(g1.Gardner+'')
+  console.log(gardner)
+//   console.log(g1.Latitude)
+//   console.log(Number(g1.Latitude))
+//   console.log(g1.Longtitude)
+//   console.log(Number(g1.Longitude))
   setlongNum(Number(g1.Longitude))
   setlatNum(Number(g1.Latitude))
   

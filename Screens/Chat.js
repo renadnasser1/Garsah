@@ -87,7 +87,7 @@ function getIdN (){
            //console.log(uname)
          const unsubscribe = chatsRef .doc(cId)
 
-         .collection('chats').onSnapshot((querySnapshot) => { //<----here is the problem
+         .collection('chats').onSnapshot((querySnapshot) => { 
 
             const messagesFirestore = querySnapshot
 

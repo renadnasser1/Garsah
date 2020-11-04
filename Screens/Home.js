@@ -74,7 +74,7 @@ export default class Home extends React.Component {
     var posts = []
 
     //getting Posts from DB
-    const db = firebase.firestore()
+  const db = firebase.firestore()
   let usersref = db.collection("Posts").orderBy("Date", "desc")
   const snapshot = await usersref.limit(5).get();
   if (snapshot.empty) {
@@ -253,7 +253,7 @@ export default class Home extends React.Component {
  <View style={styles.content}>
 
 
-  <Text style={styles.text}>Gardeners</Text>
+  <Text style={styles.text}>Gardeners of Garsah</Text>
   
    {/* Random Gardeners Profiles */}
    <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}> 
