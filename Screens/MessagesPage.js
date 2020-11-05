@@ -57,7 +57,7 @@ export default class MessagesPage extends React.Component {
     const snapshot = await citiesRef.get();
 
     if (snapshot.empty) {
-      console.log('No matching documents.');
+      console.log('No matching collection.');
       return;
     }
 
@@ -99,7 +99,7 @@ export default class MessagesPage extends React.Component {
       this.getImage(id)
       const snapshot = await usersref.where('id', '==', id).get();
       if (snapshot.empty) {
-        console.log('No matching documents.');
+        console.log('No matching user.');
         return;
       }
       name = snapshot.docs[0].data().name;
@@ -141,7 +141,13 @@ export default class MessagesPage extends React.Component {
 
       <View style={styles.container}>
 
-
+      <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}
+        />
+      }>
 
         <View style={styles.SVGC}>
 
@@ -190,13 +196,7 @@ export default class MessagesPage extends React.Component {
             {this.state.user.length != 0 ?
               (<View>
 
-              <ScrollView
-                refreshControl={
-                  <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this._onRefresh}
-                  />
-                }>
+          
                 <FlatList
                   data={this.state.user}
                   renderItem={({ item }) => (
@@ -212,7 +212,7 @@ export default class MessagesPage extends React.Component {
                   )}
                 />
 
-              </ScrollView>
+            
               </View>)
               : <View style={{ alignSelf: 'center', position: 'absolute', top: 30,left:210 }}>
                 <Text style={styles.noDataText}>No Messages </Text>
@@ -220,7 +220,7 @@ export default class MessagesPage extends React.Component {
 
             </View>
 
-
+            </ScrollView>
       </View>
     );//end return
 
