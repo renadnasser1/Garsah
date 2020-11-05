@@ -75,7 +75,7 @@ export default class Home extends React.Component {
 
     //getting Posts from DB
   const db = firebase.firestore()
-  let usersref = db.collection("Posts")//.orderBy("Date", "desc")
+  let usersref = db.collection("Posts").orderBy("createdAt", "desc")
   const snapshot = await usersref.limit(5).get();
   if (snapshot.empty) {
   console.log('No matching documents.');

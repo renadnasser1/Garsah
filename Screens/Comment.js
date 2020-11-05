@@ -231,7 +231,6 @@ const styles = StyleSheet.create({
     },
     SVGC :{
   flex: 1,
-  //backgroundColor: '#fff',
     justifyContent:'center',
     alignItems:'flex-start'
   },      
@@ -271,7 +270,8 @@ const styles = StyleSheet.create({
     marginTop:20,
     fontSize: 26,
     marginBottom:2,
-    color: 'black' 
+    color: 'black',
+    fontStyle:'italic',
   },
   inputFiled: {
     marginLeft:15,

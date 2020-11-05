@@ -228,7 +228,12 @@ function HomeStackNav() {
         options={{
           title: '',
           color: 'black',
-          headerShown: false,
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
         }}
         component={ViewGardenerProfile} />
 
@@ -240,18 +245,33 @@ function HomeStackNav() {
 
       <HomeStack.Screen name="Comment"
         options={({ navigation }) => ({
-          title: 'Comment',
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.pop()}><Text
-                style={{
-                  fontFamily: 'Khmer-MN-Bold',
-                  fontSize: 18,
-                  paddingLeft: 10,
-                  paddingTop: 10
-                }}>Back</Text></TouchableOpacity>
-          ),
-        })}
+          title:'Comments',
+          headerBackTitle: 'Back',
+          //headerBackFontFamily: 'Khmer-MN-Bold',
+          headerTintColor:'black',
+        //   headerBackStyle: {
+        //     fontFamily: 'Khmer-MN-Bold',
+        //     paddingTop:8,fontSize:20,
+        // },
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+
+          // headerTitle: () => (<Text style={{ textAlign: 'center',paddingTop:8,fontSize:20, flex: 1, fontFamily: 
+          // 'Khmer-MN-Bold'}}>Comments</Text>),
+          // headerLeft: () => (
+          //   <TouchableOpacity
+          //     onPress={() => navigation.pop()}><Text
+          //       style={{
+          //         fontFamily: 'Khmer-MN-Bold',
+          //         fontSize: 18,
+          //         paddingLeft: 10,
+          //         paddingTop: 10
+          //       }}>Back</Text></TouchableOpacity>
+          // ),
+        })
+      }
         component={Comment} />
 
     </HomeStack.Navigator>
