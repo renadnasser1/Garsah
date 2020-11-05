@@ -199,39 +199,71 @@ export default class Plant extends React.Component {
     const deletePost = (post) =>{
 
       if(this.state.posts.length==1){
-         this.props.route.params.deleteTheadFun (this.state.ThreadId,this.state.userId,[post.filePath])
-        this.props.navigation.goBack()
-        // return
-      }
-      console.log('at post delete')
+        console.log('delete thread from post')
+        Alert.alert(
+          '',
+          'Are you sure you want delete your Post? By deleting your post, the plant will be deleted',
+          [
+              { text: 'Cancel', onPress: () => console.log('') },
+              {
+                  text: 'Delete', onPress: () =>{
+                  this.props.route.params.deleteTheadFun(this.state.ThreadId,this.state.userId,[post.filePath])
+                  this.props.navigation.goBack()}
+              },
 
-      //Delete photo from storage 
-      var desertRef = firebase.storage().ref('Posts/'+post.filePath);
-      //Delete the file
-      desertRef.delete().then(function() {
-        console.log('great')
-      }).catch(function(error) {
-        console.log('not yet',error)
-      });
-           
-      
-       //Delete thread id from user posts array 
-       firebase.firestore().collection('Posts').doc(this.state.ThreadId).update({
-              posts: firebase.firestore.FieldValue.arrayRemove(post)
-          }).then(function(){
-              console.log('removed from array')
-          }).catch(function (error){
-              console.log('error',error)
-          })
-              
-      //refresh screen remove from local araay
-          var postArray=this.state.posts
-          var array = postArray.filter((item) => {return  item.filePath != post.filePath })
-           console.log('array after deletion',array)
-           this.setState({posts:array})
-      
-      
+          ],
+          { cancelable: false }
+      )
+        // return
+      }else{
+
+
+        Alert.alert(
+          '',
+          'Are you sure you want delete your Post?',
+          [
+              { text: 'Cancel', onPress: () => console.log('') },
+              {
+                  text: 'Delete', onPress: () =>
+                  deleteOnlyPost(post)},
+  
+          ],
+          { cancelable: false }
+      )
+
+      } }
+
+      const deleteOnlyPost = (post) =>{
+        console.log('at post delete')
+
+        //Delete photo from storage 
+        var desertRef = firebase.storage().ref('Posts/'+post.filePath);
+        //Delete the file
+        desertRef.delete().then(function() {
+          console.log('great')
+        }).catch(function(error) {
+          console.log('not yet',error)
+        });
+             
+        
+         //Delete thread id from user posts array 
+         firebase.firestore().collection('Posts').doc(this.state.ThreadId).update({
+                posts: firebase.firestore.FieldValue.arrayRemove(post)
+            }).then(function(){
+                console.log('removed from array')
+            }).catch(function (error){
+                console.log('error',error)
+            })
+                
+        //refresh screen remove from local araay
+            var postArray=this.state.posts
+            var array = postArray.filter((item) => {return  item.filePath != post.filePath })
+             console.log('array after deletion',array)
+             this.setState({posts:array})
+
+
       }
+
 
 
     return (
@@ -360,6 +392,7 @@ export default class Plant extends React.Component {
               </View>
             </View></View>
         </Modal>
+        <View style={styles.options}>
         <View style={styles.comment}>
           <TouchableOpacity>
             <FontAwesome name="comment" size={33} color="white"
@@ -379,7 +412,8 @@ export default class Plant extends React.Component {
           </TouchableOpacity>
 
         </View>
-  : null}
+        
+  : null}</View>
       </View>
     );
   }
@@ -517,7 +551,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'flex-end',
     right: 10,
-    bottom: 80,
+    marginBottom:200,
     backgroundColor: '#CFD590',
     borderRadius: 100,
     padding: 11,

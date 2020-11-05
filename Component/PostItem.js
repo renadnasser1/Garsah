@@ -19,6 +19,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 // import * as FileSystem from 'expo-file-system';
 
 const options = ['Delete Plant'];
+const optionsPost = ['Delete Post'];
 
 // on share pressed
 const onPopupEvent = async (eventName, index, delet, item, threaID, userID, filePaths) => {
@@ -63,24 +64,12 @@ const onclick = (eventName, index, item, delet) => {
     let optionName;
     if (index >= 0) {
         // get option name from 'options' array
-        optionName = options[index];
+        optionName = optionsPost[index];
         console.log('selected option', optionName);
         switch (optionName) {
-            case 'Delete Plant':
-                Alert.alert(
-                    '',
-                    'Are you sure you want delete your Post ?',
-                    [
-                        { text: 'Cancel', onPress: () => console.log('') },
-                        {
-                            text: 'Delete', onPress: () =>
-                                delet(item)
-                        },
-
-                    ],
-                    { cancelable: false }
-                )
-
+            
+            case 'Delete Post':
+                delet(item)
                 break;
         }
     }
@@ -134,7 +123,7 @@ export const postItem = (item, delet, isOwner) => {
                 <Text style={styles.plantdate}>{item.date} </Text>
                 {isOwner?
                 <View>
-                    <Menu options={ options} onPress={(name, indx) => onclick(name, indx, item, delet)}>
+                    <Menu options={ optionsPost} onPress={(name, indx) => onclick(name, indx, item, delet)}>
                         <SimpleLineIcons style={styles.optionsPost} name="options" size={20} color="black" />
                     </Menu></View>:null}
             </View>
