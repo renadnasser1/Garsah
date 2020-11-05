@@ -46,6 +46,7 @@ export default class Comment extends React.Component {
    comments:[],
    users:[],
    name:'',
+   id : '',
   }
 
   _onRefresh = () => {
@@ -57,9 +58,12 @@ export default class Comment extends React.Component {
   
   async componentDidMount() {
     let name = await AsyncStorage.getItem("name")
+    let uid = await AsyncStorage.getItem("uid")
     this.setState({ name: name }, () => { console.log('name', this.state.name) })
-
     this.setState({ Pid: this.props.route.params.Pid }, () => { console.log('thread id at cooment ', this.state.Pid) })
+  
+    this.setState({ id: uid }, () => { console.log('nouf look here ', this.state.id) })
+    this.getID()
     this.getPlantName()
     this.getComment()
     
@@ -67,6 +71,10 @@ export default class Comment extends React.Component {
 
   } //componentDidMount
   
+  getID = async () => {
+
+
+  }
 getPlantName = async () => {
     
     const db = firebase.firestore()
@@ -75,7 +83,7 @@ getPlantName = async () => {
     const commenttRef = db.collection('Posts')
     const snapshot = await  commenttRef.doc(this.state.Pid).get()
     var x = snapshot.data().Name
-  
+    
     this.setState({ plantName: x }, () => { console.log('thread name  ', this.state.plantName) })
   }
   async handleSend(comment) {
@@ -98,6 +106,7 @@ getPlantName = async () => {
       Comment:comment,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     Name:this.state.name,
+    Uid:this.state.id,
      } 
      
     );
@@ -142,7 +151,7 @@ this.setState({ comments: Temp }, () => {
   
   render () {
 
-    const { comment,comments,plantName} = this.state
+    const { comment,comments,plantName,id} = this.state
    
     return(
        <KeyboardAvoidingView
@@ -183,8 +192,13 @@ this.setState({ comments: Temp }, () => {
                   data={this.state.comments}
                   renderItem={({ item }) => (
              <TouchableOpacity  style={{ flexDirection: 'row',borderBottomColor: '#C0C0C0', borderBottomWidth: 1,marginBottom: 10,}}>
-       <Text  style={styles.UsernameText}>{item.name} : </Text>
+       <Text  style={styles.UsernameText}
+          onPress={() => 
+                this.props.navigation.navigate('ViewGardenerProfile',{ id: this.state.id})}
+       >{item.name} : </Text>
+    
        <Text style={styles.CommentText}>{item.comment}</Text>
+
        </TouchableOpacity>
                    
                   )}

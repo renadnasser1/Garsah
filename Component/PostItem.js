@@ -18,7 +18,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 // import * as Sharing from 'expo-sharing';
 // import * as FileSystem from 'expo-file-system';
 
-const options = ['Delete Plan'];
+const options = ['Delete Plant'];
 
 // on share pressed
 const onPopupEvent = async (eventName, index, delet, item, threaID, userID, filePaths) => {
