@@ -362,12 +362,11 @@ export default class Plant extends React.Component {
         </Modal>
         <View style={styles.comment}>
           <TouchableOpacity>
-            <FontAwesome name="comment" size={44} color="white"
+            <FontAwesome name="comment" size={33} color="white"
               onPress={() =>
-                this.props.navigation.navigate('Comment',{ Pid: this.state.ThreadId})
+                this.props.navigation.push('Comment',{ Pid: this.state.ThreadId})
               } />
           </TouchableOpacity>
-
         </View>
 
         { this.state.isOwner?
@@ -495,35 +494,33 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'flex-end',
     right: 10,
-    bottom: 80,
+    bottom: 10,
     backgroundColor: '#CFD590',
     borderRadius: 100,
-    padding: 10,
-    // paddingLeft:5,
-    // paddingBottom: 5,
+    padding: 5,
+    paddingBottom: -5,
     alignItems: 'center',
     zIndex: 2,
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
-      height: 3,
+        width: 0,
+        height: 3,
     },
     shadowOpacity: 0.2,
     shadowRadius: 4.0,
 
     elevation: 3,
 
-  },
+},
+
   comment: {
     position: 'absolute',
     alignSelf: 'flex-end',
     right: 10,
-    bottom: 10,
+    bottom: 80,
     backgroundColor: '#CFD590',
     borderRadius: 100,
-    padding: 10,
-    // paddingLeft:5,
-    // paddingBottom: 5,
+    padding: 11,
     alignItems: 'center',
     zIndex: 2,
     shadowColor: "#000",

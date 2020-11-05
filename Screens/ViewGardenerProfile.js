@@ -178,12 +178,12 @@ const ViewGardenerProfile = ({ route, navigation }) => {
     // if(lat){
     return (
         <View style={styles.container}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
         style={styles.back}
           onPress={() => {
             navigation.pop()
           }}>
-            <Ionicons name="ios-arrow-back" size={30} color="black" /></TouchableOpacity>
+            <Ionicons name="ios-arrow-back" size={30} color="black" /></TouchableOpacity> */}
             <ScrollView>
                 <View style={styles.header}>
 
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
-        paddingTop:50,
+        //paddingTop:50,
 
     },
     back: {
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
           height: 3,}
         },
     header: {
-        paddingTop: 23,
+        //paddingTop: 23,
         backgroundColor: 'white',
         shadowColor: "#000",
         shadowOffset: {

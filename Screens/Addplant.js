@@ -219,7 +219,8 @@ export default class AddPlant extends React.Component {
         Uid: this.state.userId,
         Pid: postId,
         Reminders: result,
-        posts:[post]
+        posts:[post],
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }).then((response) => {
 
       }).catch((error) => {
