@@ -392,7 +392,7 @@ export default class Plant extends React.Component {
               </View>
             </View></View>
         </Modal>
-        <View style={styles.options}>
+        <View style={styles.continerOptions}>
         <View style={styles.comment}>
           <TouchableOpacity>
             <FontAwesome name="comment" size={33} color="white"
@@ -524,15 +524,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
 
   },
-  plus: {
+  continerOptions:{
     position: 'absolute',
     alignSelf: 'flex-end',
     right: 10,
     bottom: 10,
+
+  },
+  plus: {
     backgroundColor: '#CFD590',
     borderRadius: 100,
     padding: 5,
     paddingBottom: -5,
+    marginTop:10,
     alignItems: 'center',
     zIndex: 2,
     shadowColor: "#000",
@@ -546,27 +550,23 @@ const styles = StyleSheet.create({
     elevation: 3,
 
 },
-
-  comment: {
-    position: 'absolute',
-    alignSelf: 'flex-end',
-    right: 10,
-    marginBottom:200,
-    backgroundColor: '#CFD590',
-    borderRadius: 100,
-    padding: 11,
-    alignItems: 'center',
-    zIndex: 2,
-    shadowColor: "#000",
-    shadowOffset: {
+comment: {
+  backgroundColor: '#CFD590',
+  borderRadius: 100,
+  padding: 14,
+  alignItems: 'center',
+  zIndex: 2,
+  shadowColor: "#000",
+  shadowOffset: {
       width: 0,
       height: 3,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4.0,
-
-    elevation: 3,
-
   },
+  shadowOpacity: 0.2,
+  shadowRadius: 4.0,
+
+  elevation: 3,
+
+},
+
 
 })
