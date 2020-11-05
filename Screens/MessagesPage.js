@@ -57,7 +57,7 @@ export default class MessagesPage extends React.Component {
     const snapshot = await citiesRef.get();
 
     if (snapshot.empty) {
-      console.log('No matching documents.');
+      console.log('No matching collection.');
       return;
     }
 
@@ -99,7 +99,7 @@ export default class MessagesPage extends React.Component {
       this.getImage(id)
       const snapshot = await usersref.where('id', '==', id).get();
       if (snapshot.empty) {
-        console.log('No matching documents.');
+        console.log('No matching user.');
         return;
       }
       name = snapshot.docs[0].data().name;
