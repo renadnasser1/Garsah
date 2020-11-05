@@ -197,7 +197,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
                     >
                         <Text style={styles.editText} onPress={() => {
                             onEditPress();
-                        }}> message me</Text>
+                        }}> Message Me</Text>
                     </TouchableOpacity>
 
                     {/* Profile Information */}
@@ -354,7 +354,6 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
     },
     profileInfoView: {
-
         paddingLeft: 25,
         paddingRight: 25,
         borderBottomColor: 'gray'
@@ -376,18 +375,17 @@ const styles = StyleSheet.create({
         margin: 20,
         fontSize: 18,
         fontFamily: 'Khmer-MN-Bold'
-
     },
 
     editButton: {
         position: 'absolute',
         alignSelf: 'flex-end',
-        borderWidth: 2,
+        //borderWidth: 1,
         width: 90,
-        borderRadius: 20,
-        backgroundColor: "white",
-        borderColor: '#CFD590',
-        marginTop: 50,
+        borderRadius: 10,
+        backgroundColor: "#CFD590",
+       // borderColor: '#CFD590',
+        marginTop: 30,
         right: 30,
         shadowColor: "#000",
         shadowOffset: {
@@ -396,15 +394,16 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.1,
         shadowRadius: 4.65,
-
         elevation: 4,
+        padding:1,
 
     },
     editText: {
         alignSelf: 'center',
         paddingTop: 3,
         fontFamily: 'Khmer-MN-Bold',
-        color: 'black',
+        color: 'white',
+        fontSize:15,
 
     },
     userInfoContiner: {

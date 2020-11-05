@@ -529,6 +529,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     right: 10,
     bottom: 10,
+    alignItems:'center'
 
   },
   plus: {
@@ -553,7 +554,8 @@ const styles = StyleSheet.create({
 comment: {
   backgroundColor: '#CFD590',
   borderRadius: 100,
-  padding: 14,
+  padding: 11,
+  //marginBottom:5,
   alignItems: 'center',
   zIndex: 2,
   shadowColor: "#000",

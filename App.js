@@ -247,29 +247,11 @@ function HomeStackNav() {
         options={({ navigation }) => ({
           title:'Comments',
           headerBackTitle: 'Back',
-          //headerBackFontFamily: 'Khmer-MN-Bold',
           headerTintColor:'black',
-        //   headerBackStyle: {
-        //     fontFamily: 'Khmer-MN-Bold',
-        //     paddingTop:8,fontSize:20,
-        // },
           headerTitleStyle: {
               fontFamily: 'Khmer-MN-Bold',
               paddingTop:8,fontSize:20,
           },
-
-          // headerTitle: () => (<Text style={{ textAlign: 'center',paddingTop:8,fontSize:20, flex: 1, fontFamily: 
-          // 'Khmer-MN-Bold'}}>Comments</Text>),
-          // headerLeft: () => (
-          //   <TouchableOpacity
-          //     onPress={() => navigation.pop()}><Text
-          //       style={{
-          //         fontFamily: 'Khmer-MN-Bold',
-          //         fontSize: 18,
-          //         paddingLeft: 10,
-          //         paddingTop: 10
-          //       }}>Back</Text></TouchableOpacity>
-          // ),
         })
       }
         component={Comment} />
@@ -414,6 +396,20 @@ function stackInGardnerStack() {
         name="LocationMap"
         component={LocationMap}
       />}
+
+<inGardnerStack.Screen name="Comment"
+        options={({ navigation }) => ({
+          title:'Comments',
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+        })
+      }
+        component={Comment} />
+      
     </inGardnerStack.Navigator>
 
   );
@@ -576,3 +572,23 @@ const styles = StyleSheet.create({
     marginTop: Constants.statusBarHeight,
   },
 });
+
+//style header 
+
+        //   headerBackStyle: {
+        //     fontFamily: 'Khmer-MN-Bold',
+        //     paddingTop:8,fontSize:20,
+        // },
+
+          // headerTitle: () => (<Text style={{ textAlign: 'center',paddingTop:8,fontSize:20, flex: 1, fontFamily: 
+          // 'Khmer-MN-Bold'}}>Comments</Text>),
+          // headerLeft: () => (
+          //   <TouchableOpacity
+          //     onPress={() => navigation.pop()}><Text
+          //       style={{
+          //         fontFamily: 'Khmer-MN-Bold',
+          //         fontSize: 18,
+          //         paddingLeft: 10,
+          //         paddingTop: 10
+          //       }}>Back</Text></TouchableOpacity>
+          // ),

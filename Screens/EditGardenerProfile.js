@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 20,
     marginBottom: 20,
-    borderWidth: 2,
+    borderWidth: 1,
     width: 120,
     borderRadius: 20,
     backgroundColor: "white",
@@ -485,7 +485,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingTop: 3,
     fontFamily: 'Khmer-MN-Bold',
-    color: 'black',
+    color: '#CFD590',
 
   },
   editText2: {

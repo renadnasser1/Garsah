@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
     editButton: {
         position: 'absolute',
         alignSelf: 'flex-end',
-        borderWidth: 2,
+        borderWidth: 1,
         width: 90,
         borderRadius: 20,
         backgroundColor: "white",
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
         paddingLeft: 6,
         paddingTop: 3,
         fontFamily: 'Khmer-MN-Bold',
-        color: 'black',
+        color: '#CFD590',
 
     },
     userInfoContiner: {

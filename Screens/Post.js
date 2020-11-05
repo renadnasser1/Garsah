@@ -208,7 +208,7 @@ export default class Post extends React.Component {
               </Svg>
             </View>
 
-            <Text style = {styles.welcome}>Share the progress of {this.state.plantName}</Text>
+            <Text style = {styles.welcome}> Add Progress For {this.state.plantName}</Text>
             {/* <Image source={require("../assets/plain-white-background.jpg")} style={styles.img} /> */}
             <View style={styles.imgContiner}>
 
@@ -217,7 +217,7 @@ export default class Post extends React.Component {
             <View>
             <Image source={{ uri: this.state.image }} style={styles.img} />
             <View style={styles.iconEdit}>
-            <MaterialCommunityIcons name="circle-edit-outline" size={35} color="#CFD590"
+            <MaterialCommunityIcons name="circle-edit-outline" size={25} color="white"
               onPress={() => {
                 pickImageCameraRoll();
               }}
@@ -353,14 +353,13 @@ const styles = StyleSheet.create({
 
   },
   welcome :{
-    alignContent:'center',
-    textAlign:'center',
-    fontWeight: "bold",
-    justifyContent: "flex-end",
+    //textAlign:'center',
+    //justifyContent: "flex-end",
     fontFamily:'Khmer-MN-Bold',
     fontSize: 22,
-    marginBottom:30,
-    color: '#646161',
+    marginLeft:10,
+    marginBottom:10,
+    color: 'black',
   
   },
   icon: {
@@ -370,20 +369,21 @@ const styles = StyleSheet.create({
 
   },
   iconEdit: {
-    backgroundColor: "rgba(239, 237, 237, 0.3)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderRadius:10,
+    padding:2,
     alignSelf:'flex-end',
     position: 'absolute',
-    top: 230,
-    width:35,
-    right:5
+    top: 240,
+    width:30,
+    right:20
 
   },
   postButton: {
     alignSelf: 'center',
     marginTop: 50,
     marginBottom: 20,
-    borderWidth: 2,
+    borderWidth: 1,
     width: 120,
     borderRadius: 20,
     backgroundColor: "white",
