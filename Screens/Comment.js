@@ -47,6 +47,7 @@ export default class Comment extends React.Component {
    users:[],
    name:'',
    id : '',
+
   }
 
   _onRefresh = () => {
@@ -130,7 +131,6 @@ getPlantName = async () => {
       return;
     }
 var Temp = [] ; 
-console.log("hello")
 
 for (let i = 0; i < snapshot.size; i++) {
   //Temp[i]=snapshot.docs[i].data()
@@ -138,6 +138,7 @@ for (let i = 0; i < snapshot.size; i++) {
     key: i, //<--- not sure but we want to arrange it by date (make it post id)
     comment: snapshot.docs[i].data().Comment,
     name: snapshot.docs[i].data().Name,
+    id :  snapshot.docs[i].data().Uid,
     //date: snapshot.docs[i].data().createdAt.slice(0.12),
 
 };
@@ -194,8 +195,8 @@ this.setState({ comments: Temp }, () => {
              <TouchableOpacity  style={{ flexDirection: 'row',borderBottomColor: '#C0C0C0', borderBottomWidth: 1,marginBottom: 10,}}>
        <Text  style={styles.UsernameText}
           onPress={() => 
-                this.props.navigation.navigate('ViewGardenerProfile',{ id: this.state.id})}
-       >{item.name} : </Text>
+                this.props.navigation.navigate('ViewGardenerProfile',{ id: item.id})}
+       >{item.name}: </Text>
     
        <Text style={styles.CommentText}>{item.comment}</Text>
 
@@ -326,6 +327,7 @@ top:677,
   CommentText:{
     color: '#494D4B',
     margin: 5,
+    paddingRight:50,
     fontSize: 22,
     fontFamily: 'Khmer-MN'
 

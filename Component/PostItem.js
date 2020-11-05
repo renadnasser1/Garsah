@@ -38,7 +38,7 @@ const onPopupEvent = async (eventName, index, delet, item, threaID, userID, file
             case 'Delete Plant':
                 Alert.alert(
                     '',
-                    'Are you sure you want delete your plant ?',
+                    'Are you sure you want delete your plant? \n Deleting the plant will delete all the plant\'\s progress as well',
                     [
                         { text: 'Cancel', onPress: () => console.log('') },
                         {
