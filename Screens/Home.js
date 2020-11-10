@@ -3,7 +3,7 @@ import  Svg, { Defs, ClipPath, Path, G } from "react-native-svg"
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-community/async-storage';
 //import { ScrollView } from "react-native-gesture-handler";
-import {plantItem} from '../Component/PostItem'
+import {plantItem} from './Component/PostItem'
 
 import {
   View,

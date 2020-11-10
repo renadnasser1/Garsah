@@ -27,7 +27,7 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import { plantItem } from '../Component/PostItem'
+import { plantItem } from './Component/PostItem'
 
 //Firebase
 import * as firebase from "firebase";

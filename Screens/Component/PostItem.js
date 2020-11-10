@@ -37,7 +37,7 @@ const onPopupEvent = async (eventName, index, delet, item, threaID, userID, file
 
             case 'Delete Plant':
                 Alert.alert(
-                    '',
+                    'Delete Plant',
                     'Are you sure you want delete your plant? \n Deleting the plant will delete all the plant\'\s progress as well',
                     [
                         { text: 'Cancel', onPress: () => console.log('') },
@@ -85,9 +85,9 @@ export const plantItem = (item, navigation, delet, isOwner) => {
                 <MaterialCommunityIcons style={styles.dateicon} name="record-circle" size={20} color="#F9DED4" />
                 <Text style={styles.plantdate}>{item.date} </Text>
                 {isOwner?
-                <View>
+                <View style={styles.optionsPost}>
                     <Menu options={options} onPress={(name, indx) => onPopupEvent(name, indx, delet, item, item.key, item.userID, item.filePaths)}>
-                        <SimpleLineIcons style={styles.optionsPost} name="options" size={20} color="black" />
+                        <SimpleLineIcons  name="options" size={20} color="black" />
                     </Menu></View>:null}
 
             </View>
@@ -122,9 +122,9 @@ export const postItem = (item, delet, isOwner) => {
 
                 <Text style={styles.plantdate}>{item.date} </Text>
                 {isOwner?
-                <View>
+                <View style={styles.optionsPost}>
                     <Menu options={ optionsPost} onPress={(name, indx) => onclick(name, indx, item, delet)}>
-                        <SimpleLineIcons style={styles.optionsPost} name="options" size={20} color="black" />
+                        <SimpleLineIcons name="options" size={20} color="black" />
                     </Menu></View>:null}
             </View>
             <View
