@@ -62,31 +62,15 @@ export default class App extends React.Component {
       let longitude = await AsyncStorage.getItem("longitude")
 
       let userId = firebase.auth().currentUser.uid
-      console.log(latitude)
 
-     console.log('frist lat',userId)
-      if (latitude==""  || latitude  == null) {
-        var isEditting = false;
-        console.log('Here')
         navigator.geolocation.getCurrentPosition(
           ({ coords: { latitude, longitude } }) => this.setState({
             Marker: {
               latitude, longitude
-            },  userId,isEditting
+            },  userId
           }, () => console.log('State: ', this.state)),
           (error) => console.log('Error:', error))
 
-      } else {
-        var isEditting = true;
-        latitude = Number(latitude)
-        longitude = Number(longitude)
-
-        this.setState({
-          Marker: {
-            latitude, longitude
-          }, userId,isEditting
-        }, () => console.log('State: ', this.state))
-      }
 
     } catch (err) {
       alert(err)
@@ -104,83 +88,6 @@ export default class App extends React.Component {
       this.props.navigation.navigate('Home')
     };
 
-    const onLogoutPress = async () => {
-      firebase.auth()
-      .signOut()
-      .then(() => navigation.navigate('Login')), AsyncStorage.getAllKeys()
-      .then(keys => AsyncStorage.multiRemove(keys))
-      .then(() => alert('success')).catch((error) => {
-        alert(error)
-      });
-
-    }
-
-
-    const onSetLocationPress = () => {
-
-      Alert.alert(
-        '',
-        'Are you sure you want to save this location? ',
-        [
-          {
-            text: 'Cancel', onPress: () =>
-              console.log(''),
-
-
-          },
-          {
-            text: 'Save', onPress: () =>
-              updateCords()
-
-          },
-
-
-        ],
-        { cancelable: false }
-      )
-
-
-    }
-
-    const updateCords = () => {
-      console.log(userId)
-      console.log( this.state.Marker.latitude,this.state.Marker.longitude)
-
-      //save cloud firestore
-      firebase.firestore().collection('users').doc(this.state.userId).update({
-        Latitude: this.state.Marker.latitude,
-        Longitude: this.state.Marker.longitude,
-      }).then((response) => {
-        //Storage Async
-        save()
-        //Navigate 
-        if (this.state.isEditting === true) {
-          this.props.navigation.pop();
-
-        } else {
-          this.props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'GardnerRoot' }],
-          })
-        }
-      }).catch((error) => {
-        Alert.alert(error);
-      });
-    }
-
-    const save = async () => {
-      try {
-
-        console.log('at save')
-        await AsyncStorage.setItem("latitude", this.state.Marker.latitude + '')
-        await AsyncStorage.setItem("longitude", this.state.Marker.longitude + '')
-
-      } catch (err) {
-        alert(err)
-      }
-
-
-    }
 
     // Screen contant
 
@@ -205,34 +112,7 @@ export default class App extends React.Component {
             />
 
           </MapView>
-          <View style={styles.footer}>
 
-            <Text style={styles.text}>Long Press and Drag the pointer to select your plantation's location</Text>
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => onSetLocationPress()}>
-
-
-              <Text style={styles.editText} > set location </Text>
-            </TouchableOpacity>
-
-           {/* MAYBE LATER BUTTON */}
-           
-            {/* <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => onLaterPress()}>
-
-
-              <Text style={styles.editText} > maybe later </Text>
-            </TouchableOpacity> */}
-
-            {/* Long Press & Drag the pointer to select exact location */}
-
-            <View >
-
-            </View>
-
-          </View>
         </View>
 
       );
@@ -243,14 +123,6 @@ export default class App extends React.Component {
           <Text style={styles.permission}>We need your permission!</Text>
           <Text style={styles.permissionSteps}>Go to Settings {">"} Privacy {">"} Location Services.</Text>
           <Text style={styles.permissionText}>Make sure that Location Services is on. Scroll down to find the app. Tap Garsah and select an option: ALWAYS</Text>
-        
-          <TouchableOpacity
-        style={styles.logoutButton}
-        underlayColor="#fff"
-        onPress={() => onLogoutPress()}
-      >
-        <Text style={styles.logotext}>Logout </Text>
-      </TouchableOpacity>
 
 
 

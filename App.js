@@ -13,6 +13,7 @@ import { unsubscribe } from './Controller/Notification'
 //Icons
 import { Ionicons } from "@expo/vector-icons";
 import { Foundation } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons'; 
 
 //screens
 import Login from "./Screens/LogIn";
@@ -34,6 +35,8 @@ import Chat from "./Screens/Chat";
 import ViewGardenerProfile from "./Screens/ViewGardenerProfile";
 import Addplant from "./Screens/Addplant";
 import Comment from "./Screens/Comment";
+import ViewGardnerMap from "./Screens/ViewGardnerMap";
+
 
 // Firebase
 import * as firebase from "firebase";
@@ -159,6 +162,17 @@ function GardnerRoot() {
           headerShown: true
         }}
         component={HomeStackNav} />
+
+<GardnerTab.Screen
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="location" size={size} color={color} />
+           
+          ),
+
+        }} name="Gardners"
+
+        component={ViewGardnerMap} />
 
       <GardnerTab.Screen
         name="Messages"
@@ -346,7 +360,7 @@ function stackInGardnerStack() {
 
       <inGardnerStack.Screen
         options={({ navigation }) => ({
-          title: 'Home',
+          title: '',
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => onLogoutPress(navigation)}><Text
