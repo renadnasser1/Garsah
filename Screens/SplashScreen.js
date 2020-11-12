@@ -134,7 +134,7 @@ function SplashScreen({ navigation }) {
                                 if (userInfo.Gardner == false) {
                                     navigation.reset({
                                         index: 0,
-                                        routes: [{ name: 'GardnerRoot' }],
+                                        routes: [{ name: 'Root' }],
                                     });
                                 }
 
@@ -149,7 +149,7 @@ function SplashScreen({ navigation }) {
                                      }else{
                                     navigation.reset({
                                         index: 0,
-                                        routes: [{ name: 'GardnerRoot' }],
+                                        routes: [{ name: 'Root' }],
                                     });}
                                 }
                             } else {

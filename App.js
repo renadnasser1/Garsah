@@ -101,49 +101,8 @@ const onLogoutPress = async (navigation) => {
 
 
 
-//Amateur Tabs
-// function AmateurRoot() {
-//   return (
-//     <AmateurTab.Navigator
-
-//       tabBarOptions={{
-//         activeTintColor: '#3D6A4B',
-//         inactiveTintColor: 'gray',
-//       }}
-//     >
-
-
-//       <AmateurTab.Screen
-//         name="Home"
-//         options={{
-//           tabBarIcon: ({ color, size }) => (
-//             <Foundation name="home" color={color} size={size} />
-//           ),
-//         }}
-//         component={HomeStackNav} />
-
-//       <AmateurTab.Screen
-//         name="Messages"
-//         options={{
-//           tabBarIcon: ({ color, size }) => (
-//             <Ionicons name="ios-mail" color={color} size={size} />
-//           ),
-//         }}
-//         component={MessageStackNav} />
-
-//       <AmateurTab.Screen name="profile"
-//         options={{
-//           tabBarIcon: ({ color, size }) => (
-//             <Ionicons name="md-person" color={color} size={size} />
-//           ),
-//         }}
-//         component={AmatureStackNav} />
-//     </AmateurTab.Navigator>
-//   );
-// }
-
 //Gardner Tabs
-function GardnerRoot() {
+function Root() {
   return (
     <GardnerTab.Navigator
       tabBarOptions={{
@@ -171,8 +130,8 @@ function GardnerRoot() {
           ),
 
         }} name="Gardners"
-
-        component={ViewGardnerMap} />
+        
+        component={ViewGardnersStack} />
 
       <GardnerTab.Screen
         name="Messages"
@@ -198,10 +157,64 @@ function GardnerRoot() {
 }
 
 const GardnerStack = createStackNavigator();
-const inGardnerStack = createStackNavigator();
+const ViewGardnerStack = createStackNavigator();
 const AmatureStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const MessageStack = createStackNavigator();
+
+function ViewGardnersStack() {
+  return (
+    <ViewGardnerStack.Navigator>
+      <ViewGardnerStack.Screen name="Gardners"
+        options={{
+          title: 'Gardners',
+        }}
+        component={ViewGardnerMap} />
+
+
+<ViewGardnerStack.Screen name="ViewGardenerProfile"
+        options={{
+          title: '',
+          color: 'black',
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+        }}
+        component={ViewGardenerProfile} />
+
+{<ViewGardnerStack.Screen
+        name="Plant"
+        options={{
+          headerShown: false,
+        }}
+        component={Plant}
+      />}
+
+      <ViewGardnerStack.Screen name="Chat"
+        options={{
+          title: 'Chat',
+        }}
+        component={Chat} />
+
+      <ViewGardnerStack.Screen name="Comment"
+        options={({ navigation }) => ({
+          title:'Comments',
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+        })
+      }
+        component={Comment} />
+
+    </ViewGardnerStack.Navigator>
+  );
+}
 
 function MessageStackNav() {
   return (
@@ -327,26 +340,6 @@ function GardnerStackNav() {
         component={Post}
       />}
 
-      {/* {<GardnerStack.Screen
-        name="Comment"
-        options={({ navigation }) => ({
-          title: 'Comment',
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.pop()}><Text
-                style={{
-                  fontFamily: 'Khmer-MN-Bold',
-                  fontSize: 18,
-                  paddingLeft: 10,
-                  paddingTop: 10
-                }}>Cancel</Text></TouchableOpacity>
-          ),
-        })}
-        component={Comment}
-      />} */}
-
-
-
     </GardnerStack.Navigator>
 
 
@@ -429,52 +422,6 @@ function stackInGardnerStack() {
   );
 }
 
-// function AmatureStackNav() {
-//   return (
-
-//     <AmatureStack.Navigator>
-//       <AmatureStack.Screen name="Profile"
-//         options={{
-//           title: 'Profile',
-//         }}
-
-//         component={AmateurProfile} />
-
-
-//       <AmatureStack.Screen
-//         options={{
-//           title: 'Edit Profile',
-//           color: 'black'
-//         }}
-//         name="EditAmateurProfile"
-//         component={EditAmateurProfile}
-
-//       />
-//            {<AmatureStack.Screen
-//         name="Addplant"
-//         options={({ navigation }) => ({
-//           title: 'Add Plant',
-//           headerLeft: () => (
-//             <TouchableOpacity
-//               onPress={() => navigation.pop()}><Text
-//                 style={{
-//                   fontFamily: 'Khmer-MN-Bold',
-//                   fontSize: 18,
-//                   paddingLeft: 10,
-//                   paddingTop: 10
-//                 }}>Cancel</Text></TouchableOpacity>
-//           ),
-//         })}
-
-//         component={Addplant}
-//       />}
-
-//     </AmatureStack.Navigator>
-
-//   );
-// }
-
-
 
 
 const Stack = createStackNavigator();
@@ -501,14 +448,6 @@ export default class App extends React.Component {
             }}
           />
 
-          {/* {<Stack.Screen
-            name="Plant"
-            options={{
-              headerShown: false,
-            }}
-            component={Plant}
-          />} */}
-
           <Stack.Screen
             name="Login"
             component={Login}
@@ -525,18 +464,11 @@ export default class App extends React.Component {
             }}
           />
 
-          {/* <Stack.Screen
-            name="AmateurRoot"
-            component={AmateurRoot}
-            options={{
-              headerShown: false,
-            }}
 
-          /> */}
 
           <Stack.Screen
-            name="GardnerRoot"
-            component={GardnerRoot}
+            name="Root"
+            component={Root}
             options={{
               headerShown: false,
             }}
