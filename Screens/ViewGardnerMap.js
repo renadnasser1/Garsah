@@ -14,6 +14,7 @@ import {
   Animated
 } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons'; 
 
 //Fonts
 import { useFonts } from 'expo-font';
@@ -42,8 +43,7 @@ export default class App extends React.Component {
       latitude: '',
       longitude: '',
     },
-    userId: '',
-    isEditting: '',
+    gardners:[]
   }
 
 
@@ -77,6 +77,60 @@ export default class App extends React.Component {
     }
 
   }
+
+  getGardeners = async () => {
+
+    var Gardners= [];
+    var rg =[];
+//getting gardeners from DB
+    const db = firebase.firestore()
+  let usersref = db.collection("users")
+  const snapshot = await usersref.where('Gardner', '==', true).get();
+  if (snapshot.empty) {
+  console.log('No matching documents.');
+  return;
+  }  
+//Adding gardeners data into an array
+  for(let i=0; i<snapshot.size;i++) 
+
+ var gardner = {
+    
+  }
+  {Gardners[i]=snapshot.docs[i].data();}
+//choosing 5 random gardeners
+  for(let i=0 ; i<5 ; i++){
+  rg[i]= Gardners[Math.floor(Math.random()*Gardners.length)];
+  if(i != 0){ //this might solve the unique gardners issue
+    while(rg[i-1] == rg[i]){
+    rg[i]= Gardners[Math.floor(Math.random()*Gardners.length)];}
+    }
+    }
+  
+//setting avatars for said gardeners
+  this.getImage(rg[0], 1)
+  this.getImage(rg[1], 2)
+  this.getImage(rg[2], 3)
+  this.getImage(rg[3], 4)
+  this.getImage(rg[4], 5)
+  
+     this.setState({id1: rg[0].id}, () => {
+        //console.log(this.state.id1)
+       });
+       this.setState({id2: rg[1].id}, () => {
+        //console.log(this.state.id2)
+       });
+       this.setState({id3: rg[2].id}, () => {
+        //console.log(this.state.id3)
+       });
+       this.setState({id4: rg[3].id}, () => {
+        //console.log(this.state.id4)
+       });
+       this.setState({id5: rg[4].id}, () => {
+        //console.log(this.state.id5)
+       });
+
+       
+  }//end gardeners
   
 
   render() {
@@ -105,11 +159,13 @@ export default class App extends React.Component {
           >
 
             <MapView.Marker
-              draggable
+              icon={<FontAwesome name="location-arrow" size={24} color="black" />}
               coordinate={this.state.Marker}
               onDragEnd={(e) => { this.setState({ Marker: e.nativeEvent.coordinate }) }}
-              pinColor={'red'}
             />
+              {/* <View style={}>
+     <Text style={styles.pinText}>{marker.num}</Text>
+   </View> */}
 
           </MapView>
 
