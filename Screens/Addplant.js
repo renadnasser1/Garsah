@@ -16,13 +16,13 @@ import {
 import Autocomplete from 'react-native-autocomplete-input';
 
 //Component
-import { periodWater, periodTreatment } from '../Component/period';
-import { progress } from '../Component/progress';
-import { bugItem, waterItem } from '../Component/bugWaterItems';
+import { periodWater, periodTreatment } from './Component/period';
+import { progress } from './Component/progress';
+import { bugItem, waterItem } from './Component/bugWaterItems';
 
 //Functions 
 import { registerForPushNotificationsAsync, schedulePushNotification, removeAll } from '../Controller/Notification'
-import { getAllPlants } from '../Controller/APIcalls'
+import { getAllPlants } from '../Model/APIcalls'
 
 //Firebase
 import * as firebase from "firebase";

@@ -32,7 +32,7 @@ import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 import { set, concat } from "react-native-reanimated";
 import { ScrollView } from "react-native-gesture-handler";
-import { plantItem } from '../Component/PostItem'
+import { plantItem } from './Component/PostItem'
 
 const ViewGardenerProfile = ({ route, navigation }) => {
 

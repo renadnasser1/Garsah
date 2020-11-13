@@ -27,7 +27,7 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 //Components
-import { plantItem } from '../Component/PostItem'
+import { plantItem } from './Component/PostItem'
 
 
 export const GardnerProfile = ({ navigation }) => {
