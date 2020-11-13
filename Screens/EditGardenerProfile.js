@@ -102,17 +102,17 @@ export default class App extends React.Component {
             rej(err);
           });
         }
-        //  if (this.Bio.state==null){
-        //     Bio.state=""
-        //   }
-        //   if (this.Phone.state==null){
-        //     this.Phone.state=""
-        //   }
+         if (this.state.Bio==null){
+            this.setState({Bio:''})
+          }
+          if (this.state.Phone==null){
+            this.setState({Phone:''})
+          }
       
           firebase.firestore().collection('users').doc(userId).update({
             name: this.state.name,
-            Bio: this.state.Bio+"",
-            Phone: this.state.Phone+"",
+            Bio: this.state.Bio,
+            Phone: this.state.Phone,
             avatar: this.state.avatar
           }).then((response) => {
     
