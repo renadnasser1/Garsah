@@ -43,7 +43,7 @@ export default class App extends React.Component {
       longitude: '',
     },
     userId: '',
-    isEditting: '',
+    isEditting: false,
   }
 
 

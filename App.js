@@ -90,10 +90,12 @@ const onLogoutPress = async (navigation) => {
         routes: [{ name: 'Login' }]
       })
       AsyncStorage.getAllKeys()
-    })
-    .then(keys => AsyncStorage.multiRemove(keys)).catch((error) => {
-      alert(error)
-    });
+      .then(keys => AsyncStorage.multiRemove(keys))
+      .catch((error) => {
+        alert(error)
+      });
+
+    }) 
 }
 
 
