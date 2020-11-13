@@ -153,7 +153,7 @@ export default class App extends React.Component {
         //Storage Async
         save()
         //Navigate 
-        if (isEditting === true) {
+        if (this.state.isEditting === true) {
           this.props.navigation.pop();
 
         } else {
