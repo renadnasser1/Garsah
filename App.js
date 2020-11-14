@@ -162,6 +162,16 @@ function GardnerRoot() {
         }}
         component={HomeStackNav} />
 
+<GardnerTab.Screen
+        name="Serch"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="search-outline" color={color} size={size} />
+          ),
+          headerShown: true
+        }}
+        component={HomeStackNav} />
+
       <GardnerTab.Screen
         name="Messages"
         options={{
