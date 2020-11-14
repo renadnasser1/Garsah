@@ -53,6 +53,7 @@ export default class Plant extends React.Component {
     selectedPeriod: '',
     selectedSent: '',
     isOwner:false,
+    bookmarked: false,
   }
 
  
@@ -168,6 +169,13 @@ export default class Plant extends React.Component {
 
     const move = () => {
       this.props.navigation.navigate('Post', { ThreadID: this.state.ThreadId })
+    }
+
+    const bookmarkPress = () =>{
+      if(this.state.bookmarked== true)
+      this.setState({ bookmarked: false})
+      else this.setState({ bookmarked: true})
+
     }
 
     const setModalVisible = (visible, progres, period) => {
@@ -413,7 +421,31 @@ export default class Plant extends React.Component {
 
         </View>
         
-  : null}</View>
+  : null}
+  
+  { this.state.isOwner? null : 
+        <View style={styles.Bookmark}>
+          <TouchableOpacity>
+          {this.state.bookmarked?
+            <FontAwesome 
+            name="bookmark" 
+            size={37} color="white"
+              onPress={() =>
+                bookmarkPress()
+              } />
+              : <FontAwesome 
+            name="bookmark-o" 
+            size={37} color="white"
+              onPress={() =>
+                bookmarkPress()
+              } /> 
+               }
+          </TouchableOpacity>
+
+        </View>
+        
+   }
+  </View>
       </View>
     );
   }
@@ -556,6 +588,28 @@ comment: {
   borderRadius: 100,
   padding: 11,
   //marginBottom:5,
+  alignItems: 'center',
+  zIndex: 2,
+  shadowColor: "#000",
+  shadowOffset: {
+      width: 0,
+      height: 3,
+  },
+  shadowOpacity: 0.2,
+  shadowRadius: 4.0,
+
+  elevation: 3,
+
+},
+
+Bookmark: {
+  backgroundColor: '#CFD590',
+  borderRadius: 100,
+  padding: 11,
+  paddingRight:13,
+  paddingLeft:13,
+  paddingBottom:8,
+    marginTop:10,
   alignItems: 'center',
   zIndex: 2,
   shadowColor: "#000",

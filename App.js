@@ -11,7 +11,7 @@ import { unsubscribe } from './Controller/Notification'
 
 // import { AppLoading } from 'expo';
 //Icons
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons ,  Entypo} from "@expo/vector-icons";
 import { Foundation } from '@expo/vector-icons';
 
 //screens
@@ -34,6 +34,7 @@ import Chat from "./Screens/Chat";
 import ViewGardenerProfile from "./Screens/ViewGardenerProfile";
 import Addplant from "./Screens/Addplant";
 import Comment from "./Screens/Comment";
+import Bookmarks from "./Screens/Bookmarks";
 
 // Firebase
 import * as firebase from "firebase";
@@ -169,6 +170,15 @@ function GardnerRoot() {
         }}
         component={MessageStackNav} />
 
+        <GardnerTab.Screen
+        name="Bookmarks"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="bookmarks" color={color} size={size} />
+          ),
+        }}
+        component={BookmarkStackNav} />
+
       <GardnerTab.Screen
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -188,6 +198,7 @@ const inGardnerStack = createStackNavigator();
 const AmatureStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const MessageStack = createStackNavigator();
+const BookmarkStack = createStackNavigator();
 
 function MessageStackNav() {
   return (
@@ -207,6 +218,17 @@ function MessageStackNav() {
     </MessageStack.Navigator>
   );
 }
+
+function BookmarkStackNav() {
+  <BookmarkStack.Navigator>
+<BookmarkStack.Screen name="Bookmarks"
+        options={{
+          title: 'Bookmarks',
+        }}
+        component={Bookmarks} />
+    </BookmarkStack.Navigator>
+}
+
 
 function HomeStackNav() {
   return (
