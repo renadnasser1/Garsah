@@ -37,7 +37,8 @@ export default class Search extends React.Component {
 
 
   async componentDidMount() {
-
+ 
+    //fill this later 
 
     //this.chatsInfo()
 
@@ -115,7 +116,7 @@ export default class Search extends React.Component {
 
             </ScrollView>
       </View>
-    );//end return
+    );//end return 
 
   }//end render
 
