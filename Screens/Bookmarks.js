@@ -79,6 +79,7 @@ export default class Bookmarks extends React.Component {
           
 <View style = {styles.header}>
 <Text style = {styles.welcome}>Bookmarks comming soon </Text>
+<Text style = {styles.welcome}>Stay tunned</Text>
 </View>
 
 
