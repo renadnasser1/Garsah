@@ -92,7 +92,6 @@ console.log(snapshot.docs[i].data())
       posts: snapshot.docs[i].data().posts,
       name: snapshot.docs[i].data().Name,
   };
-console.log('posts in home page  ',post.posts)
   var localPost = {
     key: post.key, //<--- not sure but we want to arrange it by date (make it post id)
     uid:post.uid,

@@ -227,6 +227,48 @@ function BookmarkStackNav() {
           title: 'Bookmarks',
         }}
         component={Bookmarks} />
+ {<BookmarkStack.Screen
+        name="Plant"
+        options={{
+          headerShown: false,
+        }}
+        component={Plant}
+      />}
+
+      <BookmarkStack.Screen name="ViewGardenerProfile"
+        options={{
+          title: '',
+          color: 'black',
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+        }}
+        component={ViewGardenerProfile} />
+
+      <BookmarkStack.Screen name="Chat"
+        options={{
+          title: 'Chat',
+        }}
+        component={Chat} />
+
+      <BookmarkStack.Screen name="Comment"
+        options={({ navigation }) => ({
+          title:'Comments',
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+        })
+      }
+        component={Comment} />
+
+
+
     </BookmarkStack.Navigator>
   );
 }

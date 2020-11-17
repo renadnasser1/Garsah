@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import  Svg, { Defs, ClipPath, Path, G } from "react-native-svg"
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-community/async-storage';
+import {plantItem} from '../Component/PostItem'
 import {
   View,
   Text,
@@ -48,7 +49,8 @@ export default class Bookmarks extends React.Component {
    users:[],
    name:'',
    id : '',
-   plants:[],
+   bookmarkss:[],
+
 
   }
 
@@ -60,7 +62,9 @@ export default class Bookmarks extends React.Component {
   }
   
   async componentDidMount() {
-   // this.getPosts(); 
+    
+   this.getPosts(); 
+   
     
  
 
@@ -68,44 +72,76 @@ export default class Bookmarks extends React.Component {
 
   getPosts = async () =>{
 
+//1- Bring book marks ID 
+    var bookmark = []
     var posts = []
-
     //getting Posts from DB
-  const db = firebase.firestore()
-  let usersref = db.collection("Posts").orderBy("createdAt", "desc")
-  const snapshot = await usersref.limit(5).get();
+    const bookmarkRef = firebase.firestore().collection('Bookmarks')
+    let userId = await AsyncStorage.getItem("uid")
+    var useRef = bookmarkRef.doc(userId).collection('bookmarks').orderBy("createdAt", "desc")
+    const snapshot = await useRef.get();
   if (snapshot.empty) {
   console.log('No matching documents.');
   return;
   }  
+//2- Add bookmarks id into array 
 //Adding posts data into an array
-  for(let i=0; i<snapshot.size;i++) {
-    //posts[i]=snapshot.docs[i].data(); <--- this worked fine
-console.log(snapshot.docs[i].data())
-    var post = {
-      key: snapshot.docs[i].data().Pid, //<--- not sure but we want to arrange it by date (make it post id)
-      uid:snapshot.docs[i].data().Uid,
-      k: i,
-      posts: snapshot.docs[i].data().posts,
-      name: snapshot.docs[i].data().Name,
-  };
-console.log('posts in home page  ',post.posts)
-  var localPost = {
-    key: post.key, //<--- not sure but we want to arrange it by date (make it post id)
-    uid:post.uid,
-    k: post.k,
-    posts: post.posts,
-    name: post.name,
-    date: post.posts[0].date,
-    image: post.posts.pop().image,
-    
-  }
-  posts.push(localPost);
+for(let i=0; i<snapshot.size;i++) {
+  //posts[i]=snapshot.docs[i].data(); <--- this worked fine
+bookmark[i]=snapshot.docs[i].data().pid
+}//end for loop
+console.log(bookmark)
+//******************************************************* */
+//3- Bring post from DB to compare 
+
+    const db = firebase.firestore()
+    let usersref = db.collection("Posts").orderBy("createdAt", "desc")
+    const snapshot1 = await usersref.get();
+    if (snapshot1.empty) {
+    console.log('No matching documents.');
+    return;
+    }  
+ 
+  //Adding posts data into an array
+    for(let i=0; i<snapshot1.size;i++) {
+      for (let j=0 ; j<bookmark.length;j++){
+        if (bookmark[j]==snapshot1.docs[i].data().Pid){
+      var post = {
+        key: snapshot1.docs[i].data().Pid, //<--- not sure but we want to arrange it by date (make it post id)
+        uid:snapshot1.docs[i].data().Uid,
+        k: i,
+        posts: snapshot1.docs[i].data().posts,
+        name: snapshot1.docs[i].data().Name,
+    };
+  console.log(post)
+    var localPost = {
+      key: post.key, //<--- not sure but we want to arrange it by date (make it post id)
+      uid:post.uid,
+      k: post.k,
+      posts: post.posts,
+      name: post.name,
+      date: post.posts[0].date,
+      image: post.posts.pop().image,
+      
+    }
+    posts.push(localPost);}//end if 
   
-  }//end for loop
-  this.setState({ plants: posts }, () => {
-    console.log("plants length " + this.state.plants.length)
-  });
+  }
+    }//end for loop
+
+
+
+//هذي حقت البوك مارك 
+    this.setState({ bookmarkss: posts }, () => {
+      console.log("bookmark length " + this.state.bookmarkss.length)
+    });
+  
+
+
+
+    //---------------------------------------------------------- 
+ 
+ 
 
   //console.log(posts[0]);
 
@@ -180,14 +216,14 @@ console.log('posts in home page  ',post.posts)
 
 <View style={styles.body}>
   <View style={{ marginTop: 20}}>
-  {this.state.plants.length == 0 ?
+  {this.state.bookmarkss.length == 0 ?
               <Text style={styles.noDataText} >No plants Bookmarked yet! </Text>
               :
               <View>
-              <Text style={styles.text}>Plants</Text>
+              <Text style={styles.text}>Your Bookmarked Plants </Text>
   <FlatList
-      data={this.state.plants}
-      initialNumToRender={this.state.plants.length}
+      data={this.state.bookmarkss}
+      initialNumToRender={this.state.bookmarkss.length}
       renderItem={({ item, index }) =>
           (plantItem(item,this.props.navigation))}
       keyExtractor={item => item.k}
@@ -319,6 +355,13 @@ SVGC :{
   color: '#717171',
   top :200,
 
-}
+},
+text: {
+  paddingTop:30,
+       fontSize: 23,
+       color: "black",
+       paddingLeft: 15,
+       fontFamily:'Khmer-MN-Bold'
+     },
 
   });

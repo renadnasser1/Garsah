@@ -139,7 +139,7 @@ export default class Plant extends React.Component {
       this.setState({ name: localThread.name })
 
       //Owner name
-      console.log('local thread'+localThread.userId)
+     // console.log('local thread'+localThread.userId)
       if(this.state.userId!=localThread.userId){
         //Not owner 
         var useRef = firebase.firestore().collection("users").doc(localThread.userId);
@@ -169,7 +169,7 @@ export default class Plant extends React.Component {
     } catch (err) {
     }
     this.setState({ posts: localThread.posts })
-    console.log(this.state.posts.length)
+  //  console.log(this.state.posts.length)
 
    
   }
