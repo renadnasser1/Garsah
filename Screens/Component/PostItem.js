@@ -15,27 +15,28 @@ import { EvilIcons } from '@expo/vector-icons';
 import Menu from 'react-native-default-menu';
 import { SimpleLineIcons } from '@expo/vector-icons';
 // import { captureRef } from 'react-native-view-shot';
-// import * as Sharing from 'expo-sharing';
-// import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 
-const options = ['Delete Plant', 'Share'];
-const optionsPost = ['Delete Post', 'Share'];
+const options = [ 'Share','Delete Plant',];
+const optionsPost = ['Share','Delete Post'];
 
-let openShareDialogAsync = async (item) => {
+//Share post of thread
+const openShareDialogAsync = async (url,txt) => {
     if (!(await Sharing.isAvailableAsync())) {
         alert(`Uh oh, sharing isn't available on your platform`);
         return;
     }
     try {
-        const downloadPath = FileSystem.cacheDirectory + item.name + '.jpg';
+        const downloadPath = FileSystem.cacheDirectory +'sharePlant.jpg';
         // 1 - download the file to a local cache directory
-        const localUrl = await FileSystem.downloadAsync(item.image, downloadPath);
+        const localUrl = await FileSystem.downloadAsync(url, downloadPath);
         console.log(localUrl.uri)
         // 2 - share it from  local storage
-
+        let msg = txt? txt+'' :'';
         // share
         const result = await Share.share({
-            message: item.name + '',
+            message: msg,
             url: localUrl.uri,
             saveToFiles: false
         }
@@ -86,7 +87,7 @@ const onPopupEvent = async (eventName, index, delet, item, threaID, userID, file
 
                 break;
             case 'Share':
-                openShareDialogAsync(item);
+                openShareDialogAsync(item.image,item.name);
                 break;
         }
     }
@@ -108,7 +109,7 @@ const onclick = (eventName, index, item, delet) => {
                 delet(item)
                 break;
             case 'Share':
-                openShareDialogAsync(item);
+                openShareDialogAsync(item.image,item.caption);
                 break;
         }
     }
