@@ -15,11 +15,45 @@ import { EvilIcons } from '@expo/vector-icons';
 import Menu from 'react-native-default-menu';
 import { SimpleLineIcons } from '@expo/vector-icons';
 // import { captureRef } from 'react-native-view-shot';
-// import * as Sharing from 'expo-sharing';
-// import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 
-const options = ['Delete Plant'];
-const optionsPost = ['Delete Post'];
+const options = [ 'Share','Delete Plant',];
+const optionsPost = ['Share','Delete Post'];
+
+//Share post of thread
+const openShareDialogAsync = async (url,txt) => {
+    if (!(await Sharing.isAvailableAsync())) {
+        alert(`Uh oh, sharing isn't available on your platform`);
+        return;
+    }
+    try {
+        const downloadPath = FileSystem.cacheDirectory +'sharePlant.jpg';
+        // 1 - download the file to a local cache directory
+        const localUrl = await FileSystem.downloadAsync(url, downloadPath);
+        console.log(localUrl.uri)
+        // 2 - share it from  local storage
+        let msg = txt? txt+'' :'';
+        // share
+        const result = await Share.share({
+            message: msg,
+            url: localUrl.uri,
+            saveToFiles: false
+        }
+            , {
+                excludedActivityTypes: [
+                    //'com.apple.UIKit.activity.PostToTwitter',
+                    'com.apple.UIKit.activity.MessagetToWhatsApp'
+                ]
+            }
+        );
+
+
+        //await Sharing.shareAsync(uri);
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 // on share pressed
 const onPopupEvent = async (eventName, index, delet, item, threaID, userID, filePaths) => {
@@ -52,6 +86,9 @@ const onPopupEvent = async (eventName, index, delet, item, threaID, userID, file
                 )
 
                 break;
+            case 'Share':
+                openShareDialogAsync(item.image,item.name);
+                break;
         }
     }
 };
@@ -67,9 +104,12 @@ const onclick = (eventName, index, item, delet) => {
         optionName = optionsPost[index];
         console.log('selected option', optionName);
         switch (optionName) {
-            
+
             case 'Delete Post':
                 delet(item)
+                break;
+            case 'Share':
+                openShareDialogAsync(item.image,item.caption);
                 break;
         }
     }
@@ -84,19 +124,20 @@ export const plantItem = (item, navigation, delet, isOwner) => {
                 flexDirection='row'>
                 <MaterialCommunityIcons style={styles.dateicon} name="record-circle" size={20} color="#F9DED4" />
                 <Text style={styles.plantdate}>{item.date} </Text>
-                {isOwner?
-                <View style={styles.optionsPost}>
-                    <Menu options={options} onPress={(name, indx) => onPopupEvent(name, indx, delet, item, item.key, item.userID, item.filePaths)}>
-                        <SimpleLineIcons  name="options" size={20} color="black" />
-                    </Menu></View>:null}
+                {isOwner ?
+                    <View style={styles.optionsPost}>
+                        <Menu options={options} onPress={(name, indx) => onPopupEvent(name, indx, delet, item, item.key, item.userID, item.filePaths)}>
+                            <SimpleLineIcons name="options" size={20} color="black" />
+                        </Menu></View> : null}
 
             </View>
-            
+
             <TouchableOpacity
-                onPress={() =>
-                    {isOwner?
-                    navigation.push('Plant', { threadID: item.key, deleteTheadFun: delet }):
-                    navigation.push('Plant', { threadID: item.key })}
+                onPress={() => {
+                    isOwner ?
+                        navigation.push('Plant', { threadID: item.key, deleteTheadFun: delet }) :
+                        navigation.push('Plant', { threadID: item.key })
+                }
                 }>
                 <View style={styles.imgeContiner}>
                     <EvilIcons name="image" size={50} color="white" style={{ zIndex: 1, alignSelf: 'center', paddingTop: 110, position: 'absolute' }} />
@@ -121,11 +162,11 @@ export const postItem = (item, delet, isOwner) => {
                     : null}
 
                 <Text style={styles.plantdate}>{item.date} </Text>
-                {isOwner?
-                <View style={styles.optionsPost}>
-                    <Menu options={ optionsPost} onPress={(name, indx) => onclick(name, indx, item, delet)}>
-                        <SimpleLineIcons name="options" size={20} color="black" />
-                    </Menu></View>:null}
+                {isOwner ?
+                    <View style={styles.optionsPost}>
+                        <Menu options={optionsPost} onPress={(name, indx) => onclick(name, indx, item, delet)}>
+                            <SimpleLineIcons name="options" size={20} color="black" />
+                        </Menu></View> : null}
             </View>
             <View
                 style={styles.imgeContiner}>

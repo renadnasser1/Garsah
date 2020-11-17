@@ -302,6 +302,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor:'#ffff'
   },
   loading: {
     position: "absolute",
@@ -314,13 +315,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#fff'
 
   },
 
   footer: {
     flex: 3,
-    backgroundColor: "#fff",
+    backgroundColor: "#ffff",
     borderTopLeftRadius: 150,
     paddingLeft: 53,
     paddingHorizontal: 20,
