@@ -220,6 +220,7 @@ function MessageStackNav() {
 }
 
 function BookmarkStackNav() {
+  return (
   <BookmarkStack.Navigator>
 <BookmarkStack.Screen name="Bookmarks"
         options={{
@@ -227,6 +228,7 @@ function BookmarkStackNav() {
         }}
         component={Bookmarks} />
     </BookmarkStack.Navigator>
+  );
 }
 
 

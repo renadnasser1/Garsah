@@ -12,6 +12,7 @@ import {
   AsyncStorage,
   Dimensions,
   Modal,
+  RefreshControl,
 } from "react-native";
 //Firebase
 import * as firebase from "firebase";
@@ -54,10 +55,16 @@ export default class Plant extends React.Component {
     selectedSent: '',
     isOwner:false,
     bookmarked: false,
+    refreshing: false,
   }
 
  
-
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.componentDidMount().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
 
   async componentDidMount() {
 
@@ -157,7 +164,28 @@ export default class Plant extends React.Component {
     this.props.navigation.push("ViewGardenerProfile",{id:this.state.userId})
   }//false
   }
+  async bookmarkPress(){
+    let userId = await AsyncStorage.getItem("uid")
+    if(this.state.bookmarked== false){
+      //Add bookmark to DB
+      this.setState({ bookmarked: true})
+      const db = firebase.firestore()
+      const chatsRef = db.collection('Bookmarks')
+      console.log((this.state.userId))
+      //const res = 
+      chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).set({pid: this.state.ThreadId})
+        // await Promise.all(res)
+         this._onRefresh()
 
+    }
+    else {
+      //Remove bookmark from DB
+      this.setState({ bookmarked: false})
+     // chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).remove()
+
+  }
+
+  }
 
 
   render() {
@@ -169,13 +197,6 @@ export default class Plant extends React.Component {
 
     const move = () => {
       this.props.navigation.navigate('Post', { ThreadID: this.state.ThreadId })
-    }
-
-    const bookmarkPress = () =>{
-      if(this.state.bookmarked== true)
-      this.setState({ bookmarked: false})
-      else this.setState({ bookmarked: true})
-
     }
 
     const setModalVisible = (visible, progres, period) => {
@@ -431,13 +452,14 @@ export default class Plant extends React.Component {
             name="bookmark" 
             size={37} color="white"
               onPress={() =>
-                bookmarkPress()
+                this.bookmarkPress()
               } />
               : <FontAwesome 
             name="bookmark-o" 
             size={37} color="white"
               onPress={() =>
-                bookmarkPress()
+                this.bookmarkPress()
+                
               } /> 
                }
           </TouchableOpacity>
