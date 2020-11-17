@@ -13,6 +13,7 @@ import {
   Dimensions,
   Modal,
   RefreshControl,
+  SnapshotViewIOSComponent,
 } from "react-native";
 //Firebase
 import * as firebase from "firebase";
@@ -67,8 +68,25 @@ export default class Plant extends React.Component {
   }
 
   async componentDidMount() {
+   
+    await this.fetchData();  
+    await this.checkBookmark();      
 
-    await this.fetchData();        
+  }
+
+  async checkBookmark (){
+    console.log("hello")
+    let userId = await AsyncStorage.getItem("uid")
+    
+    const bookmarkRef = firebase.firestore().collection('Bookmarks')
+
+    var useRef = bookmarkRef.doc(userId).collection('bookmarks')
+    var id = this.state.ThreadId;
+    const snapshot = await useRef.where('pid', '==', id).get()
+    if (!(snapshot.empty)) {
+      this.setState({ bookmarked: true})
+    }
+  
 
   }
 
@@ -81,7 +99,6 @@ export default class Plant extends React.Component {
       let userId = await AsyncStorage.getItem("uid")
       var name;
       this.setState({ userId: userId})
-
 
       // get thread id
       var localThread = ''
@@ -135,14 +152,14 @@ export default class Plant extends React.Component {
         }).catch(function (error) {
           console.log("Error getting document:", error);
         });
-        console.log(name)
+       // console.log(name)
 
         this.setState({ userId: localThread.userId,userName:name})
       }else{
          name = await AsyncStorage.getItem("name")
          this.setState({userName:name, isOwner:true})
       }
-      console.log("in ", localThread.dates)
+     // console.log("in ", localThread.dates)
 
       // var length = localThread.images.length;
       // for (var i = 0; i < length; i++) {
@@ -153,6 +170,8 @@ export default class Plant extends React.Component {
     }
     this.setState({ posts: localThread.posts })
     console.log(this.state.posts.length)
+
+   
   }
   onPressOwner=()=>{
     //alert("pressed")
@@ -166,14 +185,19 @@ export default class Plant extends React.Component {
   }
   async bookmarkPress(){
     let userId = await AsyncStorage.getItem("uid")
+    const db = firebase.firestore()
+    const chatsRef = db.collection('Bookmarks')
     if(this.state.bookmarked== false){
       //Add bookmark to DB
       this.setState({ bookmarked: true})
-      const db = firebase.firestore()
-      const chatsRef = db.collection('Bookmarks')
-      console.log((this.state.userId))
+     
+      //console.log((this.state.userId))
       //const res = 
-      chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).set({pid: this.state.ThreadId})
+      chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).set({
+        pid: this.state.ThreadId,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      
+      })
         // await Promise.all(res)
          this._onRefresh()
 
@@ -181,7 +205,7 @@ export default class Plant extends React.Component {
     else {
       //Remove bookmark from DB
       this.setState({ bookmarked: false})
-     // chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).remove()
+     chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).delete()
 
   }
 

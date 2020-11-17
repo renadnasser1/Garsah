@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import  Svg, { Defs, ClipPath, Path, G } from "react-native-svg"
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-community/async-storage';
+import { Header } from 'react-navigation-stack';
+
 import {
   View,
   Text,
@@ -155,10 +157,9 @@ this.setState({ comments: Temp }, () => {
     const { comment,comments,plantName,id} = this.state
    
     return(
-       <KeyboardAvoidingView
+      <KeyboardAvoidingView
       behavior='padding'
       style={{ flex: 1 }} >
-    
       <View 
       style={styles.container}
      
@@ -251,19 +252,6 @@ const styles = StyleSheet.create({
   },      
    
  
-  editText: {
-    paddingLeft: 12,
-    paddingTop: 3,
-    fontFamily: 'Khmer-MN-Bold',
-    color: 'black',
-  
-  },
-  header:{
-    backgroundColor: "white",
-    width: 500,
-    height:90,
-    
-  },
   welcome :{
     alignContent:'center',
     textAlign:'center',
@@ -277,6 +265,7 @@ const styles = StyleSheet.create({
   
   },
   PlantName:{
+   
     alignContent:'center',
     textAlign:'center',
     fontWeight: "bold",
@@ -312,8 +301,10 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   component1:{
-position:'absolute', 
-top:677,  
+//position:'absolute', 
+//top:677,
+//marginTop:570, 
+paddingTop:560, 
  flexDirection: "row", 
   },
   UsernameText:{
