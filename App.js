@@ -11,7 +11,7 @@ import { unsubscribe } from './Controller/Notification'
 
 // import { AppLoading } from 'expo';
 //Icons
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Foundation } from '@expo/vector-icons';
 
 //screens
@@ -34,6 +34,7 @@ import Chat from "./Screens/Chat";
 import ViewGardenerProfile from "./Screens/ViewGardenerProfile";
 import Addplant from "./Screens/Addplant";
 import Comment from "./Screens/Comment";
+import Search from "./Screens/Search";
 
 // Firebase
 import * as firebase from "firebase";
@@ -215,7 +216,35 @@ function HomeStackNav() {
     <HomeStack.Navigator>
 
       <HomeStack.Screen name="Home"
+       options={({ navigation }) => ({
+        title: 'Homepage',
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Search")}>
+              <FontAwesome 
+            name="search" 
+            size={30} color="Black"
+          
+               /> 
+
+            </TouchableOpacity>
+        ),
+      })}
         component={Home} />
+
+<HomeStack.Screen name="Search"
+        options={({ navigation }) => ({
+          title:'Search',
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+          
+        })
+      }
+        component={Search} />
 
 
       {<Stack.Screen
