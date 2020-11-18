@@ -26,7 +26,11 @@ export default class Search extends React.Component {
   }
 
   state = { //<--------------------- fill this later
-   
+   search :'',
+   allusers:[],
+   result :[],
+   name:'',
+   id : '',
   }
   _onRefresh = () => {
     this.setState({ refreshing: true });
@@ -37,14 +41,37 @@ export default class Search extends React.Component {
 
 
   async componentDidMount() {
- 
-    //fill this later 
-
-    //this.chatsInfo()
-
+this.getallusers()
   }//end compnentDidMount
 
+  async getallusers(){
+    const db = firebase.firestore()
+    const users = db.collection('users');
+    const snapshot = await users.get();
 
+    if (snapshot.empty) {
+      console.log('No matching collection.');
+      return;
+    }
+
+    var all=[]
+    //Adding chats data into all chats array
+    for (let i = 0; i < snapshot.size; i++) {
+    var c = {
+      
+      name: snapshot.docs[i].data().name,
+      id :  snapshot.docs[i].data().id,
+      //date: snapshot.docs[i].data().createdAt.slice(0.12),
+  };
+  all.push(c);}
+  
+    this.setState({ allusers: all }, () => {
+      console.log("comments " + this.state.allusers.length)
+    });
+  }
+  async handleSend(comment) {
+
+  }
 
   render() {
 
