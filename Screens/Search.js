@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Svg, { Defs, ClipPath, Path, G } from "react-native-svg"
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-community/async-storage';
-
 import {
   View,
   Text,
@@ -16,8 +15,9 @@ import {
   ScrollView,
   RefreshControl,
 } from "react-native";
-
 import * as firebase from "firebase";
+import { Entypo,Ionicons,AntDesign, FontAwesome} from '@expo/vector-icons';
+
 
 export default class Search extends React.Component {
 
@@ -110,10 +110,29 @@ export default class Search extends React.Component {
 
 
             <View style={styles.content}>
-         
-
+            <View style = {styles.component1}>
+            <TextInput
+         clearButtonMode="always"
+         ref={input => { this.textInput = input }}
+                placeholder={"Enter the user's name"}
+                onChangeText={(text) =>{this.setState({ search:text}, () => {
+      //console.log("comment of the user is " + this.state.comment)
+    }); }}
+                style={styles.inputFiled}
+              ></TextInput>
+              
+              <FontAwesome 
+            name="search" 
+            size={30} 
+            color="Black"   
+            style={{marginTop:30}}
+               onPress={() =>
+          
+                              this.handleSend(this.state.search)
+                            
+                            } />
             </View>
-
+</View>
             </ScrollView>
       </View>
     );//end return 
@@ -213,6 +232,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
   },
+  inputFiled: {
+    marginLeft:20,
+    padding: 8,
+    paddingBottom: 2,
+    marginTop:30,
+    marginRight:15,
+    width: 340,
+    height: 40,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopRightRadius: 10,
+    flexDirection: "row",
+   backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.65,
+
+    elevation: 8,
+  },
   content: {
     position: "absolute",
   },
@@ -224,6 +267,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: '#717171'
 
-  }
+  },
+  component1:{
+    position:'absolute', 
+     flexDirection: "row", 
+     
+      },
 
 });
