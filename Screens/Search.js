@@ -58,7 +58,7 @@ this.getallusers()
     //Adding chats data into all chats array
     for (let i = 0; i < snapshot.size; i++) {
     var c = {
-      
+      key: i,
       name: snapshot.docs[i].data().name,
       id :  snapshot.docs[i].data().id,
       //date: snapshot.docs[i].data().createdAt.slice(0.12),
@@ -66,25 +66,35 @@ this.getallusers()
   all.push(c);}
   
     this.setState({ allusers: all }, () => {
-      console.log("comments " + this.state.allusers.length)
+      console.log("allusers " + this.state.allusers.length)
     });
   }
   async handleSend(comment) {
+    comment = comment.toUpperCase()
+let  x = [];
+var counter = 0;
+    for (let i = 0; i < this.state.allusers.length; i++) {
+      if((this.state.allusers[i].name.toUpperCase().startsWith(comment)))
+      x[counter++]=this.state.allusers[i]
+  }//end loop
+  this.setState({ result: x }, () => {
+    console.log("result " + this.state.result.length)
+  });
 
-  }
+  }//end handle send
+  
+  
 
   render() {
 
-    const { chats, user } = this.state //<--- fill this later
+    const { chats, user ,allusers,result} = this.state //<--- fill this later
 
     // this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {
     //   await this._onRefresh()
     // });
 
     return (
-
       <View style={styles.container}>
-
       <ScrollView
       refreshControl={
         <RefreshControl
@@ -142,9 +152,10 @@ this.getallusers()
          clearButtonMode="always"
          ref={input => { this.textInput = input }}
                 placeholder={"Enter the user's name"}
-                onChangeText={(text) =>{this.setState({ search:text}, () => {
-      //console.log("comment of the user is " + this.state.comment)
-    }); }}
+                onChangeText={(text) => this.handleSend(text)}
+    //             {(text) =>{this.setState({ search:text}, () => {
+    //   //console.log("comment of the user is " + this.state.comment)
+    // }); }}
                 style={styles.inputFiled}
               ></TextInput>
               
