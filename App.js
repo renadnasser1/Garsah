@@ -11,14 +11,12 @@ import { unsubscribe } from './Controller/Notification'
 
 // import { AppLoading } from 'expo';
 //Icons
-import { Ionicons } from "@expo/vector-icons";
-import { Foundation } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons'; 
+import { Ionicons,Foundation } from "@expo/vector-icons";
+
 
 //screens
 import Login from "./Screens/LogIn";
 import Signup from "./Screens/Signup";
-import AccountType from "./Screens/AccountType";
 import LocationMap from "./Screens/LocationMap";
 import Home from "./Screens/Home";
 import ForgetPassword from "./Screens/ForgetPassword";
@@ -29,7 +27,6 @@ import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
 import Plant from "./Screens/Plant";
 import Post from "./Screens/Post";
-import trefle from "./Screens/trefle";
 import MessagesPage from "./Screens/MessagesPage";
 import Chat from "./Screens/Chat";
 import ViewGardenerProfile from "./Screens/ViewGardenerProfile";
@@ -43,6 +40,7 @@ import * as firebase from "firebase";
 
 //Font 
 import { useFonts } from 'expo-font';
+import AddPlant from "./Screens/Addplant";
 
 
 var firebaseConfig = {
@@ -55,17 +53,6 @@ var firebaseConfig = {
   appId: "1:264805379027:web:13e9ca5fec31a09b545d26",
   measurementId: "G-VT3T0YDQ24"
 };
-
-// var firebaseConfig = {
-//   apiKey: "AIzaSyDa-dqiBjcABfky3NhCqjFKxvTfag8B-Sg",
-//     authDomain: "garsah1-32315.firebaseapp.com",
-//     databaseURL: "https://garsah1-32315.firebaseio.com",
-//     projectId: "garsah1-32315",
-//     storageBucket: "garsah1-32315.appspot.com",
-//     messagingSenderId: "579701810770",
-//     appId: "1:579701810770:web:e65c6c6aa9675d80f5618b",
-//     measurementId: "G-TV59LK051Z"
-// };
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -125,7 +112,7 @@ function Root() {
 <GardnerTab.Screen
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Entypo name="location" size={size} color={color} />
+            <Ionicons name="ios-pin" size={size} color={color} />
            
           ),
 
@@ -143,12 +130,13 @@ function Root() {
         component={MessageStackNav} />
 
       <GardnerTab.Screen
+      name="profile"
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-person" color={color} size={size} />
           ),
 
-        }} name="profile"
+        }} 
 
         component={GardnerStackNav} />
 
@@ -158,9 +146,10 @@ function Root() {
 
 const GardnerStack = createStackNavigator();
 const ViewGardnerStack = createStackNavigator();
-const AmatureStack = createStackNavigator();
+const inGardnerStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const MessageStack = createStackNavigator();
+
 
 function ViewGardnersStack() {
   return (
@@ -184,6 +173,55 @@ function ViewGardnersStack() {
           },
         }}
         component={ViewGardenerProfile} />
+
+{<ViewGardnerStack.Screen
+        name="profile"
+        options={{
+          title:'My Profile',
+          color: 'black',
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+        }}
+        component={GardnerProfile}
+      />}
+
+{<ViewGardnerStack.Screen
+        name="Addplant"
+        options={({ navigation }) => ({
+          title: 'Add Plant',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.pop()}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Cancel</Text></TouchableOpacity>
+          ),
+        })}
+        component={AddPlant}/>}
+
+{<GardnerStack.Screen
+        name="Post"
+        options={({ navigation }) => ({
+          title: 'Add Post',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.pop()}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Cancel</Text></TouchableOpacity>
+          ),
+        })}
+        component={Post}/>}
 
 {<ViewGardnerStack.Screen
         name="Plant"
@@ -242,8 +280,56 @@ function HomeStackNav() {
       <HomeStack.Screen name="Home"
         component={Home} />
 
+{<HomeStack.Screen
+        name="profile"
+        options={{
+          title:'My Profile',
+          color: 'black',
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+        }}
+        component={GardnerProfile}
+      />}
 
-      {<Stack.Screen
+{<HomeStack.Screen
+        name="Addplant"
+        options={({ navigation }) => ({
+          title: 'Add Plant',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.pop()}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Cancel</Text></TouchableOpacity>
+          ),
+        })}
+        component={AddPlant}/>}
+
+{<HomeStack.Screen
+        name="Post"
+        options={({ navigation }) => ({
+          title: 'Add Post',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.pop()}><Text
+                style={{
+                  fontFamily: 'Khmer-MN-Bold',
+                  fontSize: 18,
+                  paddingLeft: 10,
+                  paddingTop: 10
+                }}>Cancel</Text></TouchableOpacity>
+          ),
+        })}
+        component={Post}/>}
+
+      {<HomeStack.Screen
         name="Plant"
         options={{
           headerShown: false,

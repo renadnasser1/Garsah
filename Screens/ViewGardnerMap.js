@@ -15,16 +15,15 @@ import {
     Animated,
     Image
 } from 'react-native';
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from '@expo/vector-icons';
 
+import { MaterialIcons } from '@expo/vector-icons';
 //Fonts
 import { useFonts } from 'expo-font';
-import { AppLoading } from 'expo';
 
 //Firebase
 import * as firebase from "firebase";
 import "firebase/firestore";
+import { set } from 'react-native-reanimated';
 
 
 
@@ -41,6 +40,7 @@ export default class App extends React.Component {
         super(props)
     }
     state = {
+        userID: '',
         marker: {
             latitude: '',
             longitude: '',
@@ -60,11 +60,8 @@ export default class App extends React.Component {
 
         try {
 
-            //  let userId = await AsyncStorage.getItem("uid")
-            let latitude = await AsyncStorage.getItem("latitude")
-            let longitude = await AsyncStorage.getItem("longitude")
-
             let userId = firebase.auth().currentUser.uid
+
 
             navigator.geolocation.getCurrentPosition(
                 ({ coords: { latitude, longitude } }) => this.setState({
@@ -114,7 +111,6 @@ export default class App extends React.Component {
         }
         this.setState({ isLoading: false })
 
-        // console.log(this.state.gardners.length)
     }//end gardeners
 
 
@@ -124,8 +120,11 @@ export default class App extends React.Component {
         const { marker, gardners, isLoading } = this.state
 
         const onCalloutPres = (gId) => {
-            //console.log('iam here',gId)
-            this.props.navigation.push('ViewGardenerProfile',{ id: gId})
+            console.log(this.state.userId)
+            if (this.state.userId == gId)
+                this.props.navigation.push('profile')
+            else
+                this.props.navigation.push('ViewGardenerProfile', { id: gId })
         };
 
 
@@ -136,16 +135,14 @@ export default class App extends React.Component {
 
                 <View style={styles.container}>
                     <MapView style={styles.mapStyle}
-                        mapType={"mutedStandard"}
+                        showsUserLocation={true}
+                        // followsUserLocation={true}
+                        //mapType={"mutedStandard"}
                         initialRegion={{
                             latitude: this.state.marker.latitude,
                             longitude: this.state.marker.longitude,
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421
-                        }}
-                        region={{
-                            latitude: this.state.marker.latitude,
-                            longitude: this.state.marker.longitude,
                         }} >
                         {console.log('inside', this.state.gardners.length)}
                         {this.state.gardners.map((item, i) => {
@@ -155,15 +152,16 @@ export default class App extends React.Component {
                                 coordinate={item.marker}
                                 title={item.name}
                                 pinColor={"red"}
-                                onCalloutPress={() =>{onCalloutPres(item.gid)}}
+                                onCalloutPress={() => { onCalloutPres(item.gid) }}
                             >
-                                <View style={styles.circle}>
-                                    <Image
+                                <View >
+                                    <MaterialIcons name="person-pin-circle" size={33} color="red" />
+                                    {/* <Image
                                         //resizeMode="contain"
                                         source={require('../assets/blank.png')}
                                         style={styles.imageCircle}
                                     
-                                    />
+                                    /> */}
                                 </View>
                             </MapView.Marker>
 
@@ -232,12 +230,11 @@ const styles = StyleSheet.create({
     },
     circle: {
         width: 48,
-        height: 50,
+        height: 48,
         borderTopLeftRadius: 40 / 2,
         borderTopRightRadius: 40 / 2,
-        backgroundColor: 'red',
     },
-    imageCircle:{
+    imageCircle: {
         width: 48,
         height: 48,
         resizeMode: 'contain',

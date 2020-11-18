@@ -3,8 +3,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { OpenMapDirections } from 'react-native-navigation-directions';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused } from "@react-navigation/native";
-
-
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 
@@ -23,7 +22,7 @@ import {
 } from "react-native";
 
 // Icons
-import { FontAwesome,Ionicons,FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
 //Firebase
 import * as firebase from "firebase";
@@ -178,12 +177,6 @@ const ViewGardenerProfile = ({ route, navigation }) => {
     // if(lat){
     return (
         <View style={styles.container}>
-        {/* <TouchableOpacity
-        style={styles.back}
-          onPress={() => {
-            navigation.pop()
-          }}>
-            <Ionicons name="ios-arrow-back" size={30} color="black" /></TouchableOpacity> */}
             <ScrollView>
                 <View style={styles.header}>
 
@@ -248,7 +241,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
                                         longitudeDelta: 0.0421
                                     }}
 
-                                    onPress={(event) => onMapPress(event.nativeEvent.coordinate)   }
+                                    onPress={(event) => onMapPress(event.nativeEvent.coordinate)}
 
                                 >
 
@@ -257,8 +250,13 @@ const ViewGardenerProfile = ({ route, navigation }) => {
                                             latitude: latNum,
                                             longitude: longNum
                                         }}
+                                        icon={<MaterialIcons name="person-pin-circle" size={24} color="black" />}
                                         pinColor={'red'}
-                                    />
+                                    >
+                                        <View >
+                                            <MaterialIcons name="person-pin-circle" size={33} color="red" />
+                                        </View>
+                                    </MapView.Marker>
 
                                 </MapView>
 
@@ -276,7 +274,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
                             <FlatList
                                 data={post}
                                 renderItem={({ item, index }) =>
-                                    (plantItem(item, navigation,null,false))}
+                                    (plantItem(item, navigation, null, false))}
                                 keyExtractor={item => item.key}
                             />}
                     </View>
@@ -320,9 +318,10 @@ const styles = StyleSheet.create({
         zIndex: 2,
         shadowColor: "#000",
         shadowOffset: {
-          width: 0,
-          height: 3,}
-        },
+            width: 0,
+            height: 3,
+        }
+    },
     header: {
         //paddingTop: 23,
         backgroundColor: 'white',
@@ -384,7 +383,7 @@ const styles = StyleSheet.create({
         width: 90,
         borderRadius: 10,
         backgroundColor: "#CFD590",
-       // borderColor: '#CFD590',
+        // borderColor: '#CFD590',
         marginTop: 30,
         right: 30,
         shadowColor: "#000",
@@ -395,7 +394,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 4.65,
         elevation: 4,
-        padding:1,
+        padding: 1,
 
     },
     editText: {
@@ -403,7 +402,7 @@ const styles = StyleSheet.create({
         paddingTop: 3,
         fontFamily: 'Khmer-MN-Bold',
         color: 'white',
-        fontSize:15,
+        fontSize: 15,
 
     },
     userInfoContiner: {
