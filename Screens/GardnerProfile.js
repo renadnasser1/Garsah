@@ -18,7 +18,7 @@ import {
 } from "react-native";
 
 // Icons
-import { FontAwesome,FontAwesome5,Entypo } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5, Entypo,MaterialIcons } from '@expo/vector-icons';
 
 
 //Firebase
@@ -109,7 +109,7 @@ export const GardnerProfile = ({ navigation }) => {
                     if (doc.exists) {
                         var thread = {
                             key: id,
-                            name:doc.data().Name,
+                            name: doc.data().Name,
                             userID: doc.data().Uid,
                             posts: doc.data().posts,
                             date: doc.data().posts[0].date,
@@ -118,19 +118,19 @@ export const GardnerProfile = ({ navigation }) => {
                         };
 
                         //All paths
-                        var paths = [] 
-                        thread.posts.forEach((item)=>
-                        paths.push(item.filePath)
+                        var paths = []
+                        thread.posts.forEach((item) =>
+                            paths.push(item.filePath)
                         )
-                        console.log('after filter',paths)
+                        console.log('after filter', paths)
 
-                        var localThread ={
+                        var localThread = {
                             key: thread.key,
-                            name:thread.name,
-                            userID:thread.userID,
-                            date:thread.date,
-                            image:thread.image,
-                            filePaths:paths
+                            name: thread.name,
+                            userID: thread.userID,
+                            date: thread.date,
+                            image: thread.image,
+                            filePaths: paths
                         }
                         posts.push(localThread);
 
@@ -187,47 +187,48 @@ export const GardnerProfile = ({ navigation }) => {
         return <AppLoading />;
     }
 
-    const deleteThread = (threaID,userID,filePaths) =>{
+    const deleteThread = (threaID, userID, filePaths) => {
         console.log('here')
 
         //Delete all photos from storage
-            filePaths.forEach(path =>{ console.log(path)
-        
-        var desertRef = firebase.storage().ref('Posts/'+path);
-        //Delete the file
-        desertRef.delete().then(function() {
-          console.log('great')
-        }).catch(function(error) {
-          console.log('not yet',error)
-        });
-        
+        filePaths.forEach(path => {
+            console.log(path)
+
+            var desertRef = firebase.storage().ref('Posts/' + path);
+            //Delete the file
+            desertRef.delete().then(function () {
+                console.log('great')
+            }).catch(function (error) {
+                console.log('not yet', error)
             });
-        
+
+        });
+
         //Delete thread refrence
-         firebase.firestore().collection("Posts").doc(threaID).delete().then(function() {
+        firebase.firestore().collection("Posts").doc(threaID).delete().then(function () {
             console.log("Document successfully deleted!");
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.error("Error removing document: ", error);
         });
-        
-        
-         //Delete thread id from user posts array 
-         firebase.firestore().collection('users').doc(userID).update({
-                posts: firebase.firestore.FieldValue.arrayRemove(threaID)
-            }).then(function(){
-                console.log('removed from array')
-            }).catch(function (error){
-                console.log('error',error)
-            })
-                
+
+
+        //Delete thread id from user posts array 
+        firebase.firestore().collection('users').doc(userID).update({
+            posts: firebase.firestore.FieldValue.arrayRemove(threaID)
+        }).then(function () {
+            console.log('removed from array')
+        }).catch(function (error) {
+            console.log('error', error)
+        })
+
         //refresh screen remove from local araay
-            var array = postss.filter((item) => {return  item.key != id })
-             console.log('array after deletion',array)
-             setPostss(array)
-          
-        
-        
-        }
+        var array = postss.filter((item) => { return item.key != id })
+        console.log('array after deletion', array)
+        setPostss(array)
+
+
+
+    }
 
 
     if (postss) {
@@ -301,8 +302,13 @@ export const GardnerProfile = ({ navigation }) => {
                                                     latitude: latNum,
                                                     longitude: longNum
                                                 }}
+                                                icon={<MaterialIcons name="person-pin-circle" size={24} color="black" />}
                                                 pinColor={'red'}
-                                            />
+                                            >
+                                                <View >
+                                                    <MaterialIcons name="person-pin-circle" size={33} color="red" />
+                                                </View>
+                                            </MapView.Marker>
 
                                         </MapView>) : null}
                                 </View>
@@ -320,7 +326,7 @@ export const GardnerProfile = ({ navigation }) => {
                                 <FlatList
                                     data={postss}
                                     renderItem={({ item, index }) =>
-                                        plantItem(item, navigation,deleteThread,true)
+                                        plantItem(item, navigation, deleteThread, true)
                                     }
                                     keyExtractor={item => item.key}
                                 />}

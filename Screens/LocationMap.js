@@ -62,6 +62,7 @@ export default class App extends React.Component {
       let longitude = await AsyncStorage.getItem("longitude")
 
       let userId = firebase.auth().currentUser.uid
+      console.log(latitude)
 
      console.log('frist lat',userId)
       if (latitude==""  || latitude  == null) {
