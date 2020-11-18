@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from "react";
 import  Svg, { Defs, ClipPath, Path, G } from "react-native-svg"
-import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-community/async-storage';
 import {plantItem} from '../Component/PostItem'
 import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   StyleSheet,
   FlatList,
   Button,
   Image,
   ActivityIndicator,
   ScrollView,
-  KeyboardAvoidingView,
   RefreshControl,
 } from "react-native";
 
@@ -43,11 +39,6 @@ export default class Bookmarks extends React.Component {
   state = {
    refreshing: false,
    Pid:'',
-   plantName:'',
-   comment :'',
-   comments:[],
-   users:[],
-   name:'',
    id : '',
    bookmarkss:[],
 
@@ -85,13 +76,12 @@ export default class Bookmarks extends React.Component {
   return;
   }  
 //2- Add bookmarks id into array 
-//Adding posts data into an array
 for(let i=0; i<snapshot.size;i++) {
-  //posts[i]=snapshot.docs[i].data(); <--- this worked fine
+
 bookmark[i]=snapshot.docs[i].data().pid
 }//end for loop
 console.log(bookmark)
-//******************************************************* */
+//******************* */
 //3- Bring post from DB to compare 
 
     const db = firebase.firestore()
@@ -129,9 +119,7 @@ console.log(bookmark)
   }
     }//end for loop
 
-
-
-//هذي حقت البوك مارك 
+    //setting the bookmarks array
     this.setState({ bookmarkss: posts }, () => {
       console.log("bookmark length " + this.state.bookmarkss.length)
     });
