@@ -31,8 +31,12 @@ export default class Search extends React.Component {
    result :[],
    name:'',
    id : '',
+   tempavatar: '',
   }
   _onRefresh = () => {
+    this.setState({ result: []}, () => {
+      console.log("result " + this.state.result.length)
+    });
     this.setState({ refreshing: true });
     this.componentDidMount().then(() => {
       this.setState({ refreshing: false });
@@ -42,6 +46,8 @@ export default class Search extends React.Component {
 
   async componentDidMount() {
 this.getallusers()
+
+
   }//end compnentDidMount
 
   async getallusers(){
@@ -61,34 +67,51 @@ this.getallusers()
       key: i,
       name: snapshot.docs[i].data().name,
       id :  snapshot.docs[i].data().id,
+      avatar:'',
       //date: snapshot.docs[i].data().createdAt.slice(0.12),
   };
   all.push(c);}
+  this.setState({ allusers: all }, () => {
+    console.log("allusers " + this.state.allusers.length)
+  });
   
-    this.setState({ allusers: all }, () => {
-      console.log("allusers " + this.state.allusers.length)
-    });
+   
   }
   async handleSend(comment) {
+    if(comment){
     comment = comment.toUpperCase()
 let  x = [];
 var counter = 0;
     for (let i = 0; i < this.state.allusers.length; i++) {
-      if((this.state.allusers[i].name.toUpperCase().startsWith(comment)))
-      x[counter++]=this.state.allusers[i]
+      if((this.state.allusers[i].name.toUpperCase().startsWith(comment))){
+      x[counter]=this.state.allusers[i]
+      x[counter].avatar= await this.getImage(x[counter].id)
+      console.log(x[counter].avatar)
+      counter++;
+      }
   }//end loop
   this.setState({ result: x }, () => {
     console.log("result " + this.state.result.length)
   });
-
+}//end validation 
   }//end handle send
   
-  
+  getImage = async (g1) => { //<---------------- getting profile pictures 
+    let imageRef =  await firebase.storage().ref('avatars/' + g1);
+    //let imageRef =  await firebase.firestore().collection("users").doc(g1).avatar
+    await imageRef.getDownloadURL().then((url) => {
+      this.setState({ tempavatar: url }, () => {
+        console.log("Temp"+"url")
+      });
+    }).catch((e) =>
+      console.log('getting downloadURL of image error => ')
+      // , e),
+    );
+  }//end get image
 
   render() {
 
     const { chats, user ,allusers,result} = this.state //<--- fill this later
-
     // this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {
     //   await this._onRefresh()
     // });
@@ -164,13 +187,32 @@ var counter = 0;
             size={30} 
             color="Black"   
             style={{marginTop:30}}
-               onPress={() =>
-          
-                              this.handleSend(this.state.search)
+             
                             
-                            } />
+                             />
+                    
+            </View>
+            <View style={{marginTop:80}}>
+
+<FlatList
+  data={this.state.result}
+  renderItem={({ item }) => (
+    <TouchableOpacity
+      style={styles.ChatElement}
+      onPress={() => this.props.navigation.navigate("ViewGardenerProfile", { id: item.id })}
+    >
+
+      <Image source={item.avatar ?
+        { uri: item.avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
+      <Text style={styles.nametext}>{item.name}</Text>
+    </TouchableOpacity>
+  )}
+/>
             </View>
 </View>
+
+
+
             </ScrollView>
       </View>
     );//end return 
