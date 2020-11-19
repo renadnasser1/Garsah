@@ -27,8 +27,8 @@ import Svg, { Path } from "react-native-svg"
 import { Entypo,Ionicons,AntDesign ,FontAwesome} from '@expo/vector-icons';
 
 //Components
-import { bugItem, waterItem } from '../Component/bugWaterItems';
-import { postItem } from '../Component/PostItem'
+import { bugItem, waterItem } from './Component/bugWaterItems';
+import { postItem } from './Component/PostItem'
 
 const font = () => {
   let [fontsLoaded] = useFonts({
