@@ -82,7 +82,7 @@ for(let i=0; i<snapshot.size;i++) {
 bookmark[i]=snapshot.docs[i].data().pid
 }//end for loop
 console.log(bookmark)
-//******************* */
+//********************/
 //3- Bring post from DB to compare 
 
     const db = firebase.firestore()
@@ -98,7 +98,7 @@ console.log(bookmark)
       for (let j=0 ; j<bookmark.length;j++){
         if (bookmark[j]==snapshot1.docs[i].data().Pid){
       var post = {
-        key: snapshot1.docs[i].data().Pid, //<--- not sure but we want to arrange it by date (make it post id)
+        key: snapshot1.docs[i].data().Pid, //<--- arrange it by date (make it post id)
         uid:snapshot1.docs[i].data().Uid,
         k: i,
         posts: snapshot1.docs[i].data().posts,
@@ -106,7 +106,7 @@ console.log(bookmark)
     };
   console.log(post)
     var localPost = {
-      key: post.key, //<--- not sure but we want to arrange it by date (make it post id)
+      key: post.key, //<--- arrange it by date (make it post id)
       uid:post.uid,
       k: post.k,
       posts: post.posts,
@@ -125,14 +125,6 @@ console.log(bookmark)
       console.log("bookmark length " + this.state.bookmarkss.length)
     });
   
-
-
-
-    //---------------------------------------------------------- 
- 
- 
-
-  //console.log(posts[0]);
 
   }//end get Posts
 
@@ -206,7 +198,7 @@ console.log(bookmark)
 <View style={styles.body}>
   <View style={{ marginTop: 20}}>
   {this.state.bookmarkss.length == 0 ?
-              <Text style={styles.noDataText} >No plants Bookmarked yet! </Text>
+              <Text style={styles.noDataText} >No plants Bookmarked yet </Text>
               :
               <View>
               {/* <Text style={styles.text}>Your Bookmarked Plants </Text> */}
