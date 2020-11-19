@@ -200,7 +200,7 @@ console.log(bookmark)
               <Text style={styles.noDataText} >No plants Bookmarked yet </Text>
               :
               <View>
-              <Text style={styles.text}>Your Bookmarked Plants: </Text>
+              {/* <Text style={styles.text}>Your Bookmarked Plants </Text> */}
   <FlatList
       data={this.state.bookmarkss}
       initialNumToRender={this.state.bookmarkss.length}
