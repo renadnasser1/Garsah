@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import  Svg, { Defs, ClipPath, Path, G } from "react-native-svg";
 import AsyncStorage from '@react-native-community/async-storage';
-import {plantItem} from '../Component/PostItem'
+import {plantItem} from './Component/PostItem'
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
   RefreshControl,
+  ScrollView
 } from "react-native";
 
 import * as firebase from "firebase";
@@ -117,8 +118,7 @@ bookmark[i]=snapshot.docs[i].data().pid
 
   
   render () {
-    this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {   
-         await this.getPosts()    });
+
     return(
 
         <View 
@@ -169,6 +169,17 @@ bookmark[i]=snapshot.docs[i].data().pid
       </G>
     </Svg>
 </View>
+<ScrollView 
+  // contentContainerStyle={{
+  //   flexDirection:'column',
+  //   }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+          >
 
 <View>
   <View style={{ marginTop: 20}}>
@@ -190,7 +201,7 @@ bookmark[i]=snapshot.docs[i].data().pid
   </View>
 
 
-
+  </ScrollView>
 
           </View>//container
 
@@ -202,15 +213,121 @@ bookmark[i]=snapshot.docs[i].data().pid
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  SVGC :{
+flex: 1,
+  justifyContent:'center',
+  alignItems:'flex-start'
+},      
+ 
 
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-    },
-    SVGC :{
-  flex: 1,
-    justifyContent:'center',
-    alignItems:'flex-start'
-  },      
+editText: {
+  paddingLeft: 12,
+  paddingTop: 3,
+  fontFamily: 'Khmer-MN-Bold',
+  color: 'black',
+
+},
+header:{
+  backgroundColor: "white",
+  width: 500,
+  height:90,
+  
+},
+welcome :{
+  alignContent:'center',
+  textAlign:'center',
+  fontWeight: "bold",
+  justifyContent: "flex-end",
+  fontFamily:'Khmer-MN-Bold',
+  marginTop:20,
+  fontSize: 26,
+  marginBottom:2,
+  color: '#B7BD74',
+
+},
+PlantName:{
+  alignContent:'center',
+  textAlign:'center',
+  fontWeight: "bold",
+  justifyContent: "flex-end",
+  fontFamily:'Khmer-MN-Bold',
+  marginTop:20,
+  fontSize: 26,
+  marginBottom:2,
+  color: 'black',
+  fontStyle:'italic',
+},
+inputFiled: {
+  marginLeft:15,
+  padding: 8,
+  paddingBottom: 2,
+  marginRight:15,
+  width: 340,
+  height: 40,
+  borderTopLeftRadius: 10,
+  borderBottomLeftRadius: 10,
+  borderBottomEndRadius: 10,
+  borderTopRightRadius: 10,
+  flexDirection: "row",
+ backgroundColor: "#fff",
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 4,
+  },
+  shadowOpacity: 0.2,
+  shadowRadius: 4.65,
+
+  elevation: 8,
+},
+component1:{
+position:'absolute', 
+top:677,  
+flexDirection: "row", 
+},
+UsernameText:{
+ //color:"#264730",
+    margin: 5,
+    marginLeft: 10,
+    fontSize: 22,
+    fontFamily: 'Khmer-MN-Bold'
+
+},
+CommentText:{
+  color: '#494D4B',
+  margin: 5,
+  paddingRight:50,
+  fontSize: 22,
+  fontFamily: 'Khmer-MN'
+
+},
+SVGC :{
+flex: 1,
+//backgroundColor: '#fff',
+ justifyContent:'center',
+ alignItems:'flex-start',
+ position:"absolute",
+},   
+noDataText: {
+// flex: 1,
+alignSelf: 'center',
+fontFamily: 'Khmer-MN-Bold',
+fontSize: 17,
+color: '#717171',
+top :200,
+
+},
+text: {
+paddingTop:30,
+     fontSize: 23,
+     color: "black",
+     paddingLeft: 15,
+     fontFamily:'Khmer-MN-Bold'
+   },
 
   });
+  
