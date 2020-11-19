@@ -11,8 +11,8 @@ import { unsubscribe } from './Controller/Notification'
 
 // import { AppLoading } from 'expo';
 //Icons
-import { Ionicons,Foundation } from "@expo/vector-icons";
-
+import { Ionicons ,  Entypo} from "@expo/vector-icons";
+import { Foundation } from '@expo/vector-icons';
 
 //screens
 import Login from "./Screens/LogIn";
@@ -34,6 +34,7 @@ import Addplant from "./Screens/Addplant";
 import Comment from "./Screens/Comment";
 import ViewGardnerMap from "./Screens/ViewGardnerMap";
 
+import Bookmarks from "./Screens/Bookmarks";
 
 // Firebase
 import * as firebase from "firebase";
@@ -131,6 +132,15 @@ function Root() {
         }}
         component={MessageStackNav} />
 
+        <GardnerTab.Screen
+        name="Bookmarks"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="bookmarks" color={color} size={size} />
+          ),
+        }}
+        component={BookmarkStackNav} />
+
       <GardnerTab.Screen
       name="profile"
         options={{
@@ -151,6 +161,7 @@ const ViewGardnerStack = createStackNavigator();
 const inGardnerStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const MessageStack = createStackNavigator();
+const BookmarkStack = createStackNavigator();
 
 
 function ViewGardnersStack() {
@@ -274,6 +285,61 @@ function MessageStackNav() {
     </MessageStack.Navigator>
   );
 }
+
+function BookmarkStackNav() {
+  return (
+  <BookmarkStack.Navigator>
+<BookmarkStack.Screen name="Bookmarks"
+        options={{
+          title: 'Bookmarks',
+        }}
+        component={Bookmarks} />
+ {<BookmarkStack.Screen
+        name="Plant"
+        options={{
+          headerShown: false,
+        }}
+        component={Plant}
+      />}
+
+      <BookmarkStack.Screen name="ViewGardenerProfile"
+        options={{
+          title: '',
+          color: 'black',
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+        }}
+        component={ViewGardenerProfile} />
+
+      <BookmarkStack.Screen name="Chat"
+        options={{
+          title: 'Chat',
+        }}
+        component={Chat} />
+
+      <BookmarkStack.Screen name="Comment"
+        options={({ navigation }) => ({
+          title:'Comments',
+          headerBackTitle: 'Back',
+          headerTintColor:'black',
+          headerTitleStyle: {
+              fontFamily: 'Khmer-MN-Bold',
+              paddingTop:8,fontSize:20,
+          },
+        })
+      }
+        component={Comment} />
+
+
+
+    </BookmarkStack.Navigator>
+  );
+}
+
 
 function HomeStackNav() {
   return (
