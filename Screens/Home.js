@@ -39,17 +39,17 @@ export default class Home extends React.Component {
   }
 
   state = {
-    avatar1: '',
-    avatar2: '',
-    avatar3: '',
-   avatar4:'',
-   avatar5:'',
-   rgardeners:'',
-   id1:'',
-   id2:'',
-   id3:'',
-   id4:'',
-   id5:'',
+  //   avatar1: '',
+  //   avatar2: '',
+  //   avatar3: '',
+  //  avatar4:'',
+  //  avatar5:'',
+  //  rgardeners:'',
+  //  id1:'',
+  //  id2:'',
+  //  id3:'',
+  //  id4:'',
+  //  id5:'',
    plants:[],
    refreshing: false,
   }
@@ -64,7 +64,7 @@ export default class Home extends React.Component {
 
   async componentDidMount() {
 
-    this.getGardeners();
+   // this.getGardeners();
     this.getPosts();
 
   }
@@ -114,87 +114,87 @@ console.log('posts in home page  ',post.posts)
 
   }//end get Posts
 
- getGardeners = async () => {
+//  getGardeners = async () => {
 
-    var Gardners= [];
-    var rg =[];
-//getting gardeners from DB
-    const db = firebase.firestore()
-  let usersref = db.collection("users")
-  const snapshot = await usersref.where('Gardner', '==', true).get();
-  if (snapshot.empty) {
-  console.log('No matching documents.');
-  return;
-  }  
-//Adding gardeners data into an array
-  for(let i=0; i<snapshot.size;i++) 
-  {Gardners[i]=snapshot.docs[i].data();}
-//choosing 5 random gardeners
-  for(let i=0 ; i<5 ; i++){
-  rg[i]= Gardners[Math.floor(Math.random()*Gardners.length)];
-  if(i != 0){ //this might solve the unique gardners issue
-    while(rg[i-1] == rg[i]){
-    rg[i]= Gardners[Math.floor(Math.random()*Gardners.length)];}
-    }
-    }
+//     var Gardners= [];
+//     var rg =[];
+// //getting gardeners from DB
+//     const db = firebase.firestore()
+//   let usersref = db.collection("users")
+//   const snapshot = await usersref.where('Gardner', '==', true).get();
+//   if (snapshot.empty) {
+//   console.log('No matching documents.');
+//   return;
+//   }  
+// //Adding gardeners data into an array
+//   for(let i=0; i<snapshot.size;i++) 
+//   {Gardners[i]=snapshot.docs[i].data();}
+// //choosing 5 random gardeners
+//   for(let i=0 ; i<5 ; i++){
+//   rg[i]= Gardners[Math.floor(Math.random()*Gardners.length)];
+//   if(i != 0){ //this might solve the unique gardners issue
+//     while(rg[i-1] == rg[i]){
+//     rg[i]= Gardners[Math.floor(Math.random()*Gardners.length)];}
+//     }
+//     }
   
-//setting avatars for said gardeners
-  this.getImage(rg[0], 1)
-  this.getImage(rg[1], 2)
-  this.getImage(rg[2], 3)
-  this.getImage(rg[3], 4)
-  this.getImage(rg[4], 5)
+// //setting avatars for said gardeners
+//   this.getImage(rg[0], 1)
+//   this.getImage(rg[1], 2)
+//   this.getImage(rg[2], 3)
+//   this.getImage(rg[3], 4)
+//   this.getImage(rg[4], 5)
   
-     this.setState({id1: rg[0].id}, () => {
-        //console.log(this.state.id1)
-       });
-       this.setState({id2: rg[1].id}, () => {
-        //console.log(this.state.id2)
-       });
-       this.setState({id3: rg[2].id}, () => {
-        //console.log(this.state.id3)
-       });
-       this.setState({id4: rg[3].id}, () => {
-        //console.log(this.state.id4)
-       });
-       this.setState({id5: rg[4].id}, () => {
-        //console.log(this.state.id5)
-       });
+//      this.setState({id1: rg[0].id}, () => {
+//         //console.log(this.state.id1)
+//        });
+//        this.setState({id2: rg[1].id}, () => {
+//         //console.log(this.state.id2)
+//        });
+//        this.setState({id3: rg[2].id}, () => {
+//         //console.log(this.state.id3)
+//        });
+//        this.setState({id4: rg[3].id}, () => {
+//         //console.log(this.state.id4)
+//        });
+//        this.setState({id5: rg[4].id}, () => {
+//         //console.log(this.state.id5)
+//        });
 
        
-  }//end gardeners
+//   }//end gardeners
 
-  getImage = async (g1,n) => { //<---------------- getting profile pictures
-    let imageRef = firebase.storage().ref('avatars/' + g1.id);
-    imageRef.getDownloadURL().then((url) => {
-      if(n == 1) 
-      this.setState({avatar1:url}, () => {
-        //console.log(this.state.avatar1)
-       });
-        else if(n == 2)
-        this.setState({avatar2:url}, () => {
-         // console.log(this.state.avatar1)
-         });
-        else if(n == 3)
-        this.setState({avatar3:url}, () => {
-          //console.log(this.state.avatar1)
-         });
-        else if(n == 4)
-        this.setState({avatar4:url}, () => {
-          //console.log(this.state.avatar1)
-         });
-        else if(n == 5)
-        this.setState({avatar5:url}, () => {
-          //console.log(this.state.avatar1)
-         });
-    })
-        .catch((e) =>{
-         console.log('getting downloadURL of image error => ')
-        // , e),
-        }
-        );
+  // getImage = async (g1,n) => { //<---------------- getting profile pictures
+  //   let imageRef = firebase.storage().ref('avatars/' + g1.id);
+  //   imageRef.getDownloadURL().then((url) => {
+  //     if(n == 1) 
+  //     this.setState({avatar1:url}, () => {
+  //       //console.log(this.state.avatar1)
+  //      });
+  //       else if(n == 2)
+  //       this.setState({avatar2:url}, () => {
+  //        // console.log(this.state.avatar1)
+  //        });
+  //       else if(n == 3)
+  //       this.setState({avatar3:url}, () => {
+  //         //console.log(this.state.avatar1)
+  //        });
+  //       else if(n == 4)
+  //       this.setState({avatar4:url}, () => {
+  //         //console.log(this.state.avatar1)
+  //        });
+  //       else if(n == 5)
+  //       this.setState({avatar5:url}, () => {
+  //         //console.log(this.state.avatar1)
+  //        });
+  //   })
+  //       .catch((e) =>{
+  //        console.log('getting downloadURL of image error => ')
+  //       // , e),
+  //       }
+  //       );
 
-  }//end get image
+  // }//end get image
 
 
 
@@ -261,65 +261,15 @@ console.log('posts in home page  ',post.posts)
 
  <View style={styles.content}>
 
-
-  <Text style={styles.text}>Gardeners</Text>
-  
-   {/* Random Gardeners Profiles */}
-   <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}> 
-
-   <TouchableOpacity
-              onPress={() => 
-                this.props.navigation.navigate('ViewGardenerProfile',{ id: this.state.id1})}
-              >
-             <Image source={this.state.avatar1 ?
-                    {uri:this.state.avatar1} : require("../assets/blank.png")} style={styles.prifileImg} />
-             </TouchableOpacity>
-         {/* 2nd profile */}
-         <TouchableOpacity
-         onPress={() => 
-          this.props.navigation.navigate('ViewGardenerProfile',{ id: this.state.id2})}
-         >
-        <Image source={this.state.avatar2 ?
-               {uri:this.state.avatar2} : require("../assets/blank.png")} style={styles.prifileImg} />
-        </TouchableOpacity>
-
-         {/* 3rd profile */}
-        <TouchableOpacity
-        onPress={() => 
-          this.props.navigation.navigate('ViewGardenerProfile',{ id: this.state.id3})}
-         >
-        <Image source={this.state.avatar3 ?
-               {uri:this.state.avatar3} : require("../assets/blank.png")} style={styles.prifileImg} />
-        </TouchableOpacity>
-
-         {/* 4th profile */}
-        <TouchableOpacity
-        onPress={() => 
-          this.props.navigation.navigate('ViewGardenerProfile',{ id: this.state.id4})}
-         >
-        <Image source={this.state.avatar4 ?
-               {uri:this.state.avatar4} : require("../assets/blank.png")} style={styles.prifileImg} />
-        </TouchableOpacity>
-
-         {/* 5th profile */}
-         <TouchableOpacity
-         onPress={() => 
-          this.props.navigation.navigate('ViewGardenerProfile',{ id: this.state.id5})}
-         >
-        <Image source={this.state.avatar5 ?
-               {uri:this.state.avatar5} : require("../assets/blank.png")} style={styles.prifileImg} />
-        </TouchableOpacity>
-
-   </View>
    
   
 <View style={styles.body}>
-  <View style={{ marginTop: 20}}>
+  <View style={{ marginTop: 0}}>
   {this.state.plants.length == 0 ?
               <Text style={styles.noDataText} >No plants added </Text>
               :
               <View>
-              <Text style={styles.text}>Plants</Text>
+              <Text style={styles.text}>Plants of Garsah</Text>
   <FlatList
       data={this.state.plants}
       initialNumToRender={this.state.plants.length}
@@ -358,7 +308,7 @@ const styles = StyleSheet.create({
   position:"absolute",
 },      
  text: {
-   paddingTop:30,
+   paddingTop:10,
         fontSize: 23,
         color: "black",
         paddingLeft: 15,

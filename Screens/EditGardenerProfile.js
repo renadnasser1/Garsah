@@ -80,6 +80,26 @@ export default class App extends React.Component {
     }//end if 
   }
 
+  async newMethod(){
+
+    try{
+    let imageRef = firebase.storage().ref('avatars/' + this.state.userId);
+      imageRef.getDownloadURL().then((url) => {
+        //from url you can fetched the uploaded image easily
+        this.setState({ avatar: url });
+        console.log("in newmwthod"+ this.state.avatar)
+        firebase.firestore().collection('users').doc(this.state.userId).update({
+          avatar: this.state.avatar
+        })
+      })
+        .catch((e) => console.log('getting downloadURL of image error => ', e));
+    } catch (err) {
+      alert(err)
+
+    }//end if 
+
+  }//end new method
+
 
   render() {
     const { userId, name, email, Bio, Phone, flag, avatar,isLoading } = this.state
@@ -102,6 +122,8 @@ export default class App extends React.Component {
             rej(err);
           });
         }
+       await this.newMethod()
+
          if (this.state.Bio==null){
             this.setState({Bio:''})
           }
@@ -113,7 +135,7 @@ export default class App extends React.Component {
             name: this.state.name,
             Bio: this.state.Bio,
             Phone: this.state.Phone,
-            avatar: this.state.avatar
+           // avatar: this.state.avatar
           }).then((response) => {
     
             save()

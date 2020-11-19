@@ -32,6 +32,7 @@ export default class Search extends React.Component {
    name:'',
    id : '',
    tempavatar: '',
+   currentUser:'',
   }
   _onRefresh = () => {
     this.textInput.clear()
@@ -70,7 +71,7 @@ setTimeout(() => {
       key: i,
       name: snapshot.docs[i].data().name,
       id :  snapshot.docs[i].data().id,
-      avatar:'',
+      avatar:snapshot.docs[i].data().avatar,
       //date: snapshot.docs[i].data().createdAt.slice(0.12),
   };
   all.push(c);}
@@ -82,21 +83,19 @@ setTimeout(() => {
   }
 
   async handleSend(comment) {
+
+    let userId = await AsyncStorage.getItem("uid")
     
     if(comment){
     comment = comment.toUpperCase()
 let  x = [];
 var counter = 0;
     for (let i = 0; i < this.state.allusers.length; i++) {
-      this.setState({ tempavatar: '' }, () => {
-        console.log("Tempagain"+"url")
-       });
       if((this.state.allusers[i].name.toUpperCase().startsWith(comment))){
+        if(!(userId == this.state.allusers[i].id )){ //to remove my acount from search
       x[counter]=this.state.allusers[i]
-    await this.getImage(x[counter].id)
-      x[counter].avatar=this.state.tempavatar
       counter++;
-     
+        }
       }
   }//end loop
   this.setState({ result: x }, () => {
@@ -111,20 +110,21 @@ else {
 }
   }//end handle send
   
-  getImage = async (g1) => { //<---------------- getting profile pictures 
-    let imageRef =  firebase.storage().ref('avatars/' + g1);
-    //let imageRef =  await firebase.firestore().collection("users").doc(g1).avatar
-      await imageRef.getDownloadURL().then((url) => {
-      this.setState({ tempavatar: url }, () => {
-        console.log("Temp"+"url")
-      });
+  // getImage = async (g1) => { //<---------------- getting profile pictures 
+  //   let imageRef =  firebase.storage().ref('avatars/' + g1);
+  //   //let imageRef =  await firebase.firestore().collection("users").doc(g1).avatar
+  //     await imageRef.getDownloadURL().then((url) => {
+  //     this.setState({ tempavatar: url }, () => {
+  //       console.log("Temp"+"url")
+  //     });
     
-    }).catch((e) =>
-      console.log('getting downloadURL of image error => ')
-      // , e),
-    );
+  //   }).catch((e) =>
+  //     console.log('getting downloadURL of image error => ')
+  //     // , e),
+  //   );
    
-  }//end get image
+  // }//end get image
+
   render() {
 
     const { chats, user ,allusers,result} = this.state //<--- fill this later
@@ -200,6 +200,7 @@ else {
                             
                              />
             <TextInput
+            maxLength={16}
         // clearButtonMode="always"
          ref={input => { this.textInput = input }}
                 placeholder={"Enter the user's name"}
@@ -222,7 +223,7 @@ else {
       style={styles.ChatElement}
       onPress={() => this.props.navigation.navigate("ViewGardenerProfile", { id: item.id })}
     >
-
+{console.log(item.avatar,item.name)}
       <Image source={item.avatar ?
         { uri: item.avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
       <Text style={styles.nametext}>{item.name}</Text>
