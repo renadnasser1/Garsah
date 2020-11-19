@@ -1,4 +1,5 @@
-import  Svg, { Defs, ClipPath, Path, G } from "react-native-svg"
+import React, { useState } from "react";
+import  Svg, { Defs, ClipPath, Path, G } from "react-native-svg";
 import AsyncStorage from '@react-native-community/async-storage';
 import {plantItem} from '../Component/PostItem'
 import {
@@ -53,9 +54,9 @@ export default class Bookmarks extends React.Component {
   }
   
   async componentDidMount() {
-    
+    this.on_Refresh();
    this.getPosts(); 
-   
+    
     
  
 
