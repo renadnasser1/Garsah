@@ -104,7 +104,7 @@ export default class Plant extends React.Component {
       var localThread = ''
       var localPost = []
       this.setState({ ThreadId: this.props.route.params.threadID }, () => { console.log('thread id  ', this.state.ThreadId) })
-      this.setState({ deleteTheadFun: this.props.route.params.deleteTheadFun }, () => { console.log('delete thread function   ', this.state.deleteTheadFun) })
+      this.setState({ deleteTheadFun: this.props.route.params.deleteTheadFun }, () => { console.log('delete thread function   ') })
       //get thread info
       var id = this.state.ThreadId
       var docRef = firebase.firestore().collection("Posts").doc(id);

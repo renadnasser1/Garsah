@@ -54,7 +54,7 @@ export default class Bookmarks extends React.Component {
   }
   
   async componentDidMount() {
-    this.on_Refresh();
+    
    this.getPosts(); 
     
     
@@ -124,7 +124,7 @@ console.log(bookmark)
     this.setState({ bookmarkss: posts }, () => {
       console.log("bookmark length " + this.state.bookmarkss.length)
     });
-  
+  this._onRefresh()
 
   }//end get Posts
 
