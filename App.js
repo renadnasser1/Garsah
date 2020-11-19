@@ -223,7 +223,10 @@ function HomeStackNav() {
             onPress={() => navigation.navigate("Search")}>
               <FontAwesome 
             name="search" 
-            size={30} color="Black"
+            size={25} 
+            color="#646161"
+
+            style={{marginLeft:20}}
           
                /> 
 

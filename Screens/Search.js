@@ -34,6 +34,7 @@ export default class Search extends React.Component {
    tempavatar: '',
   }
   _onRefresh = () => {
+    this.textInput.clear()
     this.setState({ result: []}, () => {
       console.log("result " + this.state.result.length)
     });
@@ -46,7 +47,9 @@ export default class Search extends React.Component {
 
   async componentDidMount() {
 this.getallusers()
-
+setTimeout(() => {
+  this.handleSend();
+  }, 3000);
 
   }//end compnentDidMount
 
@@ -77,38 +80,51 @@ this.getallusers()
   
    
   }
+
   async handleSend(comment) {
+    
     if(comment){
     comment = comment.toUpperCase()
 let  x = [];
 var counter = 0;
     for (let i = 0; i < this.state.allusers.length; i++) {
+      this.setState({ tempavatar: '' }, () => {
+        console.log("Tempagain"+"url")
+       });
       if((this.state.allusers[i].name.toUpperCase().startsWith(comment))){
       x[counter]=this.state.allusers[i]
-      x[counter].avatar= await this.getImage(x[counter].id)
-      console.log(x[counter].avatar)
+    await this.getImage(x[counter].id)
+      x[counter].avatar=this.state.tempavatar
       counter++;
+     
       }
   }//end loop
   this.setState({ result: x }, () => {
     console.log("result " + this.state.result.length)
   });
+
 }//end validation 
+else {
+  this.setState({ result: [] }, () => {
+    console.log("result " + this.state.result.length)
+  });
+}
   }//end handle send
   
   getImage = async (g1) => { //<---------------- getting profile pictures 
-    let imageRef =  await firebase.storage().ref('avatars/' + g1);
+    let imageRef =  firebase.storage().ref('avatars/' + g1);
     //let imageRef =  await firebase.firestore().collection("users").doc(g1).avatar
-    await imageRef.getDownloadURL().then((url) => {
+      await imageRef.getDownloadURL().then((url) => {
       this.setState({ tempavatar: url }, () => {
         console.log("Temp"+"url")
       });
+    
     }).catch((e) =>
       console.log('getting downloadURL of image error => ')
       // , e),
     );
+   
   }//end get image
-
   render() {
 
     const { chats, user ,allusers,result} = this.state //<--- fill this later
@@ -171,26 +187,31 @@ var counter = 0;
 
             <View style={styles.content}>
             <View style = {styles.component1}>
+            
+            <View style={styles.inputFiled}>
+
+              <FontAwesome 
+            name="search" 
+            size={25} 
+            color="#646161"
+            style={{marginRight:15}}  
+          
+             
+                            
+                             />
             <TextInput
-         clearButtonMode="always"
+        // clearButtonMode="always"
          ref={input => { this.textInput = input }}
                 placeholder={"Enter the user's name"}
+               
                 onChangeText={(text) => this.handleSend(text)}
     //             {(text) =>{this.setState({ search:text}, () => {
     //   //console.log("comment of the user is " + this.state.comment)
     // }); }}
-                style={styles.inputFiled}
+                //style={styles.inputFiled}
               ></TextInput>
-              
-              <FontAwesome 
-            name="search" 
-            size={30} 
-            color="Black"   
-            style={{marginTop:30}}
-             
-                            
-                             />
-                    
+              </View>
+                     
             </View>
             <View style={{marginTop:80}}>
 
@@ -318,6 +339,7 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     marginTop:30,
     marginRight:15,
+    marginLeft:40,
     width: 340,
     height: 40,
     borderTopLeftRadius: 10,
