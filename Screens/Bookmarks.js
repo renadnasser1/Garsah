@@ -5,13 +5,8 @@ import {plantItem} from '../Component/PostItem'
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
   FlatList,
-  Button,
-  Image,
-  ActivityIndicator,
-  ScrollView,
   RefreshControl,
 } from "react-native";
 
@@ -26,9 +21,6 @@ const font = () => {
     'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
   });
 }
-//Icons
-import { Entypo,Ionicons,AntDesign } from '@expo/vector-icons';
-import { configureFonts } from "react-native-paper";
 
 export default class Bookmarks extends React.Component {
 
@@ -73,7 +65,6 @@ export default class Bookmarks extends React.Component {
   if (snapshot.empty) {
   console.log('No matching documents.');
   this.setState({ bookmarkss: [] }, () => {
-    //console.log("bookmark empty case " + this.state.bookmarkss.length)
   });
   return;
   }  
@@ -82,15 +73,12 @@ for(let i=0; i<snapshot.size;i++) {
 bookmark[i]=snapshot.docs[i].data().pid
 }//end for loop
 
-//********************/
 //3- Bring post from DB to compare 
 
     const db = firebase.firestore()
     let usersref = db.collection("Posts").orderBy("createdAt", "desc")
     const snapshot1 = await usersref.get();
     if (snapshot1.empty) {
-    //console.log('No matching documents.');
-   
     return;
     }  
  
@@ -122,7 +110,6 @@ bookmark[i]=snapshot.docs[i].data().pid
 
     //setting the bookmarks array
     this.setState({ bookmarkss: posts }, () => {
-     // console.log("bookmark length " + this.state.bookmarkss.length)
     });
   
     this._onRefresh();
@@ -183,26 +170,12 @@ bookmark[i]=snapshot.docs[i].data().pid
     </Svg>
 </View>
 
-  {/* // contentContainerStyle={{
-  //   flexDirection:'column',
-  //   }}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-          > */}
-
-
-
-<View style={styles.body}>
+<View>
   <View style={{ marginTop: 20}}>
   {this.state.bookmarkss.length == 0 ?
               <Text style={styles.noDataText} >No plants Bookmarked yet </Text>
               :
               <View>
-              {/* <Text style={styles.text}>Your Bookmarked Plants </Text> */}
   <FlatList
       data={this.state.bookmarkss}
       initialNumToRender={this.state.bookmarkss.length}
@@ -239,111 +212,5 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'flex-start'
   },      
-   
- 
-  editText: {
-    paddingLeft: 12,
-    paddingTop: 3,
-    fontFamily: 'Khmer-MN-Bold',
-    color: 'black',
-  
-  },
-  header:{
-    backgroundColor: "white",
-    width: 500,
-    height:90,
-    
-  },
-  welcome :{
-    alignContent:'center',
-    textAlign:'center',
-    fontWeight: "bold",
-    justifyContent: "flex-end",
-    fontFamily:'Khmer-MN-Bold',
-    marginTop:20,
-    fontSize: 26,
-    marginBottom:2,
-    color: '#B7BD74',
-  
-  },
-  PlantName:{
-    alignContent:'center',
-    textAlign:'center',
-    fontWeight: "bold",
-    justifyContent: "flex-end",
-    fontFamily:'Khmer-MN-Bold',
-    marginTop:20,
-    fontSize: 26,
-    marginBottom:2,
-    color: 'black',
-    fontStyle:'italic',
-  },
-  inputFiled: {
-    marginLeft:15,
-    padding: 8,
-    paddingBottom: 2,
-    marginRight:15,
-    width: 340,
-    height: 40,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomEndRadius: 10,
-    borderTopRightRadius: 10,
-    flexDirection: "row",
-   backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4.65,
-
-    elevation: 8,
-  },
-  component1:{
-position:'absolute', 
-top:677,  
- flexDirection: "row", 
-  },
-  UsernameText:{
-   //color:"#264730",
-      margin: 5,
-      marginLeft: 10,
-      fontSize: 22,
-      fontFamily: 'Khmer-MN-Bold'
-
-  },
-  CommentText:{
-    color: '#494D4B',
-    margin: 5,
-    paddingRight:50,
-    fontSize: 22,
-    fontFamily: 'Khmer-MN'
-
-},
-SVGC :{
-  flex: 1,
- //backgroundColor: '#fff',
-   justifyContent:'center',
-   alignItems:'flex-start',
-   position:"absolute",
- },   
- noDataText: {
- // flex: 1,
-  alignSelf: 'center',
-  fontFamily: 'Khmer-MN-Bold',
-  fontSize: 17,
-  color: '#717171',
-  top :200,
-
-},
-text: {
-  paddingTop:30,
-       fontSize: 23,
-       color: "black",
-       paddingLeft: 15,
-       fontFamily:'Khmer-MN-Bold'
-     },
 
   });
