@@ -68,14 +68,13 @@ export default class Plant extends React.Component {
   }
 
   async componentDidMount() {
-   
     await this.fetchData();  
     await this.checkBookmark();      
 
   }
 
   async checkBookmark (){
-    console.log("hello")
+   
     let userId = await AsyncStorage.getItem("uid")
     
     const bookmarkRef = firebase.firestore().collection('Bookmarks')
@@ -86,7 +85,6 @@ export default class Plant extends React.Component {
     if (!(snapshot.empty)) {
       this.setState({ bookmarked: true})
     }
-  
 
   }
 
@@ -103,8 +101,8 @@ export default class Plant extends React.Component {
       // get thread id
       var localThread = ''
       var localPost = []
-      this.setState({ ThreadId: this.props.route.params.threadID }, () => { console.log('thread id  ', this.state.ThreadId) })
-      this.setState({ deleteTheadFun: this.props.route.params.deleteTheadFun }, () => { console.log('delete thread function   ') })
+      this.setState({ ThreadId: this.props.route.params.threadID }, () => {  })
+      this.setState({ deleteTheadFun: this.props.route.params.deleteTheadFun }, () => { })
       //get thread info
       var id = this.state.ThreadId
       var docRef = firebase.firestore().collection("Posts").doc(id);
@@ -199,7 +197,7 @@ export default class Plant extends React.Component {
       
       })
         // await Promise.all(res)
-         this._onRefresh()
+        
 
     }
     else {
@@ -207,8 +205,9 @@ export default class Plant extends React.Component {
       this.setState({ bookmarked: false})
      chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).delete()
 
-  }
 
+  }
+  this._onRefresh()
   }
 
 
@@ -426,7 +425,7 @@ export default class Plant extends React.Component {
           <View style={styles.modelContiner}>
             <View style={styles.modalView}>
 
-              <View style={styles.modelHeader}>
+              <View style={styles.modeeader}>
                 <TouchableOpacity
                 style={{left:-90}}
                   onPress={() => {

@@ -54,9 +54,7 @@ export default class Bookmarks extends React.Component {
   }
   
   async componentDidMount() {
-    
    this.getPosts(); 
-    
     
  
 
@@ -74,14 +72,16 @@ export default class Bookmarks extends React.Component {
     const snapshot = await useRef.get();
   if (snapshot.empty) {
   console.log('No matching documents.');
+  this.setState({ bookmarkss: [] }, () => {
+    //console.log("bookmark empty case " + this.state.bookmarkss.length)
+  });
   return;
   }  
 //2- Add bookmarks id into array 
 for(let i=0; i<snapshot.size;i++) {
-
 bookmark[i]=snapshot.docs[i].data().pid
 }//end for loop
-console.log(bookmark)
+
 //********************/
 //3- Bring post from DB to compare 
 
@@ -89,7 +89,8 @@ console.log(bookmark)
     let usersref = db.collection("Posts").orderBy("createdAt", "desc")
     const snapshot1 = await usersref.get();
     if (snapshot1.empty) {
-    console.log('No matching documents.');
+    //console.log('No matching documents.');
+   
     return;
     }  
  
@@ -104,7 +105,6 @@ console.log(bookmark)
         posts: snapshot1.docs[i].data().posts,
         name: snapshot1.docs[i].data().Name,
     };
-  console.log(post)
     var localPost = {
       key: post.key, //<--- arrange it by date (make it post id)
       uid:post.uid,
@@ -122,15 +122,16 @@ console.log(bookmark)
 
     //setting the bookmarks array
     this.setState({ bookmarkss: posts }, () => {
-      console.log("bookmark length " + this.state.bookmarkss.length)
+     // console.log("bookmark length " + this.state.bookmarkss.length)
     });
-  this._onRefresh()
-
+  
+    this._onRefresh();
   }//end get Posts
 
   
   render () {
-
+    this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {   
+         await this.getPosts()    });
     return(
 
         <View 
@@ -181,8 +182,8 @@ console.log(bookmark)
       </G>
     </Svg>
 </View>
-<ScrollView 
-  // contentContainerStyle={{
+
+  {/* // contentContainerStyle={{
   //   flexDirection:'column',
   //   }}
           refreshControl={
@@ -191,7 +192,7 @@ console.log(bookmark)
               onRefresh={this._onRefresh}
             />
           }
-          >
+          > */}
 
 
 
@@ -215,7 +216,7 @@ console.log(bookmark)
   
   </View>
 
-</ScrollView>
+
 
 
           </View>//container
