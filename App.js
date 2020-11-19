@@ -11,8 +11,7 @@ import { unsubscribe } from './Controller/Notification'
 
 // import { AppLoading } from 'expo';
 //Icons
-import { Ionicons ,  Entypo} from "@expo/vector-icons";
-import { Foundation } from '@expo/vector-icons';
+import { Ionicons, Entypo, FontAwesome, Foundation } from "@expo/vector-icons";
 
 //screens
 import Login from "./Screens/LogIn";
@@ -35,6 +34,7 @@ import Comment from "./Screens/Comment";
 import ViewGardnerMap from "./Screens/ViewGardnerMap";
 
 import Bookmarks from "./Screens/Bookmarks";
+import Search from "./Screens/Search";
 
 // Firebase
 import * as firebase from "firebase";
@@ -81,12 +81,12 @@ const onLogoutPress = async (navigation) => {
         routes: [{ name: 'Login' }]
       })
       AsyncStorage.getAllKeys()
-      .then(keys => AsyncStorage.multiRemove(keys))
-      .catch((error) => {
-        alert(error)
-      });
+        .then(keys => AsyncStorage.multiRemove(keys))
+        .catch((error) => {
+          alert(error)
+        });
 
-    }) 
+    })
 }
 
 
@@ -112,15 +112,15 @@ function Root() {
         }}
         component={HomeStackNav} />
 
-<GardnerTab.Screen
+      <GardnerTab.Screen
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="ios-pin" size={size} color={color} />
-           
+
           ),
 
         }} name="Gardners"
-        
+
         component={ViewGardnersStack} />
 
       <GardnerTab.Screen
@@ -132,7 +132,7 @@ function Root() {
         }}
         component={MessageStackNav} />
 
-        <GardnerTab.Screen
+      <GardnerTab.Screen
         name="Bookmarks"
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -142,13 +142,13 @@ function Root() {
         component={BookmarkStackNav} />
 
       <GardnerTab.Screen
-      name="profile"
+        name="profile"
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-person" color={color} size={size} />
           ),
 
-        }} 
+        }}
 
         component={GardnerStackNav} />
 
@@ -174,35 +174,35 @@ function ViewGardnersStack() {
         component={ViewGardnerMap} />
 
 
-<ViewGardnerStack.Screen name="ViewGardenerProfile"
+      <ViewGardnerStack.Screen name="ViewGardenerProfile"
         options={{
           title: '',
           color: 'black',
           headerBackTitle: 'Back',
-          headerTintColor:'black',
+          headerTintColor: 'black',
           headerTitleStyle: {
-              fontFamily: 'Khmer-MN-Bold',
-              paddingTop:8,fontSize:20,
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
           },
         }}
         component={ViewGardenerProfile} />
 
-{<ViewGardnerStack.Screen
+      {<ViewGardnerStack.Screen
         name="profile"
         options={{
-          title:'My Profile',
+          title: 'My Profile',
           color: 'black',
           headerBackTitle: 'Back',
-          headerTintColor:'black',
+          headerTintColor: 'black',
           headerTitleStyle: {
-              fontFamily: 'Khmer-MN-Bold',
-              paddingTop:8,fontSize:20,
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
           },
         }}
         component={GardnerProfile}
       />}
 
-{<ViewGardnerStack.Screen
+      {<ViewGardnerStack.Screen
         name="Addplant"
         options={({ navigation }) => ({
           title: 'Add Plant',
@@ -217,9 +217,9 @@ function ViewGardnersStack() {
                 }}>Cancel</Text></TouchableOpacity>
           ),
         })}
-        component={AddPlant}/>}
+        component={AddPlant} />}
 
-{<GardnerStack.Screen
+      {<GardnerStack.Screen
         name="Post"
         options={({ navigation }) => ({
           title: 'Add Post',
@@ -234,9 +234,9 @@ function ViewGardnersStack() {
                 }}>Cancel</Text></TouchableOpacity>
           ),
         })}
-        component={Post}/>}
+        component={Post} />}
 
-{<ViewGardnerStack.Screen
+      {<ViewGardnerStack.Screen
         name="Plant"
         options={{
           headerShown: false,
@@ -252,15 +252,15 @@ function ViewGardnersStack() {
 
       <ViewGardnerStack.Screen name="Comment"
         options={({ navigation }) => ({
-          title:'Comments',
+          title: 'Comments',
           headerBackTitle: 'Back',
-          headerTintColor:'black',
+          headerTintColor: 'black',
           headerTitleStyle: {
-              fontFamily: 'Khmer-MN-Bold',
-              paddingTop:8,fontSize:20,
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
           },
         })
-      }
+        }
         component={Comment} />
 
     </ViewGardnerStack.Navigator>
@@ -288,13 +288,13 @@ function MessageStackNav() {
 
 function BookmarkStackNav() {
   return (
-  <BookmarkStack.Navigator>
-<BookmarkStack.Screen name="Bookmarks"
+    <BookmarkStack.Navigator>
+      <BookmarkStack.Screen name="Bookmarks"
         options={{
           title: 'Bookmarks',
         }}
         component={Bookmarks} />
- {<BookmarkStack.Screen
+      {<BookmarkStack.Screen
         name="Plant"
         options={{
           headerShown: false,
@@ -307,10 +307,10 @@ function BookmarkStackNav() {
           title: '',
           color: 'black',
           headerBackTitle: 'Back',
-          headerTintColor:'black',
+          headerTintColor: 'black',
           headerTitleStyle: {
-              fontFamily: 'Khmer-MN-Bold',
-              paddingTop:8,fontSize:20,
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
           },
         }}
         component={ViewGardenerProfile} />
@@ -323,15 +323,15 @@ function BookmarkStackNav() {
 
       <BookmarkStack.Screen name="Comment"
         options={({ navigation }) => ({
-          title:'Comments',
+          title: 'Comments',
           headerBackTitle: 'Back',
-          headerTintColor:'black',
+          headerTintColor: 'black',
           headerTitleStyle: {
-              fontFamily: 'Khmer-MN-Bold',
-              paddingTop:8,fontSize:20,
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
           },
         })
-      }
+        }
         component={Comment} />
 
 
@@ -346,24 +346,35 @@ function HomeStackNav() {
     <HomeStack.Navigator>
 
       <HomeStack.Screen name="Home"
+        options={({ navigation }) => ({
+          title: 'Homepage',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Search")}>
+              <FontAwesome
+                name="search"
+                size={25}
+                color="#646161"
+
+                style={{ marginLeft: 20 }}
+
+              />
+
+            </TouchableOpacity>
+          ),
+        })}
         component={Home} />
 
-{<HomeStack.Screen
+      {<HomeStack.Screen
         name="profile"
         options={{
-          title:'My Profile',
-          color: 'black',
-          headerBackTitle: 'Back',
-          headerTintColor:'black',
-          headerTitleStyle: {
-              fontFamily: 'Khmer-MN-Bold',
-              paddingTop:8,fontSize:20,
-          },
+          title: 'My Profile',
+          color: 'black'
         }}
         component={GardnerProfile}
       />}
 
-{<HomeStack.Screen
+      {<HomeStack.Screen
         name="Addplant"
         options={({ navigation }) => ({
           title: 'Add Plant',
@@ -378,9 +389,9 @@ function HomeStackNav() {
                 }}>Cancel</Text></TouchableOpacity>
           ),
         })}
-        component={AddPlant}/>}
+        component={AddPlant} />}
 
-{<HomeStack.Screen
+      {<HomeStack.Screen
         name="Post"
         options={({ navigation }) => ({
           title: 'Add Post',
@@ -395,7 +406,20 @@ function HomeStackNav() {
                 }}>Cancel</Text></TouchableOpacity>
           ),
         })}
-        component={Post}/>}
+        component={Post} />}
+      <HomeStack.Screen name="Search"
+        options={({ navigation }) => ({
+          title: 'Search',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
+        })
+        }
+        component={Search} />
+
 
       {<HomeStack.Screen
         name="Plant"
@@ -410,10 +434,10 @@ function HomeStackNav() {
           title: '',
           color: 'black',
           headerBackTitle: 'Back',
-          headerTintColor:'black',
+          headerTintColor: 'black',
           headerTitleStyle: {
-              fontFamily: 'Khmer-MN-Bold',
-              paddingTop:8,fontSize:20,
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
           },
         }}
         component={ViewGardenerProfile} />
@@ -426,15 +450,15 @@ function HomeStackNav() {
 
       <HomeStack.Screen name="Comment"
         options={({ navigation }) => ({
-          title:'Comments',
+          title: 'Comments',
           headerBackTitle: 'Back',
-          headerTintColor:'black',
+          headerTintColor: 'black',
           headerTitleStyle: {
-              fontFamily: 'Khmer-MN-Bold',
-              paddingTop:8,fontSize:20,
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
           },
         })
-      }
+        }
         component={Comment} />
 
     </HomeStack.Navigator>
@@ -558,19 +582,19 @@ function stackInGardnerStack() {
         component={LocationMap}
       />}
 
-<inGardnerStack.Screen name="Comment"
+      <inGardnerStack.Screen name="Comment"
         options={({ navigation }) => ({
-          title:'Comments',
+          title: 'Comments',
           headerBackTitle: 'Back',
-          headerTintColor:'black',
+          headerTintColor: 'black',
           headerTitleStyle: {
-              fontFamily: 'Khmer-MN-Bold',
-              paddingTop:8,fontSize:20,
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
           },
         })
-      }
+        }
         component={Comment} />
-      
+
     </inGardnerStack.Navigator>
 
   );
