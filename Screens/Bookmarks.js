@@ -5,12 +5,15 @@ import {plantItem} from './Component/PostItem'
 import {
   View,
   Text,
+  TouchableOpacity,
   StyleSheet,
   FlatList,
+  Button,
+  Image,
+  ActivityIndicator,
+  ScrollView,
   RefreshControl,
-  ScrollView
 } from "react-native";
-
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
@@ -22,6 +25,9 @@ const font = () => {
     'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
   });
 }
+//Icons
+import { Entypo,Ionicons,AntDesign } from '@expo/vector-icons';
+import { configureFonts } from "react-native-paper";
 
 export default class Bookmarks extends React.Component {
 
@@ -66,6 +72,7 @@ export default class Bookmarks extends React.Component {
   if (snapshot.empty) {
   console.log('No matching documents.');
   this.setState({ bookmarkss: [] }, () => {
+    //console.log("bookmark empty case " + this.state.bookmarkss.length)
   });
   return;
   }  
@@ -74,12 +81,15 @@ for(let i=0; i<snapshot.size;i++) {
 bookmark[i]=snapshot.docs[i].data().pid
 }//end for loop
 
+//********************/
 //3- Bring post from DB to compare 
 
     const db = firebase.firestore()
     let usersref = db.collection("Posts").orderBy("createdAt", "desc")
     const snapshot1 = await usersref.get();
     if (snapshot1.empty) {
+    //console.log('No matching documents.');
+   
     return;
     }  
  
@@ -111,6 +121,7 @@ bookmark[i]=snapshot.docs[i].data().pid
 
     //setting the bookmarks array
     this.setState({ bookmarkss: posts }, () => {
+     // console.log("bookmark length " + this.state.bookmarkss.length)
     });
   
     this._onRefresh();
@@ -181,12 +192,26 @@ bookmark[i]=snapshot.docs[i].data().pid
           }
           >
 
-<View>
+  {/* // contentContainerStyle={{
+  //   flexDirection:'column',
+  //   }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+          > */}
+
+
+
+<View style={styles.body}>
   <View style={{ marginTop: 20}}>
   {this.state.bookmarkss.length == 0 ?
               <Text style={styles.noDataText} >No plants Bookmarked yet </Text>
               :
               <View>
+              {/* <Text style={styles.text}>Your Bookmarked Plants </Text> */}
   <FlatList
       data={this.state.bookmarkss}
       initialNumToRender={this.state.bookmarkss.length}

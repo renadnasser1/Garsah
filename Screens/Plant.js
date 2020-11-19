@@ -27,8 +27,8 @@ import Svg, { Path } from "react-native-svg"
 import { Entypo,Ionicons,AntDesign ,FontAwesome} from '@expo/vector-icons';
 
 //Components
-import { bugItem, waterItem } from './Component/bugWaterItems';
-import { postItem } from './Component/PostItem'
+import { bugItem, waterItem } from '../Component/bugWaterItems';
+import { postItem } from '../Component/PostItem'
 
 const font = () => {
   let [fontsLoaded] = useFonts({
@@ -253,7 +253,7 @@ export default class Plant extends React.Component {
       if(this.state.posts.length==1){
         console.log('delete thread from post')
         Alert.alert(
-          'Delete Post',
+          '',
           'Are you sure you want delete your Post? By deleting your post, the plant will be deleted',
           [
               { text: 'Cancel', onPress: () => console.log('') },
@@ -271,7 +271,7 @@ export default class Plant extends React.Component {
 
 
         Alert.alert(
-          'Delete Post',
+          '',
           'Are you sure you want delete your Post?',
           [
               { text: 'Cancel', onPress: () => console.log('') },
