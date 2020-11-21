@@ -328,7 +328,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily: 'Khmer-MN-Bold',
     fontSize: 17,
-    color: '#717171'
+    color: '#717171',
+    top:200
 
   }
 
