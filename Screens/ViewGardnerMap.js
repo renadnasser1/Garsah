@@ -144,9 +144,7 @@ export default class App extends React.Component {
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421
                         }} >
-                        {console.log('inside', this.state.gardners.length)}
                         {this.state.gardners.map((item, i) => {
-                            console.log("TEST", item);
                             return (<MapView.Marker
                                 key={i}
                                 coordinate={item.marker}
@@ -154,14 +152,8 @@ export default class App extends React.Component {
                                 pinColor={"red"}
                                 onCalloutPress={() => { onCalloutPres(item.gid) }}
                             >
-                                <View >
+                                <View>
                                     <MaterialIcons name="person-pin-circle" size={33} color="red" />
-                                    {/* <Image
-                                        //resizeMode="contain"
-                                        source={require('../assets/blank.png')}
-                                        style={styles.imageCircle}
-                                    
-                                    /> */}
                                 </View>
                             </MapView.Marker>
 

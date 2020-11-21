@@ -13,7 +13,7 @@ import {
   //AsyncStorage,
   Animated
 } from 'react-native';
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 //Fonts
 import { useFonts } from 'expo-font';
@@ -160,7 +160,7 @@ export default class App extends React.Component {
         } else {
           this.props.navigation.reset({
             index: 0,
-            routes: [{ name: 'GardnerRoot' }],
+            routes: [{ name: 'Root' }],
           })
         }
       }).catch((error) => {
@@ -202,7 +202,11 @@ export default class App extends React.Component {
               coordinate={this.state.Marker}
               onDragEnd={(e) => { this.setState({ Marker: e.nativeEvent.coordinate }) }}
               pinColor={'red'}
-            />
+              >
+                  <View >
+                      <MaterialIcons name="person-pin-circle" size={33} color="red" />
+                  </View>
+              </MapView.Marker>
 
           </MapView>
           <View style={styles.footer}>
