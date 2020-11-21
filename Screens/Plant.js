@@ -425,7 +425,7 @@ export default class Plant extends React.Component {
           <View style={styles.modelContiner}>
             <View style={styles.modalView}>
 
-              <View style={styles.modeeader}>
+              <View style={styles.modelHeader}>
                 <TouchableOpacity
                 style={{left:-90}}
                   onPress={() => {

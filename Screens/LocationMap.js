@@ -202,12 +202,7 @@ export default class App extends React.Component {
               coordinate={this.state.Marker}
               onDragEnd={(e) => { this.setState({ Marker: e.nativeEvent.coordinate }) }}
               pinColor={'red'}
-              >
-                  <View >
-                      <MaterialIcons name="person-pin-circle" size={33} color="red" />
-                  </View>
-              </MapView.Marker>
-
+              />
           </MapView>
           <View style={styles.footer}>
 
