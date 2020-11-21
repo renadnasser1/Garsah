@@ -194,8 +194,11 @@ this.setState({ comments: Temp }, () => {
                   renderItem={({ item }) => (
              <TouchableOpacity  style={{ flexDirection: 'row',borderBottomColor: '#C0C0C0', borderBottomWidth: 1,marginBottom: 10,}}>
        <Text  style={styles.UsernameText}
-          onPress={() => 
-                this.props.navigation.navigate('ViewGardenerProfile',{ id: item.id})}
+          onPress={() => {
+            if(this.state.id === item.id ){
+              this.props.navigation.push('profile')
+            }else
+                this.props.navigation.push('ViewGardenerProfile',{ id: item.id})}}
        >{item.name}: </Text>
     
        <Text style={styles.CommentText}>{item.comment}</Text>

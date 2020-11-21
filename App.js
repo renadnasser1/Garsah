@@ -108,6 +108,10 @@ function Root() {
           tabBarIcon: ({ color, size }) => (
             <Foundation name="home" color={color} size={size} />
           ),
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
           headerShown: true
         }}
         component={HomeStackNav} />
@@ -124,6 +128,15 @@ function Root() {
         component={ViewGardnersStack} />
 
       <GardnerTab.Screen
+        name="Bookmarks"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="bookmarks" color={color} size={size} />
+          ),
+        }}
+        component={BookmarkStackNav} />
+
+      <GardnerTab.Screen
         name="Messages"
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -132,14 +145,6 @@ function Root() {
         }}
         component={MessageStackNav} />
 
-      <GardnerTab.Screen
-        name="Bookmarks"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="bookmarks" color={color} size={size} />
-          ),
-        }}
-        component={BookmarkStackNav} />
 
       <GardnerTab.Screen
         name="profile"

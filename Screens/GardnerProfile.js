@@ -18,7 +18,7 @@ import {
 } from "react-native";
 
 // Icons
-import { FontAwesome, FontAwesome5, Entypo,MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5, Entypo, MaterialIcons } from '@expo/vector-icons';
 
 
 //Firebase

@@ -52,7 +52,7 @@ export default class App extends React.Component {
     Phone: '',
     isLoading: false,
     avatar: '',
-    isLoading:false
+    isLoading: false
   }
 
   async componentDidMount() {
@@ -63,13 +63,13 @@ export default class App extends React.Component {
       let email = await AsyncStorage.getItem("email")
       let Bio = await AsyncStorage.getItem("Bio")
       let Phone = await AsyncStorage.getItem("Phone")
-      
+
       let imageRef = firebase.storage().ref('avatars/' + userId);
       imageRef.getDownloadURL().then((url) => {
         //from url you can fetched the uploaded image easily
         this.setState({ avatar: url });
 
-        
+
       })
         .catch((e) => console.log('getting downloadURL of image error => ', e));
 
@@ -80,14 +80,14 @@ export default class App extends React.Component {
     }//end if 
   }
 
-  async newMethod(){
+  async newMethod() {
 
-    try{
-    let imageRef = firebase.storage().ref('avatars/' + this.state.userId);
+    try {
+      let imageRef = firebase.storage().ref('avatars/' + this.state.userId);
       imageRef.getDownloadURL().then((url) => {
         //from url you can fetched the uploaded image easily
         this.setState({ avatar: url });
-        console.log("in newmwthod"+ this.state.avatar)
+        console.log("in newmwthod" + this.state.avatar)
         firebase.firestore().collection('users').doc(this.state.userId).update({
           avatar: this.state.avatar
         })
@@ -102,69 +102,69 @@ export default class App extends React.Component {
 
 
   render() {
-    const { userId, name, email, Bio, Phone, flag, avatar,isLoading } = this.state
+    const { userId, name, email, Bio, Phone, flag, avatar, isLoading } = this.state
 
-    
+
     const uploadPhotoAsync = async (uri, filename) => {
       console.log('hi')
       return new Promise(async (res, rej) => {
-        if(this.state.avatar){ // here amal solution
-        const response = await fetch(uri);
-        const file = await response.blob();
-        //const file = document.getElementById("file").files[0];
-        let upload = firebase.storage().ref(filename).put(file);
-        console.log('hi before upload')
-        upload.on(
-          "state_changed",
-          snapshot => {
-          },
-          err => {
-            rej(err);
-          });
+        if (this.state.avatar) { // here amal solution
+          const response = await fetch(uri);
+          const file = await response.blob();
+          //const file = document.getElementById("file").files[0];
+          let upload = firebase.storage().ref(filename).put(file);
+          console.log('hi before upload')
+          upload.on(
+            "state_changed",
+            snapshot => {
+            },
+            err => {
+              rej(err);
+            });
         }
-       await this.newMethod()
+        await this.newMethod()
 
-         if (this.state.Bio==null){
-            this.setState({Bio:''})
-          }
-          if (this.state.Phone==null){
-            this.setState({Phone:''})
-          }
-      
-          firebase.firestore().collection('users').doc(userId).update({
-            name: this.state.name,
-            Bio: this.state.Bio,
-            Phone: this.state.Phone,
-           // avatar: this.state.avatar
-          }).then((response) => {
-    
-            save()
-            //Navigate 
-            setTimeout(function(){
-              this.setState({isLoading:false})
+        if (this.state.Bio == null) {
+          this.setState({ Bio: '' })
+        }
+        if (this.state.Phone == null) {
+          this.setState({ Phone: '' })
+        }
+
+        firebase.firestore().collection('users').doc(userId).update({
+          name: this.state.name,
+          Bio: this.state.Bio,
+          Phone: this.state.Phone,
+          // avatar: this.state.avatar
+        }).then((response) => {
+
+          save()
+          //Navigate 
+          setTimeout(function () {
+            this.setState({ isLoading: false })
             this.props.navigation.reset({
               index: 0,
               routes: [{ name: 'GardnerProfile' }]
             })
-            
-            }
-            .bind(this),2500);
+
+          }
+            .bind(this), 2500);
 
 
-          }).catch((error) => {
-            Alert.alert(error);
-          });
+        }).catch((error) => {
+          Alert.alert(error);
+        });
       }
       );
     }
 
     const updateCords = async () => {
-      this.setState({isLoading:true})
+      this.setState({ isLoading: true })
 
       //validations
 
 
-        var remoteUri = await uploadPhotoAsync(this.state.avatar, `avatars/${this.state.userId}`);
+      var remoteUri = await uploadPhotoAsync(this.state.avatar, `avatars/${this.state.userId}`);
 
     }
 
@@ -229,7 +229,7 @@ export default class App extends React.Component {
     //     //from url you can fetched the uploaded image easily
     //     this.setState({ avatar: url });
 
-        
+
     //   })
     //     .catch((e) => console.log('getting downloadURL of image error => ', e));
     // }
@@ -240,13 +240,14 @@ export default class App extends React.Component {
         alert("please enter your name");
       } else if (name.length < 2) {
         alert("Your name need to be at least 2 characters.");
-      } else if (Phone != null &&  Phone != "" && !Phone.startsWith("05") ) {
+      } else if (Phone != null && Phone != "" && !Phone.startsWith("05")) {
         alert("please enter the correct phone number format 05xxxxxxxx");
-      } else if (Phone != null && Phone != "" &&  (Phone.length < 10) ) {
+      } else if (Phone != null && Phone != "" && (Phone.length < 10)) {
         alert("Your phone need to be at least 10 number.");
       }
-      else if (Phone != null && Phone != "" && (Phone.length > 10) ) {
-        alert("Your phone need to be maxiumum of 10 numbers."); }
+      else if (Phone != null && Phone != "" && (Phone.length > 10)) {
+        alert("Your phone need to be maxiumum of 10 numbers.");
+      }
       else {
         update();
       }
@@ -258,135 +259,135 @@ export default class App extends React.Component {
 
     return (
       <View>
-          {/* Profile Information */}
-          <View style={styles.profileInfoView}>
-            <View style={styles.img}>
-              <Image
-                source={this.state.avatar ?
-                  {uri: this.state.avatar} : require("../assets/blank.png")}
+        {/* Profile Information */}
+        <View style={styles.profileInfoView}>
+          <View style={styles.img}>
+            <Image
+              source={this.state.avatar ?
+                { uri: this.state.avatar } : require("../assets/blank.png")}
 
-                style={styles.prifileImg}
-              />
-              <ActivityIndicator animating={this.state.isLoading}
+              style={styles.prifileImg}
+            />
+            <ActivityIndicator animating={this.state.isLoading}
               size='large'
               style={styles.loading}>
 
-              </ActivityIndicator>
+            </ActivityIndicator>
 
-              {/* <Text style={styles.editText}
+            {/* <Text style={styles.editText}
                 onPress={() => { handleChangeAvatar() }}
 
               > Change Profile Photo</Text> */}
-              <TouchableOpacity
-                        
-                    >
-                        <Text style={styles.editText2} onPress={() => {
-                            handleChangeAvatar();
-                        }}>Change Profile Photo</Text>
-                    </TouchableOpacity>
-              </View>
-              
+            <TouchableOpacity
 
-            {/* Name */}
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.profileInfoText}>Name </Text>
-              <TextInput
-                color="#696969"
-                defaultValue={name}
-                placeholder={"Enter your name here"}
-                onChangeText={(text) => this.setState({ name: text })}  //backend here?
-                style={styles.profileInfoText}
-              ></TextInput>
-            </View>
-            <View
-              style={{
-                borderBottomColor: '#C0C0C0',
-                borderBottomWidth: 1,
-                marginBottom: 10,
-              }}
-            />
-            {/* Bio */}
-            <View style={{ flexDirection: "row", paddingRight: 40, height:173 }}>
-              <Text style={styles.profileInfoText}>Bio </Text>
-              <TextInput
-                color="#696969"
-                maxLength={100}
-               blurOnSubmit={true}
-                multiline={true}
-                textAlignVertical={'top'}
-                defaultValue={Bio}
-                placeholder={'Enter your bio here'}
-                onChangeText={(text) => this.setState({ Bio: text })}  
-                style={styles.profileInfoText}
-              ></TextInput>
-            </View>
-            {/* onChangeText={(text) => this.setState({ password:text })}  */}
-            <View
-              style={{
-                borderBottomColor: '#C0C0C0',
-                borderBottomWidth: 1,
-                marginBottom: 10,
-              }}
-            />
-            {/* Phone number */}
-            <View style={styles.userInfoContiner}>
-              <FontAwesome name="phone" size={24} color="black" />
-              <Text style={styles.profileInfoText}>  </Text>
-              <TextInput color="#696969"
-                keyboardType={'number-pad'}
-                defaultValue={Phone}
+            >
+              <Text style={styles.editText2} onPress={() => {
+                handleChangeAvatar();
+              }}>Change Profile Photo</Text>
+            </TouchableOpacity>
+          </View>
+
+
+          {/* Name */}
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.profileInfoText}>Name </Text>
+            <TextInput
+              color="#696969"
+              defaultValue={name}
+              placeholder={"Enter your name here"}
+              onChangeText={(text) => this.setState({ name: text })}  //backend here?
+              style={styles.profileInfoText}
+            ></TextInput>
+          </View>
+          <View
+            style={{
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+              marginBottom: 10,
+            }}
+          />
+          {/* Bio */}
+          <View style={{ flexDirection: "row", paddingRight: 40, height: 173 }}>
+            <Text style={styles.profileInfoText}>Bio </Text>
+            <TextInput
+              color="#696969"
+              maxLength={100}
+              blurOnSubmit={true}
+              multiline={true}
+              textAlignVertical={'top'}
+              defaultValue={Bio}
+              placeholder={'Enter your bio here'}
+              onChangeText={(text) => this.setState({ Bio: text })}
+              style={styles.profileInfoText}
+            ></TextInput>
+          </View>
+          {/* onChangeText={(text) => this.setState({ password:text })}  */}
+          <View
+            style={{
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+              marginBottom: 10,
+            }}
+          />
+          {/* Phone number */}
+          <View style={styles.userInfoContiner}>
+            <FontAwesome name="phone" size={24} color="black" />
+            <Text style={styles.profileInfoText}>  </Text>
+            <TextInput color="#696969"
+              keyboardType={'number-pad'}
+              defaultValue={Phone}
               returnKeyType="done"
-                ref={(input) => { this.secondTextInput = input; }}
-                placeholder={"Enter your Phone number here"}
-                onChangeText={(text) => this.setState({ Phone: text })} 
-                style={styles.profileInfoText}
-              ></TextInput>
-            </View>
+              ref={(input) => { this.secondTextInput = input; }}
+              placeholder={"Enter your Phone number here"}
+              onChangeText={(text) => this.setState({ Phone: text })}
+              style={styles.profileInfoText}
+            ></TextInput>
+          </View>
 
+          <View
+            style={{
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+              marginBottom: 10,
+            }}
+          />
+
+
+          {/* <View style={styles.header}> */}
+          <View style={styles.profileInfoText} >
+            <View style={styles.userInfoContiner}>
+              <FontAwesome5 name="map-marker-alt" size={25} color="black" />
+              <Text style={styles.userInfoText} onPress={() => {
+                this.props.navigation.navigate('LocationMap')
+              }}
+              > Edit Location</Text>
+              <Ionicons name="ios-arrow-forward" size={24} color="black" style={styles.arrow} /></View>
             <View
               style={{
                 borderBottomColor: '#C0C0C0',
                 borderBottomWidth: 1,
-                marginBottom: 10,
+                marginBottom: 20,
               }}
             />
-
-
-            {/* <View style={styles.header}> */}
-            <View style={styles.profileInfoText} >
-              <View style={styles.userInfoContiner}>
-                <FontAwesome5 name="map-marker-alt" size={25} color="black" />
-                <Text style={styles.userInfoText} onPress={() => {
-                  this.props.navigation.navigate('LocationMap')
-                }}
-                > Edit Location</Text>
-                <Ionicons name="ios-arrow-forward" size={24} color="black" style={styles.arrow} /></View>
-              <View
-                style={{
-                  borderBottomColor: '#C0C0C0',
-                  borderBottomWidth: 1,
-                  marginBottom: 20,
-                }}
-              />
-              <TouchableOpacity
-                style={styles.editButton}
-              >
-                <Text style={styles.editText} onPress={() => {
-                  Validate()
-                }}> Save Changes</Text>
-              </TouchableOpacity>
-
-            </View>
-
-
-            {/* Profile Information */}
-
-
+            <TouchableOpacity
+              style={styles.editButton}
+            >
+              <Text style={styles.editText} onPress={() => {
+                Validate()
+              }}> Save Changes</Text>
+            </TouchableOpacity>
 
           </View>
 
+
+          {/* Profile Information */}
+
+
+
         </View>
-     
+
+      </View>
+
     );
   }//render
   // class 
@@ -424,7 +425,7 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 2,
       height: 4,
-   
+
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
@@ -519,7 +520,7 @@ const styles = StyleSheet.create({
   },
   userInfoContiner: {
     flexDirection: 'row',
-   
+
 
   },
 
@@ -528,16 +529,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Khmer-MN-Bold',
     color: 'black',
-    width:330
+    width: 330
   },
-  arrow:{
-    alignSelf:'flex-end',
-    bottom:6
+  arrow: {
+    alignSelf: 'flex-end',
+    bottom: 6
   },
   loading: {
     position: "absolute",
-    alignSelf:'center',
-    marginTop:300,
+    alignSelf: 'center',
+    marginTop: 300,
     zIndex: 2,
   },
 
