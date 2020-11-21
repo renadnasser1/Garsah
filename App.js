@@ -116,18 +116,7 @@ function Root() {
         }}
         component={HomeStackNav} />
 
-      <GardnerTab.Screen
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-pin" size={size} color={color} />
-
-          ),
-
-        }} name="Gardners"
-
-        component={ViewGardnersStack} />
-
-      <GardnerTab.Screen
+<GardnerTab.Screen
         name="Bookmarks"
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -135,6 +124,18 @@ function Root() {
           ),
         }}
         component={BookmarkStackNav} />
+
+      <GardnerTab.Screen
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="ios-pin" size={42} color={color} />
+
+          ),
+
+        }} name="Gardners"
+
+        component={ViewGardnersStack} />
+
 
       <GardnerTab.Screen
         name="Messages"
@@ -174,7 +175,7 @@ function ViewGardnersStack() {
     <ViewGardnerStack.Navigator>
       <ViewGardnerStack.Screen name="Gardners"
         options={{
-          title: 'Gardners',
+          title:'Garsah\'s Map',
         }}
         component={ViewGardnerMap} />
 
