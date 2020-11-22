@@ -332,7 +332,7 @@ export default class App extends React.Component {
             <View style={styles.userInfoContiner}>
               <FontAwesome5 name="map-marker-alt" size={25} color="black" />
               <Text style={styles.userInfoText} onPress={() => {
-                this.props.navigation.navigate('LocationMap')
+                this.props.navigation.navigate('LocationMap', { notNew: true })
               }}
               > Edit Location</Text>
               <Ionicons name="ios-arrow-forward" size={24} color="black" style={styles.arrow} /></View>

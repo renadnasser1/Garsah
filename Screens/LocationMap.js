@@ -9,10 +9,8 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
-  Animated
 } from 'react-native';
-import { MaterialIcons } from "@expo/vector-icons";
-
+import { Ionicons } from '@expo/vector-icons';
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
@@ -20,6 +18,7 @@ import { AppLoading } from 'expo';
 //Firebase
 import * as firebase from "firebase";
 import "firebase/firestore";
+import { set } from 'react-native-reanimated';
 
 
 
@@ -59,6 +58,7 @@ export default class App extends React.Component {
       let longitude = await AsyncStorage.getItem("longitude")
 
       let userId = firebase.auth().currentUser.uid
+      this.setState({ notNew: this.props.route.params.notNew })
       console.log(latitude)
 
       console.log('frist lat', userId)
@@ -98,13 +98,16 @@ export default class App extends React.Component {
 
     const onLaterPress = () => {
 
-      this.props.navigation.navigate('Home')
+      this.props.navigation.reset({
+        index: 0,
+        routes: [{ name: 'Root' }],
+      })
     };
 
     const onLogoutPress = async () => {
       firebase.auth()
         .signOut()
-        .then(() => navigation.navigate('Login')), AsyncStorage.getAllKeys()
+        .then(() => this.props.navigation.navigate('Login')), AsyncStorage.getAllKeys()
           .then(keys => AsyncStorage.multiRemove(keys))
           .then(() => alert('success')).catch((error) => {
             alert(error)
@@ -185,6 +188,12 @@ export default class App extends React.Component {
       return (
 
         <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.back}
+            onPress={() => {
+              this.props.navigation.pop()
+            }}>
+            <Ionicons name="ios-arrow-back" size={30} color="black" /></TouchableOpacity>
           <MapView style={styles.mapStyle}
             initialRegion={{
               latitude: this.state.Marker.latitude,
@@ -204,23 +213,29 @@ export default class App extends React.Component {
           <View style={styles.footer}>
 
             <Text style={styles.text}>Long Press and Drag the pointer to select your plantation's location</Text>
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => onSetLocationPress()}>
 
-
-              <Text style={styles.editText} > set location </Text>
-            </TouchableOpacity>
 
             {/* MAYBE LATER BUTTON */}
 
-            {/* <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => onLaterPress()}>
-
-
-              <Text style={styles.editText} > maybe later </Text>
-            </TouchableOpacity> */}
+            {this.state.notNew === true ?
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={() => onSetLocationPress()}>
+                <Text style={styles.editText} > Set location </Text>
+              </TouchableOpacity>
+              :
+              <View>
+                <TouchableOpacity
+                  style={styles.editButton}
+                  onPress={() => onSetLocationPress()}>
+                  <Text style={styles.editText} > Set location </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.maybeButton, { flexDirection: 'row' }]}
+                  onPress={() => onLaterPress()}>
+                  <Text style={styles.maybeText} > Maybe later </Text>
+                  <Ionicons name="ios-arrow-forward" size={20} color="#2A4E35" style={{ paddingTop: 5, paddingLeft: -10 }} />
+                </TouchableOpacity></View>}
 
             {/* Long Press & Drag the pointer to select exact location */}
 
@@ -297,7 +312,7 @@ const styles = StyleSheet.create({
 
   },
   editButton: {
-    width: 120,
+    width: 124,
     height: 35,
     borderWidth: 2,
     marginTop: 20,
@@ -322,6 +337,29 @@ const styles = StyleSheet.create({
     fontFamily: 'Khmer-MN-Bold',
     color: '#CFD590',
 
+  },
+  maybeText: {
+    fontSize: 18,
+    paddingLeft: 10,
+    paddingTop: 2,
+    fontFamily: 'Khmer-MN-Bold',
+    color: '#2A4E35',
+
+  },
+  maybeButton: {
+    width: 124,
+    height: 35,
+    marginTop: 12,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4.65,
+
+    elevation: 4,
   },
   backButton: {
     bottom: 20,
@@ -387,5 +425,21 @@ const styles = StyleSheet.create({
     fontFamily: 'Khmer-MN',
     fontSize: 17,
     textAlign: 'center',
+  },
+  back: {
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    top: 50,
+    left: 20,
+    borderRadius: 100,
+    padding: 5,
+    paddingBottom: -5,
+    alignItems: 'center',
+    zIndex: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    }
   }
 });

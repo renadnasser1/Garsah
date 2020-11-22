@@ -567,6 +567,12 @@ function stackInGardnerStack() {
         name="EditGardenerProfile"
         options={{
           title: 'Edit Profile',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         }}
         component={EditGardenerProfile}
       />}
@@ -574,7 +580,13 @@ function stackInGardnerStack() {
       <inGardnerStack.Screen
         options={{
           title: 'Edit Profile',
-          color: 'black'
+          color: 'black',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         }}
         name="EditAmateurProfile"
         component={EditAmateurProfile}
@@ -583,6 +595,9 @@ function stackInGardnerStack() {
 
 
       {<inGardnerStack.Screen
+        options={{
+          headerShown: false
+        }}
         name="LocationMap"
         component={LocationMap}
       />}

@@ -138,10 +138,7 @@ function SplashScreen({ navigation }) {
                                 // redirect user
                                 if (userInfo.Gardner == true) {
                                     if (userInfo.Latitude == '') {
-                                        navigation.reset({
-                                            index: 0,
-                                            routes: [{ name: 'LocationMap' }],
-                                        });
+                                        navigation.navigate('LocationMap', { notNew: false });
 
                                     } else {
                                         navigation.reset({

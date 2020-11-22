@@ -271,7 +271,10 @@ export const GardnerProfile = ({ navigation }) => {
                                     {/* Map */}
                                     <View style={styles.userInfoContiner}>
                                         <FontAwesome5 name="map-marker-alt" size={24} color="gray" />
-                                        <Text style={styles.userInfoText}> My Location</Text></View>
+                                        {lat ?
+                                            <Text style={styles.userInfoText}> My Location </Text> :
+                                            <Text style={styles.userInfoText}> No location added </Text>}
+                                    </View>
 
                                     {lat ? (
 
