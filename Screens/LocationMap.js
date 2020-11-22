@@ -61,15 +61,15 @@ export default class App extends React.Component {
       let userId = firebase.auth().currentUser.uid
       console.log(latitude)
 
-     console.log('frist lat',userId)
-      if (latitude==""  || latitude  == null) {
+      console.log('frist lat', userId)
+      if (latitude == "" || latitude == null) {
         var isEditting = false;
         console.log('Here')
         navigator.geolocation.getCurrentPosition(
           ({ coords: { latitude, longitude } }) => this.setState({
             Marker: {
               latitude, longitude
-            },  userId,isEditting
+            }, userId, isEditting
           }, () => console.log('State: ', this.state)),
           (error) => console.log('Error:', error))
 
@@ -81,7 +81,7 @@ export default class App extends React.Component {
         this.setState({
           Marker: {
             latitude, longitude
-          }, userId,isEditting
+          }, userId, isEditting
         }, () => console.log('State: ', this.state))
       }
 
@@ -90,25 +90,25 @@ export default class App extends React.Component {
     }
 
   }
-  
+
 
   render() {
 
     const { Marker, isEditting, userId } = this.state
 
     const onLaterPress = () => {
-       
+
       this.props.navigation.navigate('Home')
     };
 
     const onLogoutPress = async () => {
       firebase.auth()
-      .signOut()
-      .then(() => navigation.navigate('Login')), AsyncStorage.getAllKeys()
-      .then(keys => AsyncStorage.multiRemove(keys))
-      .then(() => alert('success')).catch((error) => {
-        alert(error)
-      });
+        .signOut()
+        .then(() => navigation.navigate('Login')), AsyncStorage.getAllKeys()
+          .then(keys => AsyncStorage.multiRemove(keys))
+          .then(() => alert('success')).catch((error) => {
+            alert(error)
+          });
 
     }
 
@@ -141,7 +141,7 @@ export default class App extends React.Component {
 
     const updateCords = () => {
       console.log(userId)
-      console.log( this.state.Marker.latitude,this.state.Marker.longitude)
+      console.log(this.state.Marker.latitude, this.state.Marker.longitude)
 
       //save cloud firestore
       firebase.firestore().collection('users').doc(this.state.userId).update({
@@ -199,7 +199,7 @@ export default class App extends React.Component {
               coordinate={this.state.Marker}
               onDragEnd={(e) => { this.setState({ Marker: e.nativeEvent.coordinate }) }}
               pinColor={'red'}
-              />
+            />
           </MapView>
           <View style={styles.footer}>
 
@@ -212,8 +212,8 @@ export default class App extends React.Component {
               <Text style={styles.editText} > set location </Text>
             </TouchableOpacity>
 
-           {/* MAYBE LATER BUTTON */}
-           
+            {/* MAYBE LATER BUTTON */}
+
             {/* <TouchableOpacity
               style={styles.editButton}
               onPress={() => onLaterPress()}>
@@ -233,20 +233,20 @@ export default class App extends React.Component {
 
       );
     } else {
-  
+
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={styles.permission}>We need your permission!</Text>
           <Text style={styles.permissionSteps}>Go to Settings {">"} Privacy {">"} Location Services.</Text>
           <Text style={styles.permissionText}>Make sure that Location Services is on. Scroll down to find the app. Tap Garsah and select an option: ALWAYS</Text>
-        
+
           <TouchableOpacity
-        style={styles.logoutButton}
-        underlayColor="#fff"
-        onPress={() => onLogoutPress()}
-      >
-        <Text style={styles.logotext}>Logout </Text>
-      </TouchableOpacity>
+            style={styles.logoutButton}
+            underlayColor="#fff"
+            onPress={() => onLogoutPress()}
+          >
+            <Text style={styles.logotext}>Logout </Text>
+          </TouchableOpacity>
 
 
 
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
     width: 280,
     height: 40,
     marginTop: 50,
-    padding:5,
+    padding: 5,
     backgroundColor: "#EFF6F9",
     borderRadius: 10,
     borderWidth: 1,
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
 
     elevation: 1,
   },
-  logotext:{
+  logotext: {
     fontFamily: 'Khmer-MN',
     fontSize: 17,
     textAlign: 'center',

@@ -20,7 +20,6 @@ import LocationMap from "./Screens/LocationMap";
 import Home from "./Screens/Home";
 import ForgetPassword from "./Screens/ForgetPassword";
 import SplashScreen from "./Screens/SplashScreen";
-import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
@@ -116,7 +115,7 @@ function Root() {
         }}
         component={HomeStackNav} />
 
-<GardnerTab.Screen
+      <GardnerTab.Screen
         name="Bookmarks"
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -175,7 +174,7 @@ function ViewGardnersStack() {
     <ViewGardnerStack.Navigator>
       <ViewGardnerStack.Screen name="Gardners"
         options={{
-          title:'Garsah\'s Map',
+          title: 'Garsah\'s Map',
         }}
         component={ViewGardnerMap} />
 

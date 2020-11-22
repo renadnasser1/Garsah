@@ -105,7 +105,7 @@ export default class App extends React.Component {
     const uploadPhotoAsync = async (uri, filename) => {
       console.log('hi')
       return new Promise(async (res, rej) => {
-        if (this.state.avatar) { 
+        if (this.state.avatar) {
           const response = await fetch(uri);
           const file = await response.blob();
           let upload = firebase.storage().ref(filename).put(file);
@@ -212,7 +212,7 @@ export default class App extends React.Component {
         { cancelable: false }
       )
     }
-//validations
+    //validations
     const Validate = () => {
       if (name == "") {
         alert("please enter your name");
