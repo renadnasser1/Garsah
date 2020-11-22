@@ -113,9 +113,6 @@ export default class Plant extends React.Component {
             id: id,
             name: doc.data().Name,
             posts: doc.data().posts,
-            // dates: doc.data().Date,
-            // images: doc.data().Images,
-            // captions: doc.data().Captions,
             reminders: doc.data().Reminders,
           };
           localThread = post
@@ -137,7 +134,6 @@ export default class Plant extends React.Component {
       this.setState({ name: localThread.name })
 
       //Owner name
-     // console.log('local thread'+localThread.userId)
       if(this.state.userId!=localThread.userId){
         //Not owner 
         var useRef = firebase.firestore().collection("users").doc(localThread.userId);
@@ -157,12 +153,6 @@ export default class Plant extends React.Component {
          name = await AsyncStorage.getItem("name")
          this.setState({userName:name, isOwner:true})
       }
-     // console.log("in ", localThread.dates)
-
-      // var length = localThread.images.length;
-      // for (var i = 0; i < length; i++) {
-      //   localPost.push({ image: localThread.images[i], date: localThread.dates[i], caption: localThread.captions[i] })
-      // }
 
     } catch (err) {
     }
@@ -174,8 +164,7 @@ export default class Plant extends React.Component {
   onPressOwner=()=>{
     //alert("pressed")
   if(this.state.isOwner){
-    //this.props.navigation.navigate("GardnerProfile")
-    //alert("this is your plant")
+
   }//true
   else {
     this.props.navigation.push("ViewGardenerProfile",{id:this.state.userId})
@@ -188,9 +177,6 @@ export default class Plant extends React.Component {
     if(this.state.bookmarked== false){
       //Add bookmark to DB
       this.setState({ bookmarked: true})
-     
-      //console.log((this.state.userId))
-      //const res = 
       chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).set({
         pid: this.state.ThreadId,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()

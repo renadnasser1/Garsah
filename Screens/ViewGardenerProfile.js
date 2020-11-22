@@ -4,9 +4,6 @@ import { OpenMapDirections } from 'react-native-navigation-directions';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused } from "@react-navigation/native";
 import { MaterialIcons } from '@expo/vector-icons';
-
-
-
 import {
     View,
     Text,
@@ -15,7 +12,6 @@ import {
     Image,
     FlatList,
     ActivityIndicator,
-    // AsyncStorage,
     Dimensions,
     Linking,
     Alert
@@ -96,8 +92,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
 
             for (let i = 0; i < g1.posts.length; i++) {
                 posts.push(g1.posts[i])
-                //setPost(posts)
-                //console.log(posts)
+        
             }
             //fetch images from collection posts 
             for (id of posts) {
@@ -114,7 +109,6 @@ const ViewGardenerProfile = ({ route, navigation }) => {
                         postTemp.push(post);
 
                     } else {
-                        // doc.data() will be undefined in this case
                         console.log("No such document!");
                     }
                 }).catch(function (error) {
@@ -133,8 +127,6 @@ const ViewGardenerProfile = ({ route, navigation }) => {
     const getImage = async (id) => {
         let imageRef = firebase.storage().ref('avatars/' + id);
         imageRef.getDownloadURL().then((url) => {
-            //from url you can fetched the uploaded image easily
-            // console.log(url)
             setAvatar(url);
         })
             .catch((e) => console.log('getting downloadURL of image error => ')
@@ -160,9 +152,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
                 { text: 'Cancel', onPress: () => console.log('') },
                 {
                     text: 'Open', onPress: () =>
-                        // OpenMapDirections(null, cords, 'd').then(res => {
-                        //     console.log(res)
-                        // })
+                    
 
                         Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + cords['latitude'] + ',' + cords['longitude'])
 
@@ -284,15 +274,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
             </ScrollView>
         </View>
     );
-    // }else{
-
-    //     return (
-    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    //           <Text>We are still processing your information </Text>
-    //         </View>
-    //       );
-    // }
-
+   
 
 
 
@@ -304,7 +286,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
-        //paddingTop:50,
+     
 
     },
     back: {
@@ -323,7 +305,7 @@ const styles = StyleSheet.create({
         }
     },
     header: {
-        //paddingTop: 23,
+      
         backgroundColor: 'white',
         shadowColor: "#000",
         shadowOffset: {
@@ -379,11 +361,10 @@ const styles = StyleSheet.create({
     editButton: {
         position: 'absolute',
         alignSelf: 'flex-end',
-        //borderWidth: 1,
         width: 90,
         borderRadius: 10,
         backgroundColor: "#CFD590",
-        // borderColor: '#CFD590',
+        
         marginTop: 30,
         right: 30,
         shadowColor: "#000",

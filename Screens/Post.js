@@ -209,7 +209,6 @@ export default class Post extends React.Component {
             </View>
 
             <Text style = {styles.welcome}> Add Progress For {this.state.plantName}</Text>
-            {/* <Image source={require("../assets/plain-white-background.jpg")} style={styles.img} /> */}
             <View style={styles.imgContiner}>
 
 
@@ -233,7 +232,6 @@ export default class Post extends React.Component {
 
 
             </View>
-            {/* <Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}></Ionicons> */}
 
             <View style={styles.inputFiledCaption} >
           <TextInput
@@ -353,8 +351,6 @@ const styles = StyleSheet.create({
 
   },
   welcome :{
-    //textAlign:'center',
-    //justifyContent: "flex-end",
     fontFamily:'Khmer-MN-Bold',
     fontSize: 22,
     marginLeft:10,

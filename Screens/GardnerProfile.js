@@ -19,8 +19,6 @@ import {
 
 // Icons
 import { FontAwesome, FontAwesome5, Entypo, MaterialIcons } from '@expo/vector-icons';
-
-
 //Firebase
 import * as firebase from "firebase";
 //Fonts

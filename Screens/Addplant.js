@@ -32,12 +32,12 @@ import { AppLoading } from 'expo';
 //Icons
 import { Ionicons,MaterialCommunityIcons,AntDesign } from "@expo/vector-icons";
 
-
+//style 
 import Svg, { Path } from "react-native-svg"
+import RadioGroup from 'react-native-custom-radio-group';
+//add image 
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
-import RadioGroup from 'react-native-custom-radio-group';
-
 
 
 const font = () => {
@@ -46,7 +46,7 @@ const font = () => {
     'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
   });
 }
-// Add thread form  done 
+// Add thread page 
 export default class AddPlant extends React.Component {
 
   constructor(props) {
@@ -117,7 +117,7 @@ export default class AddPlant extends React.Component {
   }
 
 
-
+//main 
   render() {
     const { image, name, caption, userId, showModel, showProgressModel } = this.state
     const genus = this.findPlant(name);
@@ -150,7 +150,7 @@ export default class AddPlant extends React.Component {
     }
     const uploadPhotoAsync = async (uri, filename) => {
       return new Promise(async (res, rej) => {
-        if (this.state.image) { // here amal solution
+        if (this.state.image) { 
           const response = await fetch(uri);
           const file = await response.blob();
           let upload = firebase.storage().ref(filename).put(file).then(function (snapshot) {
@@ -241,7 +241,7 @@ export default class AddPlant extends React.Component {
           this.props.navigation.pop()
           // reset({
           //   index: 0,
-          //   routes: [{ name: 'GardnerProfile' }]
+          //   routes: [{ name: 'GardnerProfile' }] // another solution but causes bad usability 
           // })
 
         }.bind(this), 1000);
@@ -278,7 +278,7 @@ export default class AddPlant extends React.Component {
       )
     }
 
-
+// validation for the form 
     const validate = () => {
       if (image == '') {
         alert("Please add photo");}
@@ -298,7 +298,6 @@ export default class AddPlant extends React.Component {
     }
 
     const setModalVisible = (visible) => {
-     //removeAll()
       this.setState({ showModel: visible });
     }
 
@@ -328,7 +327,6 @@ export default class AddPlant extends React.Component {
       period: this.state.selectedPeriod
     }
     this.state.progressArray.push(reminder);
-    //this.setState({progressArray:array})
     console.log(this.state.progressArray)
 
       closeModel();
@@ -431,7 +429,7 @@ export default class AddPlant extends React.Component {
       closeViewProgressModel();
 
     }
-
+//view 
     return (
 
       <KeyboardAvoidingView

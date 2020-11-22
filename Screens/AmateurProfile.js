@@ -4,11 +4,6 @@ import MapView, { Marker } from 'react-native-maps';
 import { OpenMapDirections } from 'react-native-navigation-directions';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused } from "@react-navigation/native";
-
-
-
-
-
 import {
     View,
     Text,
@@ -36,11 +31,7 @@ import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 import { render } from "react-dom";
 import { call } from "react-native-reanimated";
-
-
-
-
-
+//amatuer page 
 const AmateurProfile = ({ navigation }) => {
 
     const [uid, setUid] = useState()
@@ -80,9 +71,7 @@ const AmateurProfile = ({ navigation }) => {
         )
 
     }
-// const call=() =>{
-//     Linking.openURL(`tel:${Phone}`)
-// }
+
     const load = async () => {
         try {
             let userId = await AsyncStorage.getItem("uid")
@@ -163,9 +152,6 @@ const AmateurProfile = ({ navigation }) => {
     if (!fontsLoaded) {
         return <AppLoading />;
     }
-
-
-
 
     return (
 <View>

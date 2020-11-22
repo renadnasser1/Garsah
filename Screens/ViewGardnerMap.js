@@ -100,8 +100,7 @@ export default class App extends React.Component {
                     latitude: snapshot.docs[i].data().Latitude,
                     longitude: snapshot.docs[i].data().Longitude,
                 }
-
-                //image:url     
+    
             }
 
             console.log(gardner)
@@ -136,8 +135,6 @@ export default class App extends React.Component {
                 <View style={styles.container}>
                     <MapView style={styles.mapStyle}
                         showsUserLocation={true}
-                        // followsUserLocation={true}
-                        //mapType={"mutedStandard"}
                         initialRegion={{
                             latitude: this.state.marker.latitude,
                             longitude: this.state.marker.longitude,

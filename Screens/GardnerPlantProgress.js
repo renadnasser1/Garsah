@@ -96,8 +96,6 @@ export default class GardnerPlantProgress extends React.Component {
 
       this.setState({ thread: localpost })
       console.log("After set state " + this.state.thread.images)
-      //   this.setState({postss:localpost})  
-      //   console.log(this.state.postss.dates)
     } catch (err) {
     }
 

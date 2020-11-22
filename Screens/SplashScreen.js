@@ -8,7 +8,6 @@ import {
     Text,
     StyleSheet,
     Image,
-    //AsyncStorage,
 } from "react-native";
 
 import * as firebase from "firebase";
@@ -44,7 +43,6 @@ function SplashScreen({ navigation }) {
     
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             console.log('clicked')
-          //console.log(response);
         });
     
 
@@ -59,7 +57,6 @@ function SplashScreen({ navigation }) {
             await AsyncStorage.setItem("uid", uid)
             await AsyncStorage.setItem("Bio", Bio)
             await AsyncStorage.setItem("Phone", Phone)
-            // await AsyncStorage.setItem("avatar", avatar+'')
 
         } catch (err) {
             alert(err)

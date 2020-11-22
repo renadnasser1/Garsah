@@ -45,8 +45,6 @@ export default class Home extends React.Component {
 
 
   async componentDidMount() {
-
-    // this.getGardeners();
     this.getPosts();
 
   }
@@ -146,9 +144,7 @@ export default class Home extends React.Component {
         </View>
 
         <ScrollView
-          // contentContainerStyle={{
-          //   flexDirection:'column',
-          //   }}
+
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}

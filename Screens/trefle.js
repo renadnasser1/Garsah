@@ -1,5 +1,4 @@
 import React, { useEffect, Component } from "react";
-
 import {
     View,
     Text,
@@ -9,23 +8,10 @@ import {
 } from "react-native";
 
 import Autocomplete from 'react-native-autocomplete-input';
-//import {getAllPlants} from '../APIcalls.js';
-
 
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-
-
-// let [fontsLoaded] = useFonts({
-//   'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
-//   'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
-// });
-
-// if (!fontsLoaded) {
-//   return <AppLoading />;
-// }
-
 
 export default class apiCall extends Component{
 
@@ -52,15 +38,11 @@ async componentDidMount(){
 
     // check if success
     if (response.status>=200 && response.status<=299){
-
     const json = await response.json();
-
     if(!json.data[0].name){
       return
     }
-
     var genusName = new Array();
-
     for (var i = 0; i < json.data.length; i++) {
         var counter = json.data[i];
        genusName[i]=counter.name;
@@ -70,7 +52,6 @@ async componentDidMount(){
   }
 
   }
-
 
   findPlant(query) {
     if (query === '') {
@@ -131,7 +112,6 @@ const styles = StyleSheet.create({
         color: "black",
         fontWeight:'bold',
         paddingLeft: 10,
-      //  fontFamily:'Khmer-MN-Bold'
       },
       search:{
         backgroundColor:'white',

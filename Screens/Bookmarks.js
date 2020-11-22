@@ -28,7 +28,7 @@ const font = () => {
 //Icons
 import { Entypo, Ionicons, AntDesign } from '@expo/vector-icons';
 import { configureFonts } from "react-native-paper";
-
+//bookmark page 
 export default class Bookmarks extends React.Component {
 
   constructor(props) {
@@ -44,7 +44,7 @@ export default class Bookmarks extends React.Component {
 
 
   }
-
+//Auto refresh method to reflect changes 
   _onRefresh = () => {
     this.setState({ refreshing: true });
     this.componentDidMount().then(() => {
@@ -54,13 +54,10 @@ export default class Bookmarks extends React.Component {
 
   async componentDidMount() {
     this.getPosts();
-
-
-
   } //componentDidMount
 
+  //Get all users to compare later on 
   getPosts = async () => {
-
     //1- Bring book marks ID 
     var bookmark = []
     var posts = []
@@ -72,7 +69,6 @@ export default class Bookmarks extends React.Component {
     if (snapshot.empty) {
       console.log('No matching documents.');
       this.setState({ bookmarkss: [] }, () => {
-        //console.log("bookmark empty case " + this.state.bookmarkss.length)
       });
       return;
     }
@@ -81,15 +77,12 @@ export default class Bookmarks extends React.Component {
       bookmark[i] = snapshot.docs[i].data().pid
     }//end for loop
 
-    //********************/
+  
     //3- Bring post from DB to compare 
-
     const db = firebase.firestore()
     let usersref = db.collection("Posts").orderBy("createdAt", "desc")
     const snapshot1 = await usersref.get();
     if (snapshot1.empty) {
-      //console.log('No matching documents.');
-
       return;
     }
 
@@ -98,14 +91,14 @@ export default class Bookmarks extends React.Component {
       for (let j = 0; j < bookmark.length; j++) {
         if (bookmark[j] == snapshot1.docs[i].data().Pid) {
           var post = {
-            key: snapshot1.docs[i].data().Pid, //<--- arrange it by date (make it post id)
+            key: snapshot1.docs[i].data().Pid, 
             uid: snapshot1.docs[i].data().Uid,
             k: i,
             posts: snapshot1.docs[i].data().posts,
             name: snapshot1.docs[i].data().Name,
           };
           var localPost = {
-            key: post.key, //<--- arrange it by date (make it post id)
+            key: post.key, 
             uid: post.uid,
             k: post.k,
             posts: post.posts,
@@ -122,7 +115,6 @@ export default class Bookmarks extends React.Component {
 
     //setting the bookmarks array
     this.setState({ bookmarkss: posts }, () => {
-      // console.log("bookmark length " + this.state.bookmarkss.length)
     });
 
     this._onRefresh();

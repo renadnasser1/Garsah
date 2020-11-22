@@ -12,8 +12,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 const AccType = ({ route,navigation }) => {
-  //const {email} = route.params;
-  //const {name} = route.params;
+  // View part 
 
   return (
     <View style={styles.container}>
@@ -43,7 +42,7 @@ const AccType = ({ route,navigation }) => {
   );
 };
 export default AccType;
-
+//Styling 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.28;
 

@@ -131,11 +131,7 @@ export default class MessagesPage extends React.Component {
 
   render() {
 
-    const { chats, user } = this.state //<--- fill this later
-
-    // this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {
-    //   await this._onRefresh()
-    // });
+    const { chats, user } = this.state 
 
     return (
 
