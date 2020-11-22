@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MapView, { Marker } from 'react-native-maps';
-import { OpenMapDirections } from 'react-native-navigation-directions';
+import MapView from 'react-native-maps';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused } from "@react-navigation/native";
 import {
@@ -9,7 +8,6 @@ import {
     TouchableOpacity,
     StyleSheet,
     Image,
-    ActivityIndicator,
     Dimensions,
     Linking,
     Alert,
@@ -41,7 +39,6 @@ export const GardnerProfile = ({ navigation }) => {
     const [Phone, setPhone] = useState()
     const [Bio, setBio] = useState()
     const [avatar, setAvatar] = useState()
-    const [currentCords, setCurrentCords] = useState()
     const [postss, setPostss] = useState()
 
     var postsID = []

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef }from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
@@ -17,7 +17,7 @@ import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 
 
-import {registerForPushNotificationsAsync} from '../Controller/Notification'
+import { registerForPushNotificationsAsync } from '../Controller/Notification'
 
 
 
@@ -30,7 +30,7 @@ function SplashScreen({ navigation }) {
 
 
 
-    const save = async (name, email, gardner, lat ,long,uid,Bio,Phone) => {
+    const save = async (name, email, gardner, lat, long, uid, Bio, Phone) => {
 
         //Notifacation:
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -39,14 +39,14 @@ function SplashScreen({ navigation }) {
         notificationListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             const screen = response.notification.request.content.data.screen;
             const id = response.notification.request.content.data.threadId
-            navigation.navigate(screen,{threadID:id})
+            navigation.navigate(screen, { threadID: id })
         });
-    
+
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             console.log('clicked')
-          //console.log(response);
+            //console.log(response);
         });
-    
+
 
 
         try {
@@ -67,14 +67,14 @@ function SplashScreen({ navigation }) {
         }
     }
 
-    const getImage =  () =>  {
+    const getImage = () => {
         let currentUser = firebase.auth().currentUser.uid
         console.log("userid" + currentUser)
         let imageRef = firebase.storage().ref('avatars/' + currentUser);
         imageRef.getDownloadURL().then((uri) => {
             //from url you can fetched the uploaded image easily
-            
-            
+
+
 
         })
             .catch((e) => console.log('getting downloadURL of image error => ', e));
@@ -111,12 +111,12 @@ function SplashScreen({ navigation }) {
                                 Latitude: user.Latitude,
                                 Longitude: user.Longitude,
                                 Bio: user.Bio,
-                                Phone:user.Phone,
+                                Phone: user.Phone,
                             }
                         },
                         fromFirestore: function (snapshot, options) {
                             const data = snapshot.data(options);
-                            return new UserInfo(data.name, data.email, data.Gardner,data.Latitude,data.Longitude,data.Bio,data.Phone)
+                            return new UserInfo(data.name, data.email, data.Gardner, data.Latitude, data.Longitude, data.Bio, data.Phone)
                         }
                     }
 
@@ -128,7 +128,7 @@ function SplashScreen({ navigation }) {
                                 // Use a UserInfo instance method
                                 console.log(userInfo.name);
 
-                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '',userInfo.Latitude + '',userInfo.Longitude + '',currentUser.uid+'',userInfo.Bio+'',userInfo.Phone+'');
+                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '', userInfo.Latitude + '', userInfo.Longitude + '', currentUser.uid + '', userInfo.Bio + '', userInfo.Phone + '');
 
                                 // redirect user
                                 if (userInfo.Gardner == false) {
@@ -140,17 +140,18 @@ function SplashScreen({ navigation }) {
 
                                 // redirect user
                                 if (userInfo.Gardner == true) {
-                                     if(userInfo.Latitude==''){
+                                    if (userInfo.Latitude == '') {
                                         navigation.reset({
                                             index: 0,
                                             routes: [{ name: 'LocationMap' }],
                                         });
 
-                                     }else{
-                                    navigation.reset({
-                                        index: 0,
-                                        routes: [{ name: 'Root' }],
-                                    });}
+                                    } else {
+                                        navigation.reset({
+                                            index: 0,
+                                            routes: [{ name: 'Root' }],
+                                        });
+                                    }
                                 }
                             } else {
                                 console.log("No such document!")
@@ -202,17 +203,17 @@ export default SplashScreen;
 
 
 class UserInfo {
-    constructor(name, email, Gardner,Latitude,Longitude,Bio,Phone) {
+    constructor(name, email, Gardner, Latitude, Longitude, Bio, Phone) {
         this.name = name;
         this.email = email;
         this.Gardner = Gardner;
-        this.Latitude=Latitude;
-        this.Longitude=Longitude;
-        this.Bio=Bio;
-        this.Phone=Phone;
+        this.Latitude = Latitude;
+        this.Longitude = Longitude;
+        this.Bio = Bio;
+        this.Phone = Phone;
     }
     toString() {
-        return this.name + ', ' + this.Gardner + ', ' +this.email+', '+this.Latitude+', '+this.Longitude;
+        return this.name + ', ' + this.Gardner + ', ' + this.email + ', ' + this.Latitude + ', ' + this.Longitude;
     }
 }
 

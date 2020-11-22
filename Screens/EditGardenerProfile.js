@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
-import { useIsFocused } from "@react-navigation/native";
 
 
 import {
@@ -14,10 +13,6 @@ import {
   Image,
   ActivityIndicator,
   TextInput,
-  KeyboardAvoidingView,
-  // AsyncStorage,
-  Dimensions,
-  Button,
   Alert,
 } from "react-native";
 
@@ -29,7 +24,6 @@ import { Ionicons } from '@expo/vector-icons';
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
-import { AppLoading } from 'expo';
 
 const font = () => {
   let [fontsLoaded] = useFonts({
@@ -222,18 +216,6 @@ export default class App extends React.Component {
       )
     }
 
-    // const getImage = async () => {
-
-    //   let imageRef = firebase.storage().ref('avatars/' + userId);
-    //   imageRef.getDownloadURL().then((url) => {
-    //     //from url you can fetched the uploaded image easily
-    //     this.setState({ avatar: url });
-
-
-    //   })
-    //     .catch((e) => console.log('getting downloadURL of image error => ', e));
-    // }
-
 
     const Validate = () => {
       if (name == "") {
@@ -274,10 +256,6 @@ export default class App extends React.Component {
 
             </ActivityIndicator>
 
-            {/* <Text style={styles.editText}
-                onPress={() => { handleChangeAvatar() }}
-
-              > Change Profile Photo</Text> */}
             <TouchableOpacity
 
             >
@@ -378,11 +356,6 @@ export default class App extends React.Component {
             </TouchableOpacity>
 
           </View>
-
-
-          {/* Profile Information */}
-
-
 
         </View>
 

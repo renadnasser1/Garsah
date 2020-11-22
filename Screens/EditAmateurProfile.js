@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
-import { useIsFocused } from "@react-navigation/native";
 
 import {
   View,
@@ -13,22 +12,13 @@ import {
   Image,
   ActivityIndicator,
   TextInput,
-  KeyboardAvoidingView,
-  // AsyncStorage,
-  Dimensions,
-  Button,
   Alert,
 } from "react-native";
 
-// Icons
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
 //Firebase
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
-import { AppLoading } from 'expo';
 
 const font = () => {
   let [fontsLoaded] = useFonts({
@@ -59,19 +49,19 @@ export default class App extends React.Component {
       let name = await AsyncStorage.getItem("name")
       let email = await AsyncStorage.getItem("email")
       let Bio = await AsyncStorage.getItem("Bio")
-      
-      
-        let imageRef = firebase.storage().ref('avatars/' + userId);
-        imageRef.getDownloadURL().then((url) => {
-          //from url you can fetched the uploaded image easily
-          
-            this.setState({ avatar: url });  
-        })
+
+
+      let imageRef = firebase.storage().ref('avatars/' + userId);
+      imageRef.getDownloadURL().then((url) => {
+        //from url you can fetched the uploaded image easily
+
+        this.setState({ avatar: url });
+      })
         .catch((e) => console.log('getting downloadURL of image error => ', e));
-      
-      
-    
-        
+
+
+
+
 
       this.setState({ userId, name, email, Bio }, () => console.log('State: ', this.state))
     } catch (err) {
@@ -79,14 +69,14 @@ export default class App extends React.Component {
 
     }//end if 
   }
-  async newMethod(){
+  async newMethod() {
 
-    try{
-    let imageRef = firebase.storage().ref('avatars/' + this.state.userId);
+    try {
+      let imageRef = firebase.storage().ref('avatars/' + this.state.userId);
       imageRef.getDownloadURL().then((url) => {
         //from url you can fetched the uploaded image easily
         this.setState({ avatar: url });
-        console.log("in newmwthod"+ this.state.avatar)
+        console.log("in newmwthod" + this.state.avatar)
         firebase.firestore().collection('users').doc(this.state.userId).update({
           avatar: this.state.avatar
         })
@@ -107,74 +97,56 @@ export default class App extends React.Component {
     const uploadPhotoAsync = async (uri, filename) => {
       console.log('hi')
       return new Promise(async (res, rej) => {
-        if(this.state.avatar){ // here amal solution
-        const response = await fetch(uri);
-        const file = await response.blob();
-        //const file = document.getElementById("file").files[0];
-        let upload = firebase.storage().ref(filename).put(file);
-        console.log('hi before upload')
-        upload.on(
-          "state_changed",
-          snapshot => {
-          },
-          err => {
-            rej(err);
-          });}
+        if (this.state.avatar) { // here amal solution
+          const response = await fetch(uri);
+          const file = await response.blob();
+          //const file = document.getElementById("file").files[0];
+          let upload = firebase.storage().ref(filename).put(file);
+          console.log('hi before upload')
+          upload.on(
+            "state_changed",
+            snapshot => {
+            },
+            err => {
+              rej(err);
+            });
+        }
 
-          await this.newMethod()
-          
-          if (this.state.Bio==null){
-            this.setState({Bio:''})
-          }
+        await this.newMethod()
 
-          firebase.firestore().collection('users').doc(userId).update({
-            name: this.state.name,
-            Bio: this.state.Bio,
-           // avatar: this.state.avatar
-          }).then((response) => {
-    
-            save()
-            //Navigate 
-            setTimeout(function(){
-              this.setState({isLoading:false})
+        if (this.state.Bio == null) {
+          this.setState({ Bio: '' })
+        }
+
+        firebase.firestore().collection('users').doc(userId).update({
+          name: this.state.name,
+          Bio: this.state.Bio,
+        }).then((response) => {
+
+          save()
+          //Navigate 
+          setTimeout(function () {
+            this.setState({ isLoading: false })
             this.props.navigation.reset({
               index: 0,
               routes: [{ name: 'GardnerProfile' }]
             })
-            
-            }
-            .bind(this),2500);
-          }).catch((error) => {
-            Alert.alert(error);
-          });
+
+          }
+            .bind(this), 2500);
+        }).catch((error) => {
+          Alert.alert(error);
+        });
       }
       );
     }
 
     const updateCords = async () => {
-      this.setState({isLoading:true})
+      this.setState({ isLoading: true })
 
       //validations
-        var remoteUri = await uploadPhotoAsync(this.state.avatar, `avatars/${this.state.userId}`);
-        // getImage();
+      var remoteUri = await uploadPhotoAsync(this.state.avatar, `avatars/${this.state.userId}`);
 
-      //save cloud firestore
-      // firebase.firestore().collection('users').doc(userId).update({
-      //   name: this.state.name,
-      //   Bio: this.state.Bio,
-      //   Phone: this.state.Phone,
-      //   avatar: this.state.avatar
-      // }).then((response) => {
-
-      //   save()
-      //   //Navigate 
-      //   this.props.navigation.reset({
-      //     index: 0,
-      //     routes: [{ name: 'GardnerRoot' }],
-      //   })
-      // }).catch((error) => {
-      //   Alert.alert(error);
-      // });
     }
 
 
@@ -230,25 +202,13 @@ export default class App extends React.Component {
       )
     }
 
-    // const getImage = async () => {
-
-    //   let imageRef = firebase.storage().ref('avatars/' + userId);
-    //   imageRef.getDownloadURL().then((url) => {
-    //     //from url you can fetched the uploaded image easily
-    //     this.setState({ avatar: url });
-
-        
-    //   })
-    //     .catch((e) => console.log('getting downloadURL of image error => ', e));
-    // }
-
 
     const Validate = () => {
       if (name == "") {
         alert("please enter your name");
       } else if (name.length < 2) {
         alert("Your name need to be at least 2 characters.");
-      } 
+      }
       else {
         update();
       }
@@ -260,100 +220,96 @@ export default class App extends React.Component {
 
     return (
       <View>
-        
-          {/* Profile Information */}
-          <View style={styles.profileInfoView}>
-            <View style={styles.img}>
-              <Image
-                source={this.state.avatar ?
-                  {uri: this.state.avatar} : require("../assets/blank.png")}
 
-                style={styles.prifileImg}
-              />
-              
-              <ActivityIndicator animating={this.state.isLoading}
+        {/* Profile Information */}
+        <View style={styles.profileInfoView}>
+          <View style={styles.img}>
+            <Image
+              source={this.state.avatar ?
+                { uri: this.state.avatar } : require("../assets/blank.png")}
+
+              style={styles.prifileImg}
+            />
+
+            <ActivityIndicator animating={this.state.isLoading}
               size='large'
               style={styles.loading}>
 
-              </ActivityIndicator>
+            </ActivityIndicator>
 
-              {/* <Text style={styles.editText}
-                onPress={() => { handleChangeAvatar() }}
+            <TouchableOpacity
 
-              > Change Profile Photo</Text> */}
-              <TouchableOpacity
-  
-                    >
-                        <Text style={styles.editText2} onPress={() => {
-                            handleChangeAvatar();
-                        }}>Change Profile Photo</Text>
-                    </TouchableOpacity>
-              </View>
+            >
+              <Text style={styles.editText2} onPress={() => {
+                handleChangeAvatar();
+              }}>Change Profile Photo</Text>
+            </TouchableOpacity>
+          </View>
 
-            {/* Name */}
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.profileInfoText}>Name </Text>
-              <TextInput
-                color="#696969"
-                defaultValue={name}
-                placeholder={"Enter your name here"}
-                onChangeText={(text) => this.setState({ name: text })}  //backend here?
-                style={styles.profileInfoText}
-              ></TextInput>
-            </View>
-            <View
-              style={{
-                borderBottomColor: '#C0C0C0',
-                borderBottomWidth: 1,
-                marginBottom: 10,
-              }}
-            />
-            {/* Bio */}
-            <View style={{ flexDirection: "row", paddingRight: 40, height:173 }}>
-              <Text style={styles.profileInfoText}>Bio </Text>
-              <TextInput
-                color="#696969"
-                maxLength={100}
-                multiline={true}
-                textAlignVertical={'top'}
-                defaultValue={Bio}
-                placeholder={'Enter your bio here'}
-                returnKeyType="done"
-                blurOnSubmit={true}
-                onChangeText={(text) => this.setState({ Bio: text })}  
-                style={styles.profileInfoText}
-              ></TextInput>
-            </View>
-            {/* onChangeText={(text) => this.setState({ password:text })}  */}
-            <View
-              style={{
-                borderBottomColor: '#C0C0C0',
-                borderBottomWidth: 1,
-                marginBottom: 10,
-              }}
-            />
+          {/* Name */}
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.profileInfoText}>Name </Text>
+            <TextInput
+              color="#696969"
+              defaultValue={name}
+              placeholder={"Enter your name here"}
+              onChangeText={(text) => this.setState({ name: text })}  //backend here?
+              style={styles.profileInfoText}
+            ></TextInput>
+          </View>
+          <View
+            style={{
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+              marginBottom: 10,
+            }}
+          />
+          {/* Bio */}
+          <View style={{ flexDirection: "row", paddingRight: 40, height: 173 }}>
+            <Text style={styles.profileInfoText}>Bio </Text>
+            <TextInput
+              color="#696969"
+              maxLength={100}
+              multiline={true}
+              textAlignVertical={'top'}
+              defaultValue={Bio}
+              placeholder={'Enter your bio here'}
+              returnKeyType="done"
+              blurOnSubmit={true}
+              onChangeText={(text) => this.setState({ Bio: text })}
+              style={styles.profileInfoText}
+            ></TextInput>
+          </View>
+          {/* onChangeText={(text) => this.setState({ password:text })}  */}
+          <View
+            style={{
+              borderBottomColor: '#C0C0C0',
+              borderBottomWidth: 1,
+              marginBottom: 10,
+            }}
+          />
 
-            {/* <View style={styles.header}> */}
-            <View style={styles.profileInfoText} >
-            
-              <TouchableOpacity
-         
-                style={styles.editButton}
-              >
-                <Text style={styles.editText} onPress={() => {
-                  Validate()
-                  //update();
-                }}> Save Changes</Text>
-              </TouchableOpacity>
+          {/* <View style={styles.header}> */}
+          <View style={styles.profileInfoText} >
 
-            </View>
+            <TouchableOpacity
 
-
+              style={styles.editButton}
+            >
+              <Text style={styles.editText} onPress={() => {
+                Validate()
+                //update();
+              }}> Save Changes</Text>
+            </TouchableOpacity>
 
           </View>
 
+
+
         </View>
-    
+
+      </View>
+
     );
   }//render
   // class 
@@ -397,7 +353,7 @@ const styles = StyleSheet.create({
   },
   img: {
     alignSelf: 'center',
-    marginTop:80
+    marginTop: 80
 
   },
   profileInfoView: {
@@ -485,7 +441,7 @@ const styles = StyleSheet.create({
   },
   userInfoContiner: {
     flexDirection: 'row',
-   
+
 
   },
 
@@ -494,16 +450,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Khmer-MN-Bold',
     color: 'black',
-    width:330
+    width: 330
   },
-  arrow:{
-    alignSelf:'flex-end',
-    bottom:6
+  arrow: {
+    alignSelf: 'flex-end',
+    bottom: 6
   },
   loading: {
     position: "absolute",
-    alignSelf:'center',
-    marginTop:300,
+    alignSelf: 'center',
+    marginTop: 300,
     zIndex: 2,
   },
 
