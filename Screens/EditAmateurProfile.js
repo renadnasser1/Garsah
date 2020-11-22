@@ -4,7 +4,6 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from "@react-navigation/native";
-
 import {
   View,
   Text,
@@ -14,7 +13,6 @@ import {
   ActivityIndicator,
   TextInput,
   KeyboardAvoidingView,
-  // AsyncStorage,
   Dimensions,
   Button,
   Alert,
@@ -64,15 +62,10 @@ export default class App extends React.Component {
         let imageRef = firebase.storage().ref('avatars/' + userId);
         imageRef.getDownloadURL().then((url) => {
           //from url you can fetched the uploaded image easily
-          
             this.setState({ avatar: url });  
         })
         .catch((e) => console.log('getting downloadURL of image error => ', e));
-      
-      
     
-        
-
       this.setState({ userId, name, email, Bio }, () => console.log('State: ', this.state))
     } catch (err) {
       alert(err)
@@ -110,7 +103,6 @@ export default class App extends React.Component {
         if(this.state.avatar){ // here amal solution
         const response = await fetch(uri);
         const file = await response.blob();
-        //const file = document.getElementById("file").files[0];
         let upload = firebase.storage().ref(filename).put(file);
         console.log('hi before upload')
         upload.on(
@@ -130,7 +122,6 @@ export default class App extends React.Component {
           firebase.firestore().collection('users').doc(userId).update({
             name: this.state.name,
             Bio: this.state.Bio,
-           // avatar: this.state.avatar
           }).then((response) => {
     
             save()
@@ -153,28 +144,8 @@ export default class App extends React.Component {
 
     const updateCords = async () => {
       this.setState({isLoading:true})
-
-      //validations
         var remoteUri = await uploadPhotoAsync(this.state.avatar, `avatars/${this.state.userId}`);
-        // getImage();
-
-      //save cloud firestore
-      // firebase.firestore().collection('users').doc(userId).update({
-      //   name: this.state.name,
-      //   Bio: this.state.Bio,
-      //   Phone: this.state.Phone,
-      //   avatar: this.state.avatar
-      // }).then((response) => {
-
-      //   save()
-      //   //Navigate 
-      //   this.props.navigation.reset({
-      //     index: 0,
-      //     routes: [{ name: 'GardnerRoot' }],
-      //   })
-      // }).catch((error) => {
-      //   Alert.alert(error);
-      // });
+    
     }
 
 
@@ -188,10 +159,7 @@ export default class App extends React.Component {
         alert(err)
       }
     }
-
     const handleChangeAvatar = async () => {
-
-
       if (Constants.platform.ios) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         if (status != "granted") {
@@ -230,19 +198,6 @@ export default class App extends React.Component {
       )
     }
 
-    // const getImage = async () => {
-
-    //   let imageRef = firebase.storage().ref('avatars/' + userId);
-    //   imageRef.getDownloadURL().then((url) => {
-    //     //from url you can fetched the uploaded image easily
-    //     this.setState({ avatar: url });
-
-        
-    //   })
-    //     .catch((e) => console.log('getting downloadURL of image error => ', e));
-    // }
-
-
     const Validate = () => {
       if (name == "") {
         alert("please enter your name");
@@ -253,10 +208,6 @@ export default class App extends React.Component {
         update();
       }
     }
-
-
-    // Screen contant
-
 
     return (
       <View>
@@ -276,11 +227,6 @@ export default class App extends React.Component {
               style={styles.loading}>
 
               </ActivityIndicator>
-
-              {/* <Text style={styles.editText}
-                onPress={() => { handleChangeAvatar() }}
-
-              > Change Profile Photo</Text> */}
               <TouchableOpacity
   
                     >
@@ -324,7 +270,6 @@ export default class App extends React.Component {
                 style={styles.profileInfoText}
               ></TextInput>
             </View>
-            {/* onChangeText={(text) => this.setState({ password:text })}  */}
             <View
               style={{
                 borderBottomColor: '#C0C0C0',

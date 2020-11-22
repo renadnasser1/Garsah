@@ -18,7 +18,7 @@ import {
 import * as firebase from "firebase";
 import { Entypo,Ionicons,AntDesign, FontAwesome} from '@expo/vector-icons';
 
-
+//Search page 
 export default class Search extends React.Component {
 
   constructor(props) {
@@ -34,6 +34,7 @@ export default class Search extends React.Component {
    tempavatar: '',
    currentUser:'',
   }
+  //Refresh method for reflecting 
   _onRefresh = () => {
     this.textInput.clear()
     this.setState({ result: []}, () => {
@@ -53,7 +54,7 @@ setTimeout(() => {
   }, 3000);
 
   }//end compnentDidMount
-
+//Getting all user for search filtiring 
   async getallusers(){
     const db = firebase.firestore()
     const users = db.collection('users');
@@ -72,7 +73,7 @@ setTimeout(() => {
       name: snapshot.docs[i].data().name,
       id :  snapshot.docs[i].data().id,
       avatar:snapshot.docs[i].data().avatar,
-      //date: snapshot.docs[i].data().createdAt.slice(0.12),
+   
   };
   all.push(c);}
   this.setState({ allusers: all }, () => {
@@ -81,7 +82,7 @@ setTimeout(() => {
   
    
   }
-
+// send the search word to db 
   async handleSend(comment) {
 
     let userId = await AsyncStorage.getItem("uid")
@@ -110,27 +111,11 @@ else {
 }
   }//end handle send
   
-  // getImage = async (g1) => { //<---------------- getting profile pictures 
-  //   let imageRef =  firebase.storage().ref('avatars/' + g1);
-  //   //let imageRef =  await firebase.firestore().collection("users").doc(g1).avatar
-  //     await imageRef.getDownloadURL().then((url) => {
-  //     this.setState({ tempavatar: url }, () => {
-  //       console.log("Temp"+"url")
-  //     });
-    
-  //   }).catch((e) =>
-  //     console.log('getting downloadURL of image error => ')
-  //     // , e),
-  //   );
-   
-  // }//end get image
+
 
   render() {
 
-    const { chats, user ,allusers,result} = this.state //<--- fill this later
-    // this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {
-    //   await this._onRefresh()
-    // });
+    const { chats, user ,allusers,result} = this.state 
 
     return (
       <View style={styles.container}>
@@ -201,15 +186,12 @@ else {
                              />
             <TextInput
             maxLength={16}
-        // clearButtonMode="always"
+          clearButtonMode="always"
          ref={input => { this.textInput = input }}
                 placeholder={"Enter the user's name"}
                
                 onChangeText={(text) => this.handleSend(text)}
-    //             {(text) =>{this.setState({ search:text}, () => {
-    //   //console.log("comment of the user is " + this.state.comment)
-    // }); }}
-                //style={styles.inputFiled}
+   
               ></TextInput>
               </View>
                      
@@ -252,7 +234,6 @@ const styles = StyleSheet.create({
   },
   SVGC: {
     flex: 1,
-    //backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -273,7 +254,6 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "black",
-    // position:'absolute',
     fontSize: 30,
     marginTop: 10,
     paddingLeft: 20,
@@ -281,7 +261,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Khmer-MN-Bold',
   },
   header: {
-    //paddingTop: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -307,7 +286,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#fff",
     shadowColor: "#000",
-    //position: "absolute",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -322,10 +300,7 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 50,
     padding: 26,
-    // marginTop: 4,
-    // marginLeft: 5,
     paddingBottom: 25,
-    //position: "absolute",
     shadowColor: "#000",
     shadowOffset: {
       width: 2,

@@ -18,12 +18,8 @@ import Svg, { Path } from "react-native-svg"
 //Fonts
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
-
-// import * as Animatable from 'react-native-animatable';
-// import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { render } from "react-dom";
-// import { useTheme } from '@react-navigation/native';
 
 import * as firebase from "firebase";
 import "firebase/firestore";

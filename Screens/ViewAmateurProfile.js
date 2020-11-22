@@ -16,7 +16,6 @@ import {
     Image,
     FlatList,
     ActivityIndicator,
-    // AsyncStorage,
     Dimensions,
     Linking,
     Alert
@@ -59,9 +58,6 @@ const ViewAmateurProfile = ({ route, navigation }) => {
     useEffect(() => {
 
         if (isVisible) {  
-           // console.log('in in use effect')
-           // console.log("lat "+ lat)
-     
             load()
             
         }
@@ -83,25 +79,14 @@ const ViewAmateurProfile = ({ route, navigation }) => {
   var g1 = snapshot.docs[0].data();
   setName(g1.name)
  
-  
-//   setlongNum(Number(g1.Longtitude))
-//   console.log(longNum)
-//   setlat(Numnber(g1.Latitude))
-//   console.log(g1.Latitude)
-//   setlatNum(Number(g1.Latitude))
 
   setBio(g1.Bio)
-// setlongNum( Number(g1.Longtitude))
-// console.log(g1.Longtitude+"lonnng")
-// setlatNum(Number(g1.Latitude))
-// console.log(longNum+"laaattt")
   getImage(g1.id)
 console.log(g1.posts.length)
 
   for(let i=0 ; i<g1.posts.length; i++){
     posts.push(g1.posts[i])
-//setPost(posts)
-//console.log(posts)
+
   }
   //fetch images from collection posts 
   for (id of posts) {
@@ -137,8 +122,6 @@ setPost(postTemp)
     const getImage = async (id) => {
         let imageRef = firebase.storage().ref('avatars/' + id);
         imageRef.getDownloadURL().then((url) => {
-            //from url you can fetched the uploaded image easily
-           // console.log(url)
             setAvatar(url);
         })
             .catch((e) => console.log('getting downloadURL of image error => ')

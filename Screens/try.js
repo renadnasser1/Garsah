@@ -1,3 +1,5 @@
+// THIS PAGE IS ONLY USED AS DRAFT 
+
 // import React, { useState, useEffect } from "react";
 // import Svg, { Path } from "react-native-svg"
 // import { useIsFocused } from "@react-navigation/native";

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import * as Permissions from 'expo-permissions';
 import AsyncStorage from '@react-native-community/async-storage';
-
 import {
   StyleSheet,
   Text,
@@ -10,7 +9,6 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
-  //AsyncStorage,
   Animated
 } from 'react-native';
 import { MaterialIcons } from "@expo/vector-icons";
@@ -57,7 +55,6 @@ export default class App extends React.Component {
 
     try {
 
-    //  let userId = await AsyncStorage.getItem("uid")
       let latitude = await AsyncStorage.getItem("latitude")
       let longitude = await AsyncStorage.getItem("longitude")
 

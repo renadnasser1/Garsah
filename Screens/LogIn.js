@@ -17,12 +17,6 @@ import * as firebase from "firebase";
 //Fonts
 import  { useFonts }  from 'expo-font';
 import {AppLoading} from 'expo';
-
-
-// import * as Animatable from 'react-native-animatable';
-// import LinearGradient from 'react-native-linear-gradient';
-// import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
 import { Ionicons } from "@expo/vector-icons";
 
 const LogIn = ({ navigation }) => {

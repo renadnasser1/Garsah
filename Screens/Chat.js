@@ -1,23 +1,14 @@
-// @refresh reset
+
 
 import React, { useState, useEffect, useCallback } from 'react'
-
 import { GiftedChat ,MessageText, Bubble, Send} from 'react-native-gifted-chat'
-
 import AsyncStorage from '@react-native-community/async-storage'
-
 import { StyleSheet, TextInput, View, YellowBox, Button,Text } from 'react-native'
-
 import { Ionicons } from "@expo/vector-icons";
-
 import * as firebase from 'firebase'
 
 
-
-
-const Chat = ({ route, navigation }) => { //<--------- props here ???
-
- 
+const Chat = ({ route, navigation }) => { 
 
    //getting the user2  id
 
@@ -31,34 +22,22 @@ const Chat = ({ route, navigation }) => { //<--------- props here ???
      const db = firebase.firestore()
 
      const chatsRef = db.collection('Messages')
-
-    //const [user1, setUser] = useState(null)
-    //const [uname, setName] = useState('')
-    //const [uid, setUid] = useState()
     const [avatar, setAvatar] = useState()
     const [messages, setMessages] = useState([])
     const  cId = chatID() //<---- 
     const  uid = getIdN() 
-    //var uname = ''
-    
 
+  
 
    const load = async () => {
 
     try {
-
         let currentUser = firebase.auth().currentUser.uid
-
         let name = await AsyncStorage.getItem("name")
-       // for(let i = 0; i<1 ;i++)
-       // setName(name)
+      
 
     } catch (err) {
-
         alert(err)
-
- 
-
     }
 
 } //End load
@@ -84,7 +63,6 @@ function getIdN (){
            load()
            getImage(uid)
            console.log(uid)
-           //console.log(uname)
          const unsubscribe = chatsRef .doc(cId)
 
          .collection('chats').onSnapshot((querySnapshot) => { 
@@ -234,11 +212,8 @@ function getIdN (){
     <GiftedChat messages={messages} user={{_id:uid,avatar:avatar? avatar:require("../assets/blank.png")}} onSend={handleSend} 
     renderBubble={renderBubble} renderSend={renderSend}  alwaysShowSend
      />
-{/* renderUsernameOnMessage={true} */}
     </View>
-    // user={{
-    //   _id: currentuser.id,
-    //   }}
+
       
     );
 
@@ -247,9 +222,6 @@ function getIdN (){
  
 
 export default Chat;
-
- 
-
 const styles = StyleSheet.create({
 
     container: {
