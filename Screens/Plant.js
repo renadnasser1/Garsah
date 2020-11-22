@@ -4,22 +4,27 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
   StyleSheet,
+  Image,
   Alert,
   FlatList,
   AsyncStorage,
   Dimensions,
   Modal,
+  RefreshControl,
+  SnapshotViewIOSComponent,
 } from "react-native";
 //Firebase
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
+import { AppLoading } from 'expo';
 
 import Svg, { Path } from "react-native-svg"
 
 //Icons
-import { Entypo, Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
+import { Entypo,Ionicons,AntDesign ,FontAwesome} from '@expo/vector-icons';
 
 //Components
 import { bugItem, waterItem } from './Component/bugWaterItems';
@@ -49,54 +54,54 @@ export default class Plant extends React.Component {
     selectedProgress: '',
     selectedPeriod: '',
     selectedSent: '',
-    isOwner: false,
+    isOwner:false,
     bookmarked: false,
     refreshing: false,
   }
 
-
+ 
   _onRefresh = () => {
-    this.setState({ refreshing: true });
+    this.setState({refreshing: true});
     this.componentDidMount().then(() => {
-      this.setState({ refreshing: false });
+      this.setState({refreshing: false});
     });
   }
 
   async componentDidMount() {
-    await this.fetchData();
-    await this.checkBookmark();
+    await this.fetchData();  
+    await this.checkBookmark();      
 
   }
 
-  async checkBookmark() {
-
+  async checkBookmark (){
+   
     let userId = await AsyncStorage.getItem("uid")
-
+    
     const bookmarkRef = firebase.firestore().collection('Bookmarks')
 
     var useRef = bookmarkRef.doc(userId).collection('bookmarks')
     var id = this.state.ThreadId;
     const snapshot = await useRef.where('pid', '==', id).get()
     if (!(snapshot.empty)) {
-      this.setState({ bookmarked: true })
+      this.setState({ bookmarked: true})
     }
 
   }
 
   //get all data 
-  async fetchData() {
+   async fetchData(){
     //console.log('called fetchData')
     try {
 
       // get user info 
       let userId = await AsyncStorage.getItem("uid")
       var name;
-      this.setState({ userId: userId })
+      this.setState({ userId: userId})
 
       // get thread id
       var localThread = ''
       var localPost = []
-      this.setState({ ThreadId: this.props.route.params.threadID }, () => { })
+      this.setState({ ThreadId: this.props.route.params.threadID }, () => {  })
       this.setState({ deleteTheadFun: this.props.route.params.deleteTheadFun }, () => { })
       //get thread info
       var id = this.state.ThreadId
@@ -104,7 +109,7 @@ export default class Plant extends React.Component {
       await docRef.get().then(function (doc) {
         if (doc.exists) {
           var post = {
-            userId: doc.data().Uid,
+            userId:doc.data().Uid,
             id: id,
             name: doc.data().Name,
             posts: doc.data().posts,
@@ -122,38 +127,37 @@ export default class Plant extends React.Component {
       });
 
       //Reminders
-      if (localThread.reminders == '' || localThread.reminders == null) {
+      if(localThread.reminders==''||localThread.reminders==null){
         this.setState({ reminders: [] })
-      } else {
-        this.setState({ reminders: localThread.reminders })
-      }
+      }else{
+      this.setState({ reminders: localThread.reminders })}
 
 
       //Plant's Name
       this.setState({ name: localThread.name })
 
       //Owner name
-      // console.log('local thread'+localThread.userId)
-      if (this.state.userId != localThread.userId) {
+     // console.log('local thread'+localThread.userId)
+      if(this.state.userId!=localThread.userId){
         //Not owner 
         var useRef = firebase.firestore().collection("users").doc(localThread.userId);
         await useRef.get().then(function (doc) {
           if (doc.exists) {
-            name = doc.data().name;
+             name = doc.data().name;
           } else {
             console.log("No such document!");
           }
         }).catch(function (error) {
           console.log("Error getting document:", error);
         });
-        // console.log(name)
+       // console.log(name)
 
-        this.setState({ userId: localThread.userId, userName: name })
-      } else {
-        name = await AsyncStorage.getItem("name")
-        this.setState({ userName: name, isOwner: true })
+        this.setState({ userId: localThread.userId,userName:name})
+      }else{
+         name = await AsyncStorage.getItem("name")
+         this.setState({userName:name, isOwner:true})
       }
-      // console.log("in ", localThread.dates)
+     // console.log("in ", localThread.dates)
 
       // var length = localThread.images.length;
       // for (var i = 0; i < length; i++) {
@@ -163,54 +167,54 @@ export default class Plant extends React.Component {
     } catch (err) {
     }
     this.setState({ posts: localThread.posts })
-    //  console.log(this.state.posts.length)
+  //  console.log(this.state.posts.length)
 
-
+   
   }
-  onPressOwner = () => {
+  onPressOwner=()=>{
     //alert("pressed")
-    if (this.state.isOwner) {
-      //this.props.navigation.navigate("GardnerProfile")
-      //alert("this is your plant")
-    }//true
-    else {
-      this.props.navigation.push("ViewGardenerProfile", { id: this.state.userId })
-    }//false
+  if(this.state.isOwner){
+    //this.props.navigation.navigate("GardnerProfile")
+    //alert("this is your plant")
+  }//true
+  else {
+    this.props.navigation.push("ViewGardenerProfile",{id:this.state.userId})
+  }//false
   }
-  async bookmarkPress() {
+  async bookmarkPress(){
     let userId = await AsyncStorage.getItem("uid")
     const db = firebase.firestore()
     const chatsRef = db.collection('Bookmarks')
-    if (this.state.bookmarked == false) {
+    if(this.state.bookmarked== false){
       //Add bookmark to DB
-      this.setState({ bookmarked: true })
-
+      this.setState({ bookmarked: true})
+     
       //console.log((this.state.userId))
       //const res = 
       chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).set({
         pid: this.state.ThreadId,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
-
+      
       })
-      // await Promise.all(res)
-
+        // await Promise.all(res)
+        
 
     }
     else {
       //Remove bookmark from DB
-      this.setState({ bookmarked: false })
-      chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).delete()
+      this.setState({ bookmarked: false})
+     chatsRef.doc(userId).collection('bookmarks').doc(this.state.ThreadId).delete()
 
 
-    }
-    this._onRefresh()
+  }
+  this._onRefresh()
   }
 
 
   render() {
-    const { thread, ThreadId, posts, selectedProgress, showProgressModel, isOwner } = this.state
+    const { thread, ThreadId, posts, selectedProgress, showProgressModel ,isOwner} = this.state
 
-    this.willFocusSubscription = this.props.navigation.addListener('focus', async () => {
+    this.willFocusSubscription  = this.props.navigation.addListener('focus',async () => {
       await this.fetchData()
     });
 
@@ -244,76 +248,73 @@ export default class Plant extends React.Component {
       })
     }
 
-    const deletePost = (post) => {
+    const deletePost = (post) =>{
 
-      if (this.state.posts.length == 1) {
+      if(this.state.posts.length==1){
         console.log('delete thread from post')
         Alert.alert(
           '',
           'Are you sure you want delete your Post? By deleting your post, the plant will be deleted',
           [
-            { text: 'Cancel', onPress: () => console.log('') },
-            {
-              text: 'Delete', onPress: () => {
-                this.props.route.params.deleteTheadFun(this.state.ThreadId, this.state.userId, [post.filePath])
-                this.props.navigation.goBack()
-              }
-            },
+              { text: 'Cancel', onPress: () => console.log('') },
+              {
+                  text: 'Delete', onPress: () =>{
+                  this.props.route.params.deleteTheadFun(this.state.ThreadId,this.state.userId,[post.filePath])
+                  this.props.navigation.goBack()}
+              },
 
           ],
           { cancelable: false }
-        )
+      )
         // return
-      } else {
+      }else{
 
 
         Alert.alert(
           '',
           'Are you sure you want delete your Post?',
           [
-            { text: 'Cancel', onPress: () => console.log('') },
-            {
-              text: 'Delete', onPress: () =>
-                deleteOnlyPost(post)
-            },
-
+              { text: 'Cancel', onPress: () => console.log('') },
+              {
+                  text: 'Delete', onPress: () =>
+                  deleteOnlyPost(post)},
+  
           ],
           { cancelable: false }
-        )
+      )
+
+      } }
+
+      const deleteOnlyPost = (post) =>{
+        console.log('at post delete')
+
+        //Delete photo from storage 
+        var desertRef = firebase.storage().ref('Posts/'+post.filePath);
+        //Delete the file
+        desertRef.delete().then(function() {
+          console.log('great')
+        }).catch(function(error) {
+          console.log('not yet',error)
+        });
+             
+        
+         //Delete thread id from user posts array 
+         firebase.firestore().collection('Posts').doc(this.state.ThreadId).update({
+                posts: firebase.firestore.FieldValue.arrayRemove(post)
+            }).then(function(){
+                console.log('removed from array')
+            }).catch(function (error){
+                console.log('error',error)
+            })
+                
+        //refresh screen remove from local araay
+            var postArray=this.state.posts
+            var array = postArray.filter((item) => {return  item.filePath != post.filePath })
+             console.log('array after deletion',array)
+             this.setState({posts:array})
+
 
       }
-    }
-
-    const deleteOnlyPost = (post) => {
-      console.log('at post delete')
-
-      //Delete photo from storage 
-      var desertRef = firebase.storage().ref('Posts/' + post.filePath);
-      //Delete the file
-      desertRef.delete().then(function () {
-        console.log('great')
-      }).catch(function (error) {
-        console.log('not yet', error)
-      });
-
-
-      //Delete thread id from user posts array 
-      firebase.firestore().collection('Posts').doc(this.state.ThreadId).update({
-        posts: firebase.firestore.FieldValue.arrayRemove(post)
-      }).then(function () {
-        console.log('removed from array')
-      }).catch(function (error) {
-        console.log('error', error)
-      })
-
-      //refresh screen remove from local araay
-      var postArray = this.state.posts
-      var array = postArray.filter((item) => { return item.filePath != post.filePath })
-      console.log('array after deletion', array)
-      this.setState({ posts: array })
-
-
-    }
 
 
 
@@ -322,11 +323,11 @@ export default class Plant extends React.Component {
       <View style={styles.container}>
 
         <TouchableOpacity
-          style={styles.back}
+        style={styles.back}
           onPress={() => {
             this.props.navigation.pop()
           }}>
-          <Ionicons name="ios-arrow-back" size={30} color="black" /></TouchableOpacity>
+            <Ionicons name="ios-arrow-back" size={30} color="black" /></TouchableOpacity>
 
         {/* Background */}
         <Svg
@@ -350,9 +351,9 @@ export default class Plant extends React.Component {
 
             <View style={{ flexDirection: 'row' }}>
 
-              <Text style={styles.ownerName}
-                onPress={() =>
-                  this.onPressOwner()}
+                <Text style={styles.ownerName}
+               onPress={() => 
+                this.onPressOwner()}
               >Owner | {this.state.userName}</Text>
 
             </View>
@@ -406,7 +407,7 @@ export default class Plant extends React.Component {
                 <FlatList
                   data={posts}
                   renderItem={({ item }) =>
-                    postItem(item, deletePost, isOwner)}
+                    postItem(item,deletePost,isOwner)}
                   keyExtractor={({ item }) => item}
                 /></View>) : null}
 
@@ -426,7 +427,7 @@ export default class Plant extends React.Component {
 
               <View style={styles.modelHeader}>
                 <TouchableOpacity
-                  style={{ left: -90 }}
+                style={{left:-90}}
                   onPress={() => {
                     closeModel();
                   }}>
@@ -444,52 +445,52 @@ export default class Plant extends React.Component {
             </View></View>
         </Modal>
         <View style={styles.continerOptions}>
-          <View style={styles.comment}>
-            <TouchableOpacity>
-              <FontAwesome name="comment" size={33} color="white"
-                onPress={() =>
-                  this.props.navigation.push('Comment', { Pid: this.state.ThreadId })
-                } />
-            </TouchableOpacity>
-          </View>
-
-          {this.state.isOwner ?
-            <View style={styles.plus}>
-              <TouchableOpacity>
-                <Entypo name="plus" size={44} color="white"
-                  onPress={() =>
-                    move()
-                  } />
-              </TouchableOpacity>
-
-            </View>
-
-            : null}
-
-          {this.state.isOwner ? null :
-            <View style={styles.Bookmark}>
-              <TouchableOpacity>
-                {this.state.bookmarked ?
-                  <FontAwesome
-                    name="bookmark"
-                    size={37} color="white"
-                    onPress={() =>
-                      this.bookmarkPress()
-                    } />
-                  : <FontAwesome
-                    name="bookmark-o"
-                    size={37} color="white"
-                    onPress={() =>
-                      this.bookmarkPress()
-
-                    } />
-                }
-              </TouchableOpacity>
-
-            </View>
-
-          }
+        <View style={styles.comment}>
+          <TouchableOpacity>
+            <FontAwesome name="comment" size={33} color="white"
+              onPress={() =>
+                this.props.navigation.push('Comment',{ Pid: this.state.ThreadId})
+              } />
+          </TouchableOpacity>
         </View>
+
+        { this.state.isOwner?
+        <View style={styles.plus}>
+          <TouchableOpacity>
+            <Entypo name="plus" size={44} color="white"
+              onPress={() =>
+                move()
+              } />
+          </TouchableOpacity>
+
+        </View>
+        
+  : null}
+  
+  { this.state.isOwner? null : 
+        <View style={styles.Bookmark}>
+          <TouchableOpacity>
+          {this.state.bookmarked?
+            <FontAwesome 
+            name="bookmark" 
+            size={37} color="white"
+              onPress={() =>
+                this.bookmarkPress()
+              } />
+              : <FontAwesome 
+            name="bookmark-o" 
+            size={37} color="white"
+              onPress={() =>
+                this.bookmarkPress()
+                
+              } /> 
+               }
+          </TouchableOpacity>
+
+        </View>
+        
+   }
+  </View>
       </View>
     );
   }
@@ -515,9 +516,8 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 3,
-    }
-  },
+      height: 3,}
+    },
   SVGC: {
     flex: 1,
     position: 'absolute',
@@ -601,12 +601,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
 
   },
-  continerOptions: {
+  continerOptions:{
     position: 'absolute',
     alignSelf: 'flex-end',
     right: 10,
     bottom: 10,
-    alignItems: 'center'
+    alignItems:'center'
 
   },
   plus: {
@@ -614,60 +614,60 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     padding: 5,
     paddingBottom: -5,
-    marginTop: 10,
+    marginTop:10,
     alignItems: 'center',
     zIndex: 2,
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
-      height: 3,
+        width: 0,
+        height: 3,
     },
     shadowOpacity: 0.2,
     shadowRadius: 4.0,
 
     elevation: 3,
 
-  },
-  comment: {
-    backgroundColor: '#CFD590',
-    borderRadius: 100,
-    padding: 11,
-    //marginBottom:5,
-    alignItems: 'center',
-    zIndex: 2,
-    shadowColor: "#000",
-    shadowOffset: {
+},
+comment: {
+  backgroundColor: '#CFD590',
+  borderRadius: 100,
+  padding: 11,
+  //marginBottom:5,
+  alignItems: 'center',
+  zIndex: 2,
+  shadowColor: "#000",
+  shadowOffset: {
       width: 0,
       height: 3,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4.0,
-
-    elevation: 3,
-
   },
+  shadowOpacity: 0.2,
+  shadowRadius: 4.0,
 
-  Bookmark: {
-    backgroundColor: '#CFD590',
-    borderRadius: 100,
-    padding: 11,
-    paddingRight: 13,
-    paddingLeft: 13,
-    paddingBottom: 8,
-    marginTop: 10,
-    alignItems: 'center',
-    zIndex: 2,
-    shadowColor: "#000",
-    shadowOffset: {
+  elevation: 3,
+
+},
+
+Bookmark: {
+  backgroundColor: '#CFD590',
+  borderRadius: 100,
+  padding: 11,
+  paddingRight:13,
+  paddingLeft:13,
+  paddingBottom:8,
+    marginTop:10,
+  alignItems: 'center',
+  zIndex: 2,
+  shadowColor: "#000",
+  shadowOffset: {
       width: 0,
       height: 3,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4.0,
-
-    elevation: 3,
-
   },
+  shadowOpacity: 0.2,
+  shadowRadius: 4.0,
+
+  elevation: 3,
+
+},
 
 
 })

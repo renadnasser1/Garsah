@@ -6,8 +6,10 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  Button,
   ActivityIndicator,
   AsyncStorage,
+  ImageBackground,
   KeyboardAvoidingView,
   Alert,
 } from "react-native";
@@ -15,8 +17,11 @@ import {
 //Firebase
 import * as firebase from "firebase";
 //Fonts
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useFonts } from 'expo-font';
+import { AppLoading } from 'expo';
+import { Ionicons,MaterialCommunityIcons} from "@expo/vector-icons";
 import Svg, { Path } from "react-native-svg";
+import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 
 
@@ -36,7 +41,7 @@ export default class Post extends React.Component {
     isLoading: false,
     userId: '',
     ThreadId: '',
-    plantName: '',
+    plantName:'',
   }
 
   async componentDidMount() {
@@ -59,15 +64,15 @@ export default class Post extends React.Component {
 
   }// end did mount 
   getPlantName = async () => {
-
+    
     const db = firebase.firestore()
-
-
+    
+   
     const commenttRef = db.collection('Posts')
-    const snapshot = await commenttRef.doc(this.state.ThreadId).get()
+    const snapshot = await  commenttRef.doc(this.state.ThreadId).get()
     var x = snapshot.data().Name
     this.setState({ plantName: x }, () => { console.log('thread name  ', this.state.plantName) })
-  }
+       }
 
   render() {
     const { image, caption, userId } = this.state
@@ -119,11 +124,11 @@ export default class Post extends React.Component {
       //For update
       console.log('tread id', this.state.ThreadId)
       var postref = firebase.firestore().collection("Posts").doc(this.state.ThreadId);// Atomically add a new region to the "regions" 
-      var post = {
-        date: this.state.date,
-        image: this.state.imageURL,
-        caption: this.state.caption,
-        filePath: this.state.photoPath
+      var post={
+        date:this.state.date,
+        image:this.state.imageURL,
+        caption:this.state.caption,
+        filePath:this.state.photoPath
       }
       postref.update({
         posts: firebase.firestore.FieldValue.arrayUnion(post),
@@ -132,9 +137,9 @@ export default class Post extends React.Component {
         .then((response) => {
 
           //Navigate
-
+          
           setTimeout(function () {
-            this.setState({ isLoading: false })
+            this.setState({isLoading:false}) 
             this.props.navigation.goBack()
 
 
@@ -203,43 +208,43 @@ export default class Post extends React.Component {
               </Svg>
             </View>
 
-            <Text style={styles.welcome}> Add Progress For {this.state.plantName}</Text>
+            <Text style = {styles.welcome}> Add Progress For {this.state.plantName}</Text>
             {/* <Image source={require("../assets/plain-white-background.jpg")} style={styles.img} /> */}
             <View style={styles.imgContiner}>
 
 
-              {this.state.image ? (
-                <View>
-                  <Image source={{ uri: this.state.image }} style={styles.img} />
-                  <View style={styles.iconEdit}>
-                    <MaterialCommunityIcons name="circle-edit-outline" size={25} color="white"
-                      onPress={() => {
-                        pickImageCameraRoll();
-                      }}
-                    ></MaterialCommunityIcons></View>
-                </View>
-              ) :
-                (<Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
-                  onPress={() => {
-                    pickImageCameraRoll();
-                  }}
-                ></Ionicons>)
-              }
+            {this.state.image ? (
+            <View>
+            <Image source={{ uri: this.state.image }} style={styles.img} />
+            <View style={styles.iconEdit}>
+            <MaterialCommunityIcons name="circle-edit-outline" size={25} color="white"
+              onPress={() => {
+                pickImageCameraRoll();
+              }}
+            ></MaterialCommunityIcons></View>
+            </View>
+            ) :
+            (<Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
+              onPress={() => {
+                pickImageCameraRoll();
+              }}
+            ></Ionicons>)
+          }
 
 
             </View>
             {/* <Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}></Ionicons> */}
 
             <View style={styles.inputFiledCaption} >
-              <TextInput
-                maxLength={2200}
-                blurOnSubmit={true}
-                multiline={true}
-                textAlignVertical={'top'}
-                placeholder={"Caption"}
-                style={styles.input}
-                onChangeText={(text) => this.setState({ caption: text })}
-              ></TextInput></View>
+          <TextInput
+            maxLength={2200}
+            blurOnSubmit={true}
+            multiline={true}
+            textAlignVertical={'top'}
+            placeholder={"Caption"}
+            style={styles.input}
+            onChangeText={(text) => this.setState({ caption: text })}
+          ></TextInput></View>
 
             <TouchableOpacity
               style={styles.postButton}
@@ -252,10 +257,10 @@ export default class Post extends React.Component {
 
           </View>
           <ActivityIndicator animating={this.state.isLoading}
-            size='large'
-            style={styles.loading}>
+              size='large'
+              style={styles.loading}>
 
-          </ActivityIndicator>
+              </ActivityIndicator>
 
         </View>
       </KeyboardAvoidingView>
@@ -347,15 +352,15 @@ const styles = StyleSheet.create({
     elevation: 8,
 
   },
-  welcome: {
+  welcome :{
     //textAlign:'center',
     //justifyContent: "flex-end",
-    fontFamily: 'Khmer-MN-Bold',
+    fontFamily:'Khmer-MN-Bold',
     fontSize: 22,
-    marginLeft: 10,
-    marginBottom: 10,
+    marginLeft:10,
+    marginBottom:10,
     color: 'black',
-
+  
   },
   icon: {
     paddingLeft: 190,
@@ -365,13 +370,13 @@ const styles = StyleSheet.create({
   },
   iconEdit: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 10,
-    padding: 2,
-    alignSelf: 'flex-end',
+    borderRadius:10,
+    padding:2,
+    alignSelf:'flex-end',
     position: 'absolute',
     top: 240,
-    width: 30,
-    right: 20
+    width:30,
+    right:20
 
   },
   postButton: {
@@ -434,16 +439,16 @@ const styles = StyleSheet.create({
 
   },
   input: {
-    borderWidth: 0,
+    borderWidth:0,
     paddingLeft: 10,
-    paddingTop: 5,
+    paddingTop:5,
     fontSize: 20,
     fontFamily: 'Khmer-MN',
   },
   loading: {
     position: "absolute",
-    alignSelf: 'center',
-    marginTop: 300,
+    alignSelf:'center',
+    marginTop:300,
     zIndex: 2,
   },
 

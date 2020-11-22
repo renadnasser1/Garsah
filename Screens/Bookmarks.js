@@ -5,14 +5,19 @@ import { plantItem } from './Component/PostItem'
 import {
   View,
   Text,
+  TouchableOpacity,
   StyleSheet,
   FlatList,
+  Button,
+  Image,
+  ActivityIndicator,
   ScrollView,
   RefreshControl,
 } from "react-native";
 import * as firebase from "firebase";
 //Fonts
 import { useFonts } from 'expo-font';
+import { AppLoading } from 'expo';
 
 const font = () => {
   let [fontsLoaded] = useFonts({
@@ -20,6 +25,9 @@ const font = () => {
     'Khmer-MN-Bold': require('../assets/fonts/KhmerMN-Bold-02.ttf'),
   });
 }
+//Icons
+import { Entypo, Ionicons, AntDesign } from '@expo/vector-icons';
+import { configureFonts } from "react-native-paper";
 
 export default class Bookmarks extends React.Component {
 
@@ -184,6 +192,19 @@ export default class Bookmarks extends React.Component {
             />
           }
         >
+
+          {/* // contentContainerStyle={{
+  //   flexDirection:'column',
+  //   }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+          > */}
+
+
 
           <View style={styles.body}>
             <View style={{ marginTop: 20 }}>

@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 
-import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat'
+import { GiftedChat ,MessageText, Bubble, Send} from 'react-native-gifted-chat'
 
 import AsyncStorage from '@react-native-community/async-storage'
 
-import { StyleSheet, TextInput, View, YellowBox, Button, Text } from 'react-native'
+import { StyleSheet, TextInput, View, YellowBox, Button,Text } from 'react-native'
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -17,271 +17,279 @@ import * as firebase from 'firebase'
 
 const Chat = ({ route, navigation }) => { //<--------- props here ???
 
+ 
+
+   //getting the user2  id
+
+   const param = route.params;
+
+   const uidstr = JSON.stringify(param.id)
+
+   const uid2 = JSON.parse(uidstr)
+   //const [user2, setUser2] = useState()
+
+     const db = firebase.firestore()
+
+     const chatsRef = db.collection('Messages')
+
+    //const [user1, setUser] = useState(null)
+    //const [uname, setName] = useState('')
+    //const [uid, setUid] = useState()
+    const [avatar, setAvatar] = useState()
+    const [messages, setMessages] = useState([])
+    const  cId = chatID() //<---- 
+    const  uid = getIdN() 
+    //var uname = ''
+    
 
 
-  //getting the user2  id
-
-  const param = route.params;
-
-  const uidstr = JSON.stringify(param.id)
-
-  const uid2 = JSON.parse(uidstr)
-  //const [user2, setUser2] = useState()
-
-  const db = firebase.firestore()
-
-  const chatsRef = db.collection('Messages')
-
-  const [avatar, setAvatar] = useState()
-  const [messages, setMessages] = useState([])
-  const cId = chatID() //<---- 
-  const uid = getIdN()
-
-
-
-  const load = async () => {
+   const load = async () => {
 
     try {
 
-      let currentUser = firebase.auth().currentUser.uid
+        let currentUser = firebase.auth().currentUser.uid
 
-      let name = await AsyncStorage.getItem("name")
-
+        let name = await AsyncStorage.getItem("name")
+       // for(let i = 0; i<1 ;i++)
+       // setName(name)
 
     } catch (err) {
 
-      alert(err)
+        alert(err)
 
-
+ 
 
     }
 
-  } //End load
+} //End load
 
-  const getImage = async (g1) => { //<---------------- getting profile pictures
-    let imageRef = firebase.storage().ref('avatars/' + g1);
-    imageRef.getDownloadURL().then((url) => {
-      setAvatar(url)
-    })
+const getImage = async (g1) => { //<---------------- getting profile pictures
+  let imageRef = firebase.storage().ref('avatars/' + g1);
+  imageRef.getDownloadURL().then((url) => {
+  setAvatar(url)
+  })
       .catch((e) =>
-        console.log('getting downloadURL of image error => ')
-        // , e),
+       console.log('getting downloadURL of image error => ')
+      // , e),
       );
 
-  }//end get image
+}//end get image
 
-  function getIdN() {
-    return firebase.auth().currentUser.uid
-  }//end getidn
+function getIdN (){
+  return firebase.auth().currentUser.uid
+}//end getidn
 
   useEffect(() => {
 
-    load()
-    getImage(uid)
-    console.log(uid)
-    //console.log(uname)
-    const unsubscribe = chatsRef.doc(cId)
+           load()
+           getImage(uid)
+           console.log(uid)
+           //console.log(uname)
+         const unsubscribe = chatsRef .doc(cId)
 
-      .collection('chats').onSnapshot((querySnapshot) => {
+         .collection('chats').onSnapshot((querySnapshot) => { 
 
-        const messagesFirestore = querySnapshot
+            const messagesFirestore = querySnapshot
 
-          .docChanges()
+                .docChanges()
 
-          .filter(({ type }) => type === 'added')
+                .filter(({ type }) => type === 'added')
 
-          .map(({ doc }) => {
+                .map(({ doc }) => {
 
-            const message = doc.data()
+                    const message = doc.data()
 
-            //createdAt is firebase.firestore.Timestamp instance
+                    //createdAt is firebase.firestore.Timestamp instance
 
-            //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
+                    //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
 
-            return { ...message, createdAt: message.createdAt.toDate() }
+                    return { ...message, createdAt: message.createdAt.toDate() }
 
-          })
+                })
 
-          .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
 
-        appendMessages(messagesFirestore)
+            appendMessages(messagesFirestore)
 
-      })
+        })
 
-    return () => unsubscribe()
+        return () => unsubscribe()
 
-  }, [])
+   }, [])
 
+ 
 
+    async function handleSend(messages) {
 
-  async function handleSend(messages) {
+      const res = await chatsRef.doc(cId).set({
+        cid: cId
+      }, { merge: true });
 
-    const res = await chatsRef.doc(cId).set({
-      cid: cId
-    }, { merge: true });
+        const writes = messages.map((m) => chatsRef
 
-    const writes = messages.map((m) => chatsRef
+        .doc(cId)
 
-      .doc(cId)
+        .collection('chats').add(m))
 
-      .collection('chats').add(m))
+        await Promise.all(writes)
 
-    await Promise.all(writes)
+    }
 
-  }
+    const appendMessages = useCallback(
 
-  const appendMessages = useCallback(
+        (messages) => {
 
-    (messages) => {
+            setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
 
-      setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+        },
 
-    },
+        [messages]
 
-    [messages]
+    )
 
-  )
 
+    function chatID() {
 
-  function chatID() {
+        let currentUser = firebase.auth().currentUser.uid
 
-    let currentUser = firebase.auth().currentUser.uid
+        const chatterID = currentUser
 
-    const chatterID = currentUser
+        const chateeID = uid2
 
-    const chateeID = uid2
+        const chatIDpre = []
 
-    const chatIDpre = []
+        chatIDpre.push(chatterID)
 
-    chatIDpre.push(chatterID)
+        chatIDpre.push(chateeID)
 
-    chatIDpre.push(chateeID)
+        chatIDpre.sort()
 
-    chatIDpre.sort()
+        return chatIDpre.join('_')
+    }
 
-    return chatIDpre.join('_')
-  }
+ 
 
+    function renderBubble(props) {
 
+        return (
 
-  function renderBubble(props) {
+          // Step 3: return the component
 
-    return (
+          <Bubble
 
-      // Step 3: return the component
+            {...props}
 
-      <Bubble
+            wrapperStyle={{
 
-        {...props}
+              right: {
 
-        wrapperStyle={{
+                // Here is the color change
 
-          right: {
+                backgroundColor: '#497256'
 
-            // Here is the color change
+              }
 
-            backgroundColor: '#497256'
+            }}
 
-          }
+            textStyle={{
 
-        }}
+              right: {
 
-        textStyle={{
+                color: '#fff'
 
-          right: {
+              }
 
-            color: '#fff'
+            }}
 
-          }
+          />
 
-        }}
+        );
 
-      />
+      }
 
-    );
+      function renderSend(props) {
 
-  }
+        return (
 
-  function renderSend(props) {
+          <Send {...props}>
 
-    return (
+            <View style={styles.sendingContainer}>
 
-      <Send {...props}>
+              <Ionicons name="ios-send" color='#B7BD74' size={35} />
 
-        <View style={styles.sendingContainer}>
+            </View>
 
-          <Ionicons name="ios-send" color='#B7BD74' size={35} />
+          </Send>
 
-        </View>
+        );
 
-      </Send>
+      }
 
-    );
+ 
 
-  }
+    return(
 
+        <View style={styles.container}>
 
-
-  return (
-
-    <View style={styles.container}>
-
-      <GiftedChat messages={messages} user={{ _id: uid, avatar: avatar ? avatar : require("../assets/blank.png") }} onSend={handleSend}
-        renderBubble={renderBubble} renderSend={renderSend} alwaysShowSend
-      />
-      {/* renderUsernameOnMessage={true} */}
+    <GiftedChat messages={messages} user={{_id:uid,avatar:avatar? avatar:require("../assets/blank.png")}} onSend={handleSend} 
+    renderBubble={renderBubble} renderSend={renderSend}  alwaysShowSend
+     />
+{/* renderUsernameOnMessage={true} */}
     </View>
-
-  );
+    // user={{
+    //   _id: currentuser.id,
+    //   }}
+      
+    );
 
 }//End chat const
 
-
+ 
 
 export default Chat;
 
-
+ 
 
 const styles = StyleSheet.create({
 
-  container: {
+    container: {
 
-    flex: 1,
+        flex: 1,
 
-    backgroundColor: '#fff',
+        backgroundColor: '#fff',
 
-    // alignItems: 'center',
+       // alignItems: 'center',
 
-    // justifyContent: 'center',
+       // justifyContent: 'center',
 
-    // padding: 30,
+       // padding: 30,
 
-  },
+    },
 
-  input: {
+    input: {
 
-    height: 30,
+        height: 30,
 
-    width: '100%',
+        width: '100%',
 
-    borderWidth: 1,
+        borderWidth: 1,
 
-    padding: 15,
+        padding: 15,
 
-    marginBottom: 20,
+        marginBottom: 20,
 
-    borderColor: 'gray',
+        borderColor: 'gray',
 
-  },
+    },
 
-  sendingContainer: {
+    sendingContainer: {
 
-    paddingRight: 15,
+        paddingRight:15,
 
-    justifyContent: 'center',
+        justifyContent: 'center',
 
-    alignItems: 'center'
+        alignItems: 'center'
 
-  },
+      },
 
 })

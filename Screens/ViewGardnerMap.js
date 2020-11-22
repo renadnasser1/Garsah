@@ -136,6 +136,8 @@ export default class App extends React.Component {
                 <View style={styles.container}>
                     <MapView style={styles.mapStyle}
                         showsUserLocation={true}
+                        // followsUserLocation={true}
+                        //mapType={"mutedStandard"}
                         initialRegion={{
                             latitude: this.state.marker.latitude,
                             longitude: this.state.marker.longitude,

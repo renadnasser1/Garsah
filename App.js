@@ -20,6 +20,7 @@ import LocationMap from "./Screens/LocationMap";
 import Home from "./Screens/Home";
 import ForgetPassword from "./Screens/ForgetPassword";
 import SplashScreen from "./Screens/SplashScreen";
+import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
@@ -31,6 +32,7 @@ import ViewGardenerProfile from "./Screens/ViewGardenerProfile";
 import Addplant from "./Screens/Addplant";
 import Comment from "./Screens/Comment";
 import ViewGardnerMap from "./Screens/ViewGardnerMap";
+
 import Bookmarks from "./Screens/Bookmarks";
 import Search from "./Screens/Search";
 
@@ -114,7 +116,7 @@ function Root() {
         }}
         component={HomeStackNav} />
 
-      <GardnerTab.Screen
+<GardnerTab.Screen
         name="Bookmarks"
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -173,7 +175,7 @@ function ViewGardnersStack() {
     <ViewGardnerStack.Navigator>
       <ViewGardnerStack.Screen name="Gardners"
         options={{
-          title: 'Garsah\'s Map',
+          title:'Garsah\'s Map',
         }}
         component={ViewGardnerMap} />
 
@@ -700,3 +702,23 @@ const styles = StyleSheet.create({
     marginTop: Constants.statusBarHeight,
   },
 });
+
+//style header 
+
+        //   headerBackStyle: {
+        //     fontFamily: 'Khmer-MN-Bold',
+        //     paddingTop:8,fontSize:20,
+        // },
+
+          // headerTitle: () => (<Text style={{ textAlign: 'center',paddingTop:8,fontSize:20, flex: 1, fontFamily: 
+          // 'Khmer-MN-Bold'}}>Comments</Text>),
+          // headerLeft: () => (
+          //   <TouchableOpacity
+          //     onPress={() => navigation.pop()}><Text
+          //       style={{
+          //         fontFamily: 'Khmer-MN-Bold',
+          //         fontSize: 18,
+          //         paddingLeft: 10,
+          //         paddingTop: 10
+          //       }}>Back</Text></TouchableOpacity>
+          // ),
