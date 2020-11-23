@@ -88,6 +88,8 @@ export const GardnerProfile = ({ navigation }) => {
             let lat = await AsyncStorage.getItem("latitude")
             let long = await AsyncStorage.getItem("longitude")
             let gardnerAsync = await AsyncStorage.getItem("gardner")
+            let Avatar = await AsyncStorage.getItem("avatar")
+
             //get posts id array
             var docRef = firebase.firestore().collection("users").doc(userId);
             await docRef.get().then(function (doc) {
@@ -150,6 +152,9 @@ export const GardnerProfile = ({ navigation }) => {
             setlongNum(Number(long))
             setlat(lat)
             setGardner(gardnerAsync)
+            setAvatar(Avatar)
+
+
 
         } catch (err) {
             alert(err)
@@ -172,7 +177,6 @@ export const GardnerProfile = ({ navigation }) => {
         if (isVisible) {
 
             load()
-            getImage()
         }
     }, [isVisible])
 
@@ -223,8 +227,6 @@ export const GardnerProfile = ({ navigation }) => {
         var array = postss.filter((item) => { return item.key != id })
         console.log('array after deletion', array)
         setPostss(array)
-
-
 
     }
 
@@ -387,6 +389,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 50,
+        backgroundColor: '#DFE2DD',
         padding: 45,
         marginTop: 20,
         marginLeft: 20,

@@ -12,9 +12,6 @@ import {
   Image,
   ActivityIndicator,
   TextInput,
-  KeyboardAvoidingView,
-  Dimensions,
-  Button,
   Alert,
 } from "react-native";
 
@@ -53,27 +50,18 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-
+    //load data
     try {
       let userId = await AsyncStorage.getItem("uid")
       let name = await AsyncStorage.getItem("name")
       let email = await AsyncStorage.getItem("email")
       let Bio = await AsyncStorage.getItem("Bio")
       let Phone = await AsyncStorage.getItem("Phone")
+      let avatar = await AsyncStorage.getItem("avatar")
 
-      let imageRef = firebase.storage().ref('avatars/' + userId);
-      imageRef.getDownloadURL().then((url) => {
-        //from url you can fetched the uploaded image easily
-        this.setState({ avatar: url });
-
-
-      })
-        .catch((e) => console.log('getting downloadURL of image error => ', e));
-
-      this.setState({ userId, name, email, Bio, Phone }, () => console.log('State: ', this.state))
+      this.setState({ userId, name, email, Bio, Phone, avatar }, () => console.log('State: ', this.state))
     } catch (err) {
       alert(err)
-
     }//end if 
   }
 
@@ -83,13 +71,14 @@ export default class App extends React.Component {
       let imageRef = firebase.storage().ref('avatars/' + this.state.userId);
       imageRef.getDownloadURL().then((url) => {
         //from url you can fetched the uploaded image easily
-        this.setState({ avatar: url });
-        console.log("in newmwthod" + this.state.avatar)
-        firebase.firestore().collection('users').doc(this.state.userId).update({
-          avatar: this.state.avatar
+        this.setState({ avatar: url }, () => {
+
+          //update in database
+          firebase.firestore().collection('users').doc(this.state.userId).update({
+            avatar: this.state.avatar
+          }).catch((e) => console.log('getting downloadURL of image error => ', e));
         })
-      })
-        .catch((e) => console.log('getting downloadURL of image error => ', e));
+      });
     } catch (err) {
       alert(err)
 
@@ -103,13 +92,13 @@ export default class App extends React.Component {
 
 
     const uploadPhotoAsync = async (uri, filename) => {
-      console.log('hi')
+
       return new Promise(async (res, rej) => {
         if (this.state.avatar) {
           const response = await fetch(uri);
           const file = await response.blob();
           let upload = firebase.storage().ref(filename).put(file);
-          console.log('hi before upload')
+
           upload.on(
             "state_changed",
             snapshot => {
@@ -131,7 +120,6 @@ export default class App extends React.Component {
           name: this.state.name,
           Bio: this.state.Bio,
           Phone: this.state.Phone,
-          // avatar: this.state.avatar
         }).then((response) => {
 
           save()
@@ -187,7 +175,10 @@ export default class App extends React.Component {
 
           })
           if (!result.cancelled) {
-            this.setState({ avatar: result.uri });
+            this.setState({ avatar: '' }, () => {
+              this.setState({ avatar: result.uri });
+
+            });
           }
 
         }
@@ -248,10 +239,6 @@ export default class App extends React.Component {
 
             </ActivityIndicator>
 
-            {/* <Text style={styles.editText}
-                onPress={() => { handleChangeAvatar() }}
-
-              > Change Profile Photo</Text> */}
             <TouchableOpacity
 
             >

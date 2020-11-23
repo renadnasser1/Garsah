@@ -28,8 +28,8 @@ function SplashScreen({ navigation }) {
     const responseListener = useRef();
 
 
-
-    const save = async (name, email, gardner, lat, long, uid, Bio, Phone) => {
+    //Save to local storage
+    const save = async (name, email, gardner, lat, long, uid, Bio, Phone, avatar) => {
 
         //Notifacation:
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -57,24 +57,12 @@ function SplashScreen({ navigation }) {
             await AsyncStorage.setItem("uid", uid)
             await AsyncStorage.setItem("Bio", Bio)
             await AsyncStorage.setItem("Phone", Phone)
+            await AsyncStorage.setItem("avatar", avatar)
 
         } catch (err) {
             alert(err)
 
         }
-    }
-
-    const getImage = () => {
-        let currentUser = firebase.auth().currentUser.uid
-        console.log("userid" + currentUser)
-        let imageRef = firebase.storage().ref('avatars/' + currentUser);
-        imageRef.getDownloadURL().then((uri) => {
-            //from url you can fetched the uploaded image easily
-
-
-
-        })
-            .catch((e) => console.log('getting downloadURL of image error => ', e));
     }
 
 
@@ -109,11 +97,13 @@ function SplashScreen({ navigation }) {
                                 Longitude: user.Longitude,
                                 Bio: user.Bio,
                                 Phone: user.Phone,
+                                avatar: user.avatar
                             }
                         },
                         fromFirestore: function (snapshot, options) {
                             const data = snapshot.data(options);
-                            return new UserInfo(data.name, data.email, data.Gardner, data.Latitude, data.Longitude, data.Bio, data.Phone)
+                            console.log('outside', data.avatar);
+                            return new UserInfo(data.name, data.email, data.Gardner, data.Latitude, data.Longitude, data.Bio, data.Phone, data.avatar)
                         }
                     }
 
@@ -123,9 +113,9 @@ function SplashScreen({ navigation }) {
                                 // Convert to UserInfo object
                                 var userInfo = doc.data();
                                 // Use a UserInfo instance method
-                                console.log(userInfo.name);
+                                console.log('inside', userInfo.avatar);
 
-                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '', userInfo.Latitude + '', userInfo.Longitude + '', currentUser.uid + '', userInfo.Bio + '', userInfo.Phone + '');
+                                save(userInfo.name + '', userInfo.email + '', userInfo.Gardner + '', userInfo.Latitude + '', userInfo.Longitude + '', currentUser.uid + '', userInfo.Bio + '', userInfo.Phone + '', userInfo.avatar + '');
 
                                 // redirect user
                                 if (userInfo.Gardner == false) {
@@ -197,7 +187,7 @@ export default SplashScreen;
 
 
 class UserInfo {
-    constructor(name, email, Gardner, Latitude, Longitude, Bio, Phone) {
+    constructor(name, email, Gardner, Latitude, Longitude, Bio, Phone, avatar) {
         this.name = name;
         this.email = email;
         this.Gardner = Gardner;
@@ -205,6 +195,7 @@ class UserInfo {
         this.Longitude = Longitude;
         this.Bio = Bio;
         this.Phone = Phone;
+        this.avatar = avatar;
     }
     toString() {
         return this.name + ', ' + this.Gardner + ', ' + this.email + ', ' + this.Latitude + ', ' + this.Longitude;
