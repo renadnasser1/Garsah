@@ -180,7 +180,6 @@ export default class Plant extends React.Component {
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
 
       })
-      // await Promise.all(res)
 
 
     }
@@ -299,11 +298,7 @@ export default class Plant extends React.Component {
       var array = postArray.filter((item) => { return item.filePath != post.filePath })
       console.log('array after deletion', array)
       this.setState({ posts: array })
-
-
     }
-
-
 
     return (
 

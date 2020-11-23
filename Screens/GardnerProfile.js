@@ -224,7 +224,7 @@ export const GardnerProfile = ({ navigation }) => {
         })
 
         //refresh screen remove from local araay
-        var array = postss.filter((item) => { return item.key != id })
+        var array = postss.filter((item) => { return item.key != threaID })
         console.log('array after deletion', array)
         setPostss(array)
 
