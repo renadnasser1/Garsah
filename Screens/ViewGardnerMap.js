@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import * as Permissions from 'expo-permissions';
 import AsyncStorage from '@react-native-community/async-storage';
-
 import {
     StyleSheet,
     Text,
@@ -19,14 +18,10 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 //Fonts
 import { useFonts } from 'expo-font';
-
 //Firebase
 import * as firebase from "firebase";
 import "firebase/firestore";
 import { set } from 'react-native-reanimated';
-
-
-
 const font = () => {
     let [fontsLoaded] = useFonts({
         'Khmer-MN': require('../assets/fonts/KhmerMN-01.ttf'),
@@ -35,7 +30,6 @@ const font = () => {
 }
 
 export default class App extends React.Component {
-
     constructor(props) {
         super(props)
     }
