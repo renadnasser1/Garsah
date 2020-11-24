@@ -94,7 +94,7 @@ export default class App extends React.Component {
                     latitude: snapshot.docs[i].data().Latitude,
                     longitude: snapshot.docs[i].data().Longitude,
                 }
-    
+
             }
 
             console.log(gardner)

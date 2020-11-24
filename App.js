@@ -20,7 +20,6 @@ import LocationMap from "./Screens/LocationMap";
 import Home from "./Screens/Home";
 import ForgetPassword from "./Screens/ForgetPassword";
 import SplashScreen from "./Screens/SplashScreen";
-import AmateurProfile from "./Screens/AmateurProfile";
 import GardnerProfile from "./Screens/GardnerProfile";
 import EditGardenerProfile from "./Screens/EditGardenerProfile";
 import EditAmateurProfile from "./Screens/EditAmateurProfile";
@@ -116,7 +115,7 @@ function Root() {
         }}
         component={HomeStackNav} />
 
-<GardnerTab.Screen
+      <GardnerTab.Screen
         name="Bookmarks"
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -175,7 +174,13 @@ function ViewGardnersStack() {
     <ViewGardnerStack.Navigator>
       <ViewGardnerStack.Screen name="Gardners"
         options={{
-          title:'Garsah\'s Map',
+          title: 'Garsah\'s Map',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         }}
         component={ViewGardnerMap} />
 
@@ -279,6 +284,12 @@ function MessageStackNav() {
       <MessageStack.Screen name="Messages"
         options={{
           title: 'Messages',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         }}
         component={MessagesPage} />
 
@@ -298,6 +309,12 @@ function BookmarkStackNav() {
       <BookmarkStack.Screen name="Bookmarks"
         options={{
           title: 'Bookmarks',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         }}
         component={Bookmarks} />
       {<BookmarkStack.Screen
@@ -324,6 +341,12 @@ function BookmarkStackNav() {
       <BookmarkStack.Screen name="Chat"
         options={{
           title: 'Chat',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         }}
         component={Chat} />
 
@@ -354,6 +377,12 @@ function HomeStackNav() {
       <HomeStack.Screen name="Home"
         options={({ navigation }) => ({
           title: 'Homepage',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.navigate("Search")}>
@@ -361,7 +390,6 @@ function HomeStackNav() {
                 name="search"
                 size={25}
                 color="#646161"
-
                 style={{ marginLeft: 20 }}
 
               />
@@ -375,7 +403,12 @@ function HomeStackNav() {
         name="profile"
         options={{
           title: 'My Profile',
-          color: 'black'
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         }}
         component={GardnerProfile}
       />}
@@ -384,6 +417,12 @@ function HomeStackNav() {
         name="Addplant"
         options={({ navigation }) => ({
           title: 'Add Plant',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.pop()}><Text
@@ -401,6 +440,12 @@ function HomeStackNav() {
         name="Post"
         options={({ navigation }) => ({
           title: 'Add Post',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.pop()}><Text
@@ -451,6 +496,12 @@ function HomeStackNav() {
       <HomeStack.Screen name="Chat"
         options={{
           title: 'Chat',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         }}
         component={Chat} />
 
@@ -491,6 +542,12 @@ function GardnerStackNav() {
         name="Addplant"
         options={({ navigation }) => ({
           title: 'Add Plant',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.pop()}><Text
@@ -510,6 +567,12 @@ function GardnerStackNav() {
         name="Post"
         options={({ navigation }) => ({
           title: 'Add Post',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.pop()}><Text
@@ -549,7 +612,12 @@ function stackInGardnerStack() {
                 }}>Logout</Text></TouchableOpacity>
           ),
           title: 'My Profile',
-          color: 'black'
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         })}
         name="GardnerProfile"
 
@@ -568,6 +636,12 @@ function stackInGardnerStack() {
         name="EditGardenerProfile"
         options={{
           title: 'Edit Profile',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         }}
         component={EditGardenerProfile}
       />}
@@ -575,7 +649,13 @@ function stackInGardnerStack() {
       <inGardnerStack.Screen
         options={{
           title: 'Edit Profile',
-          color: 'black'
+          color: 'black',
+          headerBackTitle: 'Back',
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: 'Khmer-MN-Bold',
+            paddingTop: 8, fontSize: 20,
+          },
         }}
         name="EditAmateurProfile"
         component={EditAmateurProfile}
@@ -584,6 +664,9 @@ function stackInGardnerStack() {
 
 
       {<inGardnerStack.Screen
+        options={{
+          headerShown: false
+        }}
         name="LocationMap"
         component={LocationMap}
       />}

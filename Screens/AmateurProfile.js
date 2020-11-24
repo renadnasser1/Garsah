@@ -114,7 +114,7 @@ const AmateurProfile = ({ navigation }) => {
             setUid(userId)
             setName(name)
             setBio(Bio)
-           
+
         } catch (err) {
             alert(err)
 
@@ -131,7 +131,7 @@ const AmateurProfile = ({ navigation }) => {
             setAvatar(url);
         })
             .catch((e) => console.log('getting downloadURL of image error => ', e),
-            
+
             );
 
     }
@@ -154,77 +154,77 @@ const AmateurProfile = ({ navigation }) => {
     }
 
     return (
-<View>
-        <ScrollView style={styles.container}>
-            <View style={styles.header}>
-                {/* Image */}
-                <Image source={avatar ?
-                    {uri:avatar} : require("../assets/blank.png")} style={styles.prifileImg} />
+        <View>
+            <ScrollView style={styles.container}>
+                <View style={styles.header}>
+                    {/* Image */}
+                    <Image source={avatar ?
+                        { uri: avatar } : require("../assets/blank.png")} style={styles.prifileImg} />
 
 
-                {/* Edit Profile button */}
-                <TouchableOpacity
-                    style={styles.editButton}
-                >
-                    <Text style={styles.editText} onPress={() => {
-                        onEditPress();
-                    }}> Edit Profile</Text>
-                </TouchableOpacity>
+                    {/* Edit Profile button */}
+                    <TouchableOpacity
+                        style={styles.editButton}
+                    >
+                        <Text style={styles.editText} onPress={() => {
+                            onEditPress();
+                        }}> Edit Profile</Text>
+                    </TouchableOpacity>
 
-                {/* Profile Information */}
-                <View style={styles.profileInfoView}>
-                    {/* Name */}
-                    <Text style={styles.profileInfoText}>{name}</Text>
+                    {/* Profile Information */}
+                    <View style={styles.profileInfoView}>
+                        {/* Name */}
+                        <Text style={styles.profileInfoText}>{name}</Text>
 
-                    {/* Bio */}
-                    <Text style={styles.bioText}>{Bio}</Text>
-                  
+                        {/* Bio */}
+                        <Text style={styles.bioText}>{Bio}</Text>
 
-                   
 
-                    <View>
+
+
+                        <View>
+
+                        </View>
+
+
 
                     </View>
 
-                  
+                </View>
+
+
+                <View style={styles.body}>
+                    <Text style={styles.myPlantText}>My Plants</Text>
+                    <View>
+                        {/* {postss.length == 0 ? */}
+                        <Text style={styles.noDataText} >No plants added yet</Text>
+                        {
+                            <FlatList
+                                data={postss}
+                                renderItem={({ item, index }) =>
+                                    (plantItem(item, navigation))}
+                                keyExtractor={item => item.key}
+                            />}
+                    </View>
 
                 </View>
 
-            </View>
-
-
-            <View style={styles.body}>
-                <Text style={styles.myPlantText}>My Plants</Text>
-                <View>
-                            {/* {postss.length == 0 ? */}
-                                <Text style={styles.noDataText} >No plants added yet</Text>
-                                {
-                                <FlatList
-                                    data={postss}
-                                    renderItem={({ item, index }) =>
-                                        (plantItem(item, navigation))}
-                                    keyExtractor={item => item.key}
-                                />}
-                        </View>
-
-            </View>
 
 
 
-
-        </ScrollView>
-        <View style={styles.plus}>
-                    <TouchableOpacity >
-                        <Entypo name="plus" size={44} color="white"
-                            onPress={() =>
-                                navigation.navigate('Addplant')
-                            } />
-                    </TouchableOpacity></View>
+            </ScrollView>
+            <View style={styles.plus}>
+                <TouchableOpacity >
+                    <Entypo name="plus" size={44} color="white"
+                        onPress={() =>
+                            navigation.navigate('Addplant')
+                        } />
+                </TouchableOpacity></View>
         </View>
-      
+
 
     );
-    
+
 
 
 
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     },
     body: {
         marginLeft: 0
-},
+    },
     prifileImg: {
         width: 60,
         height: 60,
@@ -357,50 +357,50 @@ const styles = StyleSheet.create({
     },
     plantname: {
         fontFamily: 'Khmer-MN-Bold',
-    //color:"#717171",
-    color: "white",
-    marginBottom: 25,
-    marginLeft: 50,
-    bottom: 30,
-    fontSize: 18,
-    //backgroundColor:"grey"
+        //color:"#717171",
+        color: "white",
+        marginBottom: 25,
+        marginLeft: 50,
+        bottom: 30,
+        fontSize: 18,
+        //backgroundColor:"grey"
 
-},
-plantdate: {
+    },
+    plantdate: {
         fontFamily: 'Khmer-MN-Bold',
-    color: "#717171",
-    marginLeft: 5,
-    marginBottom: 10,
+        color: "#717171",
+        marginLeft: 5,
+        marginBottom: 10,
 
 
-},
-plantimage: {
+    },
+    plantimage: {
         //width: Dimensions.get('window').width,
         width: 370,
-    height: 250,
-    borderRadius: 50,
-    alignItems: "center",
-    marginLeft: 20,
-    shadowColor: "#000",
-shadowOffset: {
-        width: 0,
-    height: 12,
-},
-shadowOpacity: 0.58,
-shadowRadius: 16.00,
-
-
-},
-dateicon: {
+        height: 250,
+        borderRadius: 50,
+        alignItems: "center",
         marginLeft: 20,
-},
-noDataText: {
-        flex: 1,
-    alignSelf: 'center',
-    fontFamily: 'Khmer-MN-Bold',
-    fontSize: 17,
-    color:'#717171'
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 12,
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.00,
 
-}
+
+    },
+    dateicon: {
+        marginLeft: 20,
+    },
+    noDataText: {
+        flex: 1,
+        alignSelf: 'center',
+        fontFamily: 'Khmer-MN-Bold',
+        fontSize: 17,
+        color: '#717171'
+
+    }
 
 })

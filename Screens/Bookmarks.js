@@ -44,7 +44,7 @@ export default class Bookmarks extends React.Component {
 
 
   }
-//Auto refresh method to reflect changes 
+  //Auto refresh method to reflect changes 
   _onRefresh = () => {
     this.setState({ refreshing: true });
     this.componentDidMount().then(() => {
@@ -77,7 +77,7 @@ export default class Bookmarks extends React.Component {
       bookmark[i] = snapshot.docs[i].data().pid
     }//end for loop
 
-  
+
     //3- Bring post from DB to compare 
     const db = firebase.firestore()
     let usersref = db.collection("Posts").orderBy("createdAt", "desc")
@@ -91,14 +91,14 @@ export default class Bookmarks extends React.Component {
       for (let j = 0; j < bookmark.length; j++) {
         if (bookmark[j] == snapshot1.docs[i].data().Pid) {
           var post = {
-            key: snapshot1.docs[i].data().Pid, 
+            key: snapshot1.docs[i].data().Pid,
             uid: snapshot1.docs[i].data().Uid,
             k: i,
             posts: snapshot1.docs[i].data().posts,
             name: snapshot1.docs[i].data().Name,
           };
           var localPost = {
-            key: post.key, 
+            key: post.key,
             uid: post.uid,
             k: post.k,
             posts: post.posts,
@@ -184,17 +184,6 @@ export default class Bookmarks extends React.Component {
             />
           }
         >
-
-          {/* // contentContainerStyle={{
-  //   flexDirection:'column',
-  //   }}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-          > */}
 
 
 

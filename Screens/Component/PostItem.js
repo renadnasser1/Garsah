@@ -17,22 +17,22 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 
-const options = [ 'Share','Delete Plant',];
-const optionsPost = ['Share','Delete Post'];
+const options = ['Share', 'Delete Plant',];
+const optionsPost = ['Share', 'Delete Post'];
 
 //Share post of thread
-const openShareDialogAsync = async (url,txt) => {
+const openShareDialogAsync = async (url, txt) => {
     if (!(await Sharing.isAvailableAsync())) {
         alert(`Uh oh, sharing isn't available on your platform`);
         return;
     }
     try {
-        const downloadPath = FileSystem.cacheDirectory +'sharePlant.jpg';
+        const downloadPath = FileSystem.cacheDirectory + 'sharePlant.jpg';
         // 1 - download the file to a local cache directory
         const localUrl = await FileSystem.downloadAsync(url, downloadPath);
         console.log(localUrl.uri)
         // 2 - share it from  local storage
-        let msg = txt? txt+'' :'';
+        let msg = txt ? txt + '' : '';
         // share
         const result = await Share.share({
             message: msg,
@@ -86,7 +86,7 @@ const onPopupEvent = async (eventName, index, delet, item, threaID, userID, file
 
                 break;
             case 'Share':
-                openShareDialogAsync(item.image,item.name);
+                openShareDialogAsync(item.image, item.name);
                 break;
         }
     }
@@ -108,7 +108,7 @@ const onclick = (eventName, index, item, delet) => {
                 delet(item)
                 break;
             case 'Share':
-                openShareDialogAsync(item.image,item.caption);
+                openShareDialogAsync(item.image, item.caption);
                 break;
         }
     }

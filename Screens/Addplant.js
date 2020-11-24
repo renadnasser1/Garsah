@@ -30,7 +30,7 @@ import * as firebase from "firebase";
 import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 //Icons
-import { Ionicons,MaterialCommunityIcons,AntDesign } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 //style 
 import Svg, { Path } from "react-native-svg"
@@ -76,7 +76,7 @@ export default class AddPlant extends React.Component {
     selectedProgress: '',
     selectedPeriod: '',
     selectedSent: '',
-    isLoading:false,
+    isLoading: false,
 
   }
 
@@ -117,7 +117,7 @@ export default class AddPlant extends React.Component {
   }
 
 
-//main 
+  //main 
   render() {
     const { image, name, caption, userId, showModel, showProgressModel } = this.state
     const genus = this.findPlant(name);
@@ -150,7 +150,7 @@ export default class AddPlant extends React.Component {
     }
     const uploadPhotoAsync = async (uri, filename) => {
       return new Promise(async (res, rej) => {
-        if (this.state.image) { 
+        if (this.state.image) {
           const response = await fetch(uri);
           const file = await response.blob();
           let upload = firebase.storage().ref(filename).put(file).then(function (snapshot) {
@@ -166,13 +166,13 @@ export default class AddPlant extends React.Component {
       //Vars
       var newPost = firebase.firestore().collection("Posts").doc();
 
-      var post ={
-        image:this.state.imageURL,
-        filePath:this.state.photoPath,
-        caption:this.state.caption,
-        date:this.state.date
+      var post = {
+        image: this.state.imageURL,
+        filePath: this.state.photoPath,
+        caption: this.state.caption,
+        date: this.state.date
       }
-      
+
       var postId = newPost.id
       var reminders = this.state.progressArray
       var result = []
@@ -187,7 +187,7 @@ export default class AddPlant extends React.Component {
         })
 
         for (var i = 0; i < reminders.length; i++) {
-          await schedulePushNotification(reminders[i], postId,this.state.name).then((id) => {
+          await schedulePushNotification(reminders[i], postId, this.state.name).then((id) => {
             console.log('notifi id ' + id)
             if (i == 0) {
               id1 = id
@@ -219,7 +219,7 @@ export default class AddPlant extends React.Component {
         Uid: this.state.userId,
         Pid: postId,
         Reminders: result,
-        posts:[post],
+        posts: [post],
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }).then((response) => {
 
@@ -269,8 +269,9 @@ export default class AddPlant extends React.Component {
               console.log('')
           },
           {
-            text: 'Post', onPress: () =>{
-              uploadPhoto()}
+            text: 'Post', onPress: () => {
+              uploadPhoto()
+            }
           },
 
         ],
@@ -278,21 +279,22 @@ export default class AddPlant extends React.Component {
       )
     }
 
-// validation for the form 
+    // validation for the form 
     const validate = () => {
       if (image == '') {
-        alert("Please add photo");}
+        alert("Please add photo");
+      }
       else if (name == "") {
         alert("Please enter the name of plant ");
       } else if (name.length < 2) {
         alert("Your plant's name need to be at least 2 characters.");
-      } 
-      else if (name.length>30){
+      }
+      else if (name.length > 30) {
         alert("Your plant name is too long please re enter it correctly")
       } else if (caption.length > 2200) {
         alert("Your caption is too long It must be maximum 2200 charcaters.");
-      }  
-       else {
+      }
+      else {
         confirm();
       }
     }
@@ -315,24 +317,24 @@ export default class AddPlant extends React.Component {
 
       var array = this.state.progressArray
 
-     var array = this.state.progressArray.filter((item) => {return  item.progres != this.state.selectedProgress })
+      var array = this.state.progressArray.filter((item) => { return item.progres != this.state.selectedProgress })
       console.log(array)
 
-      this.setState({progressArray:array})
+      this.setState({ progressArray: array })
 
 
 
-    const reminder = {
-      progres: this.state.selectedProgress,
-      period: this.state.selectedPeriod
-    }
-    this.state.progressArray.push(reminder);
-    console.log(this.state.progressArray)
+      const reminder = {
+        progres: this.state.selectedProgress,
+        period: this.state.selectedPeriod
+      }
+      this.state.progressArray.push(reminder);
+      console.log(this.state.progressArray)
 
       closeModel();
 
     }
-  
+
 
     const setReminder = async () => {
       if (this.state.selectedProgress == '' || this.state.selectedPeriod == '') {
@@ -422,25 +424,26 @@ export default class AddPlant extends React.Component {
     const removeReminder = () => {
 
 
-      var array = this.state.progressArray.filter((item) =>{
-        return  item.progres != this.state.selectedProgress});
+      var array = this.state.progressArray.filter((item) => {
+        return item.progres != this.state.selectedProgress
+      });
       console.log(array)
       this.setState({ progressArray: array })
       closeViewProgressModel();
 
     }
-//view 
+    //view 
     return (
 
       <KeyboardAvoidingView
-      behavior='position'
-      style={styles.container}>
+        behavior='position'
+        style={styles.container}>
 
-          <ActivityIndicator animating={this.state.isLoading}
-              size='large'
-              style={styles.loading}>
+        <ActivityIndicator animating={this.state.isLoading}
+          size='large'
+          style={styles.loading}>
 
-              </ActivityIndicator>
+        </ActivityIndicator>
         <View style={styles.SVGC}>
           <Svg
             width={773.491}
@@ -459,16 +462,16 @@ export default class AddPlant extends React.Component {
 
           {this.state.image ? (
             <View>
-            <Image source={{ uri: this.state.image }} style={styles.img} />
-            <View
-            style={styles.iconEdit}>
-            <MaterialCommunityIcons name="circle-edit-outline" size={25} color="white"
-              onPress={() => {
-                pickImageCameraRoll();
-              }}
-            ></MaterialCommunityIcons></View>
+              <Image source={{ uri: this.state.image }} style={styles.img} />
+              <View
+                style={styles.iconEdit}>
+                <MaterialCommunityIcons name="circle-edit-outline" size={25} color="white"
+                  onPress={() => {
+                    pickImageCameraRoll();
+                  }}
+                ></MaterialCommunityIcons></View>
             </View>
-            ) :
+          ) :
             (<Ionicons name="ios-add-circle-outline" size={35} color="#646161" style={styles.icon}
               onPress={() => {
                 pickImageCameraRoll();
@@ -481,7 +484,7 @@ export default class AddPlant extends React.Component {
 
         <Autocomplete
           containerStyle={styles.inputFiled}
-          inputContainerStyle={{borderWidth:0}}
+          inputContainerStyle={{ borderWidth: 0 }}
           listStyle={styles.listStyle}
           style={styles.input}
           onFocus={() => {
@@ -490,14 +493,14 @@ export default class AddPlant extends React.Component {
           onBlur={() => {
             this.setState({ suggestionList: true })
           }}
-          renderSeparator={ () =>(
+          renderSeparator={() => (
             <View
-            style={{
-              borderBottomColor: '#C0C0C0',
-              borderBottomWidth: 1,
-              marginBottom: 10,
-            }}
-          />
+              style={{
+                borderBottomColor: '#C0C0C0',
+                borderBottomWidth: 1,
+                marginBottom: 10,
+              }}
+            />
           )
           }
           hideResults={this.state.suggestionList}
@@ -505,22 +508,23 @@ export default class AddPlant extends React.Component {
           data={genus}
           defaultValue={name}
           onChangeText={text => {
-            this.setState({ name: text })   }}
+            this.setState({ name: text })
+          }}
           renderItem={({ item, index }) => (
             <View>
-            <TouchableOpacity onPress={() => this.setState({ name: item })}>
-              {index == 0 ?
-                <Text style={styles.text}>Suggestions</Text> : null}
-              <Text style={{padding:2}}>{item}</Text>
-            </TouchableOpacity>
-            <View
-            style={{
-              borderBottomColor: '#C0C0C0',
-              borderBottomWidth: 1,
-              marginBottom: 10,
-            }}
-          />
-           </View>
+              <TouchableOpacity onPress={() => this.setState({ name: item })}>
+                {index == 0 ?
+                  <Text style={styles.text}>Suggestions</Text> : null}
+                <Text style={{ padding: 2 }}>{item}</Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  borderBottomColor: '#C0C0C0',
+                  borderBottomWidth: 1,
+                  marginBottom: 10,
+                }}
+              />
+            </View>
           )}
         />
 
@@ -540,19 +544,19 @@ export default class AddPlant extends React.Component {
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.progressText}>Reminders </Text>
 
-            
-              <TouchableOpacity onPress={() => {
-                setModalVisible(true);
-              }}>
-                {this.state.progressArray.length == 0 ?(
+
+            <TouchableOpacity onPress={() => {
+              setModalVisible(true);
+            }}>
+              {this.state.progressArray.length == 0 ? (
                 <Ionicons name="ios-add" size={32} color="#717171" />)
-                :<MaterialCommunityIcons name="circle-edit-outline" size={25} color="#717171" />}
-                </TouchableOpacity> 
+                : <MaterialCommunityIcons name="circle-edit-outline" size={25} color="#717171" />}
+            </TouchableOpacity>
 
           </View>
 
           {/* Progress icons */}
-          <View style={{margainBottom:20}}>
+          <View style={{ margainBottom: 20 }}>
             {this.state.progressArray.length == 0 ?
               <Text style={styles.text}>No reminders added</Text>
               : <FlatList
@@ -620,7 +624,7 @@ export default class AddPlant extends React.Component {
 
               <View style={styles.modelBody}>
                 {/* Progress Reminder */}
-                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20,paddingLeft:40 }}>Reminders</Text>
+                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20, paddingLeft: 40 }}>Reminders</Text>
 
                 <RadioGroup
                   radioGroupList={progress}
@@ -641,7 +645,7 @@ export default class AddPlant extends React.Component {
                   <Text style={styles.textClearfiy}>  Water</Text><Text style={styles.textClearfiy}>             Treatment</Text></View>
 
                 {/* How often Reminder */}
-                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20,paddingLeft:40,paddingTop:10 }}>How often should remind you ?</Text>
+                <Text style={{ fontFamily: 'Khmer-MN-Bold', fontSize: 20, paddingLeft: 40, paddingTop: 10 }}>How often should remind you ?</Text>
 
                 <RadioGroup
                   radioGroupList={this.state.activeBgColor == '#CCDDE5' ? periodWater : periodTreatment}
@@ -683,13 +687,13 @@ export default class AddPlant extends React.Component {
 
               <View style={styles.modelHeader}>
                 <TouchableOpacity
-                 style={{left:-100,paddingTop:8}}
+                  style={{ left: -100, paddingTop: 8 }}
                   onPress={() => {
                     closeViewProgressModel();
                   }}>
-                 <Ionicons name="ios-close" size={40} color="black"/></TouchableOpacity>
+                  <Ionicons name="ios-close" size={40} color="black" /></TouchableOpacity>
               </View>
-              <View style={{alignSelf:'center',marginTop:-30}}>
+              <View style={{ alignSelf: 'center', marginTop: -30 }}>
                 <View style={{ flowDirection: 'row', alignSelf: 'center', paddingTop: 30 }}>
                   {this.state.selectedProgress == 'Water' ?
                     (waterItem()) :
@@ -814,7 +818,7 @@ const styles = StyleSheet.create({
 
   },
   listStyle: {
-    alignSelf:'center',
+    alignSelf: 'center',
     fontSize: 15,
     fontFamily: 'Khmer-MN',
     borderWidth: 1,
@@ -852,20 +856,20 @@ const styles = StyleSheet.create({
   },
   iconEdit: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius:10,
-    padding:2,
-    alignSelf:'flex-end',
+    borderRadius: 10,
+    padding: 2,
+    alignSelf: 'flex-end',
     position: 'absolute',
     top: 240,
-    width:30,
-    right:20
+    width: 30,
+    right: 20
 
   },
   progress: {
     alignSelf: 'center',
     width: 350,
     height: 100,
-    marginBottom:20,
+    marginBottom: 20,
   },
   progressText: {
     color: '#717171',
@@ -925,7 +929,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#CFD590',
     alignSelf: 'center',
-    left:-10,
+    left: -10,
   },
   modelBody: {
     marginTop: -10,
@@ -1016,8 +1020,8 @@ const styles = StyleSheet.create({
 
   loading: {
     position: "absolute",
-    alignSelf:'center',
-    marginTop:300,
+    alignSelf: 'center',
+    marginTop: 300,
     zIndex: 2,
   },
 

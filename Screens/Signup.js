@@ -38,7 +38,7 @@ const SignupScrean = ({ navigation }) => {
   const RoutePath = () => {
 
     if (Gardner == false) {
-      
+
       navigation.reset({
         index: 0,
         routes: [{ name: 'AmateurRoot' }],
@@ -48,11 +48,11 @@ const SignupScrean = ({ navigation }) => {
     // redirect user
     if (Gardner == true) {
 
-    navigation.navigate("LocationMap" ,{
-      name: name,
-      email: email,
-      password: password
-    })
+      navigation.navigate("LocationMap", {
+        name: name,
+        email: email,
+        password: password
+      })
     }
   }
 
@@ -111,9 +111,9 @@ const SignupScrean = ({ navigation }) => {
     } else if (!/[0-9]/.test(password)) {
       alert("Password need to contain numbers.");
       setIsLoding(false);
-    } else{
-    var arrayPosts = new Array();
-    var arrayMessages = new Array();
+    } else {
+      var arrayPosts = new Array();
+      var arrayMessages = new Array();
 
       firebase
         .auth()
@@ -126,13 +126,13 @@ const SignupScrean = ({ navigation }) => {
             email: email,
             name: name,
             Gardner: Gardner,
-            Longitude:'',
-            Latitude:'',
-            Bio:'',
-            Phone:'',
-            avatar:'',
-            posts:arrayPosts,
-            messages:arrayMessages,
+            Longitude: '',
+            Latitude: '',
+            Bio: '',
+            Phone: '',
+            avatar: '',
+            posts: arrayPosts,
+            messages: arrayMessages,
           };
 
           const usersRef = firebase.firestore().collection("users");
@@ -152,7 +152,7 @@ const SignupScrean = ({ navigation }) => {
           alert(error);
           setIsLoding(false);
         });
-      }
+    }
   };
 
   return (
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor:'#ffff'
+    backgroundColor: '#ffff'
   },
   loading: {
     position: "absolute",

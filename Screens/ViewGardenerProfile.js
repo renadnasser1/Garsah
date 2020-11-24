@@ -92,7 +92,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
 
             for (let i = 0; i < g1.posts.length; i++) {
                 posts.push(g1.posts[i])
-        
+
             }
             //fetch images from collection posts 
             for (id of posts) {
@@ -152,7 +152,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
                 { text: 'Cancel', onPress: () => console.log('') },
                 {
                     text: 'Open', onPress: () =>
-                    
+
 
                         Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + cords['latitude'] + ',' + cords['longitude'])
 
@@ -274,7 +274,7 @@ const ViewGardenerProfile = ({ route, navigation }) => {
             </ScrollView>
         </View>
     );
-   
+
 
 
 
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
-     
+
 
     },
     back: {
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
         }
     },
     header: {
-      
+
         backgroundColor: 'white',
         shadowColor: "#000",
         shadowOffset: {
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
         width: 90,
         borderRadius: 10,
         backgroundColor: "#CFD590",
-        
+
         marginTop: 30,
         right: 30,
         shadowColor: "#000",

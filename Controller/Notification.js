@@ -38,65 +38,67 @@ export default function App() {
     };
   }, []);
 
- 
+
 }
 
-export function removeAll(){
-    Notifications.cancelAllScheduledNotificationsAsync();
-    console.log('removed')
+export function removeAll() {
+  Notifications.cancelAllScheduledNotificationsAsync();
+  console.log('removed')
 }
 
-export function unsubscribe(){
+export function unsubscribe() {
   Notifications.removeNotificationSubscription(notificationListener);
   Notifications.removeNotificationSubscription(responseListener);
 }
 
-export async function schedulePushNotification(reminder,id,name) {
+export async function schedulePushNotification(reminder, id, name) {
 
-    //Data needed
-    let reminderName = reminder.progres;
-    let reminderPeriod = reminder.period;
+  //Data needed
+  let reminderName = reminder.progres;
+  let reminderPeriod = reminder.period;
 
-    var repeat;
-        if(reminderPeriod == 'day'){
-          repeat = 86400
-        }else if (reminderPeriod == 'week'){
-          repeat = 604800
-        }else{
-          repeat = 2629743.83
-        }
-    
-        console.log(repeat)
+  var repeat;
+  if (reminderPeriod == 'day') {
+    repeat = 86400
+  } else if (reminderPeriod == 'week') {
+    repeat = 604800
+  } else {
+    repeat = 2629743.83
+  }
 
-//set schedule notfication
- const reminderIdentifire = await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "Don't forget to "+reminderName+" your "+name+" 🌱",
-      //body: 'Here is the notification body',
-      data: { screen: 'Plant',threadId:id },
-    },
-    trigger: { 
-        //seconds:60,
-        seconds: repeat,
-        repeats: true },
-  });
+  console.log(repeat)
 
-  return reminderIdentifire ;
-}
-
-export async function setMonthlyNoti(reminderName,id) {
+  //set schedule notfication
   const reminderIdentifire = await Notifications.scheduleNotificationAsync({
     content: {
-      title: reminderName+" you're plant",
+      title: "Don't forget to " + reminderName + " your " + name + " 🌱",
       //body: 'Here is the notification body',
-      data: { screen: 'Plant',threadId:id },
+      data: { screen: 'Plant', threadId: id },
     },
-    trigger: { 
-        month: 1,
-        repeats: true },
+    trigger: {
+      //seconds:60,
+      seconds: repeat,
+      repeats: true
+    },
   });
 
-  return reminderIdentifire ;
+  return reminderIdentifire;
+}
+
+export async function setMonthlyNoti(reminderName, id) {
+  const reminderIdentifire = await Notifications.scheduleNotificationAsync({
+    content: {
+      title: reminderName + " you're plant",
+      //body: 'Here is the notification body',
+      data: { screen: 'Plant', threadId: id },
+    },
+    trigger: {
+      month: 1,
+      repeats: true
+    },
+  });
+
+  return reminderIdentifire;
 }
 
 export async function registerForPushNotificationsAsync() {
@@ -127,7 +129,7 @@ export async function registerForPushNotificationsAsync() {
     });
   }
 
-  
+
 
   return token;
 }
